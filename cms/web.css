@@ -1,0 +1,652 @@
+﻿/* ------------------------------------------------------------------------- barvy
+                             tmavá   světlá  jasná      krémová světlá      krémová tmavá
+                    zelená   #406403 #BDE37B             #cadfd9             #67827a;
+                    hnědá    #b48933 #f5cf85 #fff4de
+                    modrá    #6470A7 #D1D6EC
+                    šedá     #130D00
+*/
+
+/* ------------------------------------------------------------------------- ladění */
+
+#info { position:fixed; background-color: #67827a;; color:#F5CF85;
+  display:none; z-index:9; font-size:7pt !important; }
+#info * { font-size:7pt !important; }
+div.fb_iframe_widget { margin:.5em;}
+div.code { position: absolute; background-color: rgba(255, 255, 255, 0.77); z-index:3;
+  color: black; border:1px dotted black; border-radius: 5px; cursor: pointer; margin-top:-5px; }
+
+/* -------------------------------------------------------------------------- css */
+
+div.Label { color:grey; }
+div.LabelDrop { outline: 3px solid #cadfd9; background-color:#cadfd9; }
+
+/* -------------------------------------------------------------------------- média */
+
+[data-oembed-url] { width: 426px; max-height: 240px; margin:0 auto; }
+
+/* -------------------------------------------------------------------------- layout */
+/* podle https://chrisbracco.com/css-sticky-footer-effect/ ??? */
+
+html { height:100%; width:100%; }
+body { /*overflow-y:auto;*/ font-family: 'Open Sans', sans-serif; overflow-x:hidden; margin: 0; min-height: 100%; background: #f2f2f2 }
+
+/*<div class="container"><div class="content">PAGE CENTERED CONTENT</div></div> two layered so that background can be full-page colored*/
+.container { width: 100vw; position: relative; /*left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw;*/
+ padding-top: 30px; padding-bottom: 30px; }
+.content { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+/*<div class="container inner_container"> to make the content centered but of smaller width*/
+.inner_container {display: flex; flex-direction: column;}
+
+#page { margin: 0 auto; }
+#work {  }
+a.mereni { float:right; }
+
+#logo_setkani { filter: drop-shadow(3px 3px 3px rgba(0,0,0,0.5)); }
+#logo_ymca { filter: drop-shadow(3px 3px 3px rgba(0,0,0,0.5)); }
+h1#ymca_setkani { position: absolute; top:3.8em; margin-left:.5em; font-size: 12pt;
+    font-weight:bold; color:#cadfd9; text-shadow: 3px 3px 3px #000; }
+
+/* patička */
+.footer { clear: both; background: #232323; }
+.footer a { color : white;  font-weight: bold; }
+.footer h3 { font-size: 15px; color: #ff9933; }
+.footer .tile { width: 170px; display: inline-block;  margin: 1px; vertical-align:top; font-size: 9pt !important; padding: 10px 20px; }
+.footer hr.footer-hr { border: 0; height: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.3); margin: 0px 160px 0px 60px;}
+.footer img.footerIcon { transform: translate(0, 2px); height: 14px !important; margin: 0 !important;}
+.footer .organizations img {width: 180px !important;}
+.footer .organizations p {display: inline-block !important;}
+.footer #footer-left-part {width: 75%; display: inline-block; vertical-align: top; min-width: 650px;}
+.footer #footer-right-part {width: 18%; display: inline-block; vertical-align: top; min-width: 150px;}
+
+#site_signature {float: right;}
+
+/* obecné, písmo */
+
+#web { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+#web.web_home     { }
+#web.web_kontakty { background-position-x:-860px; }
+#web.web_hledej   { background-position-x:-660px; }
+#web.web_akce     { background-position-x:-460px; }
+#web.web_dum      { background-position-x:-1060px; }
+#web.web_foto     { background-position-x:-160px; }
+#web.web_libr     { background-position-x:-60px; }
+#web.web_my       { background-position-x:+160px; }
+div, span, input, form, button {font-family: 'Open Sans', sans-serif !important; font-size:12pt}
+
+h1, #web h2,h3 { -webkit-column-break-inside: avoid; -moz-column-break-inside: avoid; column-break-inside: avoid; }
+#web a:hover { /*todo*/ }
+#web img {margin:.5em;height:auto !important;max-width:100%;}
+
+h1 {margin-top: 60px}
+h2 {margin-top: 40px}
+h3 {margin-top: 30px}
+
+.clear { clear:both; }
+.center { position: relative; display: block; margin: 0 auto; }
+.inline { display: inline-block; }
+.float-right { float: right; }
+.white { color:white; }
+.relative { position: relative; }
+
+#web-shadow {position: fixed; top: 0; width: 100%; height: 100%; background: black;
+  opacity: 0.55; z-index: 99; display:none;}
+
+/* tabulky */
+
+#clanek table { border-collapse: collapse; }
+#clanek td { border:1px solid silver; }
+#clanek th { border:1px solid silver; background:silver; }
+
+/* ------------------------------------------------------------------- facebook */
+
+#facebook_content:before {content: "\f09a"; font-family: FontAwesome, serif; color: #ffffff;
+  font-size: 60px; vertical-align: middle; position: absolute; transform: translate(-100px, 10px);}
+
+/* ------------------------------------------------------------------- online přihlášky */
+
+div.clanek span.cms_form {
+  float:right; display: inline-block; border-radius: .4em;
+  padding: 0.5em 1em; font-weight: bold; text-decoration: none; cursor: pointer;
+  margin: 1.5em 2em; background-color: orange; color: black; text-align: center;
+  box-shadow: 2px 2px 8px grey, -1px 1px 0px silver, 1px -1px 0px silver, -1px -1px 0px silver; }
+div.clanek span.cms_form:hover {
+  background-color: white !important; color: black !important; }
+
+.abstrakt span.cms_form {
+  float:right; font-size:10pt !important; display: inline-block; border-radius: .2em;
+  padding: 0.2em 0.4em; font-weight: bold; text-decoration: none;
+  margin: -0.2em -0.2em; background-color: orange; color: black; text-align: center;
+  box-shadow: 2px 2px 8px grey, -1px 1px 0px silver, 1px -1px 0px silver, -1px -1px 0px silver; }
+
+/* ----------------------------------------------------------------------------- popup */
+
+#popup {
+/* left:10%; right:10%; top:10%; bottom:10%; */
+  left:2%; right:2%; top:2%; bottom:2%;
+  background-color:#FFF4DE; color:#130D00; border-radius:.6em; padding:2em 1em 1em 1em; opacity:1;
+  position:fixed; border:2px solid #B48933; box-shadow:black 4px 6px 20px; }
+#popup > span { position:absolute; top:0em; left:0em; width:100%; text-align:center; height:2em;
+  background:#B48933; color:#EFFBDA; border-radius:.4em .4em 0 0; font-weight:bold;
+  line-height:22pt;}
+#popup > div { top:2em; height:100%; overflow:auto; text-align: center; }
+#popup_div { padding-top: 1em; }
+#popup_bot { margin-top:-3.6em; height:1.4em !important; padding-top:0.2em;
+  z-index:3; background-color:#FFF4DE; position:relative;}
+
+/* -------------------------- ------------------------------------------------- login */
+
+div#user_login, div#user_mail { position:fixed; left: 50vw; top:50vh; line-height: 22pt;
+  color:#cadfd9; padding:2em 5em; opacity:1; background: white;
+  box-shadow: black 4px 6px 20px; transform:translate(-50%, -50%); z-index: 100; }
+div#user_login input, div#user_mail input { width:20.5em; 
+  padding: 12px 0px 12px 0; margin-bottom: 15px; margin-right: 10px; outline: 0; border: 0; box-shadow: 0 1px 0 0 #e5e5e5; }
+div#user_login input:focus, div#user_mail input:focus {box-shadow: 0 2px 0 0 #67827a;;}
+
+div#user_mail #pin {width: 5em;}
+
+div#user_mail div { margin-top: 1.6em; line-height: 1.3em; height:2.4em; width:29em; margin-bottom: 1em; color: black; }
+div#user_login span, div#user_mail span { position:absolute; top:0.8em; left:0em; width:100%; text-align:center; height: 2em;
+  font-weight:bold; font-size: 20px; color: black;}
+div#user_login button, div#user_mail button { float: right; cursor: pointer; border: 1px solid; background: white; color: black; padding: 9px 13px 8px 13px;
+  margin: 10px 7px; text-decoration: none; font-size: 15px;}
+div#user_login button:hover, div#user_mail button:hover { border 1px solid #ffffff; background: black; color: white;}
+#fe_login { margin-left:3em; }
+div#user_login.key_in { background-color:#000 !important; color: white !important; }
+div#user_login.key_in input { background-color:#000 !important; color: white !important; }
+div#user_login.key_in span {color: white !important; }
+
+/* -------------------------- ------------------------------------------------- box */
+div.box {
+  position:fixed; left:50%; top:50%;  transform: translate(-50%, -50%);  line-height: 2em;
+  color:#cadfd9; border-radius:.6em; padding: 1em 1em 0em 1em;
+  border:2px solid #B48933; box-shadow: black 4px 6px 20px; }
+div.box_title { position:absolute; top:0em; left:0em; width:100%; text-align:center; height: 2em;
+  background:#B48933; border-radius:.4em .4em 0 0; color:#EFFBDA; font-weight:bold; }
+div.box_text { margin-top:2em; line-height:1.2em; }
+div.box_ok { text-align:center; padding:.5em; }
+div.box_ok button { position:relative; }
+div.box_input { padding:2em 0 1em; }
+
+/* ----------------------------------------------------------------- images gallery */
+
+#titler {position: absolute; top: 0; width: 640px; height: 400px;
+    background-image: url(/cms/img/cover.png); background-size: cover; right: 55vw; }
+#titler:before  {content:''; width: 30vw; height: 400px; position: absolute; top: 0; left: -30vw; background: #cadfd9;}
+#header_gallery {
+  position:relative; width: 80vw; margin-left: 20vw; height: 400px; overflow: hidden; z-index: -1; }
+#gallery_shadow { position:absolute; top:0%; left:0%; width: 100vw; height: 400px;
+  opacity: 0; box-shadow: black 0 0 0 100vw inset; }
+#header_gallery img { z-index: 1; position:absolute; width: 100%; overflow: hidden; }
+#header_gallery img.act{ z-index:3; }
+
+/* --------------------------------------------------------------------------- menu */
+/*animations*/
+@-webkit-keyframes select-menu{ from {background-color: white;} to {background-color: #cadfd9;}  }
+@keyframes select-menu { from {background-color: white;} to {background-color: #cadfd9;} }
+
+#mobile_menu {display: none}
+#mobile_submenu {background: #f0f5f4;padding-left: 20px;}
+
+.search_icon {transform: translate(10px, 5px);}
+
+#menu { line-height: 0; width: 100%; background-color: white; padding-bottom: 0; }
+#menu.fixed { position: fixed; top: 0px; z-index: 9;}
+#menu div#bar_items { cursor: pointer;
+  display:none; line-height: 1.5em; background: #fff; position: relative; cursor:default;
+  color: black; font-size: 10pt; font-weight: normal; z-index: 20; width:150px; left: -120px; }
+#menu div#bar_items span   { margin:0; padding: .5em; display: block; text-align:left; }
+#menu div#bar_items span.separator   { border-top:1px solid #999; }
+#menu div#bar_items span:hover   { background-color:#cadfd9; }
+#menu div#bar_items img { margin:0; }
+
+.jump { display:inline-block; font-weight:bold; text-decoration:none;div.LabelDrop *
+  cursor:pointer; }
+#menu a span, #menu span span { vertical-align: middle; height: inherit; padding: 22px 15px; }
+#menu a { height: 100%; color: black; }
+#menu a.active { box-sizing: border-box;border-bottom: 7px solid #cadfd9; }
+#menu a:hover { /*todo*/ }
+#menu a:hover span { /*todo*/ }
+
+/* top menu */
+#page_tm { float: right; text-align:right; padding-right:.4em; height: 4.5em; line-height: 4.5em; }
+#page_tm input {width:10em; border: none; padding: 6px 10px; outline: none; font-size: 13pt; font-weight: 300;
+  display: inline-block; margin-top: 13px; margin-right: 12px;}
+#page_tm a.jump { /*todo*/ }
+#page_tm a:hover { box-sizing: border-box; background-color: #cadfd9; -webkit-animation-name: select-menu;
+  -webkit-animation-duration: 0.5s; animation-name: select-menu; animation-duration: 0.5s; animation-timing-function: ease-in-out; }
+#page_tm a:hover span { /*todo*/ }
+
+
+#page_tm #bar_menu { float:right; font-size:1.5em !important;
+  width:1.2em; cursor:pointer;  }
+#bar_menu>i {  }
+
+/* main menu */
+#page_hm { float: left; text-align:left; height: 4.5em; line-height: 4.5em; }
+#page_hm a.jump { /*todo*/ }
+#page_hm a:hover { box-sizing: border-box; background-color: #cadfd9; -webkit-animation-name: select-menu;
+  -webkit-animation-duration: 0.5s; animation-name: select-menu; animation-duration: 0.5s; animation-timing-function: ease-in-out; }
+#page_hm a:hover span { /*todo*/ }
+
+#vyber {width:100%; color:#EFFBDA; font-weight:bold;  }
+#vyber input { margin-left:1em; }
+
+/* sub menu */
+#page_sm {width:100%; display:inline-flex; background-color: #cadfd9; height: 3em; line-height: 4em}
+#page_sm .jump { color:#67827a; line-height: 3em;padding: initial;vertical-align: text-bottom; }
+#page_sm a.jump { background-color: #cadfd9; }
+#page_sm span.jump { color:#F5CF85;  }
+#page_sm a.active { background-color: #67827a; border-color:#67827a;color:white; }
+#page_sm a:hover { background-color: #67827a; color:white; }
+#page_sm a:hover span { /*todo*/ }
+
+/* novinky */
+#page_tm a.new, #page_hm a.new, #page_sm a.new { background-image: url(img/new.png);
+  background-repeat:no-repeat; background-position: top right; }
+#page_tm a.upd, #page_hm a.upd, #page_sm a.upd { background-image: url(img/upd.png);
+  background-repeat:no-repeat; background-position: top right; }
+
+/* výběrové podmínky */
+#vyber {height: 3em; line-height: 3em; color: black;}
+#vyber span { font-weight:bold;  }
+#vyber label { cursor:pointer; display:inline-block; padding: 0px 7px; }
+#vyber label.checked { background-color: #67827a !important; color: white !important; }
+#vyber label input { visibility: hidden; position: absolute; top: 0; left: 0; }
+
+#vyber input[type=checkbox] + label { padding:1px 5px; }
+#vyber input[type=checkbox]:checked + label { background-color: #67827a !important; color: white !important; }
+
+/* odkazy pro admina */
+#menu a.admin { background-color:#D1D6EC !important;}
+#menu a.admin_active { background-color:#6470A7 !important;}
+#menu a.admin:hover span { color:navy !important; }
+
+/* ------------------------------------------------------------------------------ obsah */
+
+/* odkazy */
+div.text a span { background-color:#F5CF85; color:#67827a;; text-decoration:underline; cursor:pointer }
+div.text a span:hover { background-color:#B48933 !important; color:#EFFBDA !important; }
+
+/* seznamy abstraktů */
+#list {width:100%; }
+div.abstrakt_foto { background-color:#cadfd9;  margin:0.5em; cursor:pointer; padding:.4em;  }
+a.abstrakt, div.abstrakt { background-color:white; margin:0.7em; cursor:pointer; padding:.6em; display:block;
+  text-decoration:none; border-radius: 5px; -webkit-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06);
+  -moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06);
+  box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06); }
+a.new { background-image: url(img/new.png); background-repeat:no-repeat; background-position: top right; }
+a.upd { background-image: url(img/upd.png); background-repeat:no-repeat; background-position: top right; }
+#list div.abstr a.abstrakt { height:10.8em; overflow:hidden; }
+/*a.abstrakt:hover, div.abstrakt:hover { background-color:#fff4de !important; color:#130D00 !important; }*/
+a.abstrakt_hidden { background-color:silver }
+a.abstrakt_deleted { background-color:silver; border:5px solid black; }
+
+
+/*masonry layout*/
+.masonry_container {column-count: 3;column-gap: 1em;}
+a.short_post, div.short_post { font-size: 11pt !important; width: 95%; display: inline-block; margin: 0 0 1em;
+  text-overflow: ellipsis; overflow: hidden; text-align: justify;}
+.short_post img {max-width: initial !important; max-height: 200px !important; width: 100% !important;
+  width: calc(100% + 1.2em) !important; margin: -0.6em !important; margin-bottom: 5px !important; 
+  /*! values of em are depentent on padding of classes a.abstrakt, div.abstrakt !*/ }
+.short_post h1, .short_post h2, .short_post h3 {display: none}
+.short_post a, .short_post u, .short_post b, .short_post strong{text-decoration: none; font-weight: normal}
+
+.post_title { margin: 12px; font-size: 16pt; float: left }
+.post_date { float: right}
+.post_date:before { content: "\f073";font-family: FontAwesome, serif;color: #8a8a8a;padding-right: 0.5em;}
+
+/* seznamy abstraktů objednávky */
+#objednavky {width:100%; }
+
+/* abstrakty */
+div.abstr { display:inline-block; vertical-align:top; }
+div.mini { float:right; width:8em; height:8em; background-repeat:no-repeat; background-position:center; }
+
+/* help */
+div.help { border:5px solid #6470A7; box-shadow: black 4px 6px 20px; background-color:#cadfd9;
+  padding:5px; margin:5px; }
+span.input { background-color:#F5CF85; }
+
+/* vlákno */
+div.vlakno { clear:both; }
+div.text { padding:.4em;}
+
+/* fotky */
+/*span.foto { width: 80px; height: 80px; overflow: hidden; display: inline-block; }*/
+span.foto { width:80px; max-height:80px; overflow:hidden; display:inline-block;
+  background-repeat:no-repeat; background-position:center; }
+span.foto_cms { height:80px; }
+div.drop_back { z-index:2; background-color:#c9d5e5; opacity:.7; }
+div.drop_foto { z-index:3; margin:2px; width:76px; height:76px; outline:2px dashed #fff; display:table }
+div.drop_foto span { display:table-cell; text-align:center; vertical-align:middle; }
+#popup_div>img { max-width:100%; margin:0; }
+.fotorama .foto_text { font-size: 1em; line-height:8vw; text-align:center; height:100%; padding-top:25%;  }
+.fotorama__caption  { text-align:center; bottom: 1vw !important; }
+.fotorama__caption__wrap { background:#fff4de !important; color:black; font-weight:bold; border-radius: 2vw; }
+
+/* organizér fotek */
+span.drop { margin: 1px 2px 1px 1px; }
+ul.foto { display:inline; padding: 0; }
+li.foto { width:80px; height:80px; overflow:hidden; display:inline-block; cursor: move;
+  background-repeat:no-repeat; background-position:center; vertical-align:middle;
+  border: 1px solid #cadfd9; margin: 2px 1px 2px 0px; }
+li.foto[data-checked='true'] { border: 1px solid red !important; }
+li.foto[data-checked='false'] { border: 1px solid #cadfd9 !important; }
+li.foto div { background: #cadfd9; text-align: center; width: 80px; }
+li.foto input { float:left; margin:0; }
+li.foto input:focus { outline:none; }
+
+/* skupiny */
+table#skupiny th { background-color:#F5CF85; color:#67827a;; min-width:8em; }
+table#skupiny input { width:100%; }
+
+/* galerie */
+div.galerie { background-color:#FFF4DE; color:#130D00; overflow:hidden; margin:0.5em; position:relative; }
+div.galerie span.datum { position: absolute; top: 0; left: 0; }
+
+/* článek */
+div.clanek {  /*overflow:hidden;*/ margin:0.5em; position:relative; }
+.mediaqueries div.clanek { /*todo*/ }
+span.datum { background-color:#F5CF85; color:#130D00; }
+div.clanek span.datum { position: absolute; top: 0; left: 0; }
+div.podpis { text-align:right; font-style:italic; clear:both; }
+div [data-oembed-url] { display: inline-block; margin: 1em; }
+div.new { background-image: url(img/new.png); background-repeat:no-repeat; background-position: top right; }
+div.upd { background-image: url(img/upd.png); background-repeat:no-repeat; background-position: top right; }
+
+/* knihy */
+div.kapitola  { background-color:#FFF4DE; color:#130D00; overflow:hidden; margin:0.5em; position:relative; }
+div.kniha_hr { clear:both; padding:1em 0; text-align:center; cursor:pointer; }
+div.kniha_br { clear:both; padding:1em 0; text-align:center; }
+div.kniha_bg { clear:both; background-color:#6470A7; color:#D1D6EC; border-radius:.8em; }
+.mediaqueries div.kniha_bg div.clanek { column-rule:1em solid #6470A7; -moz-column-rule:1em solid #6470A7; }
+a.kniha_bg { clear:both; display:block; text-decoration:none; background-color:#6470A7; color:#D1D6EC; border-radius:.8em; }
+.mediaqueries a.kniha_bg div.clanek { column-rule:1em solid #6470A7; -moz-column-rule:1em solid #6470A7; }
+div.kniha_bg div.new, div.kniha_bg a.new { background-image: url(img/new.png); background-repeat:no-repeat; background-position: top right; }
+div.kniha_bg div.upd, div.kniha_bg a.upd { background-image: url(img/upd.png); background-repeat:no-repeat; background-position: top right; }
+
+/* fotogalerie */
+#galerie { padding:1em; }
+
+/* ----------------------------------------------------------------------------- home page */
+
+b.home { text-shadow: 3px 3px 3px #000; padding-left:.8em; }
+
+#home_akce {width: 100%; display:inline-block; }
+div.home_akce>b { color:#cadfd9; }
+div.home_akce { }
+
+#home_telo {width: 100%; }
+
+#home_info {width: 100%; display:inline-block; }
+div.home_info {  }
+div.home_info>b { color:#cadfd9; }
+
+/* ------------------------------------------------------------------------------ timeline */
+
+#timeline {list-style: none; padding: 0; margin: 0;
+  min-width: 100%;}
+.horizontal_scroll  {overflow-x: scroll; overflow-y: hidden;}
+#timeline li { vertical-align: middle;}
+#timeline li .relative {position: relative;}
+#timeline p {margin: 0 0 15px;}
+
+#timeline_header {list-style: none;
+  width: 100%;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  display: table;
+  margin-bottom: 10px;
+}
+#timeline_header > li {position: absolute;display: initial;width:70px;height: 100%; overflow: hidden; z-index: -1}
+#timeline_header > li:before {content: '';
+  border-left: 1px dashed #ccc;
+  position: absolute;
+  height: 100vh;
+  transform: translate(0, 23px); }
+
+.timeline_date {text-align: center;top: 15px;left: 5px;right: 0;font-size: 0.95em;line-height: 20px;position: absolute;
+  z-index: 2;width: 80px; border-radius: 50%; padding: 2px; display: none}
+.timeline_circle {height: 25px; background: #78f282;
+  border: 5px solid white;display: block; cursor: pointer; width: fit-content }
+.timeline_text {width: 100%; max-width: 400px;display: none; left: 40px; /*this is OUTSIDE scroll so..*/
+  transition: width 0.4s linear, max-height 0.4s linear;border-radius: 0.5em;background: white;position: absolute;}
+.timeline_text .timeline_text_style {max-height: 0;color: transparent;text-align: justify;word-break: break-word;hyphens: auto;overflow: hidden;}
+.timeline_title {font-size: 1em;z-index: 2;cursor: pointer; text-overflow: ellipsis;
+  overflow: hidden; display: block; height: 45px; white-space: nowrap; }
+
+.timeline_radio {display: none}
+.timeline_text_style a, .timeline_text_style u {text-decoration: none; color: black}
+.timeline_text_style img, .timeline_text_style h1 {display: none}
+
+.timeline_radio:checked + .timeline_circle {background: #ffbbbb}
+.timeline_radio:checked + .timeline_circle .timeline_text  {display: block ;max-height: initial; z-index: 5; padding: 15px 15px 15px;
+  -webkit-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.1); -moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.1);}
+.timeline_radio:checked + .timeline_circle .timeline_text .timeline_text_style {max-height: initial; color: black;}
+
+/*.timeline_radio:checked + label {cursor: auto;width: 400px;transition: width 0.3s linear 0.2s;}
+.timeline_radio:checked~.timeline_text {max-height: 180px;border-color: white;width: 400px;}
+.timeline_radio:checked+p {max-height: 200px;color: white;transition: color 0.3s linear 0.3s;}*/
+
+/* ----------------------------------------------------------------------------- dům */
+
+/* popis */
+#pokoje { clear:both; }
+div.pokoje { background-color:#FFF4DE; color:#130D00; overflow:hidden; margin:0.5em; position:relative; }
+span.datum { background-color:#F5CF85; color:#130D00; }
+div.pokoje span.datum { position: absolute; top: 0; left: 0; }
+span.mesic { background-color:#B48933; color:#EFFBDA; font-weight: bold; }
+
+/* tabulka */
+table.dum  { border-collapse: collapse; empty-cells: hide; width: 100%; }
+table.dum td { border: 1px solid navy; min-width:1.2em; text-align: center; }
+
+#dum td.room:hover, #dum td.obsazen:hover, #dum td.sent:hover
+  { background-color:#B48933; color:#EFFBDA; }
+#dum td.room { background-color: #F5CF85;  font-weight: bold;  cursor: pointer; }
+#dum td.hlavicka { background-color: #FFF4DE;  font-weight: bold; }
+#dum td.pozn { background-color: #F5CF85;  text-align: left; }
+#dum td.pozn_weekend { background-color: #B48933;  text-align: left; }
+#dum td.datum {background-color: #F5CF85;  text-align:right; width:3em; }
+#dum td.datum_weekend { background-color:#B48933;  text-align:right; width:3em; }
+#dum img { margin:-2px; }
+
+#dum .datum_plno, td.obsazeno { background-color: red; width:2em; }
+#dum .datum_prazdno, td.volno { background-color: lightgreen; width:2em; }
+#dum .datum_poloplno, td.konflikt { background-color: yellow; width:2em; }
+#dum td.sent { cursor:pointer; }
+#dum td.nic { background-color: #F5CF85; width:1.4em;}
+#dum td.obsazen { background-color: #F5CF85; width:1.4em;}
+
+#order {
+  position:fixed; left:100px; top:100px; width:710px; height:230px;
+  background-color:#FFF4DE; color:#130D00; border-radius:.6em; padding:2em 1em 1em 1em; opacity:1;
+  border:2px solid #B48933; box-shadow:black 4px 6px 20px; }
+#order > span { position:absolute; top:0em; left:0em; width:100%; text-align:center; height:2em;
+  background:#B48933; color:#EFFBDA; border-radius:.4em .4em 0 0; font-weight:bold;
+  line-height:22pt;}
+#order span.choose { background:#EFFBDA; color:#B48933; }
+#order > div { top:2em; height:100%; overflow:auto; }
+#order label { display:inline-table; font-size:small; }
+#order input, #order select { display:block; }
+
+/* ====================================================================== non responsive design */
+
+.no-mediaqueries #info::before { content:"?"; }
+/* omezení šířky */
+.no-mediaqueries #web {width:100%; max-width:70em; margin:auto; }
+.no-mediaqueries #logo_setkani { position:absolute; margin: 0 0 0 120px !important; top: 100px; left: 8vw; width: 120px; }
+.no-mediaqueries #logo_ymca { position:absolute; margin: 0 0 0 230px !important; top: 100px; left: 6vw; width: 140px; }
+/* home page na na šířku */
+
+.no-mediaqueries #cist_dole { display:none; }
+/* velká tlačítka */
+.no-mediaqueries #page_sm span.label { padding-top:0.4em; }
+/* větší písmo menu */
+.no-mediaqueries #menu div, #menu span, #menu input {font-size:10pt; }
+/* abstrakty */
+.no-mediaqueries div.abstr { margin-right:.5em; }
+/* popup */
+.no-mediaqueries #popup { left:16%; right:16%; }
+
+/* ========================================================================== responsive design */
+
+/* -------------------------------------------------------------------------- MV mobil na výšku */
+
+@media all and (max-width:30em) {
+  #info::before { content:"mobil portrait"; }
+  #logo_setkani { position:fixed; top: 10px; left: 70px; width: 50px; z-index: 10; }
+  #logo_ymca { position:fixed; top: 10px; left: 10px; width: 50px; z-index: 10; }
+
+  /*menu*/
+  #menu {position: fixed; top: 0px; z-index: 9; background: #cadfd9;}
+  #menu div, #menu span, #menu input {font-size: 11pt; }
+  #menu a.active { border-bottom: none; border-left: 14px solid #cadfd9; }
+
+  #page_tm {padding-top: 60px;}
+  #menu div#bar_items {width: 100vw;height: 100vh; height: calc(100vh - 9em); padding-bottom: 9em; left: -100vw; box-shadow:none; display: block;right: 0;position: fixed; overflow-y: scroll;}
+  #menu div#bar_items span {height: fit-content}
+  #page_tm input {background: #cadfd9;}
+  #page_hm {position: fixed;left: 0; top: 100px;z-index: 101;}
+  #page_hm a.jump {width: 100vw;}
+  #page_sm {height: auto; line-height: initial}
+  #mobile_menu {display: block}
+  #mobile_menu a.jump {display: block}
+  #mobile_menu #vyber {height: fit-content; text-align: left; }
+  #mobile_menu #vyber .content {padding: 0;}
+  #mobile_menu #vyber .content span {padding: 0;}
+
+  /*login*/
+  div#user_login, div#user_mail {  padding:1em 2em; }
+  div#user_login input, div#user_mail input { width:12.5em; }
+  div#user_mail div {width: 12em; margin-top: 2em; height: auto}
+
+  @media (max-width:25em) { #vyber span { display:none; } }
+
+  /* home page na na výšku */
+  #facebook_content {width: 300px; padding-top: 60px; padding-right: 40px;}
+  #facebook_content:before {transform: translate(00px, -70px);}
+  .masonry_container { column-count: 1;}
+
+  h1 {margin-left: 0.2em !important;}
+  h2, h3, h4 {margin-left: 0.1em !important;}
+
+  /*todo delete?*/#cist_dole { display:block; }
+  /* velká tlačítka */
+  #page_sm span.label { padding-top:0.4em; }
+  #page_tm input { width:6em; }
+  #web {margin-top: 100px;}
+
+  /* abstrakty */
+  div.abstr { width:100%; }
+
+  /*footer*/
+  .footer .tile {display: block; padding: initial; margin: 0 auto; }
+  .footer hr.footer-hr {display: none}
+  .footer #footer-left-part {min-width: initial;}
+
+  .mobile_nodisplay {display: none !important;}
+}
+
+/* -------------------------------------------------------------------------- MŠ mobil na šířku */
+
+@media all and (min-width: 30em) and (max-width: 640px) {
+  #info::before { content:"mobil lanscape"; }
+  #web h1#ymca_setkani { font-size: 11pt; }
+/*
+  #logo_setkani { position:absolute; margin-left:0em; top:0em; width:6em; }
+  #logo_ymca { position:absolute; margin: 0 0 0 6em !important; top:.3em; width:2.8em; }
+
+
+*/
+
+  #logo_setkani { position:fixed; top: 10px; left: 70px; width: 50px; z-index: 10; }
+  #logo_ymca { position:fixed; top: 10px; left: 10px; width: 50px; z-index: 10; }
+
+  #menu {position: fixed; top: 0px; z-index: 9; background: #cadfd9;}
+  #menu div, #menu span, #menu input {font-size: 11pt;}
+  #menu a.active { border-bottom: none; border-left: 14px solid #cadfd9; }
+
+  #menu div#bar_items {width: 100vw;height: 100vh; height: calc(100vh - 5em); padding-bottom: 5em; left: -100vw; display: block;right: 0;position: fixed; box-shadow:none; overflow-y: scroll;}
+  #menu div#bar_items span {height: fit-content}
+  #page_tm input {background: #cadfd9;}
+  #page_hm {position: fixed;left: 0; top: 100px;z-index: 101;}
+  #page_hm a.jump {width: 100vw;}
+  #page_sm {height: auto; line-height: initial}
+  #mobile_menu {display: block}
+  #mobile_menu a.jump {display: block}
+  #mobile_menu #vyber {height: fit-content; text-align: left; }
+  #mobile_menu #vyber .content {padding: 0;}
+  #mobile_menu #vyber .content span {padding: 0;}
+
+
+  @media (max-width:33em) { #vyber span { display:none; } }
+  /* home page na na šířku */
+  #cist_dole { display:none; }
+  /* velká tlačítka */
+  #page_sm span.label { padding-top:0.4em; }
+  /* střední písmo menu */
+  #web {margin-top: 50px;}
+  .masonry_container { column-count: 2;}
+  #facebook_content {width: 300px; padding-top: 60px; padding-right: 40px;}
+  #facebook_content:before {transform: translate(00px, -70px);}
+
+  /*footer*/
+  .footer hr.footer-hr {display: none}
+  .footer #footer-left-part {min-width: 90vw;}
+
+  /* abstrakty */
+  div.abstr { width:50%; }
+  .mobile_nodisplay {display: none !important;}
+}
+
+/* -------------------------------------------------------------------------- T tablet */
+
+@media all and (min-width:641px) and (max-width:900px) {
+  #info::before { content:"tablet"; }
+  #titler {right: 38vw}
+  #logo_setkani { position:absolute; margin: 0 0 0 120px !important; top: 200px; right: 68vw; width: 130px; }
+  #logo_ymca { position:absolute; margin: 0 0 0 230px !important; top: 80px; right: 68vw; width: 120px; }
+
+  /*homepage changes*/
+  #facebook_content {width: 632px; padding-top: 60px; padding-left: 15px;}
+  #facebook_content:before {transform: translate(0, -70px);}
+  .masonry_container { column-count: 2;}
+  /*footer*/
+  .tile {width: 160px;}
+  #site_signature {padding-top: 20px;}
+
+  /* home page na na šířku todo delete? there is a comment in the template so I will know whether this section is kept or not */
+  #cist_dole { display:none; }
+  /* velká tlačítka */
+  #page_sm span.label { padding-top:0.4em; }
+  /* větší písmo menu */
+  #menu div, #menu span, #menu input {font-size: 11pt; }
+  /* abstrakty */
+  div.abstr { width:33.3%; }
+}
+
+/* -------------------------------------------------------------------------- PC velká obrazovka */
+
+@media all and (min-width: 900px) {
+  #info::before { content:"desktop"; }
+  /* omezení šířky */
+  #web,#page_foo { /*todo*/ }
+  #logo_setkani { position:absolute; margin: 0 0 0 120px !important; top: 200px; right: 68vw; width: 130px; }
+  #logo_ymca { position:absolute; margin: 0 0 0 230px !important; top: 80px; right: 68vw; width: 120px; }
+  /* home page na na šířku */
+  #cist_dole { display:none; }
+  /* velká tlačítka */
+  #page_sm span.label { padding-top:0.4em; }
+  /* větší písmo menu */
+  #menu div, #menu span, #menu input {font-size:10pt; }
+  /* abstrakty */
+  div.abstr { width:25%; }
+  /* popup */
+  #popup { left:16%; right:16%; }
+}

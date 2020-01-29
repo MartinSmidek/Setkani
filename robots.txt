@@ -1,0 +1,14 @@
+User-agent: *
+Disallow: /cms/
+Disallow: /skins/
+Disallow: /ezer2.2/
+Disallow: /typo3conf/
+Disallow: /fileadmin/
+Disallow: /sql/
+Disallow: /t3lib/
+Disallow: /nelahozeves.php
+Disallow: /servant.php
+Disallow: /ses.php
+Disallow: /yndex.php
+
+Sitemap: https://www.setkani.org/sitemap.xml

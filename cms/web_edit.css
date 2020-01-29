@@ -1,0 +1,49 @@
+﻿/* styly pro editor */
+
+body { font-size:10pt; font-family: 'Open Sans', sans-serif;}
+div.cke_maximized { z-index: 100000 !important; }
+h1 { font-size:32pt; margin-left: 1.2em; font-weight: 250; }
+h2 { font-size:20pt; margin-left: 1.2em; font-weight: 300; }
+h3 { font-size:15pt;  }
+
+span.zlute  { background-color:yellow; }
+span.zelene { background-color:lime; }
+span.neodkaz { background-color:silver; }
+
+img.shadow, p.shadow img { filter: drop-shadow(5px 5px 10px #567); }
+
+body.cke_editable img { margin:.2em; height:auto !important; max-width:100%; }
+
+/* zúžení lišty */
+a.cke_button { padding: 4px 4px !important; }
+a.cke_button_off:hover, a.cke_button_off:focus, a.cke_button_off:active {
+    outline: 1px #bcbcbc solid !important; border: none !important; }
+    
+*.cke * {/* box-sizing: border-box; */}
+figure {margin: 10px 0;}
+/* Never exceed parent's size. */
+figure, img {max-width: 100%;	height: auto;}
+/* Let the image have figure's size. */
+figure img {max-width: 100%;height: auto;}
+/* Image narrow style. */
+figure.image-narrow img, img.image-narrow {max-width: 300px;height: auto;}
+/* Image wide style. */
+figure.image-wide img, img.image-wide {max-width: 500px;height: auto;}
+/* Image alignment styles. */
+.image-align-right {float: right;margin-left: 20px;}
+.image-align-left {float: left;margin-right: 20px;}
+.image-align-center {text-align: center;}
+.image-align-center > figure {display: inline-block;}
+/* Embed narrow style. */
+.embed-narrow {width: 75%;}
+/* Embed center style. */
+.embed-align-center {margin-left: auto;margin-right: auto;}
+
+div [data-oembed-url] {max-width: 426px;max-height: 240px;/*margin:0 auto;*/}
+
+.embed-240p{max-width: 426px;max-height: 240px;margin:0 auto;}
+.embed-360p{max-width: 640px;max-height: 360px;margin:0 auto;}
+.embed-480p{max-width: 854px;max-height: 480px;margin:0 auto;}
+.embed-720p{max-width: 1280px;max-height: 720px;margin:0 auto;}
+.embed-1080p{max-width: 1920px;max-height: 1080px;margin:0 auto;}
+

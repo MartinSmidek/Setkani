@@ -1,0 +1,179 @@
+/* ---------------------- opravy ladícího stylu */
+#dolni span, #dolni div {
+  font-size:8pt; font-family:Consolas !important; }
+div.Popup3 span, div.Popup3 input, div.Popup3 div.Label3 {
+  font-size: 10pt; font-family: Arial !important; }
+.Check3 {
+  font-size: 8pt; }
+
+/* ---------------------- */
+
+/* ovládací prvky */
+button.button_ch { 
+  padding:0 !important; }
+textarea.edit_ch { 
+  font-size:9px; text-align:center; overflow:hidden;
+  border: 1px solid white !important; }
+
+.obligatory input { 
+  background-color:yellow }
+
+/* popup panely */
+div.Popup3 {
+  left: 20px;  
+  background: #c0e2c2db;
+}
+div.Popup3 div.MenuLeft3 {
+  position: absolute;  
+  z-index: 1;
+}
+div.Popup3 div.pop_body.dialog_menu {
+  max-width: calc(100% - 240px);     
+  left: 230px;
+  z-index: -1;
+  overflow: hidden; 
+}
+#popup3 {
+  width: fit-content !important; /* kvůli zobrazení abstraktů v admin */
+  width: -moz-fit-content !important;
+}
+#popup_mask3 {
+  z-index: 0 !important;
+}
+div.Popup3 div.pop_body.dialog_full {
+  z-index: -1;
+  overflow: hidden; 
+  width: 100% !important;
+}
+
+/* malá obrazovka */
+/*@media all and (max-width: 1024px) {
+  div.Popup3 {
+    min-width: calc(100% - 80px);   
+    max-width: calc(100% - 210px);   
+  }
+}*/
+
+/* velká obrazovka */
+@media all and (min-width: 1024px) {
+  div.Popup3 {
+    min-width: unset;   
+    max-width: unset;   
+  }
+}
+
+/* oprava kvůli webu */
+
+img.StatusIcon { filter: drop-shadow(3px 3px 3px #333); margin-top: -7px; }
+
+/*.Check3 { font-size: .8em; }*/
+div.MenuLeft3 { width: 210px; float: left; height: 100%; }  
+
+.Label3 h1 {
+  font-size:12pt; margin:0; padding:0; }
+
+/* konec oprav kvůli webu */
+
+body { font-size:1em; }
+#login { font-size:10pt; }
+
+/* nez menu */
+#work { height:100%; position:initial; display:block; }
+#work .Panel3 { position:initial; }
+#stred { height:100%; }
+
+/* vygenerovaná stránka */
+div.cms_page { width:100%; z-index:2; height:100%; overflow:auto; 
+ top:30px; height: calc(100% - 47px); }
+#page { z-index: 2; }
+
+/* mapa */
+div.cms_mapa { width:100%; height:100%; }
+div.Label3.cms_page { z-index: initial; }
+
+.ae_work {
+  background-color: #56a15a; z-index:0; border-radius:5px; }
+.ae_parm        {
+  background-color:#ffeed6; border:1px solid #f5f5f5; z-index:0; border-radius:5px; }
+
+/* fotky */
+
+span.foto { width:80px; max-height:80px; overflow:hidden; display:inline-block;
+  background-repeat:no-repeat; background-position:center; }
+span.foto_cms { height:80px; }
+div.drop_back { z-index:2; background-color:#c9d5e5; opacity:.7; }
+div.drop_foto { z-index:3; margin:2px; width:76px; height:76px; outline:2px dashed #fff; display:table }
+div.drop_foto span { display:table-cell; text-align:center; vertical-align:middle; }
+#popup_div>img { max-width:100%; margin:0; }
+.fotorama .foto_text { font-size: 1em; line-height:8vw; text-align:center; height:100%; padding-top:25%;  }
+.fotorama__caption  { text-align:center; bottom: 1vw !important; }
+.fotorama__caption__wrap { background:#fff4de !important; color:black; font-weight:bold; border-radius: 2vw; }
+
+/* organizér fotek */
+
+span.drop { margin: 1px 2px 1px 1px; }
+ul.foto { display:inline; padding: 0; }
+li.foto { width:80px; height:80px; overflow:hidden; display:inline-block; cursor: move;
+  background-repeat:no-repeat; background-position:center; vertical-align:middle;
+  border: 1px solid #bde37b; margin: 2px 1px 2px 0px; }
+li.foto[data-checked='true'] { border: 1px solid red !important; }
+li.foto[data-checked='false'] { border: 1px solid #bde37b !important; }
+li.foto div { background: #bde37b; text-align: center; width: 80px; }
+li.foto input { float:left; margin:0; }
+li.foto input:focus { outline:none; }
+
+/* layout */
+
+#status_bar {
+  background:gray; color:navy; position:absolute;
+  height:15px; top:-16px; width:100%; padding:1px 0 0;
+  z-index:10; }
+
+span.ipad_menu { float: right; color: #E6CF73; font-size:1.4em !important; }
+span.ipad_menu:hover { color: #ffffff !important; }
+span.ipad_menu>i { text-shadow: 2px 2px 5px #000; }
+
+html,body { 
+  background:silver }
+body {
+  font-family:Arial,Helvetica,sans-serif; padding:0; margin:0; 
+  position:static; overflow:hidden; }
+textarea { resize: none; }
+#logo {
+  z-index:99999; position:relative; top:9px; left:3px; }
+#ajax_bar {
+  background-color:transparent; left:0; position:absolute; z-index:11002;
+  top:0; height:4px; width:500px; }
+#horni { height:30px;
+  position:absolute; }
+#stred { top:0;
+  position:absolute; overflow:hidden; width:100%; }
+#shield {
+  position:absolute; width:100% !important; _width:100%; height:100% !important; _height:100%; }
+#work {
+  position:relative; }
+#dolni {                                                                
+  bottom:0; margin-top:2px; font-size:8pt; 
+  width:100%; height:240px; z-index:998; border-top:1px solid navy;
+  position:absolute; }
+
+/* obecné barvy a hodnoty pro atributy css */
+
+.grey   { background-color:#aaa !important; }
+
+/* ... v možném konfliktu
+.red    { background-color:#faa !important; }
+.red2   { background-color:#f00 !important; }
+.green  { background-color:#afa !important; }
+.green2 { background-color:#3f3 !important; }
+.blue   { background-color:#abf !important; }
+.yellow { background-color:#ffa !important; }
+.yellow2{ background-color:#ff0 !important; }
+.orange { background-color:#fa0 !important; }
+.white  { background-color:#fff !important; }
+.grey   { background-color:#aaa !important; }
+
+.red_text   { color:#f00 !important; }
+.green_text { color:#0f0 !important; }
+.blue_text  { color:#00f !important; }
+*/

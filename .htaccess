@@ -1,0 +1,122 @@
+RewriteEngine on
+#RewriteCond %{HTTPS} off
+#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301]
+#
+## pristupove adresy *.setkani.org
+#RewriteCond %{SERVER_NAME} ^setkani\.org                                                        [NC]
+#RewriteRule ^.*$                                https://www.setkani.org
+#RewriteCond %{SERVER_NAME} ^(www\.)?alberice\.setkani\.org                                      [NC]
+#RewriteRule ^.*$                                https://www.setkani.org/alberice
+#RewriteCond %{SERVER_NAME} ^(www\.)?archiv\.setkani\.org                                        [NC]
+#RewriteRule ^.*$                                https://www.setkani.org/archiv
+#RewriteCond %{SERVER_NAME} ^(www\.)?rodiny\.setkani\.org                                        [NC]
+#RewriteRule ^.*$                                https://www.setkani.org/rodiny
+#RewriteCond %{SERVER_NAME} ^(www\.)?manzele\.setkani\.org                                       [NC]
+#RewriteRule ^.*$                                https://www.setkani.org/manzele
+#RewriteCond %{SERVER_NAME} ^(www\.)?chlapi\.setkani\.org                                        [NC]
+#RewriteRule ^.*$                                https://www.setkani.org/chlapi
+#RewriteCond %{SERVER_NAME} ^(www\.)?zeny\.setkani\.org                                          [NC]
+#RewriteRule ^.*$                                https://www.setkani.org/zeny
+#RewriteCond %{SERVER_NAME} ^(www\.)?mladez\.setkani\.org                                        [NC]
+#RewriteRule ^.*$                                https://www.setkani.org/mladez
+
+# adresy <soubor>.php
+RewriteRule ^((index|servant|ses).php.*|)$      $1                                          [QSA,L]
+
+# archivy
+RewriteRule ^archiv/?$                          archiv/index.htm                                [L]
+RewriteRule ^archiv/(.+)$                       archiv/$1                                       [L]
+RewriteRule ^archiv2/?$                         archiv2/setkani.htm                             [L]
+RewriteRule ^archiv2/(.+)$                      archiv2/$1                                      [L]
+
+# home
+RewriteRule ^(home|)$                           index.php?page=home                             [L]
+RewriteRule ^(home|)/(\d+)$                     index.php?page=home!$2                          [L]
+
+# kontakty
+RewriteRule ^kontakty$                          index.php?page=kontakty                         [L]
+
+# hledej
+RewriteRule ^hledej$                            index.php?page=hledej                           [L]
+RewriteRule ^hledej/([^\/]+)$                   index.php?page=hledej!!$1                       [L]
+RewriteRule ^hledej/([^\/]+)/(.*)$              index.php?page=hledej!$2!$1                     [L]
+
+# akce
+RewriteRule ^akce$              index.php?page=akce!rodiny,manzele,chlapi,zeny,mladez           [L]
+RewriteRule ^akce/nove$         index.php?page=akce!rodiny,manzele,chlapi,zeny,mladez,nove      [L]
+RewriteRule ^akce/nove/(\d+)$   index.php?page=akce!rodiny,manzele,chlapi,zeny,mladez,nove!$1   [L]
+RewriteRule ^akce/(\d+)$        index.php?page=akce!rodiny,manzele,chlapi,zeny,mladez,$1        [L]
+RewriteRule ^akce/(\d+)/(\d+)$  index.php?page=akce!rodiny,manzele,chlapi,zeny,mladez,$1!$2     [L]
+
+RewriteRule ^((rodiny|manzele|chlapi|zeny|mladez)(,(rodiny|manzele|chlapi|zeny|mladez))*)$             index.php?page=akce!$1         [L]
+RewriteRule ^((rodiny|manzele|chlapi|zeny|mladez)(,(rodiny|manzele|chlapi|zeny|mladez))*)/nove$        index.php?page=akce!$1,nove    [L]
+RewriteRule ^((rodiny|manzele|chlapi|zeny|mladez)(,(rodiny|manzele|chlapi|zeny|mladez))*)/nove/(\d+)$  index.php?page=akce!$1,nove!$5 [L]
+RewriteRule ^((rodiny|manzele|chlapi|zeny|mladez)(,(rodiny|manzele|chlapi|zeny|mladez))*)/(\d+)$       index.php?page=akce!$1,$5      [L]
+RewriteRule ^((rodiny|manzele|chlapi|zeny|mladez)(,(rodiny|manzele|chlapi|zeny|mladez))*)/(\d+)/(\d+)$ index.php?page=akce!$1,$5!$6   [L]
+
+# Dum setkani
+
+# .. Alberice
+RewriteRule ^alberice(/dum|)$                   index.php?page=dum!alberice!41                  [L]
+RewriteRule ^alberice/dum/(\d+)$                index.php?page=dum!alberice!$1                  [L]
+
+# .. Akce v Dome
+RewriteRule ^alberice/akce$                     index.php?page=dum!chystame                     [L]
+RewriteRule ^alberice/akce/(\d+)$               index.php?page=dum!chystame!alberice!$1         [L]
+
+# .. Prozili jsme
+RewriteRule ^alberice/(\d+)$                    index.php?page=dum!archiv!$1                    [L]
+RewriteRule ^alberice/(\d+)/(\d+)$              index.php?page=dum!archiv!$1!$2                 [L]
+
+# .. Objednavky
+RewriteRule ^alberice/objednavky$               index.php?page=dum!objednavky                   [L]
+RewriteRule ^alberice/objednavky/(\d+-\d+)$     index.php?page=dum!objednavky!$1                [L]
+
+# .. Ceny
+RewriteRule ^alberice/ceny$                     index.php?page=dum!ceny                         [L]
+
+# Fotogalerie
+RewriteRule ^fotogalerie$                       index.php?page=foto                             [L]
+RewriteRule ^fotogalerie/(\d+)$                 index.php?page=foto!$1                          [L]
+
+# Knihovnička
+RewriteRule ^manzelak$                          index.php?page=libr!bulletin                    [L]
+
+# .. Tance
+RewriteRule ^tance$                             index.php?page=libr!tance                       [L]
+RewriteRule ^tance/(\d+)$                       index.php?page=libr!tance!$1                    [L]
+
+# .. Modlitby
+RewriteRule ^modlitby$                          index.php?page=libr!modlitby                    [L]
+RewriteRule ^modlitby/(\d+)$                    index.php?page=libr!modlitby!$1                 [L]
+
+# .. Cetba
+RewriteRule ^cetba$                             index.php?page=libr!knihy                       [L]
+RewriteRule ^cetba/(\d+)$                       index.php?page=libr!knihy!$1                    [L]
+RewriteRule ^cetba/(\d+,\d+)$                   index.php?page=libr!knihy!$1                    [L]
+
+# .. Audio
+RewriteRule ^audio$                             index.php?page=libr!audio                       [L]
+RewriteRule ^audio/(\d+)$                       index.php?page=libr!audio!$1                    [L]
+RewriteRule ^audio/(\d+,\d+)$                   index.php?page=libr!audio!$1                    [L]
+
+# .. Video
+RewriteRule ^video$                             index.php?page=libr!obrazy                      [L]
+RewriteRule ^video/(\d+)$                       index.php?page=libr!obrazy!$1                   [L]
+
+# .. Doporucujeme
+RewriteRule ^doporuceni$                        index.php?page=libr!odkazy                      [L]
+RewriteRule ^doporuceni/(\d+)$                  index.php?page=libr!odkazy!$1                   [L]
+
+# O nas
+RewriteRule ^ymca-setkani$                      index.php?page=my!91                            [L]
+RewriteRule ^ymca-setkani/(\d+)$                index.php?page=my!$1                            [L]
+
+# zachytne pravidlo
+RewriteRule ^[^.]*$                             index.php                                       [QSA,L]
+
+# prepnout na Google weby
+#RewriteCond %{HTTP_HOST} ds.setkani.org
+#RewriteRule ^(.*)$ http://dum.setkani.org/$1 [R=301,L]
+#RewriteCond %{HTTP_HOST} ms.setkani.org
+#RewriteRule ^(.*)$ http://manzelska.setkani.org/$1 [R=301,L]
