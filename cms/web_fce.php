@@ -1790,10 +1790,10 @@ function mapa2_adr($adrs,$groups,$notes) {
 # -----------------------------------------------------------------------------==> .. geocode google
 # vrátí strukturu pro gmap
 function geocode_google($adr) {
+  global $api_key_gmaps;
   $lat= $lng= $err= '';
-  $key= "AIzaSyAq3lB8XoGrcpbCKjWr8hJijuDYzWzImXo"; // Google Maps JavaScript API 'answer-test'
   $adr= urlencode($adr);
-  $url= "https://maps.googleapis.com/maps/api/geocode/json?key=$key&address=$adr";
+  $url= "https://maps.googleapis.com/maps/api/geocode/json?key=$api_key_gmaps&address=$adr";
 //   $err= "[$url]";
   $json= @file_get_contents($url);
   if ( $json ) { //&& substr($json,0,1)=='{' ) {
