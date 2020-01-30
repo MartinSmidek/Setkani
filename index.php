@@ -20,7 +20,8 @@ if ( !count($_POST) && isset($_SESSION['cms']['user_id']) && $_SESSION['cms']['u
 // -------------------- nový web
 
 $FREE= 0; // ponechává lokální odkazy na obrázky
-$kernel= "ezer".(isset($_GET['ezer'])?$_GET['ezer']: '3.1'); 
+//$kernel= "ezer".(isset($_GET['ezer'])?$_GET['ezer']: '3.1'); 
+$kernel= "ezer3.1"; 
 
 if ( $kernel=='ezer3.1' ) {
   require_once("$kernel/mysql.inc.php"); // nastavení const EZER_PDO_PORT=1;
