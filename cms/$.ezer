@@ -837,7 +837,7 @@ panel BE_LOG [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_men
       item { title:'git status'               par:°{op:'cmd',cmd:'status'}}
       item { title:'git log'                  par:°{op:'cmd',cmd:'log'}}
       item { title:'git pull'                 par:°{op:'cmd',cmd:'pull'}}
-      item { title:'... echo .git.log'        par:°{op:'show'}}
+      item { title:'... echo docs/.git.log'   par:°{op:'show'}}
       proc onclick (i) {  var y:text
         panel.display(2,'mu'); u.den.display(0);
         y.set(ask('git_make',i.par));

@@ -23,10 +23,13 @@ function git_make($par) {
         ftruncate($f, 0);
         fclose($f);
     }
-//    system("git {$par->cmd}>.git.log",$state);
-    exec("git {$par->cmd}>$abs_root/docs/.git.log",$state);
+    $exec= "git {$par->cmd}";
+    $exec.= ">$abs_root/docs/.git.log";
+    exec($exec,$lines,$state);
+    debug($lines,$state);
+    $msg= "$state:$exec<hr>";
   case 'show':
-    $msg= file_get_contents("$abs_root/docs/.git.log");
+    $msg.= file_get_contents("$abs_root/docs/.git.log");
     $msg= nl2br($msg);
     break;
   }
