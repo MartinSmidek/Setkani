@@ -1,11 +1,13 @@
 /* ---------------------- opravy ladícího stylu */
 #dolni span, #dolni div {
   font-size:8pt; font-family:Consolas !important; }
-div.Popup3 span, div.Popup3 input, div.Popup3 div.Label3 {
-  font-size: 10pt; font-family: Arial !important; }
+div.Popup3 span, div.Popup3 input,
+div.Popup3 div.Label3, div.Popup3 div.Label3 * {
+  font-size: 10pt; font-family: Arial !important; color:black; }
 .Check3 {
   font-size: 8pt; }
-
+div.Popup3 table *, div.Popup3 dl, div.Popup3 dl * {
+  font-size: 9pt !important; }
 /* ---------------------- */
 
 /* ovládací prvky */
@@ -22,8 +24,10 @@ textarea.edit_ch {
 div.Popup3 {
   left: 20px;  
   background: #c0e2c2db;
+  font-size: 10pt; font-family: Arial !important; 
 }
 div.Popup3 div.MenuLeft3 {
+  max-height: calc(100% - 40px);     
   position: absolute;  
   z-index: 1;
 }

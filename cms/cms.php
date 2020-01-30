@@ -6,8 +6,8 @@
 
   // volba verze jádra Ezer
 //  $kernel= "ezer".(isset($_GET['ezer'])?$_GET['ezer']:'2.2'); 
-  $kernel= "ezer".(isset($_GET['ezer'])?$_GET['ezer']:'3.1'); 
-//  $kernel= "ezer3.1";
+//  $kernel= "ezer".(isset($_GET['ezer'])?$_GET['ezer']:'3.1'); 
+  $kernel= "ezer3.1";
 //  $kernel= "ezer2.2";
   $k3= substr($kernel,0,5)=='ezer3' ? '3' : '';
 
@@ -34,7 +34,7 @@
 //      "/var/services/web/www/setkani4",
 //      "/var/services/web/www/setkani",
       "C:/Ezer/beans/setkani4",
-      "C:/Ezer/beans/setkani4.org"
+      "C:/Ezer/beans/setkani4"
     );
   $rel_roots= array(
       "http://setkani.bean:8080",
@@ -52,6 +52,7 @@
   // specifická část aplikace předávaná do options
   specific($template_meta,$template);
   
+
   $abs_root= $abs_roots[$ezer_server];
 
 // (re)definice Ezer.options

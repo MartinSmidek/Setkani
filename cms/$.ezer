@@ -768,9 +768,9 @@ panel FE_USER [0,0,400,400] { title:'Uživatelé webu', type:'popup', css:'dialo
   }
 }
 # ----------------------------------------------------------------------------==> BE LOG
-panel BE_LOG [0,0,600,400] { title:'Aktivita CMS', type:'popup', //css:'dialog_menu'
+panel BE_LOG [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu'
     style:"min-width:590px", _sys:'cms'
-    css:'dialog', par:°{min_top:30}
+    //css:'dialog', par:°{min_top:30}
   proc onfirstfocus() { m.a.d.click }
   menu m { type:'left'
     menu a {title:'Změny aplikace',type:'group'
@@ -780,7 +780,7 @@ panel BE_LOG [0,0,600,400] { title:'Aktivita CMS', type:'popup', //css:'dialog_m
       proc onclick(i) {
         panel.display(2,'mu'); u.den.display(0);
         u.result.set(conc(
-          '<br><div class="karta">Změny aplikace za posledních ',i.par.days,' dní</div><br>',
+          '<div class="karta">Změny aplikace za posledních ',i.par.days,' dní</div><br>',
           ask('doc_chngs_show','a',i.par.days)));
       }
     }
@@ -810,11 +810,11 @@ panel BE_LOG [0,0,600,400] { title:'Aktivita CMS', type:'popup', //css:'dialog_m
       item { title:'nastavený den'      par:°{s:'login',c:'den'}}
       item { title:'všechna hlášení'    par:°{s:'login',c:'vsechny'}}
     }
-    menu { title:'Nastavení',type:'group',skill:'m'
-      item { title:'bez programátorů'    par:°{s:'skip',c:'1'}}
-      item { title:'včetně programátorů' par:°{s:'skip',c:'0'}}
-      proc onclick(i) { skip.set(i.par.c); error('au') }
-    }
+//    menu { title:'Nastavení',type:'group',skill:'m'
+//      item { title:'bez programátorů'    par:°{s:'skip',c:'1'}}
+//      item { title:'včetně programátorů' par:°{s:'skip',c:'0'}}
+//      proc onclick(i) { skip.set(i.par.c); error('au') }
+//    }
     menu {title:'Zápis změn', type:'group', skill:'m'
       item a {title:'[fa-exclamation] změna aplikace' }
       proc onclick(i) {
@@ -833,13 +833,23 @@ panel BE_LOG [0,0,600,400] { title:'Aktivita CMS', type:'popup', //css:'dialog_m
           y,"</div>"));
       }
     }
+    menu { title:'GitHub',type:'group',skill:'m'
+      item { title:'git status'               par:°{op:'cmd',cmd:'status'}}
+      item { title:'git pull'                 par:°{op:'cmd',cmd:'pull'}}
+      item { title:'... echo .git.log'        par:°{op:'show'}}
+      proc onclick (i) {  var y:text
+        panel.display(2,'mu'); u.den.display(0);
+        y.set(ask('git_make',i.par));
+        u.result.set(y);
+      }
+    }
     proc onclick (i) {  var y:text
       panel.display(2,'mu'); u.den.display(1);
       y.set(ask('sys_activity',i.par,skip.get,u.den.get,sys('options','watch_access_opt')));
       u.result.set(conc("<div id=''>",y,"</div>"));
     }
   }
-  use u: form _touch [210,0,,] { tag:'mu' }
+  use u: form _touch [0,0,,] { tag:'mu' }
   use msg_a: form _msg_a [0,0,,] { tag:'ma', format:'n' }
   var skip=0
   proc the_formsave (f,b) {

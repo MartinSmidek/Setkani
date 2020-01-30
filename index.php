@@ -9,6 +9,14 @@ ini_set('display_errors', 'On');
 
 if ( isset($_GET['try'])) $_SESSION['web']['try']= $_GET['try'];
 
+// platí $ezer_local==!$ezer_server   
+$ezer_server= 
+    $_SERVER["SERVER_NAME"]=='setkani.bean'    ? 0 : (        // 0:lokální 
+    $_SERVER["SERVER_NAME"]=='xxx.setkani.org' ? 1 : (        // Synology YMCA
+    $_SERVER["SERVER_NAME"]=='setkani4.doma'   ? 2 : (        // Synology DOMA
+    $_SERVER["SERVER_NAME"]=='setkani4.bean'   ? 3 : (        // 3:lokální VERZE 4 - Jirka
+    $_SERVER["SERVER_NAME"]=='setkani4m.bean'  ? 4 : -1))));  // 4:lokální VERZE 4 - Martin
+
 // pro již přihlášeného přejdi do CMS
 if ( !count($_POST) && isset($_SESSION['cms']['user_id']) && $_SESSION['cms']['user_id'] ) {
   // pokud je přihlášený be_user proveď reload
@@ -20,8 +28,7 @@ if ( !count($_POST) && isset($_SESSION['cms']['user_id']) && $_SESSION['cms']['u
 // -------------------- nový web
 
 $FREE= 0; // ponechává lokální odkazy na obrázky
-//$kernel= "ezer".(isset($_GET['ezer'])?$_GET['ezer']: '3.1'); 
-$kernel= "ezer3.1"; 
+$kernel= "ezer".(isset($_GET['ezer'])?$_GET['ezer']: '3.1'); 
 
 if ( $kernel=='ezer3.1' ) {
   require_once("$kernel/mysql.inc.php"); // nastavení const EZER_PDO_PORT=1;
@@ -34,11 +41,7 @@ require_once("cms/mini.php");
 
 // on-line přihlášky
 $cms_root= $kernel=='ezer2.2' ? 'ezer3' : 'ezer3.1';
-
-// parametrizace lokálními údaji a detekcí $ezer_server a definicí $dbs
-require_once("../files/setkani4/cms.par.php");
-$ezer_db= $dbs[$ezer_server];
-
+require_once("cms/cms.par.php");
 require_once("$cms_root/server/ezer_cms3.php");
 
 $index= "index.php";
@@ -46,6 +49,11 @@ $_SESSION['web']['index']=  $index;
 $_SESSION['web']['server']= $ezer_server;
 
 $totrace= $ezer_server!=1 ? (isset($_GET['trace']) ? $_GET['trace'] : 'u') : '';  // Mu
+
+// databáze
+$deep_root= "../files/setkani4";
+require_once("$deep_root/cms.dbs.php");
+$ezer_db= $dbs[$ezer_server];
 
 ezer_connect('setkani4');
 $mysql_db_track= $tracking= '_track';

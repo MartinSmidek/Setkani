@@ -10,6 +10,13 @@
     ini_set('display_errors', 'On');
   }
 
+$ezer_server= 
+    $_SERVER["SERVER_NAME"]=='setkani.bean'    ? 0 : (        // 0:lokální 
+    $_SERVER["SERVER_NAME"]=='xxx.setkani.org' ? 1 : (        // Synology YMCA
+    $_SERVER["SERVER_NAME"]=='setkani4.doma'   ? 2 : (        // Synology DOMA
+    $_SERVER["SERVER_NAME"]=='setkani4.bean'   ? 3 : (        // 3:lokální VERZE 4 - Jirka
+    $_SERVER["SERVER_NAME"]=='setkani4m.bean'  ? 4 : -1))));  // 4:lokální VERZE 4 - Martin
+  
   // rozlišení verze jádra
   $kernel= 'ezer'.$_SESSION['cms']['ezer'];
 
@@ -17,14 +24,25 @@
   $rel_root= $_SESSION['cms']['rel_root'];
   chdir($abs_root);
 
+  // inicializace objektu Ezer
+  $EZER= (object)array(
+      'version'=>$kernel,
+      'options'=>(object)array(
+          'mail' => "martin@smidek.eu",
+          'phone' => "603&nbsp;150&nbsp;565",
+          'author' => "Martin"
+      ),
+      'activity'=>(object)array());
+
   // on-line přihlášky
   $cms_root= $kernel=='ezer2.2' ? 'ezer3' : 'ezer3.1';
-
+  require_once("cms/cms.par.php");
   require_once("$cms_root/server/ezer_cms3.php");
-  
-  // parametrizace lokálními údaji a detekcí $ezer_server a definicí $dbs
-  require_once("../files/setkani4/cms.par.php");
 
+  // databáze
+  $deep_root= "../files/setkani4";
+  require_once("$deep_root/cms.dbs.php");
+  
   // ostatní parametry
   $tracking= '_track';
   $tracked= ',osoba,rodina,pobyt,_user,';

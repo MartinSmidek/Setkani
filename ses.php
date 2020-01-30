@@ -19,6 +19,9 @@ if ( isset($_GET['op']) ) {
   case 'clear':
     $_SESSION[$arg]= array();
     break;
+  case 'spec':
+    $_SESSION['cms'][$arg]= '-';
+    break;
   case 'destroy':
     session_destroy();
     break;
@@ -59,6 +62,7 @@ echo <<<__EOD
       <button onclick="op('clear.web');">clear WEB</button>
       <button onclick="op('clear.ans');">clear ANS</button>
       <button onclick="op('clear.cms');">clear CMS</button>
+      <button onclick="op('spec.last_op');">clear CMS.last_op</button>
       <button onclick="op('destroy.');">destroy SESSION</button>
       <button onclick="op('phpinfo.');">phpinfo</button>
       <button onclick="op('all.');">all SESSION</button>
