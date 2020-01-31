@@ -66,14 +66,18 @@ function tstamp2date($ts,$par='') {
 }
 # ----------------------------------------------------------------------------------------- pid2menu
 function pid2menu($pid) { trace();
-  $ret= (object)array('url'=>'','ref'=>'');
   list($cid,$mid,$ref,$mref,$type,$program,$rok)= select(
-    "cid,mid,ref,mref,type,program,IF(LEFT(FROM_UNIXTIME(untilday),10)>=LEFT(NOW(),10),'nove',YEAR(FROM_UNIXTIME(fromday)))",
-    "tx_gncase_part AS p JOIN tx_gncase AS c ON c.uid=cid LEFT JOIN tx_gnmenu USING (mid)","p.uid=$pid");
+      "cid,mid,ref,mref,type,program,IF(LEFT(FROM_UNIXTIME(untilday),10)>=LEFT(NOW(),10),'nove',YEAR(FROM_UNIXTIME(fromday)))",
+      "tx_gncase_part AS p JOIN tx_gncase AS c ON c.uid=cid LEFT JOIN tx_gnmenu USING (mid)","p.uid=$pid");
+  return query2menu($pid,$cid,$mid,$ref,$mref,$type,$program,$rok);
+}
+function query2menu($pid,$cid,$mid,$ref,$mref,$type,$program,$rok) { trace();
+  $ret= (object)array('url'=>'','ref'=>'', 'page'=>'', 'direct_url'=>'');
   $mref= str_replace('Y',date('Y'),$mref);
-  $url= '';
+  $url= $direct= '';
   if ( $type==1  ) {
     $url.= "$mref/$pid";
+    $direct .= $url . "#$pid";
     $page= "$ref!$pid";
   }
   elseif ( $type==2 && $program ) {
@@ -85,20 +89,24 @@ function pid2menu($pid) { trace();
       $del= ',';
     }
     $url.= "$komu/$rok/$pid";
+    $direct .= $url . "#$pid";
     $page= "akce!$komu,$rok!$pid";
   }
   elseif ( $type==3 || $type==6 || $type==5 ) {
     $url.= "$mref/$cid,$pid";
+    $direct .= $url . "#$pid";
     $page= "$ref!$cid,$pid";
   }
   else {
     $url.= 'home';
+    $direct .= $url;
     $page= "$ref!$pid";
   }
   $ret->url= $url;
+  $ret->direct_url= $direct;
   $ret->page= $page;
   $ret->ref= "<a href='$url'>$url</a>";
-                                        debug($ret,"($cid,$mid,$ref,$mref,$type,$program,$rok)");
+  debug($ret,"($cid,$mid,$ref,$mref,$type,$program,$rok)");
   return $ret;
 }
 # ------------------------------------------------------------------------------------------ def mid
@@ -596,10 +604,45 @@ function czechMonth($month) {
   return array('leden', 'únor', 'březen', 'duben', 'květen', 'červen',
       'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec')[$month - 1];
 }
-
+#todo delete
 function monthColor($month) {
   return array('#80849F', '#DBA193', '#88AF9C', '#B7C39F', '#85144b', '#DEE3BB',
     '#FF4136', '#B10DC9', '#FF851B', '#ffffff', '#7D787C', '#DDDDDD')[$month-1];
+}
+//query of program that is stored in the database in the form: 1,2,3...
+//todo verify whether the color can be obtained this way...
+function barva_programu($program) {
+  $min = 999;
+  if (!$program || strlen($program) == 0) return '#ffffff';
+  for ($idx = 0; $idx < strlen($program), $idx +=2;) {
+    echo $program[$idx];
+    if($program[$idx] < $min) {
+      $min = $program[$idx];
+    }
+  }
+  return barva_programu_z_cisla($min);
+}
+
+function barva_programu_z_textu($pro_koho) {
+  switch ($pro_koho) {
+    case 'rodiny': return barva_programu_z_textu(1);
+    case 'manzele': return barva_programu_z_textu(2);
+    case 'chlapi': return barva_programu_z_textu(3);
+    case 'zeny': return barva_programu_z_textu(4);
+    case 'mladez': return barva_programu_z_textu(5);
+    default: return '#ffffff';
+  }
+}
+
+function barva_programu_z_cisla($pro_koho) {
+  switch ($pro_koho) {
+    case 1: return '#dfdeca';
+    case 2: return '#dfcaca';
+    case 3: return '#cadfce';
+    case 4: return '#d2cadf';
+    case 5: return '#dfcada';
+    default: return '#ffffff';
+  }
 }
 # ------------------------------------------------------------------------------------------ seradit
 # seřadí články na stránce podle abecedy
@@ -957,7 +1000,7 @@ function show_fotky2($uid,$lst,$back_href='') { trace();
   $ih= "<div class='fotorama'
     data-allowfullscreen='native'
     data-caption='true'
-    data-width='100%'
+    data-width='600px'
     xdata-ratio='800/400'
     data-nav='thumbs'
     data-x-autoplay='true'

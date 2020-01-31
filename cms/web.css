@@ -50,9 +50,9 @@ h1#ymca_setkani { position: absolute; top:3.8em; margin-left:.5em; font-size: 12
 .footer { clear: both; background: #232323; }
 .footer a { color : white;  font-weight: bold; }
 .footer h3 { font-size: 15px; color: #ff9933; }
-.footer .tile { width: 170px; display: inline-block;  margin: 1px; vertical-align:top; font-size: 9pt !important; padding: 10px 20px; }
+.footer .tile { width: 170px; display: inline-block;  margin: 1px; vertical-align:top; font-size: 8pt !important; padding: 10px 20px;  }
 .footer hr.footer-hr { border: 0; height: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.3); margin: 0px 160px 0px 60px;}
-.footer img.footerIcon { transform: translate(0, 2px); height: 14px !important; margin: 0 !important;}
+.footer img.footerIcon { transform: translate(0, 3px); height: 12px !important; margin: 0 !important;}
 .footer .organizations img {width: 180px !important;}
 .footer .organizations p {display: inline-block !important;}
 .footer #footer-left-part {width: 75%; display: inline-block; vertical-align: top; min-width: 650px;}
@@ -74,7 +74,11 @@ h1#ymca_setkani { position: absolute; top:3.8em; margin-left:.5em; font-size: 12
 div, span, input, form, button {font-family: 'Open Sans', sans-serif !important; font-size:12pt}
 
 h1, #web h2,h3 { -webkit-column-break-inside: avoid; -moz-column-break-inside: avoid; column-break-inside: avoid; }
-#web a:hover { /*todo*/ }
+#vlakno a { text-decoration: none; color: #883434; padding: 0px 6px; font-weight: bold; border-radius: 5px;
+  box-sizing: border-box; border: 1px solid #883434; }
+#vlakno a:hover { text-decoration: none; color: white; background: #883434; border: 1px solid #883434; }
+#vlakno a:visited { color: #848483; background: #848483; border: 1px solid #848483; }
+#vlakno a:visited:hover { color: white;}
 #web img {margin:.5em;height:auto !important;max-width:100%;}
 
 h1 {margin-top: 60px}
@@ -97,6 +101,10 @@ h3 {margin-top: 30px}
 #clanek td { border:1px solid silver; }
 #clanek th { border:1px solid silver; background:silver; }
 
+/* ------------------------------------------------------------------- anchor */
+.anchor{ display: block; height: 100px; /*same height as header*/ 
+  margin-top: -100px; /*same height as header*/ visibility: hidden;}
+
 /* ------------------------------------------------------------------- facebook */
 
 #facebook_content:before {content: "\f09a"; font-family: FontAwesome, serif; color: #ffffff;
@@ -107,7 +115,7 @@ h3 {margin-top: 30px}
 div.clanek span.cms_form {
   float:right; display: inline-block; border-radius: .4em;
   padding: 0.5em 1em; font-weight: bold; text-decoration: none; cursor: pointer;
-  margin: 1.5em 2em; background-color: orange; color: black; text-align: center;
+  margin: 1.5em 2em; background-color: #f1d095; color: black; text-align: center;
   box-shadow: 2px 2px 8px grey, -1px 1px 0px silver, 1px -1px 0px silver, -1px -1px 0px silver; }
 div.clanek span.cms_form:hover {
   background-color: white !important; color: black !important; }
@@ -115,8 +123,7 @@ div.clanek span.cms_form:hover {
 .abstrakt span.cms_form {
   float:right; font-size:10pt !important; display: inline-block; border-radius: .2em;
   padding: 0.2em 0.4em; font-weight: bold; text-decoration: none;
-  margin: -0.2em -0.2em; background-color: orange; color: black; text-align: center;
-  box-shadow: 2px 2px 8px grey, -1px 1px 0px silver, 1px -1px 0px silver, -1px -1px 0px silver; }
+  margin: -0.2em -0.2em; background-color: #f1d095; color: black; text-align: center; }
 
 /* ----------------------------------------------------------------------------- popup */
 
@@ -268,25 +275,27 @@ div.text a span { background-color:#F5CF85; color:#67827a;; text-decoration:unde
 div.text a span:hover { background-color:#B48933 !important; color:#EFFBDA !important; }
 
 /* seznamy abstraktů */
-#list {width:100%; }
 div.abstrakt_foto { background-color:#cadfd9;  margin:0.5em; cursor:pointer; padding:.4em;  }
-a.abstrakt, div.abstrakt { background-color:white; margin:0.7em; cursor:pointer; padding:.6em; display:block;
-  text-decoration:none; border-radius: 5px; -webkit-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06);
+a.abstrakt, div.abstrakt { background-color:white; margin:0.5em; cursor:pointer; padding:.6em; display:block;
+  text-decoration:none; color: black; border-radius: 5px; -webkit-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06);
   -moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06);
   box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06); }
 a.new { background-image: url(img/new.png); background-repeat:no-repeat; background-position: top right; }
 a.upd { background-image: url(img/upd.png); background-repeat:no-repeat; background-position: top right; }
-#list div.abstr a.abstrakt { height:10.8em; overflow:hidden; }
+div.abstr a.abstrakt { height:12.8em; overflow:hidden; }
 /*a.abstrakt:hover, div.abstrakt:hover { background-color:#fff4de !important; color:#130D00 !important; }*/
 a.abstrakt_hidden { background-color:silver }
-a.abstrakt_deleted { background-color:silver; border:5px solid black; }
+a.abstrakt_deleted { background-color:silver; border:5px solid black;}
+span.akce_datum {background: white; border-radius: 5px; float: left;}
+.abstr b {float:left; clear:both;}
+.abstr-line span.akce_datum {float: none; display: block;}
 
 
 /*masonry layout*/
 .masonry_container {column-count: 3;column-gap: 1em;}
 a.short_post, div.short_post { font-size: 11pt !important; width: 95%; display: inline-block; margin: 0 0 1em;
   text-overflow: ellipsis; overflow: hidden; text-align: justify;}
-.short_post img {max-width: initial !important; max-height: 200px !important; width: 100% !important;
+.short_post img {max-width: initial !important; width: 100% !important;
   width: calc(100% + 1.2em) !important; margin: -0.6em !important; margin-bottom: 5px !important; 
   /*! values of em are depentent on padding of classes a.abstrakt, div.abstrakt !*/ }
 .short_post h1, .short_post h2, .short_post h3 {display: none}
@@ -301,7 +310,7 @@ a.short_post, div.short_post { font-size: 11pt !important; width: 95%; display: 
 
 /* abstrakty */
 div.abstr { display:inline-block; vertical-align:top; }
-div.mini { float:right; width:8em; height:8em; background-repeat:no-repeat; background-position:center; }
+div.mini { float:left; width:8em; height:8em; background-repeat:no-repeat; background-position:center; }
 
 /* help */
 div.help { border:5px solid #6470A7; box-shadow: black 4px 6px 20px; background-color:#cadfd9;
@@ -342,7 +351,7 @@ table#skupiny th { background-color:#F5CF85; color:#67827a;; min-width:8em; }
 table#skupiny input { width:100%; }
 
 /* galerie */
-div.galerie { background-color:#FFF4DE; color:#130D00; overflow:hidden; margin:0.5em; position:relative; }
+div.galerie { overflow:hidden; margin:0 auto; width: 600px; }
 div.galerie span.datum { position: absolute; top: 0; left: 0; }
 
 /* článek */
@@ -350,21 +359,34 @@ div.clanek {  /*overflow:hidden;*/ margin:0.5em; position:relative; }
 .mediaqueries div.clanek { /*todo*/ }
 span.datum { background-color:#F5CF85; color:#130D00; }
 div.clanek span.datum { position: absolute; top: 0; left: 0; }
-div.podpis { text-align:right; font-style:italic; clear:both; }
+div.podpis { text-align:right; font-style:italic; clear:both; padding: 0 15px 10px 0}
 div [data-oembed-url] { display: inline-block; margin: 1em; }
 div.new { background-image: url(img/new.png); background-repeat:no-repeat; background-position: top right; }
 div.upd { background-image: url(img/upd.png); background-repeat:no-repeat; background-position: top right; }
+#list {max-width: 1100px; margin: 0 auto; padding: 0 20px;}
 
 /* knihy */
 div.kapitola  { background-color:#FFF4DE; color:#130D00; overflow:hidden; margin:0.5em; position:relative; }
 div.kniha_hr { clear:both; padding:1em 0; text-align:center; cursor:pointer; }
 div.kniha_br { clear:both; padding:1em 0; text-align:center; }
-div.kniha_bg { clear:both; background-color:#6470A7; color:#D1D6EC; border-radius:.8em; }
+div.kniha_bg { background: #ccd2d9; }
 .mediaqueries div.kniha_bg div.clanek { column-rule:1em solid #6470A7; -moz-column-rule:1em solid #6470A7; }
-a.kniha_bg { clear:both; display:block; text-decoration:none; background-color:#6470A7; color:#D1D6EC; border-radius:.8em; }
+a.kniha_bg { clear:both; display:block; text-decoration:none; }
 .mediaqueries a.kniha_bg div.clanek { column-rule:1em solid #6470A7; -moz-column-rule:1em solid #6470A7; }
 div.kniha_bg div.new, div.kniha_bg a.new { background-image: url(img/new.png); background-repeat:no-repeat; background-position: top right; }
 div.kniha_bg div.upd, div.kniha_bg a.upd { background-image: url(img/upd.png); background-repeat:no-repeat; background-position: top right; }
+
+/* seznam akcí */
+a.kniha_timeline { color: black;}
+div.kniha_timeline_text {margin-left: 15%;border-left: 13px solid #bfc4cb;padding: 32px;color: #7c6853;font-weight: bold;}
+span.kniha_timeline_date { width: 50px; height: 50px; background: #7c6853; color:white; position: absolute; transform: translate(-67px, -15px);
+  border-radius: 30px; border: 5px solid white; text-align: -webkit-center; line-height: 50px;}
+div.oddball {position: absolute; width: 800px; height: 800px; border-radius: 400px; background: #dab2b2; z-index: -2;
+ transform: translate(-110px, -650px);}
+div.kniha_timeline_text_open_front {margin-left: 15%; padding: 12px 12px 22px 52px; color: #7c6853;font-weight: bold; margin-top: 15px; margin-bottom: 10px;}
+div.kniha_timeline_text_open_back {margin-left: 15%; padding: 0px 22px 12px 52px; color: #7c6853;font-weight: bold; margin-bottom: 15px;}
+span.kniha_timeline_date_open {width: 70px; height: 70px; background: #dab894; color: white; position: absolute; transform: translate(-85px, -29px); 
+  border-radius: 50px; border: 5px solid white; text-align: -webkit-center; line-height: 70px;}
 
 /* fotogalerie */
 #galerie { padding:1em; }
@@ -391,39 +413,25 @@ div.home_info>b { color:#cadfd9; }
 #timeline li { vertical-align: middle;}
 #timeline li .relative {position: relative;}
 #timeline p {margin: 0 0 15px;}
-
-#timeline_header {list-style: none;
-  width: 100%;
-  height: 20px;
-  margin: 0;
-  padding: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  display: table;
-  margin-bottom: 10px;
-}
-#timeline_header > li {position: absolute;display: initial;width:70px;height: 100%; overflow: hidden; z-index: -1}
-#timeline_header > li:before {content: '';
-  border-left: 1px dashed #ccc;
-  position: absolute;
-  height: 100vh;
+#timeline_header {list-style: none;width: 100%;height: 20px;margin: 0;padding: 0;white-space: nowrap;overflow: hidden;
+  display: table; margin-bottom: 15px;}
+#timeline_header > li {position: absolute;display: initial;width:70px;height: 100%; z-index: -1}
+#timeline_header > li:before {content: '';border-left: 1px dashed #ccc;position: absolute;height: 100vh;
   transform: translate(0, 23px); }
-
 .timeline_date {text-align: center;top: 15px;left: 5px;right: 0;font-size: 0.95em;line-height: 20px;position: absolute;
   z-index: 2;width: 80px; border-radius: 50%; padding: 2px; display: none}
-.timeline_circle {height: 25px; background: #78f282;
-  border: 5px solid white;display: block; cursor: pointer; width: fit-content }
-.timeline_text {width: 100%; max-width: 400px;display: none; left: 40px; /*this is OUTSIDE scroll so..*/
+.timeline_text {width: 100%; max-width: 400px;display: none; left: 40px; white-space: initial;
   transition: width 0.4s linear, max-height 0.4s linear;border-radius: 0.5em;background: white;position: absolute;}
 .timeline_text .timeline_text_style {max-height: 0;color: transparent;text-align: justify;word-break: break-word;hyphens: auto;overflow: hidden;}
-.timeline_title {font-size: 1em;z-index: 2;cursor: pointer; text-overflow: ellipsis;
-  overflow: hidden; display: block; height: 45px; white-space: nowrap; }
-
+.timeline_circle {height: 20px; padding: 1px 4px; font-size: 14px; margin-bottom: 5px;
+  display: block; cursor: pointer !important; width: fit-content; white-space: nowrap; }
+.timeline_bar{display: block;height: 5px;border-radius: 2.5px;border: 1px solid #a4a4a4;transform: translate(0px, -32px);
+  z-index: 5}
 .timeline_radio {display: none}
 .timeline_text_style a, .timeline_text_style u {text-decoration: none; color: black}
 .timeline_text_style img, .timeline_text_style h1 {display: none}
 
-.timeline_radio:checked + .timeline_circle {background: #ffbbbb}
+.timeline_radio:checked + .timeline_circle {background: #ffffff}
 .timeline_radio:checked + .timeline_circle .timeline_text  {display: block ;max-height: initial; z-index: 5; padding: 15px 15px 15px;
   -webkit-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.1); -moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.1);
   box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.1);}
@@ -442,7 +450,7 @@ span.datum { background-color:#F5CF85; color:#130D00; }
 div.pokoje span.datum { position: absolute; top: 0; left: 0; }
 span.mesic { background-color:#B48933; color:#EFFBDA; font-weight: bold; }
 
-/* tabulka */
+/* tabulka */           
 table.dum  { border-collapse: collapse; empty-cells: hide; width: 100%; }
 table.dum td { border: 1px solid navy; min-width:1.2em; text-align: center; }
 

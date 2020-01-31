@@ -1,0 +1,61 @@
+1) vytvo�en soubor custom.js pro nov� skripty -> integrovat do cms[%d].js ?
+  ->kdy�tam smazat v template.php include custom.js
+  
+2) menu vyhozeno z page containeru o �rove� v�� pro rozta�en� do cel� ���ky webu
+
+3) menu page_hm a page_tm maj� float left/right, jsou unot� t��dy container (ne jako page_sm to je vn�)
+
+4) smaz�no hledej z $def_block, nahrazeno ikonou lupy / submitem na enter
+
+5) z menu odstranit "detaily"
+
+6) smazano h1 ten zelenej text, na main page je <h1> 2x -> ne moc super SEO
+
+7) smazano div #home zbyte�n�..
+
+8) submenu odstran�n span jump subn�zev, vypl�v� z grafiky menu
+
+9) p�id�na funkce footer_org() na generov�n� obsahu do pati�ky -> jak vyb�rat z datab�ze?
+
+10) zakomentov�no vite_ze z home()
+
+11) prostor pro chlap-i- ? pravopis / zvyk
+
+12) schov�n checkbox na hidden, nechat jen klikatelnej text u prostor pro
+
+
+
+
+co se mi nel�b�
+- str�nky maj� v�ce h1 tag�
+- n�kter� nemaj� nadpisy
+- fotogalerie nen� fotogalerie ale pln� textu
+- p�ehodit web front page, d�t tam "o n�s"
+- lev� menu v�ci se zobrazuj� na main page ? aktuality - info matouc�
+- main page slou��c� jako �l�nky...?
+
+
+z�sahy do soubor�:
+
+template.php
+web.css
+web-edit.css
+
+nov� soubory:
+custom.cs
+p�idan� fotky v /img
+
+Datab�ze:
+
+
+Problémy, co řešit:
+todo sekce
+generovat lepší věci do "přečtěte si"
+upravit home() aby generovala víc staticky, tedy odstranit předgenerovávání článků na home
+ať do abstraktu necpou styly jako <h1> tagy, <b> tagy, custom velikosti písma a td -> uměle odstraňovat tagy?
+abstrakt má někdy divný slova na začátku (možná souvisí s tím že sem odstranil <h1> a <img> tagy), NEPOUŽÍVAT KAPITÁLKY je jak kdyby křičeli
+vyhodil jsem aktuálně -> přidat tam místo toho nějaké věci? a jak se to vlastně generuje? není lepší to udělat víc dynamicky?
+jak získat odkazy do přečtěte si? jsou tam jen akce nebo i další věci?
+v galerii odkaz na fotogalerii ms -> lepší na úvodní stránku?
+nová tabulka footer -> jak budou lidi moct editovat? musí se dát mít více verzí nebo nějak umí sahat přímo na údaj ?
+timeline dlouhodobé akce (pravidelné konání manželské večery / kalendář akcí -> jak řešit toto? rád bych vytáhl kalendář akcí ven, těžko poznat co z toho je co)
