@@ -156,7 +156,7 @@ div#user_login span, div#user_mail span { position:absolute; top:0.8em; left:0em
   font-weight:bold; font-size: 20px; color: black;}
 div#user_login button, div#user_mail button { float: right; cursor: pointer; border: 1px solid; background: white; color: black; padding: 9px 13px 8px 13px;
   margin: 10px 7px; text-decoration: none; font-size: 15px;}
-div#user_login button:hover, div#user_mail button:hover { border 1px solid #ffffff; background: black; color: white;}
+div#user_login button:hover, div#user_mail button:hover { border: 1px solid #ffffff; background: black; color: white;}
 #fe_login { margin-left:3em; }
 div#user_login.key_in { background-color:#000 !important; color: white !important; }
 div#user_login.key_in input { background-color:#000 !important; color: white !important; }
@@ -206,8 +206,8 @@ div.box_input { padding:2em 0 1em; }
 #menu div#bar_items span:hover   { background-color:#cadfd9; }
 #menu div#bar_items img { margin:0; }
 
-.jump { display:inline-block; font-weight:bold; text-decoration:none;div.LabelDrop *
-  cursor:pointer; }
+.jump { display:inline-block; font-weight:bold; text-decoration:none;}
+div.LabelDrop * {cursor:pointer; }
 #menu a span, #menu span span { vertical-align: middle; height: inherit; padding: 22px 15px; }
 #menu a { height: 100%; color: black; }
 #menu a.active { box-sizing: border-box;border-bottom: 7px solid #cadfd9; }
