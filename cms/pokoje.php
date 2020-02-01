@@ -273,7 +273,7 @@ function mesice($path) {  trace();
   }
 //                                         debug($xx);
   // zobrazení měsíců
-  $h= "<div id='objednavky' class='x'>";
+  $h= "<h1>Objednávky Domu setkání</h1><div id='objednavky' class='x content'>";
   foreach($xx as $ym=>$x) {
     list($y,$m)= explode('-',$ym);
     $mesic= $month[$m].($y==$letos ? '' : " $y");

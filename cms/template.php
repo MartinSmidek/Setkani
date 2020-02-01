@@ -1214,20 +1214,20 @@ function timeline()
   }
   $h.= "</div><div class='relative clear'><div class='horizontal_scroll'><div class='relative'><ul id='timeline_header'>";
   $day = 24 * 3600;
-  $month_size = 120;
-  $day_size = $month_size / 31;
+  $day_size = 10;
+  $month_size = $day_size * 30;
 
-  $to_end_month = 31 - date('j', time());
+  $to_end_month = 30 - date('j', time());
   $time = time() + ($to_end_month + 1/*sichr*/) * $day;
   $month_gap = $to_end_month *$day_size;
   $month_name = czechMonth(date('n', $time));
   $h .= "<li class='timeline_month' style='left: ${month_gap}px'>$month_name</li>";
 
   do {
-    $time += 31 * $day;
+    $time += 30 * $day;
     $month_gap += $month_size;
     $month_name = czechMonth(date('n', $time));
-    $h .= "<li class='timeline_month' style='left: ${month_gap}px'>$month_name </li>";
+    $h .= "<li class='timeline_month' style='left: ${month_gap}px'>$month_name</li>";
   } while ($time < $max_date);
 
   $h .= "</div></ul><ul id='timeline'>";
@@ -1260,7 +1260,7 @@ function timeline()
                     <div class='timeline_text_style'>
                       <span class='post_date'>$dateCzech</span>
                       <b style='float:left;'><a $jmp>$x->nadpis</a></b><br>
-                      <p class='clear'>$x->text</p>
+                      <p class='clear'><a $jmp>$x->text</a></p>
                     </div>
                   </div>
                 </label> 
