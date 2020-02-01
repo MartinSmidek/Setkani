@@ -613,9 +613,8 @@ function monthColor($month) {
 //todo verify whether the color can be obtained this way...
 function barva_programu($program) {
   $min = 999;
-  if (!$program || strlen($program) == 0) return '#ffffff';
-  for ($idx = 0; $idx < strlen($program), $idx +=2;) {
-    echo $program[$idx];
+  if (!$program || strlen($program) <= 0) return '#ffffff';
+  for ($idx = 0; $idx < strlen($program); $idx +=2) {
     if($program[$idx] < $min) {
       $min = $program[$idx];
     }
@@ -636,11 +635,11 @@ function barva_programu_z_textu($pro_koho) {
 
 function barva_programu_z_cisla($pro_koho) {
   switch ($pro_koho) {
-    case 1: return '#dfdeca';
-    case 2: return '#dfcaca';
-    case 3: return '#cadfce';
-    case 4: return '#d2cadf';
-    case 5: return '#dfcada';
+    case 1: return '#fe9801';
+    case 2: return '#ff677d';
+    case 3: return '#ccda46';
+    case 4: return '#6f5a7e';
+    case 5: return '#73A580';
     default: return '#ffffff';
   }
 }

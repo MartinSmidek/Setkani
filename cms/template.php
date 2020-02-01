@@ -267,7 +267,6 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
     if ( $typ_bloku=='tm' ) {
       list($elem)= explode(';',$elems1);
       $active= $path[0]==$ref ? ' active' : '';
-      $mobile_ignore= $ref=='home' ? ' mobile_nodisplay' : '';
       if ( $active ) {
         if ( $title1 ) $web_title= $title1;
         $page_ok= true;
@@ -1183,18 +1182,8 @@ function timeline()
   trace();
   global $def_pars;
   global $usergroups; // skupiny, počet nalezených článků
-
   // překlad $komu na regexpr
-  $rkomu = $_vyber = array();
-  foreach (explode(',', '') as $kdo) {
-    $ki = $def_pars['komu'][$kdo];
-    if ($ki) {
-      list($k, $i) = explode(':', $ki);
-      $_vyber[] = $k;
-      if (!in_array($i, $rkomu))
-        $rkomu[] = $i;
-    }
-  }
+
   $groups = $usergroups ? "AND fe_groups IN ($usergroups)" : 'AND fe_groups=0';
   //AND LEFT(FROM_UNIXTIME(fromday) + INTERVAL 1 MONTH,10) >= LEFT(FROM_UNIXTIME(untilday),10)
   $qry = "
@@ -1213,10 +1202,17 @@ function timeline()
     $text = x_shorting($text);
     $max_date = max($max_date, $udo);
     $xx[$cid] = (object)array('ident' => $p_uid, 'od' => $uod, 'do' => $udo, 'nadpis' => $title,
-        'text' => $text,'ida' => $ida);
+        'text' => $text, 'program' => $program, 'ida' => $ida);
   }
 
-  $h = "<h2>Chystáme</h2><div class='relative'><div class='horizontal_scroll'><div class='relative'><ul id='timeline_header'>";
+  $h = "<br><br><br><h2 class='float-left' style='margin-top: 0px;'>Chystáme</h2><div class='float-right timeline_legend'>akce pro&emsp;";
+  foreach ($def_pars['komu'] as $ki) {
+      list($k, $i) = explode(':', $ki);
+      if ($i==6) $k="ostatní";
+      $bgcolor = barva_programu_z_cisla($i);
+      $h .= "<span class='timeline_legend' style='background: $bgcolor;'>$k</span>&emsp;";
+  }
+  $h.= "</div><div class='relative clear'><div class='horizontal_scroll'><div class='relative'><ul id='timeline_header'>";
   $day = 24 * 3600;
   $month_size = 120;
   $day_size = $month_size / 31;
@@ -1248,8 +1244,8 @@ function timeline()
     $duration = $ends_in - $in_time;
     $width = ($duration / $day) * $day_size;
     $gap = ($in_time / $day) * $day_size;
-
-    $color = barva_programu($program);
+    //
+    $color = barva_programu($x->program);
     $date = datum_cesky($x->od, $x->do);
     $h .= "<li>
                 <input class='timeline_radio' id='akce$n' name='akce' type='radio'>
