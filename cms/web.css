@@ -55,7 +55,7 @@ h1#ymca_setkani { position: absolute; top:3.8em; margin-left:.5em; font-size: 12
 .footer img.footerIcon { transform: translate(0, 3px); height: 12px !important; margin: 0 !important;}
 .footer .organizations img {width: 180px !important;}
 .footer .organizations p {display: inline-block !important;}
-.footer #footer-left-part {width: 75%; display: inline-block; vertical-align: top; min-width: 650px;}
+.footer #footer-left-part {width: 65%; display: inline-block; vertical-align: top; min-width: 650px;}
 .footer #footer-right-part {width: 18%; display: inline-block; vertical-align: top; min-width: 150px;}
 
 #site_signature {float: right;}
@@ -279,8 +279,7 @@ div.text a span:hover { background-color:#B48933 !important; color:#EFFBDA !impo
 div.abstrakt_foto { background-color:#cadfd9;  margin:0.5em; cursor:pointer; padding:.4em;  }
 a.abstrakt, div.abstrakt { background-color:white; margin:0.5em; cursor:pointer; padding:.6em; display:block;
   text-decoration:none; color: black; border-radius: 5px; -webkit-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06);
-  -moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06);
-  box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06); }
+  -moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06); box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06); overflow: hidden; }
 a.new { background-image: url(img/new.png); background-repeat:no-repeat; background-position: top right; }
 a.upd { background-image: url(img/upd.png); background-repeat:no-repeat; background-position: top right; }
 div.abstr a.abstrakt { height:12.8em; overflow:hidden; }

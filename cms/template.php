@@ -167,7 +167,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       'komu' => array(
           'rodiny'   => 'rodiny:1',
           'manzele'  => 'manžele:2',
-          'chlapi'   => 'chlapi:3',
+          'chlapi'   => 'chlapy:3',
           'zeny'     => 'ženy:4',
           'mladez'   => 'mládež:5',
           'alberice' => 'pouze akce v Domě setkání:6', // nezobrazuje se

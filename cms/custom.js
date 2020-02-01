@@ -37,7 +37,7 @@ jQuery(window).resize(function () {
 
 jQuery(document).ready(function () {
     adjustGallery();
-    setInterval("swapImages()", 4000);
+    setInterval("swapImages()", 10000);
 });
 
 jQuery(window).bind('scroll', function () {
