@@ -92,6 +92,9 @@ h3 {margin-top: 30px}
 .float-left { float: left; }
 .white { color:white; }
 .relative { position: relative; }
+.display {display: initial;}
+.nodisplay {display: none; }
+.clickable {cursor: pointer;}
 
 #web-shadow {position: fixed; top: 0; width: 100%; height: 100%; background: black;
   opacity: 0.55; z-index: 99; display:none;}
@@ -293,20 +296,22 @@ span.akce_datum {background: white; border-radius: 5px; float: left;}
 .abstr-fotogalerie {text-decoration: none; width: 25%;overflow: hidden;display: inline-block; height:12.8em; position: relative;}
 .abstr-fotogalerie > .fbg {background: black; height: 100%; width: 100%; z-index: 3; position: absolute}
 .abstr-fotogalerie > .fimg {background-position: center;background-repeat: no-repeat;background-size: cover; height: 100%; width: 100%; z-index: 4; position: absolute}
-.abstr-fotogalerie > .ftitle {background: rgba(245, 245, 245, 0.48); position: absolute; z-index: 5; padding: 7px; color: black}
-.abstr-fotogalerie > .ftext {visibility: hidden; color: white;}
+.abstr-fotogalerie > .ftitle {background: rgba(245, 245, 245, 0.48); position: absolute; z-index: 5; padding: 7px; color: black; width: 95%}
+.abstr-fotogalerie > .ftext {visibility: hidden; color: white; position: absolute; z-index: 5; padding: 7px; height: 90%;}
+
 .abstr-fotogalerie:hover > .fimg {width: 110%; height: 110%; transform: translate(-5%, -5%);opacity: 0.5; animation: foto-hide; animation-duration: 0.2s; animation-timing-function: ease-in-out;
   -webkit-animation: foto-hide; -webkit-animation-duration: 0.2s; -webkit-animation-timing-function: ease-in-out;
-  -moz-animation: foto-hide; -moz-animation-duration: 0.2s; -moz-animation-timing-function: ease-in-out;
-}
+  -moz-animation: foto-hide; -moz-animation-duration: 0.2s; -moz-animation-timing-function: ease-in-out;}
 .abstr-fotogalerie:hover > .ftitle {visibility: hidden;}
-.abstr-fotogalerie:hover > .ftext {visibility: visible; position: absolute; z-index: 5; padding: 7px; height: 90%;animation: text-show; animation-duration: 0.2s; animation-timing-function: ease-in-out;
+.abstr-fotogalerie:hover > .ftext {visibility: visible; animation: text-show; animation-duration: 0.2s; animation-timing-function: ease-in-out;
   -webkit-animation: text-show; -webkit-animation-duration: 0.2s; -webkit-animation-timing-function: ease-in-out;
   -moz-animation: text-show; -moz-animation-duration: 0.2s; -moz-animation-timing-function: ease-in-out; }
 @-webkit-keyframes foto-hide{ from {opacity: 1; width: 100%; height: 100%;transform: translate(0,0);} to {opacity: 0.5; width: 110%; height: 110%;transform: translate(-5%, -5%);}  }
 @keyframes foto-hide { from {opacity: 1; width: 100%; height: 100%;transform: translate(0,0);} to {opacity: 0.5; width: 110%; height: 110%;transform: translate(-5%, -5%);} }
 @-webkit-keyframes text-show{ from {opacity: 0} to {opacity: 1}  }
-@keyframes text-show{ from {opacity: 0} to {opacity: 1} }
+@keyframes text-show{ from {opacity: 0} to {opacity: 1}}
+
+#vlakno-kalendar{display: none}
 
 /*masonry layout*/
 .masonry_container {column-count: 3;column-gap: 1em;}
@@ -404,6 +409,7 @@ div.kniha_timeline_text_open_front {margin-left: 15%; padding: 12px 12px 22px 52
 div.kniha_timeline_text_open_back {margin-left: 15%; padding: 0px 22px 12px 52px; color: #7c6853;font-weight: bold; margin-bottom: 15px;}
 span.kniha_timeline_date_open {width: 70px; height: 70px; background: #dab894; color: white; position: absolute; transform: translate(-85px, -29px); 
   border-radius: 50px; border: 5px solid white; text-align: -webkit-center; line-height: 70px;}
+.timeline_schedule_title {cursor: pointer; margin:60px}
 
 /* fotogalerie */
 #galerie { padding:1em; }

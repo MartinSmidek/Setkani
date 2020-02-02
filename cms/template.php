@@ -558,8 +558,9 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 //                                                         display("* page_mref = $page_mref");
         $id= array_shift($path);
         if ( $ids=='prehled' ) {
-          $body.= "<div class='oddball'></div><div class='content'><h1>YMCA Setkání - naše akce</h1>
-                <p>Dát sem kalendáře...</p><br><br></div>";
+          $body.= "<div class='oddball'></div><div class='content'><h1>YMCA Setkání - naše akce</h1>";
+          $body .= akce_kalendar();
+          $body .= "</div>";
           $body.= akce_prehled($vyber_rok,$rok,$id);
         }
         elseif ( $ids=='aprehled' ) { // proběhlé akce v Domě setkání
@@ -1789,6 +1790,76 @@ function create_kniha($x) { //$pid,$autor,$nadpis,$obsah,$psano) { trace();
   query("INSERT INTO gn_log (datetime,fe_user,action,uid_page,uid_menu,uid_case,uid_part) VALUES
        ('$date','{$_SESSION['web']['fe_user']}','Insert','$pid','$mid','$cid','$uid')");
   return $uid;
+}
+# ============================================================================================> akce
+# kalenář akce akce je v databázi poznačen  todo fill in
+function akce_kalendar($typ='') { trace();
+  global $CMS;
+  global $news_time;
+  $h = '';
+  if ( !$news_time ) $news_time= time() - 1 * 24*60*60;
+  $cr= mysql_qry("
+      SELECT p.uid, p.cid,c.type,p.text,p.author,FROM_UNIXTIME(date),p.tags,
+       p.deleted,p.hidden,fromday,untilday,FROM_UNIXTIME(fromday),id_akce,
+       IF(c.tstamp>$news_time, IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),' upd',' new'),'')
+      FROM setkani4.tx_gncase AS c
+      JOIN (SELECT * FROM setkani4.tx_gncase_part WHERE cid='1586') AS p ON c.uid=p.cid 
+      WHERE !p.hidden AND !p.deleted
+      ORDER BY fromday DESC LIMIT 1
+    ");
+  #--todo fixme type=kalendar
+
+  while ( $cr && (
+      list($uid,$cid,$type,$text,$autor,$psano,$tags,$del,$hid,$uod,$udo,$od,$ida,$upd)
+          = mysql_fetch_row($cr)) ) {
+
+    $year_od = date("Y", $uod);
+    $year_do = date("Y", $udo);
+    $h.= "<h2 class='timeline_schedule_title' onclick='showOrHide()'><i class=\"fas fa-calendar-week\">&emsp;
+              </i>Kalendář akcí $year_od - $year_do
+          </h2><div id='vlakno-kalendar' class='x'>";
+    $kdy= $ex= '';
+    $ex.= $del ? 'd' : '';
+    $ex.= $hid ? 'h' : '';
+    $obsah= web_text($text);
+    if ( $type==2 && $tags=='A' ) {
+      $kdy= datum_akce($uod,$udo);
+    }
+    //todo delete?
+//    $psano = sql_date1($psano);
+//    $podpis= "<div class='podpis'>";
+//    $podpis.= ($kdy) ? "<i class='far fa-calendar-alt'></i>&nbsp;$kdy&emsp;" : '';
+//    $podpis.= "<i class='fas fa-user'></i>&nbsp;$autor,&nbsp;$psano</div>";
+    $menu = '';
+    $code= cid_pid($cid,$uid);
+      if ( $CMS )
+        $menu= " oncontextmenu=\"
+              Ezer.fce.contextmenu([
+                ['editovat článek',function(el){ opravit('$typ','$uid','$cid'); }],
+                ['přidat pokračování',function(el){ pridat('part','$cid'); }],
+                ['přidat fotky',function(el){ pridat('foto','$cid'); }],
+             // ['-posunout nahoru',function(el){ nahoru('$typ','$uid','$cid'); }],
+             // ['posunout dolů',function(el){ dolu('$typ','$uid','$cid'); }],
+                ['-skrýt článek',function(el){ skryt('$typ','$uid',1); }],
+                ['zobrazit článek',function(el){ skryt('$typ','$uid',0); }],
+                ['-zahodit článek',function(el){ zrusit('$typ','$uid',1); }],
+                ['obnovit článek',function(el){ zrusit('$typ','$uid',0); }],
+                ['-odstranit embeded img',function(el){ opravit('img','$uid','$cid'); }]
+              ],arguments[0],'clanek$uid');return false;\"";
+      $h.= "<div id='list'  class='x'>
+              $code
+             <div id='clanek$uid' class='clanek x $upd'$menu>
+              <div class='text'>
+                <!--todo include? $ podpis -->
+                $obsah
+              </div>
+            </div></div></div>";
+  }
+  return $h . "<script>function showOrHide() {
+    var kalendar = jQuery('#vlakno-kalendar');
+    kalendar.slideToggle();
+    kalendar.toggleClass('nodisplay');
+}</script>";
 }
 # ============================================================================================> akce
 # akce je tvořena vždy záznamem v CASE a záznamy v PART s tags A,F,D,T
