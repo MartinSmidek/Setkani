@@ -563,7 +563,8 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
           $body.= akce_prehled($vyber_rok,$rok,$id);
         }
         elseif ( $ids=='aprehled' ) { // proběhlé akce v Domě setkání
-//                                                 debug($path,"path= $id,...");
+                                                 debug($path,"path= $id,...");
+          $body .= "<div class='content'><h1>Archiv akcí</h1></div>";
           $rok= $id?:date('Y');
           $id= array_shift($path);
           list($page_mref,$roks)= explode('/',$page_mref);
@@ -1226,7 +1227,7 @@ function timeline()
   do {
     $time += 30 * $day;
     $month_gap += $month_size;
-    $month_name = czechMonth(date('n', $time));
+    $month_name = czechMonth(date('n', ($time + 12*$day)));
     $h .= "<li class='timeline_month' style='left: ${month_gap}px'>$month_name</li>";
   } while ($time < $max_date);
 
@@ -1401,6 +1402,7 @@ __EOD;
   return $h;
 }
 #funkce pro extrakci vhodných obrázků pro přečtete si ==> todo pouze pro text, abstrakt bývá prázdný??
+                                                          #todo podobná funkce x_first_img()
 function masonry_text($text) {
   $ret = '';
   $found = preg_match_all('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $text, $images);
@@ -1413,7 +1415,7 @@ function masonry_text($text) {
   $ret .= preg_replace("/<img[^>]+\>/i", "", $text);
   return $ret;
 }
-/*function masonry_text($abstract, $text) { //todo abstrakt verze..
+/*function masonry_text($abstract, $text) { //todo verze pro abstrakt..
   $image = null;
   preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $abstract, $image);
   if (!masonry_suitable_image($image['src'])) {
@@ -1809,7 +1811,8 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
   list($id,$tag)= explode('#',$id);
   $typ= '';
   $hledej= trim($hledej);
-  $xx= $xx_tags= $xx_foto= $xx_img= array();
+  $xx_tags= $xx_foto= $xx_img= array();
+  $h= "";
   $fokus= false;        // první rok nebude mít fokus aby bylo vidět menu
   if ( $vyber=='foto' ) {
     $typ= 'foto';
@@ -1859,7 +1862,6 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
   }
   // konec překladu
   $novych= 0;
-  $h= "";
   $p_show= ($show_hidden ?  '' : " AND !p.hidden").($show_deleted ? '' : " AND !p.deleted");
   $groups= $usergroups ? "AND fe_groups IN ($usergroups)" : 'AND fe_groups=0';
   if ( $vyber ) {
@@ -2122,12 +2124,17 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
 //         $datum= sql_date1($od);
 //         $dnu= $dnu==1 ? '' : ($dnu<5 ? " - $dnu dny" : " - $dnu dnů");
 //         $dnu= $dnu ? "$datum $dnu" : $datum;
-        if ( $p_uid!=$id || 1 ) {
+        if ( $p_uid!=$id || 1 ) { //todo always true -- delete?
           $text= xi_shorting($text,$img);
-          if ( $img )
+          if ( $img ) {
+            if ($typ=='foto') { //todo temporary solution, remove the html garbage around source --> create raw function
+              preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $img, $image);
+              $img = $image['src'];
+            }
             $xx_img[$cid]= $img;
+          }
         }
-        $xx[$cid]= (object)array('ident'=>$p_uid,'kdy'=>$akdy,'nadpis'=>$title,
+        $xx[$cid]= (object)array('ident'=>$p_uid,'kdy'=>$akdy, 'rok'=>date("Y", $uod), 'nadpis'=>$title,
             'abstract'=>$text,'upd'=>$upd,'ida'=>$ida);
         if ( $fe_group ) {
           $spec++;
@@ -2144,6 +2151,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
   // případné doplnění helpu na začátek
   $info= akce_info($typ,count($xx));
   // generování stránky
+  $rok_ted = '';
   $h= "<div class='content'>";
   $abstr= $mode[1] ? 'abstr' : 'abstr-line';
   $n= 0; // pořadí akce v roce
@@ -2158,8 +2166,10 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     if ( $foto ) {
       // překlad na globální odkazy pro ty lokální (pro servant.php)
       $http= $FREE && preg_match("/fileadmin/",$xx_foto[$cid]) ? "https://www.setkani.org/" : '';
-      $mini= $xx_foto[$cid]
-          ? " <div class='mini' style='background-image:url($http{$xx_foto[$cid]})'></div>" : '';
+      $mini = $xx_foto[$cid] ?
+          ($typ=='foto' ?
+              "style='background-image:url($http{$xx_foto[$cid]})'"
+              : "<div class='mini' style='background-image:url($http{$xx_foto[$cid]})'></div>") : '';
       $flags.= "<i class='fa fa-camera-retro'></i>";
     }
     $flags.= strpos($xx_tags[$cid],'6')!==false
@@ -2190,17 +2200,33 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
 //     $back= $foto ? "#foto$cid" : '';
     $prihlaska= $x->ida ? cms_form_ref("on-line přihláška") : '';
 //    $prihlaska= cms_form_ref("on-line přihláška");
-    $h.= $x->ident==$id
-        ? vlakno($cid,$typ,$back,$fokus)
-        : "<div class='$abstr' id='n$n'>
+
+    if ($typ=='foto') {
+      if ($rok_ted != $x->rok) {
+        $rok_ted = $x->rok;
+        $h .= "<h2>$rok_ted</h2>";
+      }
+      $h.= $x->ident==$id
+          ? vlakno($cid,$typ,$back,$fokus)
+          : "<a class='abstr-fotogalerie' id='n$n' $jmp>
+               $code 
+               <div class='fbg'></div>
+               <div class='fimg' $img></div>
+               <div class='ftitle'>$x->kdy $flags&nbsp;<b>$x->nadpis:</b></div>
+               <div class='ftext'>$x->abstract</div>
+         </a>";
+    } else {
+      $h.= $x->ident==$id
+          ? vlakno($cid,$typ,$back,$fokus)
+          : "<div class='$abstr' id='n$n'>
            $code 
            <a class='abstrakt$ex{$x->upd}' $jmp>
              $prihlaska
              <span class='akce_datum'>$x->kdy $flags</span>  <b>$x->nadpis:</b><div class='clear'></div>$img 
                <p>$x->abstract</p>
            </a>
-         </div>"
-    ;
+         </div>";
+    }
     $fokus= true;
   }
   $h.= "</div>";

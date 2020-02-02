@@ -230,13 +230,12 @@ function mesice($path) {  trace();
   $ym0= array_shift($path);
   $month= array( 1=> "leden", "únor", "březen", "duben", "květen", "červen",
     "červenec", "srpen", "září", "říjen", "listopad", "prosinec");
-  $letos= date('Y');
+
   // suma měsíců
   $mesicu= 17 + ($spravce ? 12 : 0);
   $xx= array();
   $d= mktime(0, 0, 0, date("n")-3, 2, date("Y"));
-  $cy= date("Y");
-  $cm= date("n",$d);
+
   for ($i= 0; $i <= $mesicu; $i++ ) {
     $m= date("n",$d);
     $y= date("Y",$d);
@@ -273,10 +272,16 @@ function mesice($path) {  trace();
   }
 //                                         debug($xx);
   // zobrazení měsíců
-  $h= "<h1>Objednávky Domu setkání</h1><div id='objednavky' class='x content'>";
+  $h= "<div id='objednavky' class='x content'><h1>Objednávky Domu setkání</h1>";
+  $year = '';
   foreach($xx as $ym=>$x) {
     list($y,$m)= explode('-',$ym);
-    $mesic= $month[$m].($y==$letos ? '' : " $y");
+    if ($y != $year) {
+      $h .= "<h2>Rok $y</h2>";
+      $year = $y;
+    }
+
+    $mesic= $month[$m];
     $sum= $x->obj;
     $jmp= $CMS ? "onclick=\"go(arguments[0],'$href0!$ym','');\""
                : "href='$href0!$ym'";
@@ -284,12 +289,11 @@ function mesice($path) {  trace();
       ? mesic($ym,$x->from,$x->until,$mesic,$path)
       : "<div class='abstr x'>
            <a class='abstrakt x' $jmp>
-             <span class='datum'>$mesic</span> $sum
+             <h4>$mesic</h4> $sum
          </a></div>"
       ;
   }
-  $h.= "</div>";
-  return $h;
+  return $h."</div><br><br><br>";
 }
 # ---------------------------------------------------------------------------------- pokoj_ikona
 # vrátí ikonu symbolizující

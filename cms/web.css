@@ -289,7 +289,24 @@ a.abstrakt_deleted { background-color:silver; border:5px solid black;}
 span.akce_datum {background: white; border-radius: 5px; float: left;}
 .abstr b {float:left; clear:both;}
 .abstr-line span.akce_datum {float: none; display: block;}
-
+/*abstrakty pro fotogalerii*/
+.abstr-fotogalerie {text-decoration: none; width: 25%;overflow: hidden;display: inline-block; height:12.8em; position: relative;}
+.abstr-fotogalerie > .fbg {background: black; height: 100%; width: 100%; z-index: 3; position: absolute}
+.abstr-fotogalerie > .fimg {background-position: center;background-repeat: no-repeat;background-size: cover; height: 100%; width: 100%; z-index: 4; position: absolute}
+.abstr-fotogalerie > .ftitle {background: rgba(245, 245, 245, 0.48); position: absolute; z-index: 5; padding: 7px; color: black}
+.abstr-fotogalerie > .ftext {visibility: hidden; color: white;}
+.abstr-fotogalerie:hover > .fimg {width: 110%; height: 110%; transform: translate(-5%, -5%);opacity: 0.5; animation: foto-hide; animation-duration: 0.2s; animation-timing-function: ease-in-out;
+  -webkit-animation: foto-hide; -webkit-animation-duration: 0.2s; -webkit-animation-timing-function: ease-in-out;
+  -moz-animation: foto-hide; -moz-animation-duration: 0.2s; -moz-animation-timing-function: ease-in-out;
+}
+.abstr-fotogalerie:hover > .ftitle {visibility: hidden;}
+.abstr-fotogalerie:hover > .ftext {visibility: visible; position: absolute; z-index: 5; padding: 7px; height: 90%;animation: text-show; animation-duration: 0.2s; animation-timing-function: ease-in-out;
+  -webkit-animation: text-show; -webkit-animation-duration: 0.2s; -webkit-animation-timing-function: ease-in-out;
+  -moz-animation: text-show; -moz-animation-duration: 0.2s; -moz-animation-timing-function: ease-in-out; }
+@-webkit-keyframes foto-hide{ from {opacity: 1; width: 100%; height: 100%;transform: translate(0,0);} to {opacity: 0.5; width: 110%; height: 110%;transform: translate(-5%, -5%);}  }
+@keyframes foto-hide { from {opacity: 1; width: 100%; height: 100%;transform: translate(0,0);} to {opacity: 0.5; width: 110%; height: 110%;transform: translate(-5%, -5%);} }
+@-webkit-keyframes text-show{ from {opacity: 0} to {opacity: 1}  }
+@keyframes text-show{ from {opacity: 0} to {opacity: 1} }
 
 /*masonry layout*/
 .masonry_container {column-count: 3;column-gap: 1em;}
