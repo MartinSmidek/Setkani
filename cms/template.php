@@ -558,7 +558,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 //                                                         display("* page_mref = $page_mref");
         $id= array_shift($path);
         if ( $ids=='prehled' ) {
-          $body.= "<div class='oddball'></div><div class='content'><h1>YMCA Setkání - naše akce</h1>";
+          $body.= "<div class='content'><h1>YMCA Setkání - naše akce</h1>";
           $body .= akce_kalendar();
           $body .= "</div>";
           $body.= akce_prehled($vyber_rok,$rok,$id);
@@ -1207,7 +1207,7 @@ function timeline()
         'text' => $text, 'program' => $program, 'ida' => $ida);
   }
 
-  $h = "<br><br><br><h2 class='float-left' style='margin-top: 0px;'>Chystáme</h2><div class='float-right timeline_legend'>akce pro&emsp;";
+  $h = "<br><br><br><h2 class='float-left' style='margin-top: 0px;'>Chystáme</h2><div class='float-right legend'>akce pro&emsp;";
   foreach ($def_pars['komu'] as $ki) {
       list($k, $i) = explode(':', $ki);
       if ($i==6) $k="ostatní";
@@ -1815,7 +1815,7 @@ function akce_kalendar($typ='') { trace();
 
     $year_od = date("Y", $uod);
     $year_do = date("Y", $udo);
-    $h.= "<h2 class='timeline_schedule_title' onclick='showOrHide()'><i class=\"fas fa-calendar-week\">&emsp;
+    $h.= "<div class='timeline_schedule'><h2 class='clickable' onclick='showOrHide()'><i class=\"fas fa-calendar-week\">&emsp;
               </i>Kalendář akcí $year_od - $year_do
           </h2><div id='vlakno-kalendar' class='x'>";
     $kdy= $ex= '';
@@ -1853,7 +1853,7 @@ function akce_kalendar($typ='') { trace();
                 <!--todo include? $ podpis -->
                 $obsah
               </div>
-            </div></div></div>";
+            </div></div></div></div>";
   }
   return $h . "<script>function showOrHide() {
     var kalendar = jQuery('#vlakno-kalendar');

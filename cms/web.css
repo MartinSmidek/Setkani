@@ -311,7 +311,7 @@ span.akce_datum {background: white; border-radius: 5px; float: left;}
 @-webkit-keyframes text-show{ from {opacity: 0} to {opacity: 1}  }
 @keyframes text-show{ from {opacity: 0} to {opacity: 1}}
 
-#vlakno-kalendar{display: none}
+#vlakno-kalendar{display: none; background: #dfdfdf; margin: 0px 20px; border-radius: 15px; margin-bottom: 50px;}
 
 /*masonry layout*/
 .masonry_container {column-count: 3;column-gap: 1em;}
@@ -326,9 +326,6 @@ a.short_post, div.short_post { font-size: 11pt !important; width: 95%; display: 
 .post_title { margin: 12px; font-size: 16pt; float: left }
 .post_date { float: right}
 .post_date:before { content: "\f073";font-family: FontAwesome, serif;color: #8a8a8a;padding-right: 0.5em;}
-
-/* seznamy abstraktů objednávky */
-#objednavky {width:100%; }
 
 /* abstrakty */
 div.abstr { display:inline-block; vertical-align:top; }
@@ -403,13 +400,11 @@ a.kniha_timeline { color: black;}
 div.kniha_timeline_text {margin-left: 15%;border-left: 13px solid #bfc4cb;padding: 32px;color: #7c6853;font-weight: bold;}
 span.kniha_timeline_date { width: 50px; height: 50px; background: #7c6853; color:white; position: absolute; transform: translate(-67px, -15px);
   border-radius: 30px; border: 5px solid white; text-align: -webkit-center; line-height: 50px;}
-div.oddball {position: absolute; width: 800px; height: 800px; border-radius: 400px; background: #dab2b2; z-index: -2;
- transform: translate(-110px, -650px);}
 div.kniha_timeline_text_open_front {margin-left: 15%; padding: 12px 12px 22px 52px; color: #7c6853;font-weight: bold; margin-top: 15px; margin-bottom: 10px;}
 div.kniha_timeline_text_open_back {margin-left: 15%; padding: 0px 22px 12px 52px; color: #7c6853;font-weight: bold; margin-bottom: 15px;}
 span.kniha_timeline_date_open {width: 70px; height: 70px; background: #dab894; color: white; position: absolute; transform: translate(-85px, -29px); 
   border-radius: 50px; border: 5px solid white; text-align: -webkit-center; line-height: 70px;}
-.timeline_schedule_title {cursor: pointer; margin:60px}
+.timeline_schedule {margin: 60px 0 75px 0}
 
 /* fotogalerie */
 #galerie { padding:1em; }
@@ -441,8 +436,6 @@ div.home_info>b { color:#cadfd9; }
 #timeline_header > li {position: absolute;display: initial;width:70px;height: 100%; z-index: -1}
 #timeline_header > li:before {content: '';border-left: 1px dashed #ccc;position: absolute;height: 1000vh;
   transform: translate(0, 23px); }
-div.timeline_legend {border-radius: 7px; border: 1px solid #a9a9a8; background: #dddddd; line-height: 25px; margin-bottom:25px;padding-left: 10px; padding-bottom: 5px;}
-span.timeline_legend {width: 25px;height: 5px;border-radius: 3px;display: inline-block;margin: 10px 35px 0 0;}
 .timeline_date {text-align: center;top: 15px;left: 5px;right: 0;font-size: 0.95em;line-height: 20px;position: absolute;
   z-index: 2;width: 80px; border-radius: 50%; padding: 2px; display: none}
 .timeline_text {width: 100%; max-width: 400px;display: none; left: 40px; white-space: initial;
@@ -462,15 +455,15 @@ span.timeline_legend {width: 25px;height: 5px;border-radius: 3px;display: inline
   box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.1);}
 .timeline_radio:checked + .timeline_circle .timeline_text .timeline_text_style {max-height: initial; color: black; max-width: 60vw;}
 
-/*.timeline_radio:checked + label {cursor: auto;width: 400px;transition: width 0.3s linear 0.2s;}
-.timeline_radio:checked~.timeline_text {max-height: 180px;border-color: white;width: 400px;}
-.timeline_radio:checked+p {max-height: 200px;color: white;transition: color 0.3s linear 0.3s;}*/
-
+/* legenda */
+.legend {border-radius: 7px; border: 1px solid #a9a9a8; background: #dddddd; line-height: 25px; margin-bottom:25px;padding-left: 10px; padding-bottom: 5px;}
+.timeline_legend {width: 25px;height: 5px;border-radius: 3px;display: inline-block;margin: 10px 35px 0 0;}
+.icons_legend {}
 /* ----------------------------------------------------------------------------- dům */
 
 /* popis */
 #pokoje { clear:both; }
-div.pokoje { background-color:#FFF4DE; color:#130D00; overflow:hidden; margin:0.5em; position:relative; }
+div.pokoje { color: black; overflow:hidden; margin:0.5em; position:relative; }
 span.datum { background-color:#F5CF85; color:#130D00; }
 div.pokoje span.datum { position: absolute; top: 0; left: 0; }
 span.mesic { background-color:#B48933; color:#EFFBDA; font-weight: bold; }
@@ -580,6 +573,7 @@ table.dum td { border: 1px solid navy; min-width:1.2em; text-align: center; }
 
   /* abstrakty */
   div.abstr { width:100%; }
+  .abstr-fotogalerie {width:100%; }
 
   /*footer*/
   .footer .tile {display: block; padding: initial; margin: 0 auto; }
@@ -638,6 +632,7 @@ table.dum td { border: 1px solid navy; min-width:1.2em; text-align: center; }
 
   /* abstrakty */
   div.abstr { width:50%; }
+  .abstr-fotogalerie {width:50%; }
   .mobile_nodisplay {display: none !important;}
 }
 
@@ -665,6 +660,7 @@ table.dum td { border: 1px solid navy; min-width:1.2em; text-align: center; }
   #menu div, #menu span, #menu input {font-size: 11pt; }
   /* abstrakty */
   div.abstr { width:33.3%; }
+  .abstr-fotogalerie {width:33.3%; }
 }
 
 /* -------------------------------------------------------------------------- PC velká obrazovka */

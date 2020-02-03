@@ -214,7 +214,7 @@ function mesic($ym,$from,$until,$mesic,$path) {  //trace();
   $back= "onclick=\"go(arguments[0],'$href0','');\"";
   $h= "<div id='pokoje' class='x'>
          <div class='x'><div id='mesic$uid' class='pokoje x'$menu$style>
-           <div class='text'><h1 $back>$mesic</h1>$obsah</div>
+           <div class='text'><h2 class='float-left' $back>$mesic</h2>$obsah</div>
          </div>
        </div></div>";
   return $h;
@@ -263,11 +263,11 @@ function mesice($path) {  trace();
     }
     $prehled= '';
     if ($xx["$y-$m"]->obj) foreach ($xx["$y-$m"]->obj as $state=>$kolik) {
-      $prehled.= " $kolik &times; ".pokoj_ikona($state);
+      $prehled.= " $kolik &times; ".pokoj_ikona_popis($state) . "<br>";
     }
     $co= count($objednavky);
     $xx["$y-$m"]->obj= $prehled
-      . ($co ? " <span class='mesic'>&nbsp; $co &times; ".pokoj_ikona(-2)." &nbsp;</span>" : '');
+      . ($co ? " <b>&nbsp; $co &times; ".pokoj_ikona_popis(-2)."</b><br>" : '');
     $d+= date("t",$from)*86400;
   }
 //                                         debug($xx);
@@ -279,6 +279,9 @@ function mesice($path) {  trace();
     if ($y != $year) {
       $h .= "<h2>Rok $y</h2>";
       $year = $y;
+    }
+    if (!$xx["$y-$m"]->obj) {
+      $xx["$y-$m"]->obj = 'Zatím nejsou k dispozici žádné údaje.';
     }
 
     $mesic= $month[$m];
@@ -309,15 +312,38 @@ function pokoj_ikona($state) {
   case  '1': $i= "<i class='fa fa-$ico'></i>"; break;
   case  '2': $i= "<i class='fa fa-user'></i>"; break;
   case  '3': $i= "<i class='fa fa-futbol-o'></i>"; break;
-  case  '4': $i= "<i class='fa fa-times'></i>"; break;
+  case  '4': $i= "<i class='far fa-times-circle'></i>"; break;
   }
   return $i;
+}
+function pokoj_ikona_popis($state) {
+  switch ($state) {
+//   case '-2': $i= "<img border=0 src='fileadmin/icons/mailicon.gif'>"; break;
+    case '-2': $i= "<i class='fa fa-envelope-o'></i>&nbsp;žádost o pobyt"; break;
+//   case '-1': $i= "<img border=0 src='fileadmin/icons/newmail.gif'>"; break;
+    case '-1': $i= "<i class='fa fa-pencil-square-o'></i>&nbsp;volných míst"; break;
+    case  '1': $i= "<i class='fa fa-$ico'></i>&nbsp;zájmů o pobyt"; break;
+    case  '2': $i= "<i class='fa fa-user'></i>&nbsp;závazných objednávek"; break;
+    case  '3': $i= "<i class='fa fa-futbol-o'></i>&nbsp;pro akce YMCA"; break;
+    case  '4': $i= "<i class='far fa-times-circle'></i>&nbsp;nelze pronajmout"; break;
+  }
+  return $i;
+}
+function ikona_legenda() {
+  $h = "<div class='legend float-right' style='width: fit-content; padding: 13px'>";
+  $h .= "<div class='icons_legend'>" . pokoj_ikona(-2) . "&nbsp;Žádost o pobyt podána</div>";
+  $h .= "<div class='icons_legend'>" . pokoj_ikona(-1) . "&nbsp;Volné místo</div>";
+  //$h .= "<div class='icons_legend'>" . pokoj_ikona(1) . "&nbsp;Zájem o pobyt</div>";  //todo invalid icon, equals to "zájem"
+  $h .= "<div class='icons_legend'>" . pokoj_ikona(2) . "&nbsp;Závazná objednávka</div>";
+  $h .= "<div class='icons_legend'>" . pokoj_ikona(3) . "&nbsp;Probíhá akce YMCA</div>";
+  $h .= "<div class='icons_legend'>" . pokoj_ikona(4) . "&nbsp;Nelze pronajmout</div>";
+  return $h . "</div>";
 }
 # ---------------------------------------------------------------------------------- gn_makeDaysList
 function gn_makeDaysList($pid,$pid_goal,$ym,$od,$do) { trace();
   global $CMS, $href0;
   //  Zobrazení tabulky obsazenosti
-  $content= '';
+  $content= ikona_legenda();
   # ukazani obsazenosti v obdobi $od $do
   # projiti pokoju - zobrazeni hlavicky
   $version= substr($ym,0,4)==2014 ? '' : 1;
