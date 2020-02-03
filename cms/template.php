@@ -565,7 +565,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         }
         elseif ( $ids=='aprehled' ) { // proběhlé akce v Domě setkání
                                                  debug($path,"path= $id,...");
-          $body .= "<div class='content'><h1>Archiv akcí</h1></div>";
+          $body .= "<div class='content'><h1>Archiv akcí v domě</h1></div>";
           $rok= $id?:date('Y');
           $id= array_shift($path);
           list($page_mref,$roks)= explode('/',$page_mref);
@@ -662,8 +662,9 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
             break;
 
           case 'aplan':  # ---------------------------------------------- . proc aplan = alberice,bude
+            $body .= "<div class='content'><h1>Plánované akce v domě</h1></div>";
             $vyber= "alberice,".array_shift($path);
-//       $submenu.= $proc_kdo($vyber,2);
+//       $submenu_komu.= $proc_kdo($vyber,2);
             break;
 
 //     case 'zpet':  # ----------------------------------------------- . proc zpet = komu,bylo

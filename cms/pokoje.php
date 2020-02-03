@@ -128,7 +128,7 @@ function dum_form($x) {
     }
   }
   $y->html=
-    "<table><tr><td style='border-right:1px black solid'>"
+    "<table><tr><td style='padding-right: 12px'>"
   . inp("objednávka","uid",3,0)."&nbsp;&nbsp;&nbsp;"
   . sel("stav objednávky","state",
         "1:zájem o pobyt,2:závazná objednávka,3:akce YMCA,4:nelze pronajmout",$ord)."<br>"
@@ -145,7 +145,7 @@ function dum_form($x) {
   . inp("jméno a příjmení",   "name",         22)
   . ( $dum_data_open || $spravce ? (
       inp("telefon",            "telephone",    14,1)."<br>"
-    . inp("email",              "email",        40,1)."<br>"
+    . inp("email",              "email",        30,1)."<br>"
     . inp("ulice",              "address",      30,1)."<br>"
     . inp("psč",                "zip",          10,1)
     . inp("obec",               "city",         16,1)."<br><br>"
@@ -154,13 +154,13 @@ function dum_form($x) {
         but("Opravit","block_enable('order',1,'uid')")
       . but("Uložit opravu","objednavka(0,'update',{order:'$ord'});",0,'order_save')
       . but("Smazat","objednavka(0,'delete',{order:'$ord'});")
-      . but("Zpět","block_display('order',0);")
+      . but("Zpět","block_display('order',0);", 0, '')
       ) : (
       $ord ? (
         "<br>".but("Zavřít","block_display('order',0);",1)
       ) : (
         but("Přidat objednávku","objednavka(0,'create');")
-      . but("Ne","block_display('order',0,'uid');")
+      . but("Zrušit","block_display('order',0,'uid');")
       )
     ))
   . "</td></tr></table>";
@@ -192,8 +192,9 @@ function sel($label,$name,$options,$enabled=1) { //trace();
 }
 function but($label,$js,$even=0,$id_and_hide='') {
   global $dum_data, $dum_data_open;
-  $id= $id_and_hide ? " id='$id_and_hide' name='$id_and_hide' disabled" : '';
-  $html= " <label><input $id type='submit' value='$label' onclick=\"$js\"></label>";
+  $labelid= $id_and_hide ? " id='label_$id_and_hide'" : '';
+  $id= $id_and_hide ? " id='$id_and_hide' name='$id_and_hide' hidden" : '';
+  $html= " <label $labelid><input $id class='form_button' type='submit' value='$label' onclick=\"$js\"></label>";
 //   $html= $dum_data_open || $even
 //        ? " <label><input $id type='submit' value='$label' onclick=\"$js\"></label>" : '';
   return $html;
@@ -208,12 +209,12 @@ function mesic($ym,$from,$until,$mesic,$path) {  //trace();
   if ( $id ) {
     if ( is_numeric($id) ) {
       $text= select("text","setkani4.tx_gncase_part","cid=$id");
-      popup("Pokoje",$text,"$href0!$ym");
+      popup("Pokoje",$text,"$href0!$ym#anchor$ym");
     }
   }
   $back= "onclick=\"go(arguments[0],'$href0','');\"";
-  $h= "<div id='pokoje' class='x'>
-         <div class='x'><div id='mesic$uid' class='pokoje x'$menu$style>
+  $h= "<div id='pokoje' class='x'><span class='anchor' id='anchor$ym'></span>
+         <div class='x'><div id='mesic$ym' class='pokoje x'>
            <div class='text'><h2 class='float-left' $back>$mesic</h2>$obsah</div>
          </div>
        </div></div>";
@@ -286,12 +287,12 @@ function mesice($path) {  trace();
 
     $mesic= $month[$m];
     $sum= $x->obj;
-    $jmp= $CMS ? "onclick=\"go(arguments[0],'$href0!$ym','');\""
-               : "href='$href0!$ym'";
+    $jmp= $CMS ? "onclick=\"go(arguments[0],'$href0!$ym#anchor$ym','');\""
+               : "href='$href0!$ym#anchor$ym'";
     $h.= $ym==$ym0
       ? mesic($ym,$x->from,$x->until,$mesic,$path)
       : "<div class='abstr x'>
-           <a class='abstrakt x' $jmp>
+           <a class='abstrakt x' style='height: 10em' $jmp>
              <h4>$mesic</h4> $sum
          </a></div>"
       ;
@@ -339,11 +340,19 @@ function ikona_legenda() {
   $h .= "<div class='icons_legend'>" . pokoj_ikona(4) . "&nbsp;Nelze pronajmout</div>";
   return $h . "</div>";
 }
+function barvy_legenda() {
+  $h = "<div class='legend float-right' style='width: fit-content; padding: 13px'>";
+  $h .= "<div class='barva_legend' style='background: #c5dcf8'>víkend</div>";
+  $h .= "<div class='barva_legend' style='background: #a9d49d'>dům je volný</div>";
+  $h .= "<div class='barva_legend' style='background: #f5e933'>část pokojů volná</div>";
+  $h .= "<div class='barva_legend' style='background: #da9088'>pokoje jsou plné</div>";
+  return $h . "</div>";
+}
 # ---------------------------------------------------------------------------------- gn_makeDaysList
 function gn_makeDaysList($pid,$pid_goal,$ym,$od,$do) { trace();
   global $CMS, $href0;
   //  Zobrazení tabulky obsazenosti
-  $content= ikona_legenda();
+  $content= ikona_legenda() . barvy_legenda();
   # ukazani obsazenosti v obdobi $od $do
   # projiti pokoju - zobrazeni hlavicky
   $version= substr($ym,0,4)==2014 ? '' : 1;
@@ -397,15 +406,14 @@ function gn_makeDaysList($pid,$pid_goal,$ym,$od,$do) { trace();
     }
   }
   // zobrazeni obsazenosti
-  $pokoju= 0;
-  foreach ($pokoje as $pokoj) {
-    $pokoju++;
-  }
+  $pokoju= count($pokoje);
   // projdi zvolený časový interval
+  $odd_counter = 0;
   for ( $d= $od; $d<=$do; $d= mktime(0,0,0,date("m",$d),date("d",$d)+1,date("Y",$d)) ) {
     $dnu++;
     $radek= '';
     $obsazenych= 0;
+    $odd = odd($odd_counter) ? " odd" : "";
     foreach ($pokoje as $pokoj) {
       $n= $pokoj["number"];
       $dmy= date('d.m.y',$d);
@@ -423,35 +431,35 @@ function gn_makeDaysList($pid,$pid_goal,$ym,$od,$do) { trace();
         if ( $s > 1 ) {
           $goal= pokoj_ikona($s);
           $form= "onclick=\"objednavka(arguments[0],'form',{order:'$u'});return false;\" ";
-          $radek.= "<td class='obsazen' title='$p' $form>$goal</td>";
+          $radek.= "<td class='obsazen$odd' style='border-right: 1px solid' title='$p' $form>$goal</td>";
 //           $goal= "<img border=0 src='fileadmin/icons/".($s==2?"smile":($s==3?"sun_smile":"stop")).".gif' title='$p'>";
-//           $radek.= "<td class=nic><a href={$gn->index}?id=$pid_goal&from=$od&until=$do&show=$u>$goal</a></td>";
+//           $radek.= "<td class='nic $odd'><a href={$gn->index}?id=$pid_goal&from=$od&until=$do&show=$u>$goal</a></td>";
         }
         else {
-          $radek.= "<td class=nic></td>";
+          $radek.= "<td class='nic $odd' style='border-right: 1px solid'></td>";
         }
       }
       else {
-        $radek.= "<td class=nic>&nbsp;</td>";
+        $radek.= "<td class='nic $odd' style='border-right: 1px solid'>&nbsp;</td>";
       }
     }
     // styly zobrazení
     $styl= $obsazenych ? ($obsazenych==$pokoju ? "datum_plno" : "datum_poloplno") : "datum_prazdno";
-    $datum= date("j/n",$d);
+    $datum= date("j. n.",$d);
     $weekend= date("w",$d);
     $weekend= ($weekend==0 || $weekend==6);
     $free= $weekend ? "_weekend" : "";
     $content.= "<tr>";
     // sloupec pro datum
-    $content.= "<td class=datum$free>$datum</td>";
+    $content.= "<td class='datum$free$odd'>$datum</td>";
     // sloupec pro novou objednavku
     if ( $obsazenych==$pokoju  || $d<time() )
-      $content.= "<td class=$styl></td>";
+      $content.= "<td class='$styl$odd'></td>";
     else {
       $den= date("Y-m-d",$d);
       $form= "onclick=\"objednavka(arguments[0],'form',{den:'$den'});return false;\" ";
       $goal= pokoj_ikona(-1);
-      $content.= "<td class='sent $styl' title='chci objednat pobyt' $form>$goal</td>";
+      $content.= "<td class='sent $styl$odd' title='chci objednat pobyt' $form>$goal</td>";
     }
 //     $goal= "<img border=0 src='fileadmin/icons/newmail.gif' title='chci objednat pobyt'>";
 //     $novy= "<a href={$gn->index}?id=$pid_goal&from=$od&until=$do&anew=1&date=$d>$goal</a>";
@@ -463,12 +471,12 @@ function gn_makeDaysList($pid,$pid_goal,$ym,$od,$do) { trace();
       $tit= "objednávka pobytu pro {$worders[$dmy]}";
       $goal= pokoj_ikona(-2);
       $form= "onclick=\"objednavka(arguments[0],'wanted',{orders:'{$wuidss[$dmy]}'});\" ";
-      $content.= "<td  title='$tit' class='sent $styl' $form>$goal</td>";
+      $content.= "<td  title='$tit' class='sent $styl$odd' $form>$goal</td>";
 //       $goal= "<img border=0 src='fileadmin/icons/mailicon.gif' title='{$worders[$dmy]}'>";
 //       $show= "<a href={$gn->index}?id=$pid_goal&from=$od&until=$do&show={$wuidss[$dmy]}>$goal</a>";
     }
     else {
-      $content.= "<td class='$styl'></td>";
+      $content.= "<td class='$styl$odd'></td>";
     }
     $content.= "$radek";
     // sloupec poznámek
@@ -476,8 +484,9 @@ function gn_makeDaysList($pid,$pid_goal,$ym,$od,$do) { trace();
     if ( mb_strlen($note)>50 ) {
       $note= x_shorting($note,50) . ' ...';
     }
-    $content.= "<td class=pozn$free title='$wnotes[$dmy]'>$note</td>";
+    $content.= "<td class='pozn$free$odd' title='$wnotes[$dmy]'>$note</td>";
     $content.= "</tr>";
+    $odd_counter++;
   }
 //                                                 display("<table>$content</table>");
 
@@ -487,52 +496,57 @@ function gn_makeDaysList($pid,$pid_goal,$ym,$od,$do) { trace();
   $content.= "\n</tr>";
   // hlavička tabulky
   $h_patra= $version0==0 ? "
-    <tr><td class=hlavicka  colspan=3>&nbsp;</td>
-    <td class=hlavicka colspan=7>2.patro</td>
-    <td class=hlavicka colspan=2>1+</td>
-    <td class=hlavicka colspan=3>1.patro</td>
-    <td class=hlavicka colspan=2>P+</td>
-    <td class=hlavicka colspan=2>příz.</td>
-    <td class=hlavicka>$c_obsazenost</td></tr>" : "
-    <tr><td class=hlavicka  colspan=3>&nbsp;</td>
-    <td class=hlavicka colspan=2>příz.</td>
-    <td class=hlavicka colspan=3>1.patro</td>
-    <td class=hlavicka colspan=2>1-</td>
-    <td class=hlavicka colspan=2>1+</td>
-    <td class=hlavicka colspan=9>2.patro</td>
-    <td class=hlavicka>$c_obsazenost</td></tr>";
-  $h_pokoje= "<tr><td class=hlavicka  colspan=3>pokoj:</td>";
+    <tr class='header1' ><td class='bold' colspan=3>&nbsp;</td>
+    <td class='bold' style='border-right: 1px solid' colspan=7>2.patro</td>
+    <td class='bold' style='border-right: 1px solid' colspan=2>1+</td>
+    <td class='bold' style='border-right: 1px solid' colspan=3>1.patro</td>
+    <td class='bold' style='border-right: 1px solid' colspan=2>P+</td>
+    <td class='bold' style='border-right: 1px solid' colspan=2>příz.</td>" : "
+    <tr class='header1'><td class='bold' colspan=3>&nbsp;</td>
+    <td class='bold' style='border-right: 1px solid' colspan=2>příz.</td>
+    <td class='bold' style='border-right: 1px solid' colspan=3>1.patro</td>
+    <td class='bold' style='border-right: 1px solid' colspan=2>1-</td>
+    <td class='bold' style='border-right: 1px solid' colspan=2>1+</td>
+    <td class='bold' style='border-right: 1px solid' colspan=9>2.patro</td>";
+  $h_patra_backwards = $h_patra . "</tr>";
+  $h_patra .= "<td class='bold' rowspan='4' style='border-left:2px solid'>poznámky</td></tr>";
+  $h_pokoje= "<tr><td class='bold' colspan=3>pokoj:</td>";
   // pokoje
   foreach ($pokoje as $pokoj) {
     $etage= $pokoj['etage']+254;     // viz popisy poschodí
     $pokoj_str= $pokoj['number'];
     $pokoj_str= $pokoj_str<10 ? "&nbsp;$pokoj_str&nbsp;" : $pokoj_str;
-    $au= "go(arguments[0],'$href0!$ym!$etage','');";
+    $au= "go(arguments[0],'$href0!$ym!$etage#anchor$ym','');"; //todo does not work, the "show room popup" will send user to the main page :(
 
-    $h_pokoje.= "<td class=room onclick=\"$au\" title='{$pokoj['note']}'>$pokoj_str</td>";
+    $h_pokoje.= "<td class='room' onclick=\"$au\" title='{$pokoj['note']}'>$pokoj_str</td>";
 //     $h_pokoje.= "<td class=room><a href={$gn->index}?id=pokoje&case=$etage title='{$pokoj['note']}'>$pokoj_str</a></td>";
   }
-  $h_pokoje.= "<td class=hlavicka>$a_obsazenost</td></tr>";
+  $h_pokoje.= "</tr>";
   // počty postelí
-  $h_postele= '<tr><td class=hlavicka colspan=3>postelí:</td>';
+  $h_postele= '<tr><td class="bold" colspan=3>postelí:</td>';
   foreach ($pokoje as $pokoj) {
-    $h_postele.= "<td class=hlavicka>{$pokoj['beds']}</td>";
+    $h_postele.= "<td class='bold' style='border-right: 1px solid'>{$pokoj['beds']}</td>";
   }
-  $h_postele.= "<td class=hlavicka>$p_obsazenost</td></tr>";
+  $h_postele.= "</tr>";
   // počty přistýlek
-  $h_pristylky= '<tr><td class=hlavicka colspan=3>přistýlek:</td>';
+  $h_pristylky= '<tr class="header2"><td class="bold" colspan=3>přistýlek:</td>';
   foreach ($pokoje as $pokoj) {
-    $addbeds= $pokoj['addbeds'] ? $pokoj['addbeds'] : '&nbsp;';
-    $h_pristylky.= "<td class=hlavicka>$addbeds</td>";
+    $addbeds= $pokoj['addbeds'] ? $pokoj['addbeds'] : '-';
+    $h_pristylky.= "<td class='bold' style='border-right: 1px solid'>$addbeds</td>";
   }
-  $h_pristylky.= '<td class=hlavicka>poznámky</td></tr>';
+  $h_pristylky_backwards = $h_pristylky . "<td rowspan='4' class=\"bold\" style='border-left:2px solid'>poznámky</td></tr>";
+  $h_pristylky.= '</tr>';
   // připojení hlavičky
   $html= "<table id='dum' class=dum>";
   $html.= "$h_patra$h_pokoje$h_postele$h_pristylky";
   $html.= $content;
-  $html.= "$h_pristylky$h_postele$h_pokoje$h_patra";
+  $html.= "$h_pristylky_backwards$h_postele$h_pokoje$h_patra_backwards";
   $html.= "</table>\n";
 end:
   return $html;
+}
+
+function odd($number) {
+  return $number % 2 == 1;
 }
 ?>

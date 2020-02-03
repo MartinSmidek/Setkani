@@ -95,6 +95,7 @@ h3 {margin-top: 30px}
 .display {display: initial;}
 .nodisplay {display: none; }
 .clickable {cursor: pointer;}
+.bold {font-weight: bold;}
 
 #web-shadow {position: fixed; top: 0; width: 100%; height: 100%; background: black;
   opacity: 0.55; z-index: 99; display:none;}
@@ -456,9 +457,9 @@ div.home_info>b { color:#cadfd9; }
 .timeline_radio:checked + .timeline_circle .timeline_text .timeline_text_style {max-height: initial; color: black; max-width: 60vw;}
 
 /* legenda */
-.legend {border-radius: 7px; border: 1px solid #a9a9a8; background: #dddddd; line-height: 25px; margin-bottom:25px;padding-left: 10px; padding-bottom: 5px;}
+.legend {border-radius: 7px; border: 1px solid #a9a9a8; background: #dddddd; line-height: 25px; margin: 0 5px 25px 5px ;padding-left: 10px; padding-bottom: 5px;}
 .timeline_legend {width: 25px;height: 5px;border-radius: 3px;display: inline-block;margin: 10px 35px 0 0;}
-.icons_legend {}
+.barva_legend {padding: 0 6px; text-align: center}
 /* ----------------------------------------------------------------------------- dům */
 
 /* popis */
@@ -471,35 +472,49 @@ span.mesic { background-color:#B48933; color:#EFFBDA; font-weight: bold; }
 /* tabulka */           
 table.dum  { border-collapse: collapse; empty-cells: hide; width: 100%; }
 table.dum td { border: 1px solid navy; min-width:1.2em; text-align: center; }
+table.dum, table.dum tr, table.dum td {border: none}
 
-#dum td.room:hover, #dum td.obsazen:hover, #dum td.sent:hover
-  { background-color:#B48933; color:#EFFBDA; }
-#dum td.room { background-color: #F5CF85;  font-weight: bold;  cursor: pointer; }
-#dum td.hlavicka { background-color: #FFF4DE;  font-weight: bold; }
-#dum td.pozn { background-color: #F5CF85;  text-align: left; }
-#dum td.pozn_weekend { background-color: #B48933;  text-align: left; }
-#dum td.datum {background-color: #F5CF85;  text-align:right; width:3em; }
-#dum td.datum_weekend { background-color:#B48933;  text-align:right; width:3em; }
+#dum td.room:hover { background-color:white; color:black; border: 1px solid; box-sizing: border-box }
+#dum td.obsazen:hover, #dum td.sent:hover { background-color:black !important; color:white; }
+#dum td.room { background-color: black;  font-weight: bold; color: white; cursor: pointer; }
+#dum td.pozn { text-align: left; border-left: 2px solid; padding-left: 3px;}
+#dum td.pozn.odd { background-color: #ffffff;}
+#dum td.pozn_weekend { background-color: #acbfd8; text-align: left; border-left: 2px solid; padding-left: 3px;}
+#dum td.pozn_weekend.odd {background-color: #c5dcf8;}
+#dum td.datum { text-align:right; width:3.2em; padding-right: 4px}
+#dum td.datum.odd {background-color: #ffffff;   text-align:right; width:3em; }
+#dum td.datum_weekend { background-color: #acbfd8;  text-align:right; width:3em; }
+#dum td.datum_weekend.odd {background-color: #c5dcf8;}
 #dum img { margin:-2px; }
 
-#dum .datum_plno, td.obsazeno { background-color: red; width:2em; }
-#dum .datum_prazdno, td.volno { background-color: lightgreen; width:2em; }
-#dum .datum_poloplno, td.konflikt { background-color: yellow; width:2em; }
-#dum td.sent { cursor:pointer; }
-#dum td.nic { background-color: #F5CF85; width:1.4em;}
-#dum td.obsazen { background-color: #F5CF85; width:1.4em;}
+#dum tr.header1 {border-bottom: 3px solid; border-top: 3px solid}
+#dum tr.header1.odd {}
+#dum tr.header2 {border-bottom: 1px solid; border-top: 1px solid}
+#dum tr.header2.odd {}
 
-#order {
-  position:fixed; left:100px; top:100px; width:710px; height:230px;
-  background-color:#FFF4DE; color:#130D00; border-radius:.6em; padding:2em 1em 1em 1em; opacity:1;
-  border:2px solid #B48933; box-shadow:black 4px 6px 20px; }
+#dum .datum_plno, td.obsazeno { background-color: #b47671; width:2em; }
+#dum .datum_prazdno, td.volno { background-color: #8cb082; width:2em; }
+#dum .datum_poloplno, td.konflikt { background-color: #e1d52f; width:2em; }
+#dum .datum_plno.odd, td.obsazeno.odd { background-color: #da9088; width:2em; }
+#dum .datum_prazdno.odd, td.volno.odd { background-color: #a9d49d; width:2em; }
+#dum .datum_poloplno.odd, td.konflikt.odd { background-color: #f5e933; width:2em; }
+#dum td.sent { cursor:pointer; }
+#dum td.nic { width:1.4em;}
+#dum td.nic.odd {background-color: #ffffff; }
+#dum td.obsazen { width:1.4em;}
+#dum td.obsazen.odd {background-color: #ffffff; }
+
+#order {position: fixed;left: 50%;top: 50%;margin-top: -250px;margin-left: -360px;width: 720px;height: fit-content; background: white;
+  color: #000000;max-height: 500px;padding: 2em 1em 1em 1em;box-shadow: #000000 4px 6px 20px;z-index: 100; }
 #order > span { position:absolute; top:0em; left:0em; width:100%; text-align:center; height:2em;
-  background:#B48933; color:#EFFBDA; border-radius:.4em .4em 0 0; font-weight:bold;
-  line-height:22pt;}
-#order span.choose { background:#EFFBDA; color:#B48933; }
+  font-weight:bold;line-height:22pt;margin-top: 10px;}
+#order span.choose { background:black; color:white;}
 #order > div { top:2em; height:100%; overflow:auto; }
 #order label { display:inline-table; font-size:small; }
-#order input, #order select { display:block; }
+#order input, #order select { display: block; border: 1px solid;color: black; padding: 3px 9px; margin: 5px 7px; text-decoration: none; font-size: 15px; }
+.form_button {background: white; padding: 6px 13px !important;cursor: pointer;}
+.form_button:hover {background: black; color: white !important; border-color: white;}
+#label_close_button {float: right}
 
 /* ====================================================================== non responsive design */
 

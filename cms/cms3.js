@@ -58,8 +58,17 @@ function jump_fokus() {
 // nastaví display podle parametru
 function block_display(id,on) {
   var block= jQuery('#'+id);
-  if ( block )
-    block.css('display',on ? 'block' : 'none');
+  if ( block ) {
+    var shadow = jQuery('#web-shadow')
+    if (on) {
+      block.css('display','block');
+      shadow.css('display', 'block');
+    } else {
+      block.css('display','none');
+      shadow.css('display', 'none');
+    }
+  }
+
   return 1;
 }
 // ------------------------------------------------------------------------------------ block enable
@@ -322,6 +331,7 @@ function objednavka(e,op,p) {
   case 'form':
     x.den= p.den;
     x.order= p.order||0;
+    jQuery('#web-shadow').css('display', 'block');
     break;
   case 'create':
     x.order= 0;
