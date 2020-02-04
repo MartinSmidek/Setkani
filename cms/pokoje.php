@@ -149,7 +149,7 @@ function dum_form($x) {
     . inp("ulice",              "address",      30,1)."<br>"
     . inp("psč",                "zip",          10,1)
     . inp("obec",               "city",         16,1)."<br><br>"
-  ) : '<br><br>(Osobní údaje jsou přístupné pouze pro správce Domu setkání)<br><br><br><br><br><br><br>')
+  ) : '<br><br>(Osobní údaje jsou přístupné pouze pro správce Domu setkání)')
   . ( $ord && $spravce ? (
         but("Opravit","block_enable('order',1,'uid')")
       . but("Uložit opravu","objednavka(0,'update',{order:'$ord'});",0,'order_save')
@@ -192,9 +192,8 @@ function sel($label,$name,$options,$enabled=1) { //trace();
 }
 function but($label,$js,$even=0,$id_and_hide='') {
   global $dum_data, $dum_data_open;
-  $labelid= $id_and_hide ? " id='label_$id_and_hide'" : '';
   $id= $id_and_hide ? " id='$id_and_hide' name='$id_and_hide' hidden" : '';
-  $html= " <label $labelid><input $id class='form_button' type='submit' value='$label' onclick=\"$js\"></label>";
+  $html= " <label class='form_button'><input $id class='form_button' type='submit' value='$label' onclick=\"$js\"></label>";
 //   $html= $dum_data_open || $even
 //        ? " <label><input $id type='submit' value='$label' onclick=\"$js\"></label>" : '';
   return $html;
@@ -355,7 +354,7 @@ function gn_makeDaysList($pid,$pid_goal,$ym,$od,$do) { trace();
   $content= ikona_legenda() . barvy_legenda();
   # ukazani obsazenosti v obdobi $od $do
   # projiti pokoju - zobrazeni hlavicky
-  $version= substr($ym,0,4)==2014 ? '' : 1;
+  $version= substr($ym,0,4)==2014 ? '' : 1; //todo delete? already past
   $version0= $version ?: 0;
   $res= mysql_qry("SELECT * FROM tx_gnalberice_room
                    WHERE NOT deleted AND NOT hidden AND version=$version0 ORDER BY number");
@@ -534,14 +533,16 @@ function gn_makeDaysList($pid,$pid_goal,$ym,$od,$do) { trace();
     $addbeds= $pokoj['addbeds'] ? $pokoj['addbeds'] : '-';
     $h_pristylky.= "<td class='bold' style='border-right: 1px solid'>$addbeds</td>";
   }
-  $h_pristylky_backwards = $h_pristylky . "<td rowspan='4' class=\"bold\" style='border-left:2px solid'>poznámky</td></tr>";
+  $h_pristylky_backwards = $h_pristylky . "<td rowspan='4' class=\"bold\" style='border-left:2px solid; 
+           border-top: 3px solid; border-bottom: 3px solid'>poznámky</td></tr>";
   $h_pristylky.= '</tr>';
   // připojení hlavičky
-  $html= "<table id='dum' class=dum>";
+  $html= "<div style='overflow-x: scroll;
+    width: 100%;'><table id='dum' class=dum>";
   $html.= "$h_patra$h_pokoje$h_postele$h_pristylky";
   $html.= $content;
   $html.= "$h_pristylky_backwards$h_postele$h_pokoje$h_patra_backwards";
-  $html.= "</table>\n";
+  $html.= "</table></div>\n";
 end:
   return $html;
 }

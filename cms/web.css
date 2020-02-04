@@ -470,7 +470,7 @@ div.pokoje span.datum { position: absolute; top: 0; left: 0; }
 span.mesic { background-color:#B48933; color:#EFFBDA; font-weight: bold; }
 
 /* tabulka */           
-table.dum  { border-collapse: collapse; empty-cells: hide; width: 100%; }
+table.dum  { border-collapse: collapse; empty-cells: hide; width: 100%;min-width: 900px; }
 table.dum td { border: 1px solid navy; min-width:1.2em; text-align: center; }
 table.dum, table.dum tr, table.dum td {border: none}
 
@@ -504,16 +504,18 @@ table.dum, table.dum tr, table.dum td {border: none}
 #dum td.obsazen { width:1.4em;}
 #dum td.obsazen.odd {background-color: #ffffff; }
 
-#order {position: fixed;left: 50%;top: 50%;margin-top: -250px;margin-left: -360px;width: 720px;height: fit-content; background: white;
-  color: #000000;max-height: 500px;padding: 2em 1em 1em 1em;box-shadow: #000000 4px 6px 20px;z-index: 100; }
+#order {position: fixed;left: 50%;top: 50%;margin-top: -250px;margin-left: -375px;width: 720px;height: fit-content; background: white;
+  color: #000000;max-height: 500px;padding: 2em 1em 1em 1em;box-shadow: #000000 4px 6px 20px;z-index: 100; overflow-y: scroll; }
 #order > span { position:absolute; top:0em; left:0em; width:100%; text-align:center; height:2em;
   font-weight:bold;line-height:22pt;margin-top: 10px;}
 #order span.choose { background:black; color:white;}
-#order > div { top:2em; height:100%; overflow:auto; }
+#order > div { top:2em; height:100%;  }
+#order table>tbody>tr>td {height:100%; vertical-align: initial; }
 #order label { display:inline-table; font-size:small; }
 #order input, #order select { display: block; border: 1px solid;color: black; padding: 3px 9px; margin: 5px 7px; text-decoration: none; font-size: 15px; }
-.form_button {background: white; padding: 6px 13px !important;cursor: pointer;}
-.form_button:hover {background: black; color: white !important; border-color: white;}
+input.form_button {background: white; padding: 6px 13px !important;cursor: pointer;}
+input.form_button:hover {background: black; color: white !important; border-color: white;}
+label.form_button {float: right}
 #label_close_button {float: right}
 
 /* ====================================================================== non responsive design */
@@ -586,6 +588,10 @@ table.dum, table.dum tr, table.dum td {border: none}
   #page_tm input { width:6em; }
   #web {margin-top: 60px;}
 
+  /*popup*/
+  #order {width: 80vw; margin-left: -45vw; height: 80vh; margin-top: -40vh;}
+  #order table tr td {display: block;}
+
   /* abstrakty */
   div.abstr { width:100%; }
   .abstr-fotogalerie {width:100%; }
@@ -630,6 +636,7 @@ table.dum, table.dum tr, table.dum td {border: none}
   #mobile_menu #vyber .content span {padding: 0;}
 
 
+
   @media (max-width:33em) { #vyber span { display:none; } }
   /* home page na na šířku */
   #cist_dole { display:none; }
@@ -640,6 +647,10 @@ table.dum, table.dum tr, table.dum td {border: none}
   .masonry_container { column-count: 2;}
   #facebook_content {width: 300px; padding-top: 60px; padding-right: 40px;}
   #facebook_content:before {transform: translate(00px, -70px);}
+
+  /*popup*/
+  #order {width: 80vw; margin-left: -40vw; height: 80vh; margin-top: -40vh;}
+  #order table tr td {display: block;}
 
   /*footer*/
   .footer hr.footer-hr {display: none}
@@ -666,6 +677,10 @@ table.dum, table.dum tr, table.dum td {border: none}
   /*footer*/
   .tile {width: 160px;}
   #site_signature {padding-top: 20px;}
+
+  /*popup*/
+  #order {width: 80%; margin-left: -40%; }
+  #order table tr td {display: block;}
 
   /* home page na na šířku todo delete? there is a comment in the template so I will know whether this section is kept or not */
   #cist_dole { display:none; }
