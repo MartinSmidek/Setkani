@@ -371,13 +371,13 @@ table#skupiny th { background-color:#F5CF85; color:#67827a;; min-width:8em; }
 table#skupiny input { width:100%; }
 
 /* galerie */
-div.galerie { overflow:hidden; margin:0 auto; width: 600px; }
+div.galerie { overflow:hidden; }
 div.galerie span.datum { position: absolute; top: 0; left: 0; }
 
 /* článek */
 div.clanek {  /*overflow:hidden;*/ margin:0.5em; position:relative; }
 .mediaqueries div.clanek { /*todo*/ }
-span.datum { background-color:#F5CF85; color:#130D00; }
+span.datum { background-color:#f2f2f2; color:#130D00; padding: 2px 5px; border-radius: 5px; border: 1px solid #e6e6e6}
 div.clanek span.datum { position: absolute; top: 0; left: 0; }
 div.podpis { text-align:right; font-style:italic; clear:both; padding: 0 15px 10px 0}
 div [data-oembed-url] { display: inline-block; margin: 1em; }
@@ -465,7 +465,6 @@ div.home_info>b { color:#cadfd9; }
 /* popis */
 #pokoje { clear:both; }
 div.pokoje { color: black; overflow:hidden; margin:0.5em; position:relative; }
-span.datum { background-color:#F5CF85; color:#130D00; }
 div.pokoje span.datum { position: absolute; top: 0; left: 0; }
 span.mesic { background-color:#B48933; color:#EFFBDA; font-weight: bold; }
 

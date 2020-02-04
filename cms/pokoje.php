@@ -332,7 +332,7 @@ function pokoj_ikona_popis($state) {
 function ikona_legenda() {
   $h = "<div class='legend float-right' style='width: fit-content; padding: 13px'>";
   $h .= "<div class='icons_legend'>" . pokoj_ikona(-2) . "&nbsp;Žádost o pobyt podána</div>";
-  $h .= "<div class='icons_legend'>" . pokoj_ikona(-1) . "&nbsp;Volné místo</div>";
+  $h .= "<div class='icons_legend'>" . pokoj_ikona(-1) . "&nbsp;Požádat o pobyt</div>";
   //$h .= "<div class='icons_legend'>" . pokoj_ikona(1) . "&nbsp;Zájem o pobyt</div>";  //todo invalid icon, equals to "zájem"
   $h .= "<div class='icons_legend'>" . pokoj_ikona(2) . "&nbsp;Závazná objednávka</div>";
   $h .= "<div class='icons_legend'>" . pokoj_ikona(3) . "&nbsp;Probíhá akce YMCA</div>";
@@ -344,7 +344,7 @@ function barvy_legenda() {
   $h .= "<div class='barva_legend' style='background: #c5dcf8'>víkend</div>";
   $h .= "<div class='barva_legend' style='background: #a9d49d'>dům je volný</div>";
   $h .= "<div class='barva_legend' style='background: #f5e933'>část pokojů volná</div>";
-  $h .= "<div class='barva_legend' style='background: #da9088'>pokoje jsou plné</div>";
+  $h .= "<div class='barva_legend' style='background: #da9088'>dům je obsazený</div>";
   return $h . "</div>";
 }
 # ---------------------------------------------------------------------------------- gn_makeDaysList

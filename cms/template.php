@@ -2476,21 +2476,25 @@ function vlakno($cid,$typ='',$back_href='',$fokus=true) { trace();
     elseif ( $x->tags=='A' && $typ=='foto') {
       $ex= strpos($x->ex,'d')!==false ? ' abstrakt_deleted' : (
       strpos($x->ex,'h')!==false ? ' abstrakt_hidden' : '');
-      $abstract= xi_shorting($x->obsah,$img);
+      $abstract= ($x->obsah) ? xi_shorting($x->obsah,$img) ."<b>pokračování pod odkazem</b>" : '';
+      //todo valid? --> foto-galerry skip abstract if empty
+      if (!$abstract) {
+        $h.= "<h2>$x->nadpis</h2>";
+        continue;
+      }
       $jmp= "onclick=\"go(arguments[0],'page=clanek!$cid','/$cid#anchor$cid');\"";
       $h.= "
         <div $id_focus class='abstr_line'><span class='anchor' id='anchor$uid'></span>
+         <h2>$x->nadpis</h2>
          $code
          <div class='abstrakt_foto$ex' $jmp>
-           <span class='datum'>$x->kdy</span> <b>$x->nadpis:</b>
-           $img $abstract ...
-           <hr style='clear:both;border:none'>
+           <span class='datum'>$x->kdy</span> $img $abstract 
          </div>
        </div>";
     }
     elseif ( $x->tags=='F' ) {
       $galery= show_fotky2($uid,$obsah,"$back_href!$uid_a#vlakno");
-      $podpis= "<div class='podpis'>$x->autor, $x->psano</div>";
+      $podpis= "<div class='podpis'><i class='fas fa-user'></i>&nbsp;$x->autor, $x->psano</div>";
       $note= $CMS ? "<span style='float:right;color:red;font-style:italic;'>
             ... v režimu editace stránky je fotogalerie zobrazena zjednodušeně</span>" : '';
       if ( $CMS ) {

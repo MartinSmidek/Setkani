@@ -23,6 +23,9 @@ RewriteEngine on
 # adresy <soubor>.php
 RewriteRule ^((index|servant|ses).php.*|)$      $1                                          [QSA,L]
 
+# staré linky       nedát se zmást - i když je to znak komentáře, funguje
+RewriteRule ^kontakty/?$                        /#page_footer_info                            [R,NE,L]
+
 # archivy
 RewriteRule ^archiv/?$                          archiv/index.htm                                [L]
 RewriteRule ^archiv/(.+)$                       archiv/$1                                       [L]
