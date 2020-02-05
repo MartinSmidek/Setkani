@@ -1217,20 +1217,22 @@ function timeline()
   }
   $h.= "</div><div class='relative clear'><div class='horizontal_scroll'><div class='relative'><ul id='timeline_header'>";
   $day = 24 * 3600;
-  $day_size = 10;
+  $day_size = 7;
   $month_size = $day_size * 30;
 
   $to_end_month = 30 - date('j', time());
   $time = time() + ($to_end_month + 1/*sichr*/) * $day;
   $month_gap = $to_end_month *$day_size;
-  $month_name = czechMonth(date('n', $time));
+  $counter = date('n', $time);
+  $month_name = czechMonth($counter);
   $h .= "<li class='timeline_month' style='left: ${month_gap}px'>$month_name</li>";
 
   do {
-    $time += 30 * $day;
+    $time += (($counter % 2 == 1) ? 31 : 30) * $day; //approximate month length +- few days will do
     $month_gap += $month_size;
     $month_name = czechMonth(date('n', ($time + 12*$day)));
     $h .= "<li class='timeline_month' style='left: ${month_gap}px'>$month_name</li>";
+    $counter++;
   } while ($time < $max_date);
 
   $h .= "</div></ul><ul id='timeline'>";
