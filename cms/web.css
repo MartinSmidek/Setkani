@@ -97,6 +97,12 @@ h3 {margin-top: 30px}
 .clickable {cursor: pointer;}
 .bold {font-weight: bold;}
 
+.hr-text {line-height: 1em;position: relative;outline: 0;border: 0;color: black;text-align: center;height: 1.5em;opacity: .5;}
+.hr-text:before {content: '';position: absolute;left: 0;top: 35%;width: 100%;height: 7px;background: #9c9c9c;}
+.hr-text:after {content: attr(data-content);position: relative;display: inline-block;padding: 0 .5em;line-height: 1.5em;
+   background: #f2f2f2;}
+
+
 #web-shadow {position: fixed; top: 0; width: 100%; height: 100%; background: black;
   opacity: 0.55; z-index: 99; display:none;}
 
@@ -131,20 +137,16 @@ div.clanek span.cms_form:hover {
   margin: -0.2em -0.2em; background-color: #f1d095; color: black; text-align: center; }
 
 /* ----------------------------------------------------------------------------- popup */
-
-#popup {
-/* left:10%; right:10%; top:10%; bottom:10%; */
-  left:2%; right:2%; top:2%; bottom:2%;
-  background-color:#FFF4DE; color:#130D00; border-radius:.6em; padding:2em 1em 1em 1em; opacity:1;
-  position:fixed; border:2px solid #B48933; box-shadow:black 4px 6px 20px; }
+#popup { position: fixed;
+  left: 50%; top: 50%; margin-top: -250px;margin-left: -375px;width: 720px;height: fit-content; background: white;
+  color: #000000;max-height: 500px;padding: 1.5em 1em 1em 1em;box-shadow: #000000 4px 6px 20px;z-index: 100; overflow-y: scroll; }
 #popup > span { position:absolute; top:0em; left:0em; width:100%; text-align:center; height:2em;
-  background:#B48933; color:#EFFBDA; border-radius:.4em .4em 0 0; font-weight:bold;
-  line-height:22pt;}
+  font-weight:bold;line-height:28pt;}
 #popup > div { top:2em; height:100%; overflow:auto; text-align: center; }
 #popup_div { padding-top: 1em; }
-#popup_bot { margin-top:-3.6em; height:1.4em !important; padding-top:0.2em;
-  z-index:3; background-color:#FFF4DE; position:relative;}
-
+#popup_bot { margin-top:-3.6em; height:1.4em !important; padding-top:0.2em; padding-bottom: 10px;
+  z-index:3; position:relative; }
+.popup_close {float: right;margin-top: -12px;cursor: pointer;}
 /* -------------------------- ------------------------------------------------- login */
 
 div#user_login, div#user_mail { position:fixed; left: 50vw; top:50vh; line-height: 22pt;
@@ -371,7 +373,7 @@ table#skupiny th { background-color:#F5CF85; color:#67827a;; min-width:8em; }
 table#skupiny input { width:100%; }
 
 /* galerie */
-div.galerie { overflow:hidden; }
+div.galerie { overflow:hidden; padding-bottom: 15px; margin-bottom: 30px; }
 div.galerie span.datum { position: absolute; top: 0; left: 0; }
 
 /* článek */
@@ -534,8 +536,6 @@ label.form_button {float: right}
 .no-mediaqueries #menu div, #menu span, #menu input {font-size:10pt; }
 /* abstrakty */
 .no-mediaqueries div.abstr { margin-right:.5em; }
-/* popup */
-.no-mediaqueries #popup { left:16%; right:16%; }
 
 /* ========================================================================== responsive design */
 
@@ -709,6 +709,4 @@ label.form_button {float: right}
   #menu div, #menu span, #menu input {font-size:10pt; }
   /* abstrakty */
   div.abstr { width:25%; }
-  /* popup */
-  #popup { left:16%; right:16%; }
 }

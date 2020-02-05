@@ -373,11 +373,9 @@ function gn_makeDaysList($pid,$pid_goal,$ym,$od,$do) { trace();
   $wstates= array ();
   $wnotes= array ();   // poznámky
   $worders= array ();
-  $xx= array();
   $qry= "SELECT uid,state,rooms$version AS rooms,fromday,untilday,name,note FROM tx_gnalberice_order
     WHERE NOT deleted AND NOT hidden AND fromday<=$do AND untilday>=$od ORDER BY fromday";
   $res= mysql_qry($qry);
-  $rows= mysql_num_rows($res);
   while($row = mysql_fetch_assoc($res)) {
     #$gn->gn_debug($row);
     if ( $row['state'] > 1 ) {
@@ -409,7 +407,6 @@ function gn_makeDaysList($pid,$pid_goal,$ym,$od,$do) { trace();
   // projdi zvolený časový interval
   $odd_counter = 0;
   for ( $d= $od; $d<=$do; $d= mktime(0,0,0,date("m",$d),date("d",$d)+1,date("Y",$d)) ) {
-    $dnu++;
     $radek= '';
     $obsazenych= 0;
     $odd = odd($odd_counter) ? " odd" : "";
@@ -515,8 +512,7 @@ function gn_makeDaysList($pid,$pid_goal,$ym,$od,$do) { trace();
     $etage= $pokoj['etage']+254;     // viz popisy poschodí
     $pokoj_str= $pokoj['number'];
     $pokoj_str= $pokoj_str<10 ? "&nbsp;$pokoj_str&nbsp;" : $pokoj_str;
-    $au= "go(arguments[0],'$href0!$ym!$etage#anchor$ym','');"; //todo does not work, the "show room popup" will send user to the main page :(
-
+    $au= "go(arguments[0],'$href0!$ym!$etage#anchor$ym','$href0!$ym!$etage#anchor$ym');";
     $h_pokoje.= "<td class='room' onclick=\"$au\" title='{$pokoj['note']}'>$pokoj_str</td>";
 //     $h_pokoje.= "<td class=room><a href={$gn->index}?id=pokoje&case=$etage title='{$pokoj['note']}'>$pokoj_str</a></td>";
   }

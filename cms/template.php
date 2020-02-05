@@ -726,15 +726,15 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         $attrs= " style='display:none' data-foto-lst='$popup_vol'";
         $popup_vol= '';
       }
-      $popup= $popup_tit ?
-          "<div id='popup'$attrs>
-        <span onclick=\"\$dolar('{$hash}popup').$setStyle('display','none');\" >$popup_tit</span>
-        <div id='popup_div' onclick=\"go(arguments[0],'$popup_bck','');\" >
+      $action = "go(arguments[0],'$popup_bck','$popup_bck');";
+      $popup="<div id='popup'$attrs>
+        <span onclick=\"$action\" >$popup_tit</span><i class='fa fa-times popup_close' onclick=\"$action\"></i>
+        <div id='popup_div' onclick=\"$action\" >
           $popup_vol
         </div>
         <div id='popup_bot'>popiska</div>
         $switch
-      </div>" : '';
+      </div>";
     }
   }
 // předání kontextu pro FE
@@ -2476,21 +2476,17 @@ function vlakno($cid,$typ='',$back_href='',$fokus=true) { trace();
     elseif ( $x->tags=='A' && $typ=='foto') {
       $ex= strpos($x->ex,'d')!==false ? ' abstrakt_deleted' : (
       strpos($x->ex,'h')!==false ? ' abstrakt_hidden' : '');
-      $abstract= ($x->obsah) ? xi_shorting($x->obsah,$img) ."<b>pokračování pod odkazem</b>" : '';
-      //todo valid? --> foto-galerry skip abstract if empty
-      if (!$abstract) {
-        $h.= "<h2>$x->nadpis</h2>";
-        continue;
-      }
+      $abstract= ($x->obsah) ? xi_shorting($x->obsah,$img) ." <b>pokračování pod odkazem</b>" : '';
       $jmp= "onclick=\"go(arguments[0],'page=clanek!$cid','/$cid#anchor$cid');\"";
-      $h.= "
-        <div $id_focus class='abstr_line'><span class='anchor' id='anchor$uid'></span>
+      $h .= "<div $id_focus class='abstr_line'><span class='anchor' id='anchor$uid'></span>
          <h2>$x->nadpis</h2>
-         $code
-         <div class='abstrakt_foto$ex' $jmp>
-           <span class='datum'>$x->kdy</span> $img $abstract 
-         </div>
-       </div>";
+         $code";
+      if ($abstract) {
+        $h.= "<div class='abstrakt_foto$ex' $jmp>
+                <span class='datum'>$x->kdy</span> $img $abstract 
+              </div>";
+      }
+      $h.= "</div>";
     }
     elseif ( $x->tags=='F' ) {
       $galery= show_fotky2($uid,$obsah,"$back_href!$uid_a#vlakno");
@@ -2511,9 +2507,10 @@ function vlakno($cid,$typ='',$back_href='',$fokus=true) { trace();
         $code
         <div id='clanek$uid' class='galerie$x->upd'$menu><span class='anchor' id='anchor$uid'></span>
           <div class='text'>
-            <h2>$x->nadpis $note</h2> $podpis
+            <h3>$x->nadpis $note</h3> $podpis
             $galery
           </div>
+          <hr class='hr-text' data-content='Konec fotografií'>
         </div>";
     }
     elseif ( $x->tags=='T' && $typ!='foto' ) {
