@@ -512,6 +512,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 //    $id= array_shift($path);
 //    list($id)= explode('#',$id);
         $body.= home();
+        $body.= facebook();
         break;
 
       case 'team':    # ----------------------------------------------- . team
@@ -531,12 +532,14 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       case 'search': # ------------------------------------------------ . search
         # seznam nalezených abstraktů článků nebo akcí
         # může následovat ident jednoho z článků (vznikne kliknutím na abstrakt)
+        $body.= "<div class='content'><h1>Výsledky hledání &nbsp;<b>$search</b></h1></div>";
         $id= array_shift($path);
         list($id)= explode('#',$id);
 //--     $search= array_shift($path) ?: ' ';
 //                                                 display("page_mref/s=$page_mref");
         $body.= akce('hledej',$ids,$id,'',$search);
 //--     $body.= akce_prehled('hledej',$ids,$id,'',$search);
+        $body.= facebook();
         break;
 
       case 'akce':   # ------------------------------------------------ . akce
@@ -572,7 +575,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
           $body.= akce_prehled('dum',$rok,$id);
         }
         else {
-          $kdy= $ids=='bude' ? $ids : $par_bylo;
+          $kdy= $ids=='bude' ? $ids : '';
           $body.= akce($vyber,$ids,$id);
         }
         break;
@@ -871,25 +874,7 @@ __EOD;
         onclick="me_login('$currpage');">Přihlásit</button>
     </div>
   </div>
-  
-  <div id='pr_bar' class='container inner_container' style='background:#bacddc'>
-    <div class='content' id='facebook_content'>
-      <div id="fb-root"></div>
-      <script async defer crossorigin="anonymous" src="https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v5.0"></script>
-      <div id="fb-root"></div>
-      <script async defer crossorigin="anonymous" src="https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v5.0"></script>
-      <div class="fb-page" data-href="https://www.facebook.com/dum.setkani.org/" data-tabs="timeline" data-width="300px" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="false">
-        <blockquote cite="https://www.facebook.com/dum.setkani.org/" class="fb-xfbml-parse-ignore">
-          <a href="https://www.facebook.com/dum.setkani.org/">Dům setkání Albeřice, YMCA</a>
-        </blockquote>
-      </div><div class="fb-page" data-href="https://www.facebook.com/manzelska.setkani.org/" data-tabs="timeline" data-width="300px" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="false">
-        <blockquote cite="https://www.facebook.com/manzelska.setkani.org/" class="fb-xfbml-parse-ignore">
-          <a href="https://www.facebook.com/manzelska.setkani.org/">Manželská Setkání YMCA</a>
-        </blockquote>
-      </div>
-    </div> 
-  </div>
-  
+
   $footer 
     
   <div id="page_footer_bar" class="container footer" style="background:black">
@@ -1174,6 +1159,27 @@ function gallery() {
   return $result . "</div><div id='titler' class='mobile_nodisplay'></div><div id='gallery_shadow' class='mobile_nodisplay'></div>";
 }
 
+function facebook() {
+  return <<<__EOD
+    <div id='pr_bar' class='container inner_container' style='background:#bacddc'>
+    <div class='content' id='facebook_content'>
+      <div id="fb-root"></div>
+      <script async defer crossorigin="anonymous" src="https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v5.0"></script>
+      <div id="fb-root"></div>
+      <script async defer crossorigin="anonymous" src="https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v5.0"></script>
+      <div class="fb-page" data-href="https://www.facebook.com/dum.setkani.org/" data-tabs="timeline" data-width="300px" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="false">
+        <blockquote cite="https://www.facebook.com/dum.setkani.org/" class="fb-xfbml-parse-ignore">
+          <a href="https://www.facebook.com/dum.setkani.org/">Dům setkání Albeřice, YMCA</a>
+        </blockquote>
+      </div><div class="fb-page" data-href="https://www.facebook.com/manzelska.setkani.org/" data-tabs="timeline" data-width="300px" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="false">
+        <blockquote cite="https://www.facebook.com/manzelska.setkani.org/" class="fb-xfbml-parse-ignore">
+          <a href="https://www.facebook.com/manzelska.setkani.org/">Manželská Setkání YMCA</a>
+        </blockquote>
+      </div>
+    </div> 
+  </div>
+__EOD;
+}
 # ============================================================================================> TIMELINE
 # nageneruje fotky do záhlaví
 # zatím samostantná tabulka, neví kde má brát fotky
@@ -2226,7 +2232,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
   $info= akce_info($typ,count($xx));
   // generování stránky
   $rok_ted = '';
-  $h= "<div class='content'>";
+  $h= "<div class='content'> $info";
   $abstr= $mode[1] ? 'abstr' : 'abstr-line';
   $n= 0; // pořadí akce v roce
   // první vlákno setkani.org bez fokusu aby bylo vidět menu
@@ -2319,31 +2325,30 @@ function akce_info($typ,$pocet) { trace();
     $mrop= strpos($usergroups,'6')===false ? ''
         : "<br><span class='input'>6</span> = články viditelné jen iniciovaným chlapům";
     $info= <<<__EOD
-      <div class='$abstr'>
+        <br>
         <div class='help'>
-          <br><b>$n<br>
+          <b>$n<br>
           <br>Pár rad pro úspěšné hledání:</b><br>
           <br>Na velikosti písmen záleží. Vzor může být doplněn znakem * nebo uvozen pomlčkou.
           <br>
-          <br><b>Příklady</b>: <span class='input'>Seno*</span> = něco v Senoradech
+          <br><b>Příklady</b>:<br><span class='input'>Seno*</span> = něco v Senoradech
           <br><span class='input'>chlap* -Brn*</span> = něco pro chlapy a ne v Brně
-          <br>$mrop&nbsp;
-      </div></div>
+          $mrop&nbsp;
+      </div>
+      <br>
 __EOD;
   }
   elseif ( $typ=='foto' ) {
-    $pic= "<img alt='fotky' src='./fileadmin/icons/picasa.png' style='margin:-.3em .5em 0 0.1em;float:left'>";
+    $pic= "<img alt='fotky' src='./fileadmin/icons/picasa.png' style='margin:0.1em .5em 0 0.1em;float:left;width: 20px;'>";
     $sty= "style='clear:both;display:block'";
     $info= <<<__EOD
-      <div class='$abstr'>
-        <div id='galerie' class='help'>
-          <b>Fotografie z akcí naleznete také<br>na následujících webech</b>
+        <div class='help'>
+          <b>Fotografie z akcí naleznete také na následujících webech:</b>
           <br><br>
-          <a target="picasa" $sty href="http://manzelska.setkani.org/o-nas/galerie">$pic Galerie Manželských setkání</a>
-          <br>
-          <a target="picasa" $sty href="http://dum.setkani.org/o-nas/galerie">$pic Galerie Domu setkání</a>
+          <a class='styled' target="picasa" $sty href="http://manzelska.setkani.org/o-nas/galerie">$pic Galerie Manželských setkání</a>
+          <a class='styled' target="picasa" $sty href="http://dum.setkani.org/o-nas/galerie">$pic Galerie Domu setkání</a>
           </b>
-      </div></div>
+      </div>
 __EOD;
   }
   return $info;

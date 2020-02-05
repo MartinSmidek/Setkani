@@ -72,11 +72,11 @@ div, span, input, form, button {font-family: 'Open Sans', sans-serif !important;
 p {text-align: justify}
 
 h1, #web h2,h3 { -webkit-column-break-inside: avoid; -moz-column-break-inside: avoid; column-break-inside: avoid; }
-#vlakno a { text-decoration: none; color: #883434; padding: 0px 6px; font-weight: bold; border-radius: 5px;
+#vlakno a, a.styled { text-decoration: none; color: #883434; padding: 0px 6px; font-weight: bold; border-radius: 5px;
   box-sizing: border-box; border: 1px solid #883434; }
-#vlakno a:hover { text-decoration: none; color: white; background: #883434; border: 1px solid #883434; }
-#vlakno a:visited { color: #848483; background: #848483; border: 1px solid #848483; }
-#vlakno a:visited:hover { color: white;}
+#vlakno a:hover, a.styled:hover { text-decoration: none; color: white; background: #883434; border: 1px solid #883434; }
+#vlakno a:visited, a.styled:visited { color: #848483; background: #848483; border: 1px solid #848483; }
+#vlakno a:visited:hover, a.styled:visited:hover { color: white;}
 #web img {margin:.5em;height:auto !important;max-width:100%;}
 
 h1 {margin-top: 60px}
@@ -333,8 +333,9 @@ div.abstr { display:inline-block; vertical-align:top; }
 div.mini { float:left; width:8em; height:8em; background-repeat:no-repeat; background-position:center; }
 
 /* help */
-div.help { border:5px solid #6470A7; box-shadow: black 4px 6px 20px; background-color:#cadfd9;
-  padding:5px; margin:5px; }
+div.help { background-color: white; margin: 0.5em; cursor: pointer; display: block; padding: 1em;
+  text-decoration: none; color: black;border-radius: 5px;-webkit-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06);
+  -moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06);box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06);overflow: hidden; }
 span.input { background-color:#F5CF85; }
 
 /* vlákno */
@@ -408,7 +409,6 @@ span.kniha_timeline_date_open {width: 70px; height: 70px; background: #dab894; c
 .timeline_schedule {margin: 60px 0 75px 0}
 
 /* fotogalerie */
-#galerie { padding:1em; }
 div.fotorama__wrap {margin: 0 auto;}/*dirty but necessary - styling foreign element*/
 
 /* ----------------------------------------------------------------------------- home page */
