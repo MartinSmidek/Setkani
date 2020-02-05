@@ -409,6 +409,7 @@ span.kniha_timeline_date_open {width: 70px; height: 70px; background: #dab894; c
 
 /* fotogalerie */
 #galerie { padding:1em; }
+div.fotorama__wrap {margin: 0 auto;}/*dirty but necessary - styling foreign element*/
 
 /* ----------------------------------------------------------------------------- home page */
 
