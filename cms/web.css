@@ -98,8 +98,7 @@ h3 {margin-top: 30px}
 .hr-text {line-height: 1em;position: relative;outline: 0;border: 0;color: black;text-align: center;height: 1.5em;opacity: .5;}
 .hr-text:before {content: '';position: absolute;left: 0;top: 35%;width: 100%;height: 7px;background: #9c9c9c;}
 .hr-text:after {content: attr(data-content);position: relative;display: inline-block;padding: 0 .5em;line-height: 1.5em;
-   background: #f2f2f2;}
-
+   background: #ccd2d9;} /*color of the underlying background*/
 
 #web-shadow {position: fixed; top: 0; width: 100%; height: 100%; background: black;
   opacity: 0.55; z-index: 99; display:none;}
@@ -111,8 +110,8 @@ h3 {margin-top: 30px}
 #clanek th { border:1px solid silver; background:silver; }
 
 /* ------------------------------------------------------------------- anchor */
-.anchor{ display: block; height: 100px; /*same height as header*/ 
-  margin-top: -100px; /*same height as header*/ visibility: hidden;}
+.anchor{ display: block; height: 100px; /*same height as header*/ pointer-events: none;
+  margin-top: -100px; /*same height as header*/ visibility: hidden; z-index: -1; position: absolute}
 
 /* ------------------------------------------------------------------- facebook */
 
@@ -390,7 +389,7 @@ div.upd { background-image: url(img/upd.png); background-repeat:no-repeat; backg
 div.kapitola  { background-color:#FFF4DE; color:#130D00; overflow:hidden; margin:0.5em; position:relative; }
 div.kniha_hr { clear:both; padding:1em 0; text-align:center; cursor:pointer; }
 div.kniha_br { clear:both; padding:1em 0; text-align:center; }
-div.kniha_bg { background: #ccd2d9; }
+div.kniha_bg { background: #ccd2d9; padding:1em 0; margin:1em 0; }
 .mediaqueries div.kniha_bg div.clanek { column-rule:1em solid #6470A7; -moz-column-rule:1em solid #6470A7; }
 a.kniha_bg { clear:both; display:block; text-decoration:none; }
 .mediaqueries a.kniha_bg div.clanek { column-rule:1em solid #6470A7; -moz-column-rule:1em solid #6470A7; }
@@ -583,7 +582,7 @@ label.form_button {float: right}
   /*todo delete?*/#cist_dole { display:block; }
   /* velká tlačítka */
   #page_sm span.label { padding-top:0.4em; }
-  #page_tm input { width:6em; }
+  #page_tm input { width:3em; }
   #web {margin-top: 60px;}
 
   /*popup*/
@@ -615,11 +614,11 @@ label.form_button {float: right}
 
 */
 
-  #logo_setkani { position:fixed; top: 10px; left: 70px; width: 50px; z-index: 10; }
-  #logo_ymca { position:fixed; top: 10px; left: 10px; width: 50px; z-index: 10; }
+  #logo_setkani { position:fixed; top: 10px; left: 60px; width: 40px; z-index: 10; }
+  #logo_ymca { position:fixed; top: 10px; left: 10px; width: 40px; z-index: 10; }
 
   #menu {position: fixed; top: 0px; z-index: 9; background: #cadfd9;}
-  #menu div, #menu span, #menu input {font-size: 11pt;}
+  #menu div, #menu span, #menu input {font-size: 9pt;}
   #menu #bar_items a.active { border-bottom: none; border-left: 14px solid #cadfd9; }
 
   #menu div#bar_items {width: 100vw;height: 100vh; height: calc(100vh - 5em); padding-bottom: 5em; left: -100vw; display: block;right: 0;position: fixed; box-shadow:none; overflow-y: scroll;}
@@ -633,8 +632,6 @@ label.form_button {float: right}
   #mobile_menu #vyber {height: fit-content; text-align: left; }
   #mobile_menu #vyber .content {padding: 0;}
   #mobile_menu #vyber .content span {padding: 0;}
-
-
 
   @media (max-width:33em) { #vyber span { display:none; } }
   /* home page na na šířku */
@@ -688,7 +685,7 @@ label.form_button {float: right}
   /* velká tlačítka */
   #page_sm span.label { padding-top:0.4em; }
   /* větší písmo menu */
-  #menu div, #menu span, #menu input {font-size: 11pt; }
+  #menu div, #menu span, #menu input {font-size: 10pt; }
   /* abstrakty */
   div.abstr { width:33.3%; }
   .abstr-fotogalerie {width:33.3%; }

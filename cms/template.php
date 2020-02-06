@@ -291,7 +291,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
             : "href='/$mref'";
       }
       if ( $nazev0!='-' ) {
-        $topmenu.= " <a $jmp class='jump$active$mobile_ignore$new1$upd1'>$nazev</a>";
+        $topmenu.= " <a $jmp class='jump$active$upd1'>$nazev</a>";
       }
     }
     elseif ( $typ_bloku=='hm' ) {
@@ -419,7 +419,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         }
       }
       if ($active) {
-        //once active, put the rest of the menu into second veriable
+        //once active, put the rest of the menu into second variable
         $do_menu2 = true;
       }
     }
@@ -451,17 +451,21 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 
       case 'knihy': # ------------------------------------------------ . knihy
         # seznam autorů
+        $body.= "<div class='content'><h1>$web_title</h1></div>";
         $id= array_shift($path);
         list($id)= explode('#',$id);
         $body.= knihy($ids,$id);
+        $body.= "<div class='content'><h2>Z vybraných článků</h2></div>";
         $body.= clanky($ids,$id);
         break;
 
       case 'mknihy': # ----------------------------------------------- . mknihy
         # seznam autorů
+        $body.= "<div class='content'><h1>$web_title</h1></div>";
         $id= array_shift($path);
         list($id)= explode('#',$id);
         $body.= knihy('',$id,$mid);
+        $body.= "<div class='content'><h2>Z vybraných článků</h2></div>";
         $body.= clanky('',$id,$mid);
         break;
 
@@ -495,6 +499,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       case 'clanky': # ------------------------------------------------ . clanky
         # seznam abstraktů článků zadaných jménem menu nebo pid
         # může následovat ident jednoho z článků (vznikne kliknutím na abstrakt)
+        $body.= "<div class='content'><h1>$web_title</h1></div>";
         $id= array_shift($path);
         list($id)= explode('#',$id);
         $body.= clanky($ids,$id);
@@ -503,6 +508,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       case 'mclanky': # ----------------------------------------------- . mclanky
         # seznam abstraktů článků zadaných mid
         # může následovat ident jednoho z článků (vznikne kliknutím na abstrakt)
+        $body.= "<div class='content'><h1>$web_title</h1></div>";
         $id= array_shift($path);
         list($id)= explode('#',$id);
         $body.= clanky('',$id,$mid);
@@ -535,10 +541,8 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         $body.= "<div class='content'><h1>Výsledky hledání &nbsp;<b>$search</b></h1></div>";
         $id= array_shift($path);
         list($id)= explode('#',$id);
-//--     $search= array_shift($path) ?: ' ';
 //                                                 display("page_mref/s=$page_mref");
         $body.= akce('hledej',$ids,$id,'',$search);
-//--     $body.= akce_prehled('hledej',$ids,$id,'',$search);
         $body.= facebook();
         break;
 
@@ -1381,7 +1385,7 @@ function home() { trace();
       $telo.= "$code
            <div class='abstrakt x$x->upd' $jmp>
              $prihlaska 
-             $x->text $sign
+             $x->text
              <hr style='clear:both;border:none'>
              $clear
            </div>";
@@ -1532,9 +1536,9 @@ function clanky($pids,$uid=0,$mid=0,$chlapi='',$back='') { trace();
       $jmp= str_replace('*', $x->ident, $back);
     }
     else {
-      $jmp_code= "go(arguments[0],'$href0!$x->ident#vlakno','$page_mref$roks/$x->ident');";
+      $jmp_code= "go(arguments[0],'$href0!$x->ident#vlakno','$page_mref$roks/$x->ident#anchor$x->ident');";
       $jmp= $CMS ? "onclick=\"$jmp_code\""
-          : "href='$page_mref$roks/$x->ident'";
+          : "href='$page_mref$roks/$x->ident#anchor$x->ident'";
     }
     $menu= '';
     $typ= 'clanek';
@@ -1971,16 +1975,14 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
         if ( $rok=='nove' ) {
           $zacatek= "Zveme vás na $akci:";
           $konec= "";
-          $id_fokus= '';
         }
         else {
           $zacatek= "Archiv $akce z roku $rok ...";
           $konec= "... konec archivu roku $rok";
-          $id_fokus= $fokus ? "id='fokus_page'" : '';
         }
         $back= "onclick=\"go(arguments[0],'$href0!$vyber#$mark','');\"";
         $back= '';
-        $h.= "<div $id_fokus id='$mark' class='kniha_bg' $back><div class='content'>
+        $h.= "<div id='$mark' class='kniha_bg' $back><div class='content'>
               <div class='kniha_timeline_text_open_front $upd'><span class='kniha_timeline_date_open'>$rok_display</span>$zacatek</div>";
         $h.= akce($vyber,$kdy,$id,$fotogalerie,$hledej,$chlapi,$backref);
         $h.= "<div class='kniha_timeline_text_open_back'><span class='kniha_timeline_date_open'>$rok_display</span>$konec</div></div></div>";
@@ -2015,7 +2017,6 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
                 </a>";
         }
       }
-      $fokus= true;
       $counter++;
     }
     if ( !$novych && $vyber!='dum' && $vyber!='chlapi.online' ) {
@@ -2435,7 +2436,7 @@ function vlakno($cid,$typ='',$back_href='',$fokus=true) { trace();
               ['obnovit článek',function(el){ zrusit('$typ','$uid',0); }],
               ['-odstranit embeded img',function(el){ opravit('img','$uid','$cid'); }]
             ],arguments[0],'clanek$uid');return false;\"";
-      $h.= "<div id='list'  class='x' $event>
+      $h.= "<div id='list'  class='x' $event><span class='anchor' id='anchor$uid'></span>
             $code
            <div id='clanek$uid' class='clanek x$x->upd'$menu$style>
             <div class='text'>
@@ -2483,17 +2484,16 @@ function vlakno($cid,$typ='',$back_href='',$fokus=true) { trace();
     elseif ( $x->tags=='A' && $typ=='foto') {
       $ex= strpos($x->ex,'d')!==false ? ' abstrakt_deleted' : (
       strpos($x->ex,'h')!==false ? ' abstrakt_hidden' : '');
-      $abstract= ($x->obsah) ? xi_shorting($x->obsah,$img) ." <b>pokračování pod odkazem</b>" : '';
-      $jmp= "onclick=\"go(arguments[0],'page=clanek!$cid','/$cid#anchor$cid');\"";
+      $abstract= ($x->obsah) ? xi_shorting($x->obsah,$img) ." <b>pokračování pod odkazem</b>" :
+          '<b>detaily akce naleznete pod tímto odkazem</b>';
+      $data = pid2menu($x->uid);
+      $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
       $h .= "<div $id_focus class='abstr_line'><span class='anchor' id='anchor$uid'></span>
          <h2>$x->nadpis</h2>
-         $code";
-      if ($abstract) {
-        $h.= "<div class='abstrakt_foto$ex' $jmp>
-                <span class='datum'>$x->kdy</span> $img $abstract 
-              </div>";
-      }
-      $h.= "</div>";
+         $code
+         <div class='abstrakt_foto$ex' $jmp>
+            <span class='datum'>$x->kdy</span> $img $abstract 
+         </div></div>";
     }
     elseif ( $x->tags=='F' ) {
       $galery= show_fotky2($uid,$obsah,"$back_href!$uid_a#vlakno");
@@ -2517,7 +2517,6 @@ function vlakno($cid,$typ='',$back_href='',$fokus=true) { trace();
             <h3>$x->nadpis $note</h3> $podpis
             $galery
           </div>
-          <hr class='hr-text' data-content='Konec fotografií'>
         </div>";
     }
     elseif ( $x->tags=='T' && $typ!='foto' ) {
@@ -2574,7 +2573,7 @@ function knihy($ids,$cpid0=0,$mid=0,$backref='') { trace();
   }
   $abstr= $mode[1] ? 'abstr' : 'abstr-line';
   list($cid0,$pid0)= explode(',',$cpid0);
-  $AND= $mid ? "AND c.mid=$mid " : ( $pid ? "AND c.pid IN ($ids) " : " AND c.uid=$cid0 ");
+  $AND= $mid ? "AND c.mid=$mid " : " AND c.uid=$cid0 ";
   $AND2= $usergroups ? "AND fe_groups IN ($usergroups)" : 'AND fe_groups=0';
   $xx= array();
   $cr= mysql_qry("
@@ -2604,19 +2603,17 @@ function knihy($ids,$cpid0=0,$mid=0,$backref='') { trace();
   $found= count($xx)." knih";
 //                                                         debug($xx);
   // generování stránky
-  $h= "";
-  $cid1= 0;
+  $h= "<div class='content'>";
   foreach($xx as $cid=>$xs) {
-    $n= count($xs)-1;
     $nadpis_cid= $xs[0]->nadpis;
     $back0= ''; //"onclick=\"go(arguments[0],'$href0');\"";
     $back= '';  //"onclick=\"go(arguments[0],'$href0!$cid');\"";
     $h.= $cid==$cid0 //&& $n>1
         ? ( $cid->type!=7
-            ? "<div class='kniha_bg' id='fokus_page' $back0><div class='kniha_br'>
-            Začátek knihy <b>$nadpis_cid</b></div>"
-            : "<div class='kniha_bg' id='fokus_page' $back0><div class='kniha_br'>
-            Začátek prezentace <b>$nadpis_cid</b></div>"
+            ? "<span class='anchor' id='anchor$cid'></span><div class='kniha_bg' $back0>
+            <hr class='hr-text' data-content='Začátek knihy $nadpis_cid'/>"
+            : "<span class='anchor' id='anchor$cid'></span><div class='kniha_bg'  $back0>
+            <hr class='hr-text' data-content='Začátek prezentace $nadpis_cid'/>"
         ) : '';
     foreach($xs as $i=>$x) {
       //                                                       display("články $x->ident ? $id");
@@ -2639,12 +2636,11 @@ function knihy($ids,$cpid0=0,$mid=0,$backref='') { trace();
                   ['obnovit fotky',function(el){ zrusit('foto','$uid',0); }]
                 ],arguments[0],'clanek$uid');return false;\"";
           }
-          $id_fokus= $fokus ? "id='fokus_part'" : '';
           $h.= "
             $code
             <div id='clanek$uid' class='galerie$x->upd'$menu>
-              <div $id_fokus class='text'>
-                <h1>$x->kdy $x->nadpis $note</h1>
+              <div class='text'>
+                <h2>$x->kdy $x->nadpis $note</h2>
                 $galery
                 $podpis
               </div>
@@ -2671,8 +2667,8 @@ function knihy($ids,$cpid0=0,$mid=0,$backref='') { trace();
           $jmp= str_replace('*', "$cid,$pid", $backref);
         }
         else {
-          $jmp= $CMS ? "onclick=\"go(arguments[0],'$href0!$cid,$pid#clanek','$page_mref/$cid,$pid');\""
-              : ($chlapi_online ? "href='$page_mref!$x->kapitola'" : "href='$page_mref/$cid,$pid'");
+          $jmp= $CMS ? "onclick=\"go(arguments[0],'$href0!$cid,$pid#clanek','$page_mref/$cid,$pid#anchor$cid');\""
+              : ($chlapi_online ? "href='$page_mref!$x->kapitola'" : "href='$page_mref/$cid,$pid#anchor$cid'");
           //                  : "href='$href0!$cid,$pid#clanek'";
         }
         $tit= $x->type!=7 ? "<b>$x->nadpis</b>" : '';
@@ -2682,19 +2678,20 @@ function knihy($ids,$cpid0=0,$mid=0,$backref='') { trace();
             ? ( ($chlapi_online ? $pid0_kapitola==$x->kapitola : $pid==$pid0)
                 ? "<div id='vlakno' class='x'$menu><div id='clanek' class='$css x'$back>
                  $code
-                 <div id='fokus_part' class='text'>$tit$txt</div>
+                 <h2>$tit</h2>
+                 <div class='text'>$txt</div>
                </div></div>"
                 : "<div class='$abstr'$menu>
                  $code
                  <a id='kap$pid' class='abstrakt x' $jmp>
-                   <b>$x->nadpis</b>$x->text
+                   <h3>$x->nadpis</h3>$x->text
                    <hr style='clear:both;border:none'>
                </a></div>"
             )
             : "<div class='$abstr'>
                $code 
                <a class='abstrakt x' $jmp>
-                 <b>$x->nadpis</b>$x->text
+                 <h3>$x->nadpis</h3>$x->text
                  <hr style='clear:both;border:none'>
              </a></div>"
         ;
@@ -2703,10 +2700,10 @@ function knihy($ids,$cpid0=0,$mid=0,$backref='') { trace();
     }
     $h.= $cid==$cid0 // && $n>1
         ? ( $cid->type!=7
-            ? "<div class='kniha_br'>Konec knihy <b>$nadpis_cid</b></div></div>"
-            : "<div class='kniha_br'>Konec prezentace <b>$nadpis_cid</b></div></div>"
+            ? "<hr class='hr-text' data-content='Konec knihy $nadpis_cid'/></div>"
+            : "<hr class='hr-text' data-content='Konec prezentace  $nadpis_cid'/></div>"
         ) : '';
   }
-  return $h;
+  return $h . "</div>";
 }
 ?>
