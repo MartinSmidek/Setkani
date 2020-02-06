@@ -1982,7 +1982,7 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
         }
         $back= "onclick=\"go(arguments[0],'$href0!$vyber#$mark','');\"";
         $back= '';
-        $h.= "<div id='$mark' class='kniha_bg' $back><div class='content'>
+        $h.= "<div id='$mark' class='timeline_bg' $back><div class='content'>
               <div class='kniha_timeline_text_open_front $upd'><span class='kniha_timeline_date_open'>$rok_display</span>$zacatek</div>";
         $h.= akce($vyber,$kdy,$id,$fotogalerie,$hledej,$chlapi,$backref);
         $h.= "<div class='kniha_timeline_text_open_back'><span class='kniha_timeline_date_open'>$rok_display</span>$konec</div></div></div>";
@@ -2691,7 +2691,7 @@ function knihy($ids,$cpid0=0,$mid=0,$backref='') { trace();
             : "<div class='$abstr'>
                $code 
                <a class='abstrakt x' $jmp>
-                 <h3>$x->nadpis</h3>$x->text
+                 <b>$x->nadpis</b>$x->text
                  <hr style='clear:both;border:none'>
              </a></div>"
         ;

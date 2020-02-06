@@ -383,13 +383,14 @@ div.podpis { text-align:right; font-style:italic; clear:both; padding: 0 15px 10
 div [data-oembed-url] { display: inline-block; margin: 1em; }
 div.new { background-image: url(img/new.png); background-repeat:no-repeat; background-position: top right; }
 div.upd { background-image: url(img/upd.png); background-repeat:no-repeat; background-position: top right; }
-#list {max-width: 1100px; margin: 0 auto; padding: 0 20px;}
+#list {max-width: 1100px; margin: 0 auto; padding: 0 20px; padding-bottom: 30px;}
 
 /* knihy */
 div.kapitola  { background-color:#FFF4DE; color:#130D00; overflow:hidden; margin:0.5em; position:relative; }
 div.kniha_hr { clear:both; padding:1em 0; text-align:center; cursor:pointer; }
 div.kniha_br { clear:both; padding:1em 0; text-align:center; }
 div.kniha_bg { background: #ccd2d9; padding:1em 0; margin:1em 0; }
+div.timeline_bg {background: #ccd2d9;}
 .mediaqueries div.kniha_bg div.clanek { column-rule:1em solid #6470A7; -moz-column-rule:1em solid #6470A7; }
 a.kniha_bg { clear:both; display:block; text-decoration:none; }
 .mediaqueries a.kniha_bg div.clanek { column-rule:1em solid #6470A7; -moz-column-rule:1em solid #6470A7; }
