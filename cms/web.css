@@ -30,7 +30,7 @@ div.LabelDrop { outline: 3px solid #cadfd9; background-color:#cadfd9; }
 html { height:100%; width:100%; }
 body { /*overflow-y:auto;*/ font-family: 'Open Sans', sans-serif; overflow-x:hidden; margin: 0; min-height: 100%; background: #f2f2f2 }
 
-.container { width: 100vw; position: relative; padding-top: 30px; padding-bottom: 30px; }
+.container { width: 100vw; position: relative; padding-bottom: 30px; }
 .content { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 .inner_container {display: flex; flex-direction: column;}
 
@@ -184,7 +184,7 @@ div.box_input { padding:2em 0 1em; }
     background-image: url(/cms/img/cover.png); background-size: cover; right: 55vw; }
 #titler:before  {content:''; width: 30vw; height: 400px; position: absolute; top: 0; left: -30vw; background: #cadfd9;}
 #header_gallery {
-  position:relative; width: 80vw; margin-left: 20vw; height: 400px; overflow: hidden; z-index: -1; }
+  position:relative; width: 80vw; margin-left: 20vw; height: 400px; overflow: hidden; z-index: -1;background: #cadfd9; }
 #gallery_shadow { position:absolute; top:0%; left:0%; width: 100vw; height: 400px;
   opacity: 0; box-shadow: black 0 0 0 100vw inset; }
 #header_gallery img { z-index: 1; position:absolute; width: 100%; overflow: hidden; }
@@ -253,7 +253,8 @@ div.LabelDrop * {cursor:pointer; }
 
 
 /* výběrové podmínky */
-#vyber {width:100%; font-weight:bold; color: black; font-size: 9pt;display:inline-flex; background-color: #cadfd9; height: 33px; line-height: 31px }
+#vyber {width:100%; font-weight:bold; color: black; font-size: 9pt;display:inline-flex; background-color: #cadfd9;
+  height: 33px; line-height: 31px; }
 #vyber input { margin-left:1em; }
 #vyber span { font-weight:bold; font-size: 9pt  }
 #vyber label { cursor:pointer; display:inline-block; padding: 0px 7px; font-size: 9pt }
