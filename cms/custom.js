@@ -45,14 +45,14 @@ jQuery(window).bind('scroll', function () {
     jQuery("#gallery_shadow").css("opacity", (jQuery(window).scrollTop()) / amount);
     if (jQuery(window).scrollTop() > amount) {
         jQuery('#menu').addClass('fixed');
-        jQuery('#page').css("padding-top", jQuery('#menu').height());
+        jQuery('#web').css("padding-top", jQuery('#menu').height());
         //jQuery('#logo_ymca').addClass('fixed');
         //jQuery("#logo_ymca.fixed").css("top", "8px");
     } else {
         //jQuery("#logo_ymca").css("width", (17600 - (37 * jQuery(window).scrollTop())) / 80);
         //jQuery("#logo_ymca").css("left", (2250 - jQuery(window).scrollTop()) / 150 + "vw");
         //jQuery("#logo_ymca").css("top", (8000 + (61 * jQuery(window).scrollTop())) / 80 + "px");
-        jQuery('#page').css("padding-top", "0" /*same value as header bar*/);
+        jQuery('#web').css("padding-top", "0" /*same value as header bar*/);
         jQuery('#menu').removeClass('fixed');
         //jQuery('#logo_ymca').removeClass('fixed');
     }

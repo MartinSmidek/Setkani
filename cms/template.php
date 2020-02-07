@@ -941,10 +941,7 @@ __EOD;
   $gallery = gallery();
 
 //submenu obsahuje submenu kromě výběru proc_kdo
-  $submenu .= $submenu_komu;
-  if ($submenu) {
-    $submenu = "<div id='page_sm' class='mobile_nodisplay'><div class='content'>$submenu</div></div>";
-  }
+  if ($submenu) $submenu = "<div id='page_sm' class='mobile_nodisplay'><div class='content'>$submenu</div></div>";
 
 // dokončení stránky
 //                                                         display("**:web_banner='$web_banner'");
@@ -979,6 +976,7 @@ $head
        $submenu
   </div>
   <div id='web' class='$web_banner container'>
+    $submenu_komu
     <div id='info' style='display:none' onclick="change_info();"><br>$ms</div>
     $body
   </div>
@@ -1007,6 +1005,7 @@ __EOD;
       $submenu
     </div>
     <div id='web' class='$web_banner'>
+      $submenu_komu
       <div id='info' onclick='change_info();'><br>$ms</div>
       $body
     </div>

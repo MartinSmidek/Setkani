@@ -149,7 +149,7 @@ div.clanek span.cms_form:hover {
 div#user_login, div#user_mail { position:fixed; left: 50vw; top:50vh; line-height: 22pt;
   color:#cadfd9; padding:2em 5em; opacity:1; background: white;
   box-shadow: black 4px 6px 20px; transform:translate(-50%, -50%); z-index: 100; }
-div#user_login input, div#user_mail input { width:20.5em; 
+div#user_login input, div#user_mail input { width:20.5em;
   padding: 12px 0px 12px 0; margin-bottom: 15px; margin-right: 10px; outline: 0; border: 0; box-shadow: 0 1px 0 0 #e5e5e5; }
 div#user_login input:focus, div#user_mail input:focus {box-shadow: 0 2px 0 0 #67827a;;}
 
@@ -239,8 +239,7 @@ div.LabelDrop * {cursor:pointer; }
   -webkit-animation-duration: 0.5s; animation-name: select-menu; animation-duration: 0.5s; animation-timing-function: ease-in-out; }
 #page_hm a:hover span { /*todo*/ }
 
-#vyber {width:100%; color:#EFFBDA; font-weight:bold;  }
-#vyber input { margin-left:1em; }
+
 
 /* sub menu */
 #page_sm {width:100%; display:inline-flex; background-color: #cadfd9; height: 3em; line-height: 4em}
@@ -251,21 +250,24 @@ div.LabelDrop * {cursor:pointer; }
 #page_sm a:hover { background-color: #67827a; color:white; }
 #page_sm a:hover span { /*todo*/ }
 
+
+
+/* výběrové podmínky */
+#vyber {width:100%; font-weight:bold; color: black; font-size: 9pt;display:inline-flex; background-color: #cadfd9; height: 33px; line-height: 31px }
+#vyber input { margin-left:1em; }
+#vyber span { font-weight:bold; font-size: 9pt  }
+#vyber label { cursor:pointer; display:inline-block; padding: 0px 7px; font-size: 9pt }
+#vyber label.checked { background-color: #67827a !important; color: white !important; }
+#vyber label input { visibility: hidden; position: absolute; top: 0; left: 0; }
+
+#vyber input[type=checkbox] + label { padding:0px 5px; }
+#vyber input[type=checkbox]:checked + label { background-color: #67827a !important; color: white !important; }
+
 /* novinky */
 #page_tm a.new, #page_hm a.new, #page_sm a.new { background-image: url(img/new.png);
   background-repeat:no-repeat; background-position: top right; }
 #page_tm a.upd, #page_hm a.upd, #page_sm a.upd { background-image: url(img/upd.png);
   background-repeat:no-repeat; background-position: top right; }
-
-/* výběrové podmínky */
-#vyber {height: 3em; line-height: 3em; color: black;}
-#vyber span { font-weight:bold;  }
-#vyber label { cursor:pointer; display:inline-block; padding: 0px 7px; }
-#vyber label.checked { background-color: #67827a !important; color: white !important; }
-#vyber label input { visibility: hidden; position: absolute; top: 0; left: 0; }
-
-#vyber input[type=checkbox] + label { padding:1px 5px; }
-#vyber input[type=checkbox]:checked + label { background-color: #67827a !important; color: white !important; }
 
 /* odkazy pro admina */
 #menu a.admin { background-color:#D1D6EC !important;}
@@ -318,7 +320,7 @@ span.akce_datum {background: white; border-radius: 5px; float: left;}
 a.short_post, div.short_post { font-size: 11pt !important; width: 95%; display: inline-block; margin: 0 0 1em;
   text-overflow: ellipsis; overflow: hidden; text-align: justify;}
 .short_post img {max-width: initial !important; width: 100% !important;
-  width: calc(100% + 1.2em) !important; margin: -0.6em !important; margin-bottom: 5px !important; 
+  width: calc(100% + 1.2em) !important; margin: -0.6em !important; margin-bottom: 5px !important;
   /*! values of em are depentent on padding of classes a.abstrakt, div.abstrakt !*/ }
 .short_post h1, .short_post h2, .short_post h3 {display: none}
 .short_post a, .short_post u, .short_post b, .short_post strong{text-decoration: none; font-weight: normal}
@@ -404,7 +406,7 @@ span.kniha_timeline_date { width: 50px; height: 50px; background: #7c6853; color
   border-radius: 30px; border: 5px solid white; text-align: -webkit-center; line-height: 50px;}
 div.kniha_timeline_text_open_front {margin-left: 15%; padding: 12px 12px 22px 52px; color: #7c6853;font-weight: bold; margin-top: 15px; margin-bottom: 10px;}
 div.kniha_timeline_text_open_back {margin-left: 15%; padding: 0px 22px 12px 52px; color: #7c6853;font-weight: bold; margin-bottom: 15px;}
-span.kniha_timeline_date_open {width: 70px; height: 70px; background: #dab894; color: white; position: absolute; transform: translate(-85px, -29px); 
+span.kniha_timeline_date_open {width: 70px; height: 70px; background: #dab894; color: white; position: absolute; transform: translate(-85px, -29px);
   border-radius: 50px; border: 5px solid white; text-align: -webkit-center; line-height: 70px;}
 .timeline_schedule {margin: 60px 0 75px 0}
 
@@ -469,7 +471,7 @@ div.pokoje { color: black; overflow:hidden; margin:0.5em; position:relative; }
 div.pokoje span.datum { position: absolute; top: 0; left: 0; }
 span.mesic { background-color:#B48933; color:#EFFBDA; font-weight: bold; }
 
-/* tabulka */           
+/* tabulka */
 table.dum  { border-collapse: collapse; empty-cells: hide; width: 100%;min-width: 900px; }
 table.dum td { border: 1px solid navy; min-width:1.2em; text-align: center; }
 table.dum, table.dum tr, table.dum td {border: none}
@@ -553,24 +555,21 @@ label.form_button {float: right}
 
   #menu div#bar_items {width: 100vw;height: 100vh; height: calc(100vh - 9em); padding-bottom: 9em; left: -100vw; box-shadow:none; display: block;right: 0;position: fixed; overflow-y: scroll;}
   #menu div#bar_items span {height: fit-content}
-  #page_tm {height: 3.5em; line-height: 3.5em;}
-  #page_tm input {background: #cadfd9; width: 4em; margin-top: 5px;}
+  #page_tm {height: 3.5em; line-height: 3.5em; width: 100%}
+  #page_tm input {background: #cadfd9; width: 3em; margin-top: 5px;}
   #page_hm {position: fixed;left: 0; top: 100px;z-index: 101;}
   #page_hm a.jump {width: 100vw; }
   #page_tm a:hover { -webkit-animation-name: none;animation-name: none; }
   #page_sm {height: auto; line-height: initial}
+  #page_sm span.label { padding-top:0.4em; }
   #mobile_menu {display: block}
   #mobile_menu a.jump {display: block}
-  #mobile_menu #vyber {height: fit-content; text-align: left; }
-  #mobile_menu #vyber .content {padding: 0;}
-  #mobile_menu #vyber .content span {padding: 0;}
+  #vyber {height: initial}
 
   /*login*/
   div#user_login, div#user_mail {  padding:1em 2em; }
   div#user_login input, div#user_mail input { width:12.5em; }
   div#user_mail div {width: 12em; margin-top: 2em; height: auto}
-
-  @media (max-width:25em) { #vyber span { display:none; } }
 
   /* home page na na výšku */
   #facebook_content {width: 300px; padding-top: 60px; padding-right: 40px;}
@@ -581,10 +580,7 @@ label.form_button {float: right}
   h2, h3, h4 {margin-left: 0.1em !important;}
 
   /*todo delete?*/#cist_dole { display:block; }
-  /* velká tlačítka */
-  #page_sm span.label { padding-top:0.4em; }
-  #page_tm input { width:3em; }
-  #web {margin-top: 60px;}
+  #web {margin-top: 50px;}
 
   /*popup*/
   #popup {width: 80vw; margin-left: -45vw; height: 80vh; margin-top: -40vh;}
@@ -624,17 +620,14 @@ label.form_button {float: right}
 
   #menu div#bar_items {width: 100vw;height: 100vh; height: calc(100vh - 5em); padding-bottom: 5em; left: -100vw; display: block;right: 0;position: fixed; box-shadow:none; overflow-y: scroll;}
   #menu div#bar_items span {height: fit-content}
-  #page_tm input {background: #cadfd9;}
+  #page_tm input {background: #cadfd9; width: 100%}
+  #bar_menu>i {padding-left: 20px;}
   #page_hm {position: fixed;left: 0; top: 100px;z-index: 101;}
   #page_hm a.jump {width: 100vw;}
   #page_sm {height: auto; line-height: initial}
   #mobile_menu {display: block}
   #mobile_menu a.jump {display: block}
-  #mobile_menu #vyber {height: fit-content; text-align: left; }
-  #mobile_menu #vyber .content {padding: 0;}
-  #mobile_menu #vyber .content span {padding: 0;}
 
-  @media (max-width:33em) { #vyber span { display:none; } }
   /* home page na na šířku */
   #cist_dole { display:none; }
   /* velká tlačítka */
