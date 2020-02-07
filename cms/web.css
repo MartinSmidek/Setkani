@@ -47,13 +47,16 @@ h1#ymca_setkani { position: absolute; top:3.8em; margin-left:.5em; font-size: 12
 .footer { clear: both; background: #232323; }
 .footer a { color : white;  font-weight: bold; }
 .footer h3 { font-size: 15px; color: #ff9933; }
-.footer .tile { width: 170px; display: inline-block;  margin: 1px; vertical-align:top; font-size: 8pt !important; padding: 10px 20px;  }
+.footer .tile { width: 180px; display: inline-block;  margin: 1px; vertical-align:top; font-size: 8pt !important; padding: 10px 15px;  }
+.footer .tile p {text-align: left}
 .footer hr.footer-hr { border: 0; height: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.3); margin: 0px 160px 0px 60px;}
-.footer img.footerIcon { transform: translate(0, 3px); height: 12px !important; margin: 0 !important;}
-.footer .organizations img {width: 180px !important;}
+.footer img.footerIcon { transform: translate(0, 3px); width: 12px !important; margin: 0 !important;}
+.footer .organizations img {}
 .footer .organizations p {display: inline-block !important;}
-.footer #footer-left-part {width: 65%; display: inline-block; vertical-align: top; min-width: 650px;}
+.footer #footer-left-part {width: 65%; display: inline-block; vertical-align: top; min-width: 640px;}
 .footer #footer-right-part {width: 18%; display: inline-block; vertical-align: top; min-width: 150px;}
+
+#page_footer_bar {padding: 1em;}
 
 #site_signature {float: right;}
 
@@ -68,7 +71,8 @@ h1#ymca_setkani { position: absolute; top:3.8em; margin-left:.5em; font-size: 12
 #web.web_foto     { background-position-x:-160px; }
 #web.web_libr     { background-position-x:-60px; }
 #web.web_my       { background-position-x:+160px; }
-div, span, input, form, button {font-family: 'Open Sans', sans-serif !important; font-size:12pt}
+div, span {font-size:12pt}
+input, form, button {font-family: 'Open Sans', sans-serif !important; font-size:12pt}
 p {text-align: justify}
 
 h1, #web h2,h3 { -webkit-column-break-inside: avoid; -moz-column-break-inside: avoid; column-break-inside: avoid; }
@@ -338,7 +342,8 @@ div.mini { float:left; width:8em; height:8em; background-repeat:no-repeat; backg
 div.help { background-color: white; margin: 0.5em; cursor: pointer; display: block; padding: 1em;
   text-decoration: none; color: black;border-radius: 5px;-webkit-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06);
   -moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06);box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06);overflow: hidden; }
-span.input { background-color:#F5CF85; }
+span.input { font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,sans-serif;background-color: #eff0f1;
+}
 
 /* vlákno */
 div.vlakno { clear:both; }

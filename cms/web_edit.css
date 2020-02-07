@@ -32,7 +32,7 @@ figure.image-wide img, img.image-wide {max-width: 500px;height: auto;}
 /* Image alignment styles. */
 .image-align-right {float: right;margin-left: 20px;}
 .image-align-left {float: left;margin-right: 20px;}
-.image-align-center {text-align: center;}
+.image-align-center {text-align: center; margin-block-start: 0; margin-block-end: 0}
 .image-align-center > figure {display: inline-block;}
 /* Embed narrow style. */
 .embed-narrow {width: 75%;}
