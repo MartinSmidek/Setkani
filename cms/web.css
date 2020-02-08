@@ -76,11 +76,12 @@ input, form, button {font-family: 'Open Sans', sans-serif !important; font-size:
 p {text-align: justify}
 
 h1, #web h2,h3 { -webkit-column-break-inside: avoid; -moz-column-break-inside: avoid; column-break-inside: avoid; }
-#vlakno a, a.styled { text-decoration: none; color: #883434; padding: 0px 6px; font-weight: bold; border-radius: 5px;
+/*styled <a> tags, inside all div#vlakno but not when class .plain_href present; and all with a.styled*/
+#vlakno a:not(.plain_href), a.styled { text-decoration: none; color: #883434; padding: 0px 6px; font-weight: bold; border-radius: 5px;
   box-sizing: border-box; border: 1px solid #883434; }
-#vlakno a:hover, a.styled:hover { text-decoration: none; color: white; background: #883434; border: 1px solid #883434; }
-#vlakno a:visited, a.styled:visited { color: #848483; background: #848483; border: 1px solid #848483; }
-#vlakno a:visited:hover, a.styled:visited:hover { color: white;}
+#vlakno a:hover:not(.plain_href), a.styled:hover { text-decoration: none; color: white; background: #883434; border: 1px solid #883434; }
+#vlakno a:visited:not(.plain_href), a.styled:visited { color: #848483; background: #848483; border: 1px solid #848483; }
+#vlakno a:visited:hover:not(.plain_href), a.styled:visited:hover { color: white;}
 #web img {margin:.5em;height:auto !important;max-width:100%;}
 
 h1 {margin-top: 60px}
@@ -98,11 +99,12 @@ h3 {margin-top: 30px}
 .nodisplay {display: none; }
 .clickable {cursor: pointer;}
 .bold {font-weight: bold;}
+.h7 {padding: 0.2em 0.3em; font-weight: bold; display: block} /*smallest title level*/
 
 .hr-text {line-height: 1em;position: relative;outline: 0;border: 0;color: black;text-align: center;height: 1.5em;opacity: .5;}
-.hr-text:before {content: '';position: absolute;left: 0;top: 35%;width: 100%;height: 7px;background: #9c9c9c;}
+.hr-text:before {content: '';position: absolute;left: 0;top: 35%;width: 100%;height: 7px;background: #ccd2d9;}
 .hr-text:after {content: attr(data-content);position: relative;display: inline-block;padding: 0 .5em;line-height: 1.5em;
-   background: #ccd2d9;} /*color of the underlying background*/
+   background: #f2f2f2;} /*color of the underlying background*/
 
 #web-shadow {position: fixed; top: 0; width: 100%; height: 100%; background: black;
   opacity: 0.55; z-index: 99; display:none;}
@@ -114,8 +116,7 @@ h3 {margin-top: 30px}
 #clanek th { border:1px solid silver; background:silver; }
 
 /* ------------------------------------------------------------------- anchor */
-.anchor{ display: block; height: 100px; /*same height as header*/ pointer-events: none;
-  margin-top: -100px; /*same height as header*/ visibility: hidden; z-index: -1;}
+.anchor{top: -150px; position: absolute; }
 
 /* ------------------------------------------------------------------- facebook */
 
@@ -287,6 +288,7 @@ div.text a span:hover { background-color:#B48933 !important; color:#EFFBDA !impo
 
 /* seznamy abstraktů */
 div.abstrakt_foto { background-color:#cadfd9;  margin:0.5em; cursor:pointer; padding:.4em;  }
+div.abstrakt_foto:after {content: ''; clear: both; display: block;} /*makes the div to stretch to contain floating children*/
 a.abstrakt, div.abstrakt { background-color:white; margin:0.5em; cursor:pointer; padding:.6em; display:block;
   text-decoration:none; color: black; border-radius: 5px; -webkit-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06);
   -moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06); box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06); overflow: hidden; }
