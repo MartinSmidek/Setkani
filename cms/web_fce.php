@@ -77,7 +77,7 @@ function query2menu($pid,$cid,$mid,$ref,$mref,$type,$program,$rok) { trace();
   $url= $direct= '';
   if ( $type==1  ) {
     $url.= "$mref/$pid";
-    $direct .= $url . "#$pid";
+    $direct .= $url . "#anchor$pid";
     $page= "$ref!$pid";
   }
   elseif ( $type==2 && $program ) {
@@ -89,12 +89,12 @@ function query2menu($pid,$cid,$mid,$ref,$mref,$type,$program,$rok) { trace();
       $del= ',';
     }
     $url.= "$komu/$rok/$pid";
-    $direct .= $url . "#$pid";
+    $direct .= $url . "#anchor$pid";
     $page= "akce!$komu,$rok!$pid";
   }
   elseif ( $type==3 || $type==6 || $type==5 ) {
     $url.= "$mref/$cid,$pid";
-    $direct .= $url . "#$pid";
+    $direct .= $url . "#anchor$pid";
     $page= "$ref!$cid,$pid";
   }
   else {
@@ -567,12 +567,12 @@ function datum_cesky($from,$until) {
   date_default_timezone_set('Europe/Prague');
   if ( $from == $until ) {  //zacatek a konec je stejny den
     $datum_dmy = date('j. ',$from);
-    $datum_dmy .= czechMonth(date('n',$from));
+    $datum_dmy .= czechMonthOf(date('n',$from));
     $datum_dmy .= date('Y',$from)==date('Y',time()) ? '' : ", " . date('Y', $from);
   }
   elseif ( date('n.Y',$from)==date('n.Y',$until) ) { //zacatek a konec je stejny mesic
     $datum_dmy = date('j',$from).". - ".date('j. ',$until);
-    $datum_dmy .= czechMonth(date('n',$from));
+    $datum_dmy .= czechMonthOf(date('n',$from));
     $datum_dmy .= date('Y',$from)==date('Y',time()) ? '' : ", " . date('Y', $from);
   }
   else { //ostatni pripady
@@ -604,11 +604,24 @@ function czechMonth($month) {
   return array('leden', 'únor', 'březen', 'duben', 'květen', 'červen',
       'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec')[$month - 1];
 }
-#todo delete
-function monthColor($month) {
-  return array('#80849F', '#DBA193', '#88AF9C', '#B7C39F', '#85144b', '#DEE3BB',
-    '#FF4136', '#B10DC9', '#FF851B', '#ffffff', '#7D787C', '#DDDDDD')[$month-1];
+
+function numOfDaysInMonth($month) {
+  switch ($month) {
+    case 1:
+    case 3:
+    case 5:
+    case 7:
+    case 8:
+    case 10:
+    case 12:
+      return 31;
+    case 2:
+      return 28;
+    default:
+      return 30;
+  }
 }
+
 //query of program that is stored in the database in the form: 1,2,3...
 //todo verify whether the color can be obtained this way...
 function barva_programu($program) {

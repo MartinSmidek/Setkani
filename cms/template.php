@@ -885,7 +885,7 @@ __EOD;
     <div class="content white">
       $navrcholu            
       Vaše dary na účet <img src="cms/img/bank.png" class="footerIcon">  <b>2400465447/2010</b> nám pomáhají uskutečňovat naše programy pro vás i vaše blízké
-      <span id='site_signature'> YMCA setkání, 2019&emsp;</div>
+      <span id='site_signature'> YMCA setkání, 2020&emsp;</div>
       <div>$info_note</div>
     </div>
   </div>
@@ -1232,16 +1232,16 @@ function timeline()
   $to_end_month = 30 - date('j', time());
   $time = time() + ($to_end_month + 1/*sichr*/) * $day;
   $month_gap = $to_end_month *$day_size;
-  $counter = date('n', $time);
-  $month_name = czechMonth($counter);
+  $month = date('n', $time);
+  $month_name = czechMonth($month);
   $h .= "<li class='timeline_month' style='left: ${month_gap}px'>$month_name</li>";
 
   do {
-    $time += (($counter % 2 == 1) ? 31 : 30) * $day; //approximate month length +- few days will do
+    $time += numOfDaysInMonth($month) * $day;
     $month_gap += $month_size;
     $month_name = czechMonth(date('n', ($time + 12*$day)));
     $h .= "<li class='timeline_month' style='left: ${month_gap}px'>$month_name</li>";
-    $counter++;
+    $month++;
   } while ($time < $max_date);
 
   $h .= "</div></ul><ul id='timeline'>";
@@ -1251,7 +1251,7 @@ function timeline()
     $dateCzech = datum_cesky($x->od, $x->do);
     $jmp = "href='/akce/nove/$x->ident'/";
     $in_time = $x->od - time();
-    if ($in_time <= 0)  {
+    if ($in_time < 0)  {
       $in_time = 0;
     }
     $ends_in = $x->do - time();

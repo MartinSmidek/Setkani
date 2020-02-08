@@ -115,7 +115,7 @@ h3 {margin-top: 30px}
 
 /* ------------------------------------------------------------------- anchor */
 .anchor{ display: block; height: 100px; /*same height as header*/ pointer-events: none;
-  margin-top: -100px; /*same height as header*/ visibility: hidden; z-index: -1; position: absolute}
+  margin-top: -100px; /*same height as header*/ visibility: hidden; z-index: -1;}
 
 /* ------------------------------------------------------------------- facebook */
 
