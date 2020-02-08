@@ -1976,10 +1976,17 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
         }
         $back= "onclick=\"go(arguments[0],'$href0!$vyber#$mark','');\"";
         $back= '';
-        $h.= "<div id='$mark' class='timeline_bg' $back><div class='content'>
-              <div class='kniha_timeline_text_open_front $upd'><span class='kniha_timeline_date_open'>$rok_display</span>$zacatek</div>";
+        $h.= "<div id='$mark' class='timeline_bg relative' $back><div class='content'>
+              <span class='anchor' id='anchor$rok'></span>
+              <div class='kniha_timeline_text_open_front $upd'>
+                <span class='kniha_timeline_date_open'>$rok_display</span>
+                $zacatek
+              </div>";
         $h.= akce($vyber,$kdy,$id,$fotogalerie,$hledej,$chlapi,$backref);
-        $h.= "<div class='kniha_timeline_text_open_back'><span class='kniha_timeline_date_open'>$rok_display</span>$konec</div></div></div>";
+        $h.= "<div class='kniha_timeline_text_open_back'>
+              <span class='kniha_timeline_date_open'>$rok_display</span>
+                $konec
+              </div></div></div>";
       }
       else {
         // uzavřený archiv
@@ -1991,10 +1998,10 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
               ? "{$href0}hledej!$rok$hledej#$mark" : ( $vyber=='dum'
                   ? "{$href0}!$rok#$mark"
                   : "{$href0}!$vyber,$rok#$mark" );
-          $next= "onclick=\"go(arguments[0],'$next','$page_mref/$rok');\"";
+          $next= "onclick=\"go(arguments[0],'$next','$page_mref/$rok#anchor$rok');\"";
         }
         else {
-          $next= "href='$page_mref/$rok'";
+          $next= "href='$page_mref/$rok#anchor$rok'";
         }
         $akce= kolik_1_2_5($pocet,"akce,akcí,akcí");
         $nadpis= $rok=='nove'
@@ -2202,7 +2209,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
         if ( $p_uid!=$id || 1 ) { //todo always true -- delete?
           $text= xi_shorting($text,$img);
           if ( $img ) {
-            if ($typ=='foto') { //todo temporary solution, remove the html garbage around source --> create raw function
+            if ($typ=='foto') { //todo temporary solution to remove the html garbage around source --> create function getting img source instead
               preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $img, $image);
               $img = $image['src'];
             }

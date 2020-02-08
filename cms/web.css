@@ -77,9 +77,10 @@ p {text-align: justify}
 
 h1, #web h2,h3 { -webkit-column-break-inside: avoid; -moz-column-break-inside: avoid; column-break-inside: avoid; }
 /*styled <a> tags, inside all div#vlakno but not when class .plain_href present; and all with a.styled*/
-#vlakno a:not(.plain_href), a.styled { text-decoration: none; color: #883434; padding: 0px 6px; font-weight: bold; border-radius: 5px;
-  box-sizing: border-box; border: 1px solid #883434; }
-#vlakno a:hover:not(.plain_href), a.styled:hover { text-decoration: none; color: white; background: #883434; border: 1px solid #883434; }
+#vlakno a:not(.plain_href), a.styled { text-decoration: none; color: #883434; padding: 0 4px; font-weight: bold;
+  border-radius: 5px; box-sizing: border-box; border: 1px solid #883434; }
+#vlakno a:hover:not(.plain_href), a.styled:hover { text-decoration: none; color: white; background: #883434;
+  border: 1px solid #883434; }
 #vlakno a:visited:not(.plain_href), a.styled:visited { color: #848483; background: #848483; border: 1px solid #848483; }
 #vlakno a:visited:hover:not(.plain_href), a.styled:visited:hover { color: white;}
 #web img {margin:.5em;height:auto !important;max-width:100%;}
@@ -116,7 +117,11 @@ h3 {margin-top: 30px}
 #clanek th { border:1px solid silver; background:silver; }
 
 /* ------------------------------------------------------------------- anchor */
-.anchor{top: -150px; position: absolute; }
+/* USE: add span <span class='anchor' id='desired_id'></span> to the element to point to
+        ! parent of the span must be relative in its position
+
+        point to the anchor using: url#desired_id */
+.anchor{top: -100px; position: absolute; }
 
 /* ------------------------------------------------------------------- facebook */
 
