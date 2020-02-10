@@ -208,6 +208,7 @@ div.box_input { padding:2em 0 1em; }
 #mobile_submenu {background: #f0f5f4;padding-left: 20px;}
 
 .search_icon {transform: translate(10px, 5px);}
+input#search {width: initial}
 
 #menu { line-height: 0; width: 100%; background-color: white; padding-bottom: 0; }
 #menu.fixed { position: fixed; top: 0px; z-index: 9;}
