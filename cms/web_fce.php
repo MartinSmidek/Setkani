@@ -850,6 +850,7 @@ end:
 function x_shorting ($text,$n=200) { //trace();
   $img= '';
   $stext= xi_shorting ($text,$img,$n);
+  if (!$stext) $stext = "Popis není k dispozici. Obsah naleznete pod odkazem.";
   if ( $img ) {
     $stext= $img ? "<div>$img$stext ...</div>" : "$stext ...";
   }
