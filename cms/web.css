@@ -207,9 +207,6 @@ div.box_input { padding:2em 0 1em; }
 #mobile_menu {display: none}
 #mobile_submenu {background: #f0f5f4;padding-left: 20px;}
 
-.search_icon {transform: translate(10px, 5px);}
-input#search {width: initial}
-
 #menu { line-height: 0; width: 100%; background-color: white; padding-bottom: 0; }
 #menu.fixed { position: fixed; top: 0px; z-index: 9;}
 #menu div#bar_items { cursor: pointer;
@@ -236,11 +233,11 @@ div.LabelDrop * {cursor:pointer; }
 #page_tm a:hover { box-sizing: border-box; background-color: #cadfd9; -webkit-animation-name: select-menu;
   -webkit-animation-duration: 0.5s; animation-name: select-menu; animation-duration: 0.5s; animation-timing-function: ease-in-out; }
 #page_tm a:hover span { /*todo*/ }
+.search_icon {transform: translate(10px, 5px);}
 
 
 #page_tm #bar_menu { float:right; font-size:1.5em !important;
   width:1.2em; cursor:pointer;  }
-#bar_menu>i {  }
 
 /* main menu */
 #page_hm { float: left; text-align:left; height: 4.5em; line-height: 4.5em; }
@@ -633,8 +630,7 @@ label.form_button {float: right}
 
   #menu div#bar_items {width: 100vw;height: 100vh; height: calc(100vh - 5em); padding-bottom: 5em; left: -100vw; display: block;right: 0;position: fixed; box-shadow:none; overflow-y: scroll;}
   #menu div#bar_items span {height: fit-content}
-  #page_tm input {background: #cadfd9; width: 100%}
-  #bar_menu>i {padding-left: 20px;}
+  #page_tm input {background: #cadfd9 }
   #page_hm {position: fixed;left: 0; top: 100px;z-index: 101;}
   #page_hm a.jump {width: 100vw;}
   #page_sm {height: auto; line-height: initial}
