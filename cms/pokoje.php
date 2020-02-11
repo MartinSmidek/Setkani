@@ -503,7 +503,7 @@ function gn_makeDaysList($pid,$pid_goal,$ym,$od,$do) { trace();
     <td class='bold' style='border-right: 1px solid' colspan=3>1.patro</td>
     <td class='bold' style='border-right: 1px solid' colspan=2>1-</td>
     <td class='bold' style='border-right: 1px solid' colspan=2>1+</td>
-    <td class='bold' style='border-right: 1px solid' colspan=9>2.patro</td>";
+    <td class='bold' style='border-right: 1px solid' colspan=8>2.patro</td>";
   $h_patra_backwards = $h_patra . "</tr>";
   $h_patra .= "<td class='bold' rowspan='4' style='border-left:2px solid'>poznámky</td></tr>";
   $h_pokoje= "<tr><td class='bold' colspan=3>pokoj:</td>";
