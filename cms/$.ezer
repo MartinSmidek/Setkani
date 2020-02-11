@@ -845,6 +845,39 @@ panel BE_LOG [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_men
         u.result.set(y);
       }
     }
+    menu { title:'Struktura databáze',type:'group',skill:'m'
+      item {title:'[fa-object-group] Popis struktury dat'
+        proc onclick (i) { 
+          u.fill(conc(i.owner.title,' - ',i.title),ask('db_get_file','cms/db.html'));
+        }
+      }
+      item {title:'[fa-database] tabulka tx_gncase'         par:°{tab:'tx_gncase'} }
+      item {title:'[fa-database] tabulka tx_gncase_part'    par:°{tab:'tx_gncase_part'} }
+      proc onclick (i) {
+        clear;
+        u.fill(conc(i.owner.title,' - ',i.title),ask('i_doc_table_struct',i.par.tab,0));
+      }
+    }
+    menu { title:'Import/export databáze',type:'group',skill:'m'
+      item { title:"[fa-question] přehled záloh"          par:°{do:'b',typ:'listing',direct:'1'}}
+      item { title:"[fa-upload] zálohuj teď"              par:°{do:'b',typ:'special',direct:'0'}}
+      item { title:"[fa-download] obnova ze zálohy"       par:°{do:'o',typ:'restore',direct:'1'}}
+      // DROP nepoužitých tabulek
+      item { title:"[fa-recycle] transformace: old tables"   par:°{do:'t',op:'old-tables'}}
+      // nepoužitá pole
+      item { title:"[fa-recycle] transformace: old fields"   par:°{do:'t',op:'old-fields'}}
+      proc onclick(i) {
+        info.fill(conc(i.owner.title,' - ',i.title),' ');
+        { eq(i.par.do,'b'); info.append(ask('sys_backup_make',i.par)) 
+        | eq(i.par.do,'t'); info.append(ask('db_transform',i.par)) 
+        | eq(i.par.do,'o'); 
+          confirm('Opravdu mám lokální databázi přepsat?'); 
+          // zachovej tabulky přidané k db setkani
+          ask('db_drop_tables_but','setkani4','footer');
+          info.append(ask('sys_backup_make',i.par))
+        }
+      }
+    }
     proc onclick (i) {  var y:text
       panel.display(2,'mu'); u.den.display(1);
       y.set(ask('sys_activity',i.par,skip.get,u.den.get,sys('options','watch_access_opt')));
@@ -852,6 +885,7 @@ panel BE_LOG [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_men
     }
   }
   use u: form _touch [0,0,,] { tag:'mu' }
+  use info: form _text [0,0,,] { tag:'mu' }
   use msg_a: form _msg_a [0,0,,] { tag:'ma', format:'n' }
   var skip=0
   proc the_formsave (f,b) {
@@ -860,10 +894,31 @@ panel BE_LOG [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_men
   | f.insert; f.load;
     b.raise('onrowclick',b.browse_seek(conc(f.id_key,'=',f.key)))
   }
-  form _touch [,,605,*] { css:'popup-right'
+  form _touch [,,*,*] { css:'popup-right'
     field den [-20,17,85,18] { type:'date', style:'z-index:2', format:'Rrt', title:'nastavený&nbsp;den' }
     label result [0,0,*,*] { title:'', style:'overflow:auto;border-right:2px solid white' }
+    proc fill(x,y) {
+      result.set(conc("<div class='karta'>",replace_fa(x),"</div>",y));
+    }
   }
+# --------------------------------------------- text
+# formulář pro levostranné menu s textem
+form _text [,,*,*] { css:'popup-right'
+  label head [0,0,*,50]  { title:'' }
+  label msg  [0,35,*,20] { title:'' }
+  label note [0,55,*,550] { title:'' }
+  proc Init() { head.set(''); msg.set(''); note.set(''); }
+  proc fill(x,y) {
+    [ x; head.set(conc("<div class='karta'>",x,"</div>")) ];
+    [ y; note.set(y) ]
+  }
+  proc append(x) {
+    note.set(conc(note.get,x)) 
+  }
+  proc shift(x) {
+    note.set(conc(x,note.get)) 
+  }
+}
   # --------------------------------------==> . zápis změny
   form _msg_a [,,605,*] { css:'popup-right', style:'border-right:2px solid white'
     var virgin= 1
