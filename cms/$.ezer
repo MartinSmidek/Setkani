@@ -770,68 +770,27 @@ panel FE_USER [0,0,400,400] { title:'Uživatelé webu', type:'popup', css:'dialo
 # ----------------------------------------------------------------------------==> BE LOG
 panel BE_LOG [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu'
     style:"min-width:590px", _sys:'cms'
-    //css:'dialog', par:°{min_top:30}
-  proc onfirstfocus() { m.a.d.click }
+  proc onfirstfocus() { m.str.img.click }
   menu m { type:'left'
-    menu a {title:'Změny aplikace',type:'group'
-      item d {title:'Přehled změn za měsíc', par:°{days:30} }
-      item   {title:'Přehled změn za rok', par:°{days:365} }
-      item   {title:'Přehled uskutečněných změn', par:°{days:9999} }
-      proc onclick(i) {
-        panel.display(2,'mu'); u.den.display(0);
-        u.result.set(conc(
-          '<div class="karta">Změny aplikace za posledních ',i.par.days,' dní</div><br>',
-          ask('doc_chngs_show','a',i.par.days)));
-      }
-    }
     menu { title:'Aktivní uživatelé',type:'group',skill:'a'
       item { title:'dnes'               par:°{s:'uzivatele',c:'dnes',short:'1'}}
       item { title:'včera'              par:°{s:'uzivatele',c:'vcera',short:'1'}}
       item { title:'týden'              par:°{s:'uzivatele',c:'dny',days:'8',short:'1'}}
       item { title:'dva týdny'          par:°{s:'uzivatele',c:'dny',days:'15',short:'1'}}
       item { title:'měsíc'              par:°{s:'uzivatele',c:'dny',days:'30',short:'1'}}
-      item { title:'nastavený den'      par:°{s:'uzivatele',c:'den',short:'1'}}
     }
     menu err { title:'Chyby',type:'group',skill:'a'
       item today { title:'dnes'         par:°{s:'chyby',c:'dnes'}}
       item { title:'včera'              par:°{s:'chyby',c:'vcera'}}
       item { title:'týden'         par:°{s:'chyby',c:'tyden'}}
       item { title:'měsíc'              par:°{s:'chyby',c:'mesic'}}
-      item { title:'nastavený den'      par:°{s:'chyby',c:'den'}}
       item { title:'všechna hlášení'    par:°{s:'chyby',c:'vsechny'}}
       item { title:'čekající BUGs'      par:°{s:'chyby',c:'BUG1'}}
       item { title:'vyřešené BUGs'      par:°{s:'chyby',c:'BUG2'}}
     }
-    menu { title:'Přihlášení',type:'group',skill:'a'
-      item { title:'dnes'         par:°{s:'login',c:'dnes'}}
-      item { title:'včera'              par:°{s:'login',c:'vcera'}}
-      item { title:'týden'              par:°{s:'login',c:'tyden'}}
-      item { title:'měsíc'              par:°{s:'login',c:'mesic'}}
-      item { title:'nastavený den'      par:°{s:'login',c:'den'}}
-      item { title:'všechna hlášení'    par:°{s:'login',c:'vsechny'}}
-    }
-//    menu { title:'Nastavení',type:'group',skill:'m'
-//      item { title:'bez programátorů'    par:°{s:'skip',c:'1'}}
-//      item { title:'včetně programátorů' par:°{s:'skip',c:'0'}}
-//      proc onclick(i) { skip.set(i.par.c); error('au') }
-//    }
-    menu {title:'Zápis změn', type:'group', skill:'m'
-      item a {title:'[fa-exclamation] změna aplikace' }
-      proc onclick(i) {
-        panel.display(2,'ma');
-        msg_a.start;
-      }
-    }
-    menu { title:'chlapi.online',type:'group',skill:'a'
-      item { title:'chybná přihlášení'  par:°{cmd:'me_login'}}
-      proc onclick (i) {  var y:text
-        panel.display(2,'mu'); u.den.display(0);
-        y.set(ask('admin_report',i.par));
-        u.result.set(conc(
-          "<div class='CSection CMenu'><h3 class='CTitle'>",
-            i.owner.title,' - ',replace_fa(i.title),"</h3>",
-          y,"</div>"));
-      }
+    proc onclick (i) {  var y:text
+      y.set(ask('sys_activity',i.par,skip.get,'',sys('options','watch_access_opt')));
+      info.fill(conc(i.owner.title,' - ',i.title),y);
     }
     menu { title:'GitHub',type:'group',skill:'m'
       item { title:'git status'               par:°{op:'cmd',cmd:'status'}}
@@ -839,31 +798,81 @@ panel BE_LOG [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_men
       item { title:'git pull'                 par:°{op:'cmd',cmd:'pull'}}
       item { title:'git reset --hard origin/master' par:°{op:'cmd',cmd:'reset --hard origin/master'}}
       item { title:'... echo docs/.git.log'   par:°{op:'show'}}
-      proc onclick (i) {  var y:text
-        panel.display(2,'mu'); u.den.display(0);
-        y.set(ask('git_make',i.par));
-        u.result.set(y);
+      proc onclick (i) {  
+        panel.display(2,'mu'); 
+        info.fill(conc(i.owner.title,' - ',i.title),ask('git_make',i.par));
       }
     }
-    proc onclick (i) {  var y:text
-      panel.display(2,'mu'); u.den.display(1);
-      y.set(ask('sys_activity',i.par,skip.get,u.den.get,sys('options','watch_access_opt')));
-      u.result.set(conc("<div id=''>",y,"</div>"));
+    menu str { title:'Struktura databáze',type:'group',skill:'m'
+      item img {title:'[fa-object-group] Popis struktury dat'
+        proc onclick (i) { 
+          info.fill(conc(i.owner.title,' - ',i.title),ask('db_get_file','cms/db.html'));
+        }
+      }
+      item {title:'[fa-database] tabulka tx_gncase'         par:°{tab:'tx_gncase'} }
+      item {title:'[fa-database] tabulka tx_gncase_part'    par:°{tab:'tx_gncase_part'} }
+      proc onclick (i) {
+        clear;
+        info.fill(conc(i.owner.title,' - ',i.title),ask('i_doc_table_struct',i.par.tab,0));
+      }
+    }
+    menu { title:'Import/export databáze',type:'group',skill:'m'
+      item { title:"[fa-question] přehled záloh"          par:°{do:'b',typ:'listing',direct:'1'}}
+      item { title:"[fa-upload] zálohuj teď"              par:°{do:'b',typ:'special',direct:'0'}}
+      item { title:"[fa-download] obnova ze zálohy"       par:°{do:'o',typ:'restore',direct:'1'}}
+      proc onclick(i) {
+        info.fill(conc(i.owner.title,' - ',i.title),' ');
+        { eq(i.par.do,'b'); info.append(ask('sys_backup_make',i.par)) 
+        | eq(i.par.do,'o'); 
+          confirm('Opravdu mám lokální databázi přepsat?'); 
+          // zachovej tabulky přidané k db setkani
+          ask('db_drop_tables_but','setkani4','footer');
+          info.append(ask('sys_backup_make',i.par))
+        }
+      }
+    }
+    menu { title:'Transformace databáze',type:'group',skill:'m'
+      // DROP nepoužitých tabulek
+      item { title:"[fa-recycle] transformace: old tables"   par:°{do:'t',op:'old-tables'}}
+      // nepoužitá pole
+      item { title:"[fa-recycle] transformace: old fields"   par:°{do:'t',op:'old-fields'}}
+      // dočasné úživatelské účty
+      item { title:"[fa-recycle] transformace: old fields"   par:°{do:'t',op:'tmp-user'}}
+      proc onclick(i) {
+        info.fill(conc(i.owner.title,' - ',i.title),' ');
+        { eq(i.par.do,'t'); info.append(ask('db_transform',i.par)) 
+        }
+      }
     }
   }
-  use u: form _touch [0,0,,] { tag:'mu' }
+  use info: form _text [0,0,,] { tag:'mu' }
   use msg_a: form _msg_a [0,0,,] { tag:'ma', format:'n' }
   var skip=0
+# --------------------------------------------- form+browse
   proc the_formsave (f,b) {
     f.same
   | f.key; f.save; { b.browse_seek; f.load | f.init }
   | f.insert; f.load;
     b.raise('onrowclick',b.browse_seek(conc(f.id_key,'=',f.key)))
   }
-  form _touch [,,605,*] { css:'popup-right'
-    field den [-20,17,85,18] { type:'date', style:'z-index:2', format:'Rrt', title:'nastavený&nbsp;den' }
-    label result [0,0,*,*] { title:'', style:'overflow:auto;border-right:2px solid white' }
+# --------------------------------------------- text
+# formulář pro levostranné menu s textem
+form _text [,,*,*] { css:'popup-right'
+  label head [0,0,*,50]  { title:'' }
+  label msg  [0,35,*,20] { title:'' }
+  label note [0,55,*,550] { title:'' }
+  proc Init() { head.set(''); msg.set(''); note.set(''); }
+  proc fill(x,y) {
+    [ x; head.set(conc("<div class='karta'>",replace_fa(x),"</div>")) ];
+    [ y; note.set(y) ]
   }
+  proc append(x) {
+    note.set(conc(note.get,x)) 
+  }
+  proc shift(x) {
+    note.set(conc(x,note.get)) 
+  }
+}
   # --------------------------------------==> . zápis změny
   form _msg_a [,,605,*] { css:'popup-right', style:'border-right:2px solid white'
     var virgin= 1

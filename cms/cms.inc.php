@@ -43,6 +43,17 @@ $ezer_server=
   $deep_root= "../files/setkani4";
   require_once("$deep_root/cms.dbs.php");
   
+  $path_backup= "$deep_root/sql";
+  
+  // cesta k utilitám MySQL/MariaDB
+  $ezer_mysql_path= array(
+      "C:/Apache/bin/mysql/mysql5.7.21/bin",  // *.bean
+      "/volume1/@appstore/MariaDB/usr/bin",   // Synology YMCA
+      "/volume1/@appstore/MariaDB/usr/bin",   // Synology DOMA
+      "C:/Apache/bin/mysql/mysql5.7.21/bin",  // *4m.bean
+      "C:/Apache/bin/mysql/mysql5.7.21/bin",  // *4j.bean
+    )[$ezer_server];
+
   // ostatní parametry
   $tracking= '_track';
   $tracked= ',osoba,rodina,pobyt,_user,';

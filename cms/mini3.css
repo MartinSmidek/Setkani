@@ -3,11 +3,16 @@
   font-size:8pt; font-family:Consolas !important; }
 div.Popup3 span, div.Popup3 input,
 div.Popup3 div.Label3, div.Popup3 div.Label3 * {
-  font-size: 10pt; font-family: Arial !important; color:black; }
+  font-size: 10pt; /*font-family: Arial !important;*/ color:black; }
 .Check3 {
   font-size: 8pt; }
 div.Popup3 table *, div.Popup3 dl, div.Popup3 dl * {
   font-size: 9pt !important; }
+div.Popup3 div.karta { 
+  color:white; }
+div.Popup3 h3 { 
+  margin-top:0; }
+
 /* ---------------------- */
 
 /* ovládací prvky */
@@ -49,6 +54,9 @@ div.Popup3 div.pop_body.dialog_full {
   overflow: hidden; 
   width: 100% !important;
 }
+div.Form3.popup-right { 
+  width:390px; }
+
 
 /* malá obrazovka */
 /*@media all and (max-width: 1024px) {
