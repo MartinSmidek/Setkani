@@ -1470,7 +1470,7 @@ function tabulka($cid,$day) { trace();
   global $CMS, $href0, $clear, $fe_user, $fe_host;
   $skup= $tab= array();  // tab: [skup][poradi] poradi=0 => max, poradi>0 => jméno
   $maximum= 0;
-  $tr= mysql_qry("SELECT skupina,jmeno,poradi FROM setkani.gnucast
+  $tr= mysql_qry("SELECT skupina,jmeno,poradi FROM setkani4.gnucast
     WHERE datum='$day' ORDER BY skupina,poradi,gnucast");
   while ( $tr && (list($skupina,$jmeno,$poradi)= mysql_fetch_row($tr)) ) {
     if ( $skupina=='maximum' )    { $maximum= max($maximum,$poradi); continue; }
