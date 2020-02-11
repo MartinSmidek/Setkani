@@ -16,6 +16,72 @@
 
 */
 
+/** ======================================================================================> DATABASE */
+# -------------------------------------------------------------------------------------- db get_file
+# ASK - vrátí obsah souboru
+function db_get_file($path) {
+  $html= '';
+  if ( file_exists($path) ) {
+    $html= file_get_contents($path);
+  }
+  return $html;
+}
+# ------------------------------------------------------------------------------------- db transform
+# ASK - tranform database setkani -> setkani4
+function db_transform($par) {
+  $html= '';
+  switch ($par->op) {
+  // ----------------------------------------- DROP unused tables  
+  case 'old-tables':
+    foreach(explode(',',
+        "...bible,...fe_setkani,...fe_sessions,...host,...pages,...room,...tx_gnvip"
+        ) as $table ) {
+      $ok= query("DROP TABLE `$table`");
+      if ( $ok ) {
+        $html.= " $table ";
+      }
+    }
+      $html.= " DROPPED ";
+    break;
+  // ----------------------------------------- DROP unused fields
+  case 'old-fields':
+    foreach(explode(',',
+        "tx_gncase.humor,tx_gncase.akce,tx_gncase.medium,tx_gncase.menu,tx_gncase.status,"
+      . "tx_gncase_part.edit_session,tx_gncase_part.edit_userid,tx_gncase_part.ustamp"  
+        ) as $TableField ) {
+      list($table,$field)= explode('.',$TableField);
+      $ok= query("ALTER TABLE `$table` DROP `$field`");
+      if ( $ok ) {
+        $html.= " $table.$field ";
+      }
+    }
+      $html.= " REMOVED ";
+    break;
+  // ----------------------------------------- replace _user by temporary content
+  case 'tmp-user':
+    query("TRUNCATE TABLE _user");
+    query("INSERT INTO _user (id_user,abbr,username,password,skills,state,forename,surname) VALUES 
+           (177,'JHO','jirka','krasnebosovice','a ac aw m r w','++UuMSaE','Jirka','Horák'),
+           (178,'MSM','martin','vysokekohoutovice','a ac aw m r w','++UuMSaE','Martin','Šmídek')      
+");
+    break;
+  }
+  return $html;
+}
+# ----------------------------------------------------------------------------------- db drop_tables
+# ASK - drop all tables from db setkani4
+function db_drop_tables_but($db,$but_tables='') {
+  $but= explode(',',$but_tables); 
+  $cr= mysql_qry("
+    SELECT table_name FROM information_schema.columns WHERE table_schema='$db'
+  ");
+  while ( $cr && (list($table)= mysql_fetch_row($cr)) ) {
+    if ( !in_array($table,$but)) {
+      query("DROP TABLE $table");
+    }
+  }
+  return 1;
+}
 /** =========================================================================================> ADMIN */
 # ------------------------------------------------------------------------------------- admin report
 # vrátí seznam chybných pokusů o přihlášené do chlapi.online
