@@ -1419,7 +1419,9 @@ function masonry_text($text) {
   $ret = '';
   $found = preg_match_all('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $text, $images);
   for ($i = 0; $i < $found; $i++) {
-    if (masonry_suitable_image($images[1][$i])) {
+    $img= $images[1][$i];
+    if ( !file_exists($img)) continue;
+    if (masonry_suitable_image($img)) {
       $ret = '<img src='.$images[1][$i].' alt="Obrázek k abstraktu"/>';
       break;
     }
