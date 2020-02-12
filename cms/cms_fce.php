@@ -23,14 +23,21 @@ function git_make($par) {
         ftruncate($f, 0);
         fclose($f);
     }
-    $exec= "git {$par->cmd}";
-    $exec.= ">$abs_root/docs/.git.log";
-    exec($exec,$lines,$state);
+    if ( $par->folder=='cms') {
+      $exec= "git {$par->cmd}>$abs_root/docs/.git.log";
+      exec($exec,$lines,$state);
+    }
+    else if ( $par->folder=='ezer') {
+      chdir("../ezer3.1");
+      $exec= "git {$par->cmd}>$abs_root/docs/.git.log";
+      exec($exec,$lines,$state);
+      chdir($abs_root);
+    }
     debug($lines,$state);
     $msg= "$state:$exec<hr>";
   case 'show':
     $msg.= file_get_contents("$abs_root/docs/.git.log");
-    $msg= nl2br($msg);
+    $msg= nl2br(htmlentities($msg));
     break;
   }
   return $msg;

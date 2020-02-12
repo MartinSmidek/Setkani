@@ -21,6 +21,14 @@ function db_get_file($path) {
 function db_transform($par) {
   $html= '';
   switch ($par->op) {
+  // ----------------------------------------- test pass 
+  case 'test-pass':
+    $je= select("COUNT(*)",'information_schema.tables',
+         "table_schema='setkani4' AND table_name='{$par->table}'");
+    if ( $je ) {
+      $html.= "ok";
+    }
+    break;
   // ----------------------------------------- DROP unused tables  
   case 'old-tables':
     foreach(explode(',',
@@ -86,7 +94,7 @@ function db_clear_tables($tables) {
     switch ($table) {
     // ----------------------------------------- _TOUCH - ponechej pouze login, me_login, ...
     case '_touch':
-      $n= query("DELETE FROM TABLE $table WHERE NOT menu REGEXP 'log|time'");
+      $n= query("DELETE FROM _touch WHERE NOT menu REGEXP 'log|time'");
       $html.= "<br>$table $n rec deleted ";
       break;
     }

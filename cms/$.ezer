@@ -793,11 +793,17 @@ panel ADMIN [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu
       info.fill(conc(i.owner.title,' - ',i.title),y);
     }
     menu { title:'GitHub',type:'group',skill:'m'
-      item { title:'git status'               par:°{op:'cmd',cmd:'status'}}
-      item { title:'git log'                  par:°{op:'cmd',cmd:'log'}}
-      item { title:'git pull'                 par:°{op:'cmd',cmd:'pull'}}
-      item { title:'git reset --hard origin/master' par:°{op:'cmd',cmd:'reset --hard origin/master'}}
-      item { title:'... echo docs/.git.log'   par:°{op:'show'}}
+      item { title:'[fa-question] CMS: git status'  par:°{folder:'cms',op:'cmd',cmd:'status'}}
+      item { title:'[fa-gear] CMS: git log'         par:°{folder:'cms',op:'cmd',cmd:'log'}}
+      item { title:'[fa-gear] CMS: git pull'        par:°{folder:'cms',op:'cmd',cmd:'pull'}}
+//    item { title:'[fa-gear] CMS: git reset --hard origin/master' 
+//                                                par:°{folder:'cms',op:'cmd',cmd:'reset --hard origin/master'}}
+      item { title:'[fa-question] Ezer: git status' par:°{folder:'ezer',op:'cmd',cmd:'status'}}
+      item { title:'[fa-gears] Ezer: git log'       par:°{folder:'ezer',op:'cmd',cmd:'log'}}
+      item { title:'[fa-gears] Ezer: git pull'      par:°{folder:'ezer',op:'cmd',cmd:'pull'}}
+//    item { title:'[fa-gears] Ezer: git reset --hard origin/master' 
+//                                                par:°{folder:'ezer',op:'cmd',cmd:'reset --hard origin/master'}}
+//    item { title:'[fa-question] poslední git.log'   par:°{op:'show'}}
       proc onclick (i) {  
         panel.display(2,'mu'); 
         info.fill(conc(i.owner.title,' - ',i.title),ask('git_make',i.par));
@@ -825,22 +831,29 @@ panel ADMIN [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu
         info.fill(conc(i.owner.title,' - ',i.title),' ');
         { eq(i.par.do,'b'); info.append(ask('sys_backup_make',i.par)) 
         | eq(i.par.do,'1'); 
-          confirm('Opravdu mám lokální databázi přepsat tou, kterou teď vybereš?'); 
-          // zachovej historii přihlašování k setkani4 MSM+JHO
-          [ ask('query',"DROP TABLE IF EXISTS _touch_") ];
-          [ ask('query',"ALTER TABLE _touch RENAME TO _touch_") ];
-          // zachovej tabulky specifické pro setkani4
-          ask('db_drop_tables_but','setkani4','footer,_touch_');
-          // načti obnovu
-          info.append(ask('sys_backup_make',i.par));
-          info.append("... po importu je nutné provést <b>... dokončení obnovy</b>");
+          // pokud existuje _touch byl asi celý import dokončen
+          ask('db_transform',°{op:'test-pass',table:'_touch'});
+          [ confirm('Opravdu mám lokální databázi přepsat tou, kterou teď vybereš?'); 
+            // zachovej historii přihlašování k setkani4 MSM+JHO
+            [ ask('query',"DROP TABLE IF EXISTS _touch_") ];
+            [ ask('query',"ALTER TABLE _touch RENAME TO _touch_") ];
+            // zachovej tabulky specifické pro setkani4
+            ask('db_drop_tables_but','setkani4','footer,_touch_');
+            // načti obnovu
+            info.append(ask('sys_backup_make',i.par));
+            info.append("... po importu je nutné provést <b>... dokončení obnovy</b>");
+           ]
+        | eq(i.par.do,'1'); alert("předchozí import nebyl dokončen")
+          // pokud neexistuje _touch_ nelze provést 2. fázi
         | eq(i.par.do,'2'); 
+          ask('db_transform',°{op:'test-pass',table:'_touch_'});
           // vrať _touch
           [ ask('query',"DROP TABLE _touch") ];
           [ ask('query',"ALTER TABLE _touch_ RENAME TO _touch") ];
           // pročisti záznamy tabulek
           ask('db_clear_tables','_touch');
           info.append("... nyní je možné provést transformaci obsahu importované databáze");
+        | eq(i.par.do,'2'); alert("import ještě nebyl zahájen")
         }
       }
     }
@@ -873,7 +886,7 @@ panel ADMIN [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu
 form _text [,,*,*] { css:'popup-right'
   label head [0,0,*,50]  { title:'' }
   label msg  [0,35,*,20] { title:'' }
-  label note [0,55,*,550] { title:'' }
+  label note [0,55,*,410] { title:'' style:'overflow:auto' }
   proc Init() { head.set(''); msg.set(''); note.set(''); }
   proc fill(x,y) {
     [ x; head.set(conc("<div class='karta'>",replace_fa(x),"</div>")) ];
