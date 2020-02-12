@@ -24,17 +24,18 @@ function git_make($par) {
         fclose($f);
     }
     if ( $par->folder=='cms') {
+      chdir($abs_root);
       $exec= "git {$par->cmd}>$abs_root/docs/.git.log";
       exec($exec,$lines,$state);
     }
     else if ( $par->folder=='ezer') {
-      chdir("../ezer3.1");
+      chdir("$abs_root/ezer3.1");
       $exec= "git {$par->cmd}>$abs_root/docs/.git.log";
       exec($exec,$lines,$state);
       chdir($abs_root);
     }
     debug($lines,$state);
-    $msg= "$state:$exec<hr>";
+    $msg.= "$state:$exec<hr>";
   case 'show':
     $msg.= file_get_contents("$abs_root/docs/.git.log");
     $msg= nl2br(htmlentities($msg));
