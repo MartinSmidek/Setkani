@@ -42,6 +42,21 @@ function git_make($par) {
   }
   return $msg;
 }
+/** ==========================================================================================> EDIT */
+# --------------------------------------------------------------------------------- edit next_footer
+# přejde na další resp. předchozí položku zápatí, pro curr_id=0 najde první
+function edit_next_footer($curr_id,$smer=1) {
+  if ( $curr_id ) {
+    if ( $smer ) {
+      $rel= $smer==1 ? '<' : '>';
+      $curr_id= select("id",'footer',"id $rel '$curr_id' LIMIT 1");
+    }
+  }
+  else {
+    $curr_id= select("id",'footer',"1 LIMIT 1");
+  }
+  return $curr_id;
+}
 /** ===========================================================================================> IMG */
 # --------------------------------------------------------------------------------------- img oprava
 # opraví obrázky v part
