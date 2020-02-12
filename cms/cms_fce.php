@@ -24,39 +24,23 @@ function git_make($par) {
         fclose($f);
     }
     if ( $par->folder=='cms') {
-      chdir($abs_root);
       $exec= "git {$par->cmd}>$abs_root/docs/.git.log";
       exec($exec,$lines,$state);
     }
     else if ( $par->folder=='ezer') {
-      chdir("$abs_root/ezer3.1");
+      chdir("../ezer3.1");
       $exec= "git {$par->cmd}>$abs_root/docs/.git.log";
       exec($exec,$lines,$state);
       chdir($abs_root);
     }
     debug($lines,$state);
-    $msg.= "$state:$exec<hr>";
+    $msg= "$state:$exec<hr>";
   case 'show':
     $msg.= file_get_contents("$abs_root/docs/.git.log");
     $msg= nl2br(htmlentities($msg));
     break;
   }
   return $msg;
-}
-/** ==========================================================================================> EDIT */
-# --------------------------------------------------------------------------------- edit next_footer
-# provede git par.cmd>.git.log a zobrazí jej
-function edit_next_footer($curr_id,$smer=1) {
-  if ( $smer ) {
-    if ( $curr_id ) {
-      $rel= $smer==1 ? '<' : '>';
-      $curr_id= select("id",'footer',"id $rel '$curr_id' LIMIT 1");
-    }
-  }
-  else {
-    $curr_id= select("id",'footer',"1 LIMIT 1");
-  }
-  return $curr_id;
 }
 /** ===========================================================================================> IMG */
 # --------------------------------------------------------------------------------------- img oprava
