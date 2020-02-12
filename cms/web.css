@@ -379,7 +379,9 @@ li.foto input { float:left; margin:0; }
 li.foto input:focus { outline:none; }
 
 /* skupiny */
-table#skupiny th { background-color:#F5CF85; color:#67827a;; min-width:8em; }
+.skupiny_container {max-width: 100%; overflow-x: auto;}
+table#skupiny { margin: 0 auto; padding: 0.2em; border: 1px solid; }
+table#skupiny th { border-bottom: 3px solid; min-width:8em; }
 table#skupiny input { width:100%; }
 
 /* galerie */

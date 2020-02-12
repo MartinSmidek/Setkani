@@ -1559,8 +1559,8 @@ function tabulka($cid,$day) { trace();
        klikni na <big><b>+</b></big> za názvem skupiny (případně vyplň krátký test) a potom přidej svoje jméno a příjmení
        ukončené Enter. Pokud bys s tím měl problémy, pošli SMS na 603150565 se svým jménem a názvem skupiny
        (ale napřed to zkus tady a teď). Pokud se chceš přeřadit do jiné skupiny, napiš svoje jméno do ní (z té původní se
-       vyjme samo).";
-  $h.= "<table id='skupiny'><tr>";
+       vyjme samo).<br>";
+  $h.= "<br><div class='skupiny_container'><table id='skupiny' cellspacing='0' cellpadding='0'><tr>";
   $add= $event= '';
   foreach ($skup as $s) {
     if ( $day>=$dnes )
@@ -1591,12 +1591,12 @@ function tabulka($cid,$day) { trace();
       if ( !$fe_user && !$fe_host ) {
         list($jm)= explode(' ',trim($jm));
       }
-      $clr= $i<=$tab[$s][0] ? 'orange' : 'transparent';
+      $clr= $i<=$tab[$s][0] ? '#e6a98f' : 'transparent';
       $h.= "<td style='background-color:$clr'>$jm</td>";
     }
     $h.= "</tr>";
   }
-  $h.= "</table>";
+  $h.= "</table></div><br>";
   return $h;
 }
 /** ======================================================================================> CKEDITOR */
