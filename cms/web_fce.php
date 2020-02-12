@@ -58,9 +58,9 @@ function db_transform($par) {
   // ----------------------------------------- replace _user by temporary content
   case 'tmp-user':
     query("TRUNCATE TABLE _user");
-    query("INSERT INTO _user (id_user,abbr,username,password,skills,ips,state,forename,surname) VALUES 
-           (77,'JHO','jirka','krasnebosovice','a ac aw m r w','','++UuMSaE','Jirka','Horák'),
-           (78,'MSM','martin','vysokekohoutovice','a ac aw m r w','127.0.0.1','++UuMSaE','Martin','Šmídek')      
+    query("INSERT INTO _user (id_user,abbr,username,password,skills,ips,state,options,forename,surname) VALUES 
+           (77,'JHO','jirka','krasnebosovice','a ac aw m r w','','++UuMSaE','Jirka','{}','Horák'),
+           (78,'MSM','martin','vysokekohoutovice','a ac aw m r w','127.0.0.1','++UuMSaE','{}','Martin','Šmídek')      
       ");
     query("TRUNCATE TABLE fe_users");
     query("INSERT INTO fe_users (username,password,usergroup,ezer,name,firstname,userlevel) VALUES 

@@ -1289,6 +1289,7 @@ function timeline()
 # ============================================================================================> FOOTER
 # footer ze své vlastní tabulky
 function footer() {
+  global $CMS, $href0, $mode;
   trace();
   $contacts = '';
   $organizations = '';
@@ -1298,14 +1299,22 @@ function footer() {
     ORDER BY part, sorting DESC
   ");
 
+  $menu= $CMS 
+      ? " oncontextmenu=\"
+          Ezer.fce.contextmenu([
+            ['editovat patičku',function(el){ opravit('footer',0,0); }]
+          ],arguments[0],'page_footer_info');return false;\""
+      : '';
+  
   while ( $query && (list($title, $text, $part) = mysql_fetch_row($query)) ) {
+    $text= preg_replace("/{(.*)}/","<i class='fa fa-$1'></i>",$text);
     if ($part == 'C') {
       $contacts .= "<div class='tile'><h3>$title</h3>$text</div>";
     } else if ($part == 'O') {
       $organizations .= ($title) ? "<h3>$title</h3>" : "" . $text;
     }
   }
-  return "<div id='page_footer_info' class='container footer'>
+  return "<div id='page_footer_info' class='container footer'$menu>
             <div class='content white'>
               <div id='footer-left-part'>
                  $contacts

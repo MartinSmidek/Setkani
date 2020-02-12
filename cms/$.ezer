@@ -53,6 +53,7 @@ panel p [0,0,*,*] { type:'main'
   proc seradit(ids,typ) { ask('seradit',ids,typ); refresh }
   proc opravit(typ,id,cid) {
     switch(typ,
+    'footer',  { EDITOR.footer; go(last.get) },
     'clanek',  { EDITOR.oprava(id,cid); go(last.get) },
     'kapitola',{ EDITOR.oprava(id,cid); go(last.get) },
     'akce',    { EDITOR.oprava(id,cid); go(last.get) },
@@ -460,7 +461,8 @@ panel EDITOR [0,0,720,385] { title:' Editor článků', type:'popup', css:'dialo
   var path:text,
 #       typ:text,
       xobsah:text, co:text           // home|text - co teď editujeme: abstract|text
-  use f: form _edit [0,0,,]
+  use f: form _edit [0,0,,] { tag:'f' }
+  use t: form _foot [0,0,,] { tag:'t' }
   proc onstart() {
     f.program.selects("rodiny:1,manželé:2,chlapi:3,ženy:4,mládež:5,Albeřice:6");
     f.homepage.selects(conc("-:0,... abstrakt na homepage:2,... abstrakt nahoru:6",
@@ -475,6 +477,7 @@ panel EDITOR [0,0,720,385] { title:' Editor článků', type:'popup', css:'dialo
   }
   # ==> . nový
   proc novy(_typ,_pid,_mid) { var ret:object
+    panel.display(2,'f');
     f.init; f.abs.Init;
     f.pid.set(_pid); f.mid.set(_mid); f.cid.set(0); f.uid.set(0);
     f.sav.set('[fa-save] Vytvořit'); f.app.enable(0);
@@ -499,8 +502,9 @@ panel EDITOR [0,0,720,385] { title:' Editor článků', type:'popup', css:'dialo
     join_drop;
     panel.modal //(10,30);
   }
-  # ==> . oprava
+  # ==> . oprava článku
   proc oprava(_uid,_cid) { var ret:object, cid_00:text
+    panel.display(2,'f');
     f.abs.Init;
     f.uid.set(_uid); f.cid.set(_cid);
     f.sav.set('[fa-save] Uložit'); f.app.enable(1);   // úprava form
@@ -515,6 +519,13 @@ panel EDITOR [0,0,720,385] { title:' Editor článků', type:'popup', css:'dialo
   # ==> přidat kapitolu do knihy
   proc pridat(_cid) { 
     ask('add_part',_cid,'E');
+  }
+  # ==> . oprava zápatí
+  proc footer() { 
+    panel.display(2,'t');
+    t.init; 
+    t.next_foot(0);
+    panel.modal 
   }
   # ==> . form
   form _edit [0,0,730,385] {
@@ -637,6 +648,51 @@ panel EDITOR [0,0,720,385] { title:' Editor článků', type:'popup', css:'dialo
         | warning("obrázky lze vkládat až po uložení nového článku, zkus skrýt článek během jeho tvorby") ];
         return(uid.get);
       }
+    }
+  }
+  # ==> . úprava kalendáře
+  form _foot [10,10,710,460] {
+    field id { data:footer.id }
+    button [0,5,,]  { title:"[fa-chevron-left]", help:'předchozí'
+      proc onclick() { next_foot(1); }}
+    button [21,5,,] { title:"[fa-repeat]"          
+      proc onclick() { form.load(id.get); next_foot(0) } }
+    button [43,5,,] { title:"[fa-chevron-right]", help:'další'
+      proc onclick() { next_foot(-1); }}
+    field [68,5,34,] { data:footer.id, format:'o' }
+    label [108,0,223,] { title:"<== nalezni položku, kterou chceš upravit nebo založ novou ==>", 
+        format:'c', style:"font-weight:bold;color:darkgreen;background-color:#c0e2c2" }
+    button  [-278,5,,] { title:'Nová položka', help:'vytvořit nový kontakt nebo organizaci'
+      proc onclick() { form.init; }}
+    button  [-225,5,,] { title:'Uložit', help:'ukončit editor a uložit změny'
+      proc onclick() { 
+        form.same
+      | form.key; form.save; form.load; 
+        panel.hide(1); 
+      | id.set(form.insert); form.load; 
+        panel.hide(1); 
+      }}
+    button  [-180,5,,] { title:'Zpět', help:'ukončit editor bez uložení změn'
+      proc onclick() { panel.hide(0); }}
+    // položky patičky
+    field [0,46,419,] { title:'^název', data:footer.title }
+    field [435,46,40,] { title:'^řazení', data:footer.sorting }
+    field [487,46,40,] { title:'^c/o', data:footer.part }
+    // anotace
+    label [0,74,297,20] { title:'text kontaktu nebo spřátelené organizace' }
+    edit obsah [0,90,525,224] { type:'html', data:footer.text, par:°{toolbar:'Minimal'} }
+    label legenda [549,68,158,291] { title:"
+      <b>Potřebné ikony se do textu píší podle následujících vzorů</b><br>
+      <br><i class='fa fa-envelope'></i> {envelope}
+      <br><i class='fa fa-phone'></i> {phone}
+      <br><i class='fa fa-facebook-square'></i> {facebook-square}
+      <br><i class='fa fa-bank'></i> {bank}
+      <br><br>... jako jméno lze použít cokoliv z fontu Awesome v.4.7
+    " }
+    // funkce
+    proc next_foot(smer) { var y:object
+      id.set(ask('edit_next_footer',id.get,smer)); 
+      form.load(id.get);
     }
   }
 }
@@ -841,7 +897,7 @@ panel ADMIN [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu
             ask('db_drop_tables_but','setkani4','footer,_touch_');
             // načti obnovu
             info.append(ask('sys_backup_make',i.par));
-            info.append("... po importu je nutné provést <b>... dokončení obnovy</b>");
+            info.append("... po importu je nutné provést <b>... dokončení importu</b>");
            ]
         | eq(i.par.do,'1'); alert("předchozí import nebyl dokončen")
           // pokud neexistuje _touch_ nelze provést 2. fázi
@@ -1419,6 +1475,13 @@ table _help {  key_id:'id_help'                     // tabulka _help je v datab�
 }
 table _skill { key_id:'id_skill', db:'ezer_system'
   number id_skill, text skill_abbr, text skill_desc
+}
+table footer { key_id:'id', db:'setkani4'
+  number id
+  text title
+  text text
+  text part
+  number sorting
 }
 # ----------------------------------------------------------------------------==> mapy
 map web_skupina:    table _cis {where:"druh='skupina'", order:'data',   key_id:'data'}
