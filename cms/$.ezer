@@ -98,7 +98,7 @@ panel p [0,0,*,*] { type:'main'
   }
 # ----------------------------------------------------------------------------==> control bar
   form _f [,,*,30] { css:'grey', style:'z-index:9999'
-    proc hide_all() { BE_LOG.hide; FE_LOG.hide; FE_USER.hide; BE_USER.hide; OPTIONS.hide; CMS.hide }
+    proc hide_all() { ADMIN.hide; FE_LOG.hide; FE_USER.hide; BE_USER.hide; OPTIONS.hide; CMS.hide }
     button [80,5,,]  { skill:'a|a', title:"[fa-chevron-left]"    proc onclick() { hide_all; go(history.get) } }
     button [101,5,,] { skill:'a|a', title:"[fa-repeat]"          proc onclick() { hide_all; cms_go(last.get) } }
     button [123,5,,] { skill:'a|a', title:"[fa-chevron-right]", format:'d'
@@ -108,7 +108,7 @@ panel p [0,0,*,*] { type:'main'
     button [280,5,,] { skill:'a|a', title:"[fa-user] WEB"        proc onclick() { hide_all; FE_USER.modal } }
     button [336,5,,] { skill:'a|a', title:"[fa-file] změny"      proc onclick() { hide_all; FE_LOG.modal } }
     button [425,5,,] { skill:'a|a', title:"[fa-user-plus] správci"   proc onclick() { hide_all; BE_USER.modal } }
-    button [497,5,,] { skill:'a|a', title:"[fa-file-text] admin" proc onclick() { hide_all; BE_LOG.modal } }
+    button [497,5,,] { skill:'a|a', title:"[fa-file-text] admin" proc onclick() { hide_all; ADMIN.modal } }
 //    button [583,5,,] { skill:'m|m', title:"[fa-gears] CMS" proc onclick() { hide_all; CMS.modal } }
     check [-272,4,65,] { title:"c/p", value:'0', format:'t', style:'color:white'
       proc onchange() { 
@@ -767,13 +767,13 @@ panel FE_USER [0,0,400,400] { title:'Uživatelé webu', type:'popup', css:'dialo
     }
   }
 }
-# ----------------------------------------------------------------------------==> BE LOG
-panel BE_LOG [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu'
+# ----------------------------------------------------------------------------==> ADMIN
+panel ADMIN [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu'
     style:"min-width:590px", _sys:'cms'
-  proc onfirstfocus() { m.str.img.click }
+  proc onfirstfocus() { m.aktivni.dnes.click }
   menu m { type:'left'
-    menu { title:'Aktivní uživatelé',type:'group',skill:'a'
-      item { title:'dnes'               par:°{s:'uzivatele',c:'dnes',short:'1'}}
+    menu aktivni { title:'Aktivní uživatelé',type:'group',skill:'a'
+      item dnes { title:'dnes'               par:°{s:'uzivatele',c:'dnes',short:'1'}}
       item { title:'včera'              par:°{s:'uzivatele',c:'vcera',short:'1'}}
       item { title:'týden'              par:°{s:'uzivatele',c:'dny',days:'8',short:'1'}}
       item { title:'dva týdny'          par:°{s:'uzivatele',c:'dny',days:'15',short:'1'}}
@@ -816,18 +816,31 @@ panel BE_LOG [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_men
         info.fill(conc(i.owner.title,' - ',i.title),ask('i_doc_table_struct',i.par.tab,0));
       }
     }
-    menu { title:'Import/export databáze',type:'group',skill:'m'
+    menu { title:'Import a záloha databáze',type:'group',skill:'m'
       item { title:"[fa-question] přehled záloh"          par:°{do:'b',typ:'listing',direct:'1'}}
       item { title:"[fa-upload] zálohuj teď"              par:°{do:'b',typ:'special',direct:'0'}}
-      item { title:"[fa-download] obnova ze zálohy"       par:°{do:'o',typ:'restore',direct:'1'}}
+      item { title:"[fa-download] zahájení importu ..."   par:°{do:'1',typ:'restore',direct:'1'}}
+      item { title:"[fa-download] ... dokončení importu"  par:°{do:'2',typ:'restore',direct:'1'}}
       proc onclick(i) {
         info.fill(conc(i.owner.title,' - ',i.title),' ');
         { eq(i.par.do,'b'); info.append(ask('sys_backup_make',i.par)) 
-        | eq(i.par.do,'o'); 
-          confirm('Opravdu mám lokální databázi přepsat?'); 
-          // zachovej tabulky přidané k db setkani
-          ask('db_drop_tables_but','setkani4','footer');
-          info.append(ask('sys_backup_make',i.par))
+        | eq(i.par.do,'1'); 
+          confirm('Opravdu mám lokální databázi přepsat tou, kterou teď vybereš?'); 
+          // zachovej historii přihlašování k setkani4 MSM+JHO
+          [ ask('query',"DROP TABLE IF EXISTS _touch_") ];
+          [ ask('query',"ALTER TABLE _touch RENAME TO _touch_") ];
+          // zachovej tabulky specifické pro setkani4
+          ask('db_drop_tables_but','setkani4','footer,_touch_');
+          // načti obnovu
+          info.append(ask('sys_backup_make',i.par));
+          info.append("... po importu je nutné provést <b>... dokončení obnovy</b>");
+        | eq(i.par.do,'2'); 
+          // vrať _touch
+          [ ask('query',"DROP TABLE _touch") ];
+          [ ask('query',"ALTER TABLE _touch_ RENAME TO _touch") ];
+          // pročisti záznamy tabulek
+          ask('db_clear_tables','_touch');
+          info.append("... nyní je možné provést transformaci obsahu importované databáze");
         }
       }
     }
@@ -837,7 +850,7 @@ panel BE_LOG [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_men
       // nepoužitá pole
       item { title:"[fa-recycle] transformace: old fields"   par:°{do:'t',op:'old-fields'}}
       // dočasné úživatelské účty
-      item { title:"[fa-recycle] transformace: old fields"   par:°{do:'t',op:'tmp-user'}}
+      item { title:"[fa-recycle] transformace: tmp users"    par:°{do:'t',op:'tmp-user'}}
       proc onclick(i) {
         info.fill(conc(i.owner.title,' - ',i.title),' ');
         { eq(i.par.do,'t'); info.append(ask('db_transform',i.par)) 

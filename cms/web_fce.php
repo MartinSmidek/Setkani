@@ -6,16 +6,6 @@
 // CMS/Ezer                                             (c) 2016 Martin Šmídek <martin@smidek.eu> //
 // ---------------------------------------------------------------------------------------------- //
 
-/* proces zobrazení mapky skupin
-   user=>url            template_ch.php                                                            servant
-   ?page=skupiny
-
-
-
-
-
-*/
-
 /** ======================================================================================> DATABASE */
 # -------------------------------------------------------------------------------------- db get_file
 # ASK - vrátí obsah souboru
@@ -41,7 +31,7 @@ function db_transform($par) {
         $html.= " $table ";
       }
     }
-      $html.= " DROPPED ";
+    $html.= " DROPPED ";
     break;
   // ----------------------------------------- DROP unused fields
   case 'old-fields':
@@ -55,15 +45,21 @@ function db_transform($par) {
         $html.= " $table.$field ";
       }
     }
-      $html.= " REMOVED ";
+    $html.= " REMOVED ";
     break;
   // ----------------------------------------- replace _user by temporary content
   case 'tmp-user':
     query("TRUNCATE TABLE _user");
-    query("INSERT INTO _user (id_user,abbr,username,password,skills,state,forename,surname) VALUES 
-           (177,'JHO','jirka','krasnebosovice','a ac aw m r w','++UuMSaE','Jirka','Horák'),
-           (178,'MSM','martin','vysokekohoutovice','a ac aw m r w','++UuMSaE','Martin','Šmídek')      
-");
+    query("INSERT INTO _user (id_user,abbr,username,password,skills,ips,state,forename,surname) VALUES 
+           (77,'JHO','jirka','krasnebosovice','a ac aw m r w','','++UuMSaE','Jirka','Horák'),
+           (78,'MSM','martin','vysokekohoutovice','a ac aw m r w','127.0.0.1','++UuMSaE','Martin','Šmídek')      
+      ");
+    query("TRUNCATE TABLE fe_users");
+    query("INSERT INTO fe_users (username,password,usergroup,ezer,name,firstname,userlevel) VALUES 
+      ('jirka','krasnebosovice','14,2,3,4,5',77,'Horák','Jiří',4),
+      ('martin','vysokekohoutovice','14,2,3,4,5',78,'Šmídek','Martin',4)
+      ");
+    $html.= " obnoveny dočasné účty jirka a martin ";
     break;
   }
   return $html;
@@ -81,6 +77,21 @@ function db_drop_tables_but($db,$but_tables='') {
     }
   }
   return 1;
+}
+# ---------------------------------------------------------------------------------- db clear_tables
+# ASK - tranform database setkani -> setkani4
+function db_clear_tables($tables) {
+  $html= '';
+  foreach(explode(',',$tables) as $table) {
+    switch ($table) {
+    // ----------------------------------------- _TOUCH - ponechej pouze login, me_login, ...
+    case '_touch':
+      $n= query("DELETE FROM TABLE $table WHERE NOT menu REGEXP 'log|time'");
+      $html.= "<br>$table $n rec deleted ";
+      break;
+    }
+  }
+  return $html;
 }
 /** =========================================================================================> ADMIN */
 # ------------------------------------------------------------------------------------- admin report
@@ -1536,7 +1547,7 @@ function tabulka($cid,$day) { trace();
   global $CMS, $href0, $clear, $fe_user, $fe_host;
   $skup= $tab= array();  // tab: [skup][poradi] poradi=0 => max, poradi>0 => jméno
   $maximum= 0;
-  $tr= mysql_qry("SELECT skupina,jmeno,poradi FROM setkani.gnucast
+  $tr= mysql_qry("SELECT skupina,jmeno,poradi FROM setkani4.gnucast
     WHERE datum='$day' ORDER BY skupina,poradi,gnucast");
   while ( $tr && (list($skupina,$jmeno,$poradi)= mysql_fetch_row($tr)) ) {
     if ( $skupina=='maximum' )    { $maximum= max($maximum,$poradi); continue; }
