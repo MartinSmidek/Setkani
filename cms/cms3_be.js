@@ -348,6 +348,13 @@ function foto_note(li) {
   Ezer.run.$.part.p._call(0,'foto','note',li.title,note);
   return 1;
 }
+// --------------------------------------------------------------------------------------- foto main
+function foto_main(span) {
+  if ( span.tagName=='IMG' )
+    span= span.parentNode;
+  Ezer.run.$.part.p._call(0,'foto','main',span.title,'');
+  return 1;
+}
 // ----------------------------------------------------------------------------------- foto sortable
 var sortable= null;
 function foto_sortable(op) {

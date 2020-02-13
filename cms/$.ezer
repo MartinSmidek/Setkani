@@ -89,6 +89,7 @@ panel p [0,0,*,*] { type:'main'
     switch(op,
     'delete', { FOTKY.smazat(name); },
     'note',   { FOTKY.poznamka(name,pars); },
+    'main',   { FOTKY.main(name); },
     { echo("neznámá operace nad fotkami"); }
     );
   }
@@ -358,7 +359,7 @@ panel FOTKY [0,0,680,240] { title:' Organizér fotek', type:'popup', css:'dialog
   proc refresh() { var ret:object
 #     f.fotky.set(ask('load_fotky',f.uid.get));
     ret.set(ask('load_fotky',f.uid.get)); copy_by_name(ret,f);
-    [ function("foto_sortable('start');") ];
+//    [ function("foto_sortable('start');") ]; --- chybí Sortables
     f.drop_init;
   }
   proc create() { var values:object values.set(object());
@@ -370,6 +371,10 @@ panel FOTKY [0,0,680,240] { title:' Organizér fotek', type:'popup', css:'dialog
   # ==> . vymazání
   proc smazat(name) {
     ask('delete_fotky',f.uid.get,name); refresh;
+  }
+  # ==> . nastavení jako hlavní ve fotogalerii
+  proc main(name) {
+    ask('main_fotky',f.uid.get,name); refresh;
   }
   # ==> . vtipná poznámka
   proc poznamka(name,note0) { var note:text
