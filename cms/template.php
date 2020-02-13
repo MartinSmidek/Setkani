@@ -1984,7 +1984,7 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
                 <span class='kniha_timeline_date_open'>$rok_display</span>
                 $zacatek
               </div>";
-        $h.= akce($vyber,$kdy,$id,$fotogalerie,$hledej,$chlapi,$backref);
+        $h.= akce($vyber,$kdy,$id,$fotogalerie,$hledej,$chlapi,$backref, false);
         $h.= "<div class='kniha_timeline_text_open_back'>
               <span class='kniha_timeline_date_open'>$rok_display</span>
                 $konec
@@ -2045,7 +2045,7 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
 # --------------------------------------------------------------------------------------------- akce
 # id=pid nebo název menu
 # $fotogalerie je první abstrakt pro stránku
-function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='') { trace();
+function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='', $wrap_container=true) { trace();
   global $CMS, $href0, $def_pars, $mode;
   global $usergroups, $found; // skupiny, počet nalezených článků
   global $show_deleted, $show_hidden, $page_mref, $news_time;
@@ -2078,7 +2078,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $vyber= 'chlapi';
 //    $c_komu= " program=3";
     $c_komu= " chlapi RLIKE '$chlapi'";
-    $c_kdy= " YEAR(FROM_UNIXTIME(untilday))=$kdy";
+    $c_kdy= " YEAR(FROM_UNIXTkniIME(untilday))=$kdy";
     list($rok,$id)= explode(',',$id);
     $ORDER= "DESC";
   }
@@ -2236,7 +2236,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
   $info= akce_info($typ,count($xx));
   // generování stránky
   $rok_ted = '';
-  $h= "<div class='content'> $info";
+  $h= ($wrap_container ? "<div class='content'>" : "") . $info;
   $abstr= $mode[1] ? 'abstr' : 'abstr-line';
   $n= 0; // pořadí akce v roce
   foreach($xx as $cid=>$x) {
@@ -2310,7 +2310,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
          </div>";
     }
   }
-  $h.= "</div>";
+  if ($wrap_container) $h.= "</div>";
   if ( $FREE ) {  // překlad na globální odkazy
     $h= preg_replace("/(src|href)=(['\"])fileadmin/","$1=$2https://www.setkani.org/fileadmin",$h);
   }

@@ -115,6 +115,11 @@ h3 {margin-top: 30px}
 #clanek td { border:1px solid silver; }
 #clanek th { border:1px solid silver; background:silver; }
 
+/*scrollbar*/
+::-webkit-scrollbar {width: 10px;}
+::-webkit-scrollbar-track {background: #f1f1f1;}
+::-webkit-scrollbar-thumb {background: #888;}
+::-webkit-scrollbar-thumb:hover {background: #555;}
 /* ------------------------------------------------------------------- anchor */
 /* USE: add span <span class='anchor' id='desired_id'></span> to the element to point to
         ! parent of the span must be relative in its position
@@ -304,7 +309,7 @@ span.akce_datum {background: white; border-radius: 5px; float: left;}
 .abstr b {float:left; clear:both;}
 .abstr-line span.akce_datum {float: none; display: block;}
 /*abstrakty pro fotogalerii*/
-.abstr-fotogalerie {text-decoration: none; width: 25%;overflow: hidden;display: inline-block; height:12.8em; position: relative;}
+.abstr-fotogalerie {text-decoration: none; width: 22%; padding: 0 0.4%; overflow: hidden;display: inline-block; height:12.8em; position: relative;}
 .abstr-fotogalerie > .fbg {background: black; height: 100%; width: 100%; z-index: 3; position: absolute}
 .abstr-fotogalerie > .fimg {background-position: center;background-repeat: no-repeat;background-size: cover; height: 100%; width: 100%; z-index: 4; position: absolute}
 .abstr-fotogalerie > .ftitle {background: rgba(245, 245, 245, 0.48); position: absolute; z-index: 5; padding: 7px; color: black; width: 95%}
@@ -588,12 +593,14 @@ label.form_button {float: right}
   #facebook_content:before {transform: translate(00px, -70px);}
   .masonry_container { column-count: 1;}
 
+  div, span {font-size: 11pt;}
   h1 {margin-left: 0.2em !important;}
   h2, h3, h4 {margin-left: 0.1em !important;}
 
   /*todo delete?*/#cist_dole { display:block; }
   #web {margin-top: 50px;}
-
+  #list {padding: 0;}
+  .content {padding: 0 12px;}
   /*popup*/
   #popup {width: 80vw; margin-left: -45vw; height: 80vh; margin-top: -40vh;}
   #order {width: 80vw; margin-left: -45vw; height: 80vh; margin-top: -40vh;}
@@ -649,6 +656,8 @@ label.form_button {float: right}
   #facebook_content {width: 300px; padding-top: 60px; padding-right: 40px;}
   #facebook_content:before {transform: translate(00px, -70px);}
 
+  #list {padding: 0;}
+
   /*popup*/
   #popup {width: 80vw; margin-left: -40vw; height: 80vh; margin-top: -40vh;}
   #order {width: 80vw; margin-left: -40vw; height: 80vh; margin-top: -40vh;}
@@ -660,7 +669,7 @@ label.form_button {float: right}
 
   /* abstrakty */
   div.abstr { width:50%; }
-  .abstr-fotogalerie {width:50%; }
+  .abstr-fotogalerie {width:46%; padding: 0 1% }
   .mobile_nodisplay {display: none !important;}
 }
 
@@ -693,7 +702,7 @@ label.form_button {float: right}
   #menu div, #menu span, #menu input {font-size: 10pt; }
   /* abstrakty */
   div.abstr { width:33.3%; }
-  .abstr-fotogalerie {width:33.3%; }
+  .abstr-fotogalerie {width:30%; padding: 0 0.5% }
 }
 
 /* -------------------------------------------------------------------------- PC velká obrazovka */
