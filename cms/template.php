@@ -784,7 +784,7 @@ __EOD;
   <meta http-equiv="X-UA-Compatible" content="IE=9" />
   <meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1" />
   <base href="$base" />
-  <title>$web_title</title>
+  <title>YMCA Setkání - $web_title</title>
   <link rel="shortcut icon" href="$icon" />
   
   $eb_link
