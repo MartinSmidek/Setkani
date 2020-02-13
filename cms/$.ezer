@@ -21,6 +21,11 @@ panel p [0,0,*,*] { type:'main'
     go_menu(last.get);
   }
 # ----------------------------------------------------------------------------==> emulace událostí
+  proc cms_go_anchor(ref,anch) { 
+    echo("přepnutí webu na ",ref,"#",anch); 
+    do_go.get; 
+    go_anchor(ref,anch) 
+  }
   proc cms_go(ref) { echo("přepnutí webu na ",ref); do_go.get; go(ref) }
   proc cms_menu(ref) { echo("přepnutí dle menu ",ref); do_go.get; go_menu(ref) }
   proc refresh() { cms_go(last.get); }
@@ -32,6 +37,14 @@ panel p [0,0,*,*] { type:'main'
     f.verze.set(sys('ezer','version')); 
     w.page_set(ask('page',CMS.from_table.get,function("return Ezer.app_root;"),ref));
     function("return jump_fokus();");
+  }
+  proc go_anchor(ref,anch) { 
+    [ has_skill('a'); f.clr.get; clear ];
+    history.set(last.get);
+    last.set(ref);
+    f.verze.set(sys('ezer','version')); 
+    w.page_set(ask('page',CMS.from_table.get,function("return Ezer.app_root;"),ref));
+    function('anch',"return jump_fokus(anch);",anch);
   }
   proc cms_go_case(pid) { var y:object, ref:text
     [ has_skill('a'); f.clr.get; clear ];

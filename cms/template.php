@@ -2495,7 +2495,9 @@ function vlakno($cid,$typ='',$back_href='') { trace();
       $abstract= ($x->obsah) ? xi_shorting($x->obsah,$img) ." <b>pokračování pod odkazem</b>" :
           '<b>detaily akce naleznete pod tímto odkazem</b>';
       $data = pid2menu($x->uid);
-      $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
+      $jmp= $CMS
+          ? "onclick=\"go_anchor(arguments[0],'$data->page','$data->direct_url');\""
+          : "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
       $h .= "<div class='abstr_line relative'><span class='anchor' id='anchor$uid'></span>
          <h2>$x->nadpis</h2>
          $code

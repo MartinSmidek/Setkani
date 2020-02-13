@@ -1,3 +1,5 @@
+/* global Ezer */
+
 // ---------------------------------------------------------------------------------------------- //
 // uživatelské funkce aplikace Ezer/CMS specifické pro BE (přihlášené)                            //
 //                                                                                                //
@@ -274,6 +276,33 @@ function go(e,href,mref,input,nojump) {
   }
   history.pushState({},'',mref ? mref : http+'page='+page);
   Ezer.run.$.part.p._call(0,nojump?'cms_menu':'cms_go',page)
+  return false;
+}
+// --------------------------------------------------------------------------------------- go anchor
+// předá CMS info na kterou stránku webu přepnout
+function go_anchor(e,href,mref,input,nojump) {
+  if ( e ) e.stopPropagation();
+  let anchor= '';
+  nojump= nojump||0;
+  var url, http, page, u= href.split('page=');
+  if ( u.length==2 ) {
+    http= u[0];
+    page= u[1].split('#');
+    anchor= page[1];
+    page= page[0];
+  }
+  else {
+    http= u;
+    page= 'home';
+  }
+  if ( input ) {
+    // go je voláno přes <enter> v hledej
+    var search= jQuery('#search').val();
+    document.cookie= 'web_search='+search+';path=/';
+    page= page + '!!'+ search;
+  }
+  history.pushState({},'',mref ? mref : http+'page='+page);
+  Ezer.run.$.part.p._call(0,nojump?'cms_menu':'cms_go_anchor',page,anchor)
   return false;
 }
 // ----------------------------------------------------------------------------------------- refresh

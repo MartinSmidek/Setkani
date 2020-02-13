@@ -149,51 +149,6 @@ function sitemap_url($ref,$last,$freq='monthly',$prior='0.5') {
 function tstamp2date($ts,$par='') {
   return date('j.n.Y',$ts.$par);
 }
-# ----------------------------------------------------------------------------------------- pid2menu
-function pid2menu($pid) { trace();
-  list($cid,$mid,$ref,$mref,$type,$program,$rok)= select(
-      "cid,mid,ref,mref,type,program,IF(LEFT(FROM_UNIXTIME(untilday),10)>=LEFT(NOW(),10),'nove',YEAR(FROM_UNIXTIME(fromday)))",
-      "tx_gncase_part AS p JOIN tx_gncase AS c ON c.uid=cid LEFT JOIN tx_gnmenu USING (mid)","p.uid=$pid");
-  return query2menu($pid,$cid,$mid,$ref,$mref,$type,$program,$rok);
-}
-function query2menu($pid,$cid,$mid,$ref,$mref,$type,$program,$rok) { trace();
-  $ret= (object)array('url'=>'','ref'=>'', 'page'=>'', 'direct_url'=>'');
-  $mref= str_replace('Y',date('Y'),$mref);
-  $url= $direct= '';
-  if ( $type==1  ) {
-    $url.= "$mref/$pid";
-    $direct .= $url . "#anchor$pid";
-    $page= "$ref!$pid";
-  }
-  elseif ( $type==2 && $program ) {
-    $progs= array('','rodiny','manzele','chlapi','zeny','mladez');
-    $prog= explode(',',$program);
-    $komu= $del= '';
-    foreach($prog as $i=>$p) if ( $p<6 ) {
-      $komu.= $del.$progs[$p];
-      $del= ',';
-    }
-    $url.= "$komu/$rok/$pid";
-    $direct .= $url . "#anchor$pid";
-    $page= "akce!$komu,$rok!$pid";
-  }
-  elseif ( $type==3 || $type==6 || $type==5 ) {
-    $url.= "$mref/$cid,$pid";
-    $direct .= $url . "#anchor$pid";
-    $page= "$ref!$cid,$pid";
-  }
-  else {
-    $url.= 'home';
-    $direct .= $url;
-    $page= "$ref!$pid";
-  }
-  $ret->url= $url;
-  $ret->direct_url= $direct;
-  $ret->page= $page;
-  $ret->ref= "<a href='$url'>$url</a>";
-  debug($ret,"($cid,$mid,$ref,$mref,$type,$program,$rok)");
-  return $ret;
-}
 # ------------------------------------------------------------------------------------------ def mid
 function def_mid($elem,$mid,$overwrite=0) { trace();
   list($typ,$ids)= explode('=',$elem);
