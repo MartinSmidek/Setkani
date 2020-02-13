@@ -150,7 +150,7 @@ __EOD;
     <div id='logo'>
       <button id='logoContinue' style='display:none;outline:3px solid orange;'>continue</button>
       <img class="StatusIcon" id="StatusIcon_idle" src="cms/img/-logo.gif" />
-      <!-- ? img class="StatusIcon" id="StatusIcon_server" src="cms/img/+logo.gif" / -->
+      <img class="StatusIcon" id="StatusIcon_server" src="cms/img/+logo.gif" />
     </div>
   </div>
   <div id='ajax_bar'></div>

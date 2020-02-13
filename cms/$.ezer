@@ -21,6 +21,11 @@ panel p [0,0,*,*] { type:'main'
     go_menu(last.get);
   }
 # ----------------------------------------------------------------------------==> emulace událostí
+  proc cms_go_anchor(ref,anch) { 
+    echo("přepnutí webu na ",ref,"#",anch); 
+    do_go.get; 
+    go_anchor(ref,anch) 
+  }
   proc cms_go(ref) { echo("přepnutí webu na ",ref); do_go.get; go(ref) }
   proc cms_menu(ref) { echo("přepnutí dle menu ",ref); do_go.get; go_menu(ref) }
   proc refresh() { cms_go(last.get); }
@@ -32,6 +37,14 @@ panel p [0,0,*,*] { type:'main'
     f.verze.set(sys('ezer','version')); 
     w.page_set(ask('page',CMS.from_table.get,function("return Ezer.app_root;"),ref));
     function("return jump_fokus();");
+  }
+  proc go_anchor(ref,anch) { 
+    [ has_skill('a'); f.clr.get; clear ];
+    history.set(last.get);
+    last.set(ref);
+    f.verze.set(sys('ezer','version')); 
+    w.page_set(ask('page',CMS.from_table.get,function("return Ezer.app_root;"),ref));
+    function('anch',"return jump_fokus(anch);",anch);
   }
   proc cms_go_case(pid) { var y:object, ref:text
     [ has_skill('a'); f.clr.get; clear ];
@@ -53,6 +66,7 @@ panel p [0,0,*,*] { type:'main'
   proc seradit(ids,typ) { ask('seradit',ids,typ); refresh }
   proc opravit(typ,id,cid) {
     switch(typ,
+    'footer',  { EDITOR.footer; go(last.get) },
     'clanek',  { EDITOR.oprava(id,cid); go(last.get) },
     'kapitola',{ EDITOR.oprava(id,cid); go(last.get) },
     'akce',    { EDITOR.oprava(id,cid); go(last.get) },
@@ -88,6 +102,7 @@ panel p [0,0,*,*] { type:'main'
     switch(op,
     'delete', { FOTKY.smazat(name); },
     'note',   { FOTKY.poznamka(name,pars); },
+    'main',   { FOTKY.main(name); },
     { echo("neznámá operace nad fotkami"); }
     );
   }
@@ -98,7 +113,7 @@ panel p [0,0,*,*] { type:'main'
   }
 # ----------------------------------------------------------------------------==> control bar
   form _f [,,*,30] { css:'grey', style:'z-index:9999'
-    proc hide_all() { BE_LOG.hide; FE_LOG.hide; FE_USER.hide; BE_USER.hide; OPTIONS.hide; CMS.hide }
+    proc hide_all() { ADMIN.hide; FE_LOG.hide; FE_USER.hide; BE_USER.hide; OPTIONS.hide; CMS.hide }
     button [80,5,,]  { skill:'a|a', title:"[fa-chevron-left]"    proc onclick() { hide_all; go(history.get) } }
     button [101,5,,] { skill:'a|a', title:"[fa-repeat]"          proc onclick() { hide_all; cms_go(last.get) } }
     button [123,5,,] { skill:'a|a', title:"[fa-chevron-right]", format:'d'
@@ -108,7 +123,7 @@ panel p [0,0,*,*] { type:'main'
     button [280,5,,] { skill:'a|a', title:"[fa-user] WEB"        proc onclick() { hide_all; FE_USER.modal } }
     button [336,5,,] { skill:'a|a', title:"[fa-file] změny"      proc onclick() { hide_all; FE_LOG.modal } }
     button [425,5,,] { skill:'a|a', title:"[fa-user-plus] správci"   proc onclick() { hide_all; BE_USER.modal } }
-    button [497,5,,] { skill:'a|a', title:"[fa-file-text] admin" proc onclick() { hide_all; BE_LOG.modal } }
+    button [497,5,,] { skill:'a|a', title:"[fa-file-text] admin" proc onclick() { hide_all; ADMIN.modal } }
 //    button [583,5,,] { skill:'m|m', title:"[fa-gears] CMS" proc onclick() { hide_all; CMS.modal } }
     check [-272,4,65,] { title:"c/p", value:'0', format:'t', style:'color:white'
       proc onchange() { 
@@ -357,7 +372,7 @@ panel FOTKY [0,0,680,240] { title:' Organizér fotek', type:'popup', css:'dialog
   proc refresh() { var ret:object
 #     f.fotky.set(ask('load_fotky',f.uid.get));
     ret.set(ask('load_fotky',f.uid.get)); copy_by_name(ret,f);
-    [ function("foto_sortable('start');") ];
+//    [ function("foto_sortable('start');") ]; --- chybí Sortables
     f.drop_init;
   }
   proc create() { var values:object values.set(object());
@@ -369,6 +384,10 @@ panel FOTKY [0,0,680,240] { title:' Organizér fotek', type:'popup', css:'dialog
   # ==> . vymazání
   proc smazat(name) {
     ask('delete_fotky',f.uid.get,name); refresh;
+  }
+  # ==> . nastavení jako hlavní ve fotogalerii
+  proc main(name) {
+    ask('main_fotky',f.uid.get,name); refresh;
   }
   # ==> . vtipná poznámka
   proc poznamka(name,note0) { var note:text
@@ -460,7 +479,8 @@ panel EDITOR [0,0,720,385] { title:' Editor článků', type:'popup', css:'dialo
   var path:text,
 #       typ:text,
       xobsah:text, co:text           // home|text - co teď editujeme: abstract|text
-  use f: form _edit [0,0,,]
+  use f: form _edit [0,0,,] { tag:'f' }
+  use t: form _foot [0,0,,] { tag:'t' }
   proc onstart() {
     f.program.selects("rodiny:1,manželé:2,chlapi:3,ženy:4,mládež:5,Albeřice:6");
     f.homepage.selects(conc("-:0,... abstrakt na homepage:2,... abstrakt nahoru:6",
@@ -475,6 +495,7 @@ panel EDITOR [0,0,720,385] { title:' Editor článků', type:'popup', css:'dialo
   }
   # ==> . nový
   proc novy(_typ,_pid,_mid) { var ret:object
+    panel.display(2,'f');
     f.init; f.abs.Init;
     f.pid.set(_pid); f.mid.set(_mid); f.cid.set(0); f.uid.set(0);
     f.sav.set('[fa-save] Vytvořit'); f.app.enable(0);
@@ -499,8 +520,9 @@ panel EDITOR [0,0,720,385] { title:' Editor článků', type:'popup', css:'dialo
     join_drop;
     panel.modal //(10,30);
   }
-  # ==> . oprava
+  # ==> . oprava článku
   proc oprava(_uid,_cid) { var ret:object, cid_00:text
+    panel.display(2,'f');
     f.abs.Init;
     f.uid.set(_uid); f.cid.set(_cid);
     f.sav.set('[fa-save] Uložit'); f.app.enable(1);   // úprava form
@@ -515,6 +537,13 @@ panel EDITOR [0,0,720,385] { title:' Editor článků', type:'popup', css:'dialo
   # ==> přidat kapitolu do knihy
   proc pridat(_cid) { 
     ask('add_part',_cid,'E');
+  }
+  # ==> . oprava zápatí
+  proc footer() { 
+    panel.display(2,'t');
+    t.init; 
+    t.next_foot(0);
+    panel.modal 
   }
   # ==> . form
   form _edit [0,0,730,385] {
@@ -637,6 +666,51 @@ panel EDITOR [0,0,720,385] { title:' Editor článků', type:'popup', css:'dialo
         | warning("obrázky lze vkládat až po uložení nového článku, zkus skrýt článek během jeho tvorby") ];
         return(uid.get);
       }
+    }
+  }
+  # ==> . úprava kalendáře
+  form _foot [10,10,710,460] {
+    field id { data:footer.id }
+    button [0,5,,]  { title:"[fa-chevron-left]", help:'předchozí'
+      proc onclick() { next_foot(1); }}
+    button [21,5,,] { title:"[fa-repeat]"          
+      proc onclick() { form.load(id.get); next_foot(0) } }
+    button [43,5,,] { title:"[fa-chevron-right]", help:'další'
+      proc onclick() { next_foot(-1); }}
+    field [68,5,34,] { data:footer.id, format:'o' }
+    label [108,0,223,] { title:"<== nalezni položku, kterou chceš upravit nebo založ novou ==>", 
+        format:'c', style:"font-weight:bold;color:darkgreen;background-color:#c0e2c2" }
+    button  [-278,5,,] { title:'Nová položka', help:'vytvořit nový kontakt nebo organizaci'
+      proc onclick() { form.init; }}
+    button  [-225,5,,] { title:'Uložit', help:'ukončit editor a uložit změny'
+      proc onclick() { 
+        form.same
+      | form.key; form.save; form.load; 
+        panel.hide(1); 
+      | id.set(form.insert); form.load; 
+        panel.hide(1); 
+      }}
+    button  [-180,5,,] { title:'Zpět', help:'ukončit editor bez uložení změn'
+      proc onclick() { panel.hide(0); }}
+    // položky patičky
+    field [0,46,419,] { title:'^název', data:footer.title }
+    field [435,46,40,] { title:'^řazení', data:footer.sorting }
+    field [487,46,40,] { title:'^c/o', data:footer.part }
+    // anotace
+    label [0,74,297,20] { title:'text kontaktu nebo spřátelené organizace' }
+    edit obsah [0,90,525,224] { type:'html', data:footer.text, par:°{toolbar:'Minimal'} }
+    label legenda [549,68,158,291] { title:"
+      <b>Potřebné ikony se do textu píší podle následujících vzorů</b><br>
+      <br><i class='fa fa-envelope'></i> {envelope}
+      <br><i class='fa fa-phone'></i> {phone}
+      <br><i class='fa fa-facebook-square'></i> {facebook-square}
+      <br><i class='fa fa-bank'></i> {bank}
+      <br><br>... jako jméno lze použít cokoliv z fontu Awesome v.4.7
+    " }
+    // funkce
+    proc next_foot(smer) { var y:object
+      id.set(ask('edit_next_footer',id.get,smer)); 
+      form.load(id.get);
     }
   }
 }
@@ -767,13 +841,13 @@ panel FE_USER [0,0,400,400] { title:'Uživatelé webu', type:'popup', css:'dialo
     }
   }
 }
-# ----------------------------------------------------------------------------==> BE LOG
-panel BE_LOG [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu'
+# ----------------------------------------------------------------------------==> ADMIN
+panel ADMIN [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu'
     style:"min-width:590px", _sys:'cms'
-  proc onfirstfocus() { m.str.img.click }
+  proc onfirstfocus() { m.aktivni.dnes.click }
   menu m { type:'left'
-    menu { title:'Aktivní uživatelé',type:'group',skill:'a'
-      item { title:'dnes'               par:°{s:'uzivatele',c:'dnes',short:'1'}}
+    menu aktivni { title:'Aktivní uživatelé',type:'group',skill:'a'
+      item dnes { title:'dnes'               par:°{s:'uzivatele',c:'dnes',short:'1'}}
       item { title:'včera'              par:°{s:'uzivatele',c:'vcera',short:'1'}}
       item { title:'týden'              par:°{s:'uzivatele',c:'dny',days:'8',short:'1'}}
       item { title:'dva týdny'          par:°{s:'uzivatele',c:'dny',days:'15',short:'1'}}
@@ -793,11 +867,17 @@ panel BE_LOG [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_men
       info.fill(conc(i.owner.title,' - ',i.title),y);
     }
     menu { title:'GitHub',type:'group',skill:'m'
-      item { title:'git status'               par:°{op:'cmd',cmd:'status'}}
-      item { title:'git log'                  par:°{op:'cmd',cmd:'log'}}
-      item { title:'git pull'                 par:°{op:'cmd',cmd:'pull'}}
-      item { title:'git reset --hard origin/master' par:°{op:'cmd',cmd:'reset --hard origin/master'}}
-      item { title:'... echo docs/.git.log'   par:°{op:'show'}}
+      item { title:'[fa-question] CMS: git status'  par:°{folder:'cms',op:'cmd',cmd:'status'}}
+      item { title:'[fa-gear] CMS: git log'         par:°{folder:'cms',op:'cmd',cmd:'log'}}
+      item { title:'[fa-gear] CMS: git pull'        par:°{folder:'cms',op:'cmd',cmd:'pull'}}
+//    item { title:'[fa-gear] CMS: git reset --hard origin/master' 
+//                                                par:°{folder:'cms',op:'cmd',cmd:'reset --hard origin/master'}}
+      item { title:'[fa-question] Ezer: git status' par:°{folder:'ezer',op:'cmd',cmd:'status'}}
+      item { title:'[fa-gears] Ezer: git log'       par:°{folder:'ezer',op:'cmd',cmd:'log'}}
+      item { title:'[fa-gears] Ezer: git pull'      par:°{folder:'ezer',op:'cmd',cmd:'pull'}}
+//    item { title:'[fa-gears] Ezer: git reset --hard origin/master' 
+//                                                par:°{folder:'ezer',op:'cmd',cmd:'reset --hard origin/master'}}
+//    item { title:'[fa-question] poslední git.log'   par:°{op:'show'}}
       proc onclick (i) {  
         panel.display(2,'mu'); 
         info.fill(conc(i.owner.title,' - ',i.title),ask('git_make',i.par));
@@ -816,18 +896,38 @@ panel BE_LOG [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_men
         info.fill(conc(i.owner.title,' - ',i.title),ask('i_doc_table_struct',i.par.tab,0));
       }
     }
-    menu { title:'Import/export databáze',type:'group',skill:'m'
+    menu { title:'Import a záloha databáze',type:'group',skill:'m'
       item { title:"[fa-question] přehled záloh"          par:°{do:'b',typ:'listing',direct:'1'}}
       item { title:"[fa-upload] zálohuj teď"              par:°{do:'b',typ:'special',direct:'0'}}
-      item { title:"[fa-download] obnova ze zálohy"       par:°{do:'o',typ:'restore',direct:'1'}}
+      item { title:"[fa-download] zahájení importu ..."   par:°{do:'1',typ:'restore',direct:'1'}}
+      item { title:"[fa-download] ... dokončení importu"  par:°{do:'2',typ:'restore',direct:'1'}}
       proc onclick(i) {
         info.fill(conc(i.owner.title,' - ',i.title),' ');
         { eq(i.par.do,'b'); info.append(ask('sys_backup_make',i.par)) 
-        | eq(i.par.do,'o'); 
-          confirm('Opravdu mám lokální databázi přepsat?'); 
-          // zachovej tabulky přidané k db setkani
-          ask('db_drop_tables_but','setkani4','footer');
-          info.append(ask('sys_backup_make',i.par))
+        | eq(i.par.do,'1'); 
+          // pokud existuje _touch byl asi celý import dokončen
+          ask('db_transform',°{op:'test-pass',table:'_touch'});
+          [ confirm('Opravdu mám lokální databázi přepsat tou, kterou teď vybereš?'); 
+            // zachovej historii přihlašování k setkani4 MSM+JHO
+            [ ask('query',"DROP TABLE IF EXISTS _touch_") ];
+            [ ask('query',"ALTER TABLE _touch RENAME TO _touch_") ];
+            // zachovej tabulky specifické pro setkani4
+            ask('db_drop_tables_but','setkani4','footer,_touch_');
+            // načti obnovu
+            info.append(ask('sys_backup_make',i.par));
+            info.append("... po importu je nutné provést <b>... dokončení importu</b>");
+           ]
+        | eq(i.par.do,'1'); alert("předchozí import nebyl dokončen")
+          // pokud neexistuje _touch_ nelze provést 2. fázi
+        | eq(i.par.do,'2'); 
+          ask('db_transform',°{op:'test-pass',table:'_touch_'});
+          // vrať _touch
+          [ ask('query',"DROP TABLE _touch") ];
+          [ ask('query',"ALTER TABLE _touch_ RENAME TO _touch") ];
+          // pročisti záznamy tabulek
+          ask('db_clear_tables','_touch');
+          info.append("... nyní je možné provést transformaci obsahu importované databáze");
+        | eq(i.par.do,'2'); alert("import ještě nebyl zahájen")
         }
       }
     }
@@ -837,7 +937,7 @@ panel BE_LOG [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_men
       // nepoužitá pole
       item { title:"[fa-recycle] transformace: old fields"   par:°{do:'t',op:'old-fields'}}
       // dočasné úživatelské účty
-      item { title:"[fa-recycle] transformace: old fields"   par:°{do:'t',op:'tmp-user'}}
+      item { title:"[fa-recycle] transformace: tmp users"    par:°{do:'t',op:'tmp-user'}}
       proc onclick(i) {
         info.fill(conc(i.owner.title,' - ',i.title),' ');
         { eq(i.par.do,'t'); info.append(ask('db_transform',i.par)) 
@@ -860,7 +960,7 @@ panel BE_LOG [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_men
 form _text [,,*,*] { css:'popup-right'
   label head [0,0,*,50]  { title:'' }
   label msg  [0,35,*,20] { title:'' }
-  label note [0,55,*,550] { title:'' }
+  label note [0,55,*,410] { title:'' style:'overflow:auto' }
   proc Init() { head.set(''); msg.set(''); note.set(''); }
   proc fill(x,y) {
     [ x; head.set(conc("<div class='karta'>",replace_fa(x),"</div>")) ];
@@ -1393,6 +1493,13 @@ table _help {  key_id:'id_help'                     // tabulka _help je v datab�
 }
 table _skill { key_id:'id_skill', db:'ezer_system'
   number id_skill, text skill_abbr, text skill_desc
+}
+table footer { key_id:'id', db:'setkani4'
+  number id
+  text title
+  text text
+  text part
+  number sorting
 }
 # ----------------------------------------------------------------------------==> mapy
 map web_skupina:    table _cis {where:"druh='skupina'", order:'data',   key_id:'data'}

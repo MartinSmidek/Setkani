@@ -42,13 +42,20 @@ jQuery.fn.extend({
 // -------------------------------------------------------------------------------------- jump fokus
 // nastaví polohu stránky
 // zamění <span style='neodkaz'> na alert
-function jump_fokus() {
+function jump_fokus(id) {
+  var jump;
+  // pokud je cíl definován
+  if ( id ) {
+    jump= jQuery('#'+id);
+  }
+  else {
   // najdi cíl podle priority
-  var jump= jQuery('#fokus_part');
-  if ( !jump.length )
-    jump= jQuery('#fokus_case');
-  if ( !jump.length )
-    jump= jQuery('#fokus_page');
+    jump= jQuery('#fokus_part');
+    if ( !jump.length )
+      jump= jQuery('#fokus_case');
+    if ( !jump.length )
+      jump= jQuery('#fokus_page');
+  }
   if ( jump.length ) {
     jump[0].scrollIntoView(true);
   }
