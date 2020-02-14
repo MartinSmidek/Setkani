@@ -22,7 +22,7 @@ div.LabelDrop { outline: 3px solid #cadfd9; background-color:#cadfd9; }
 
 /* -------------------------------------------------------------------------- média */
 
-[data-oembed-url] { width: 426px; max-height: 240px; margin:0 auto; }
+[data-oembed-url] { width: 65%; margin:0 auto; }
 
 /* -------------------------------------------------------------------------- layout */
 /* podle https://chrisbracco.com/css-sticky-footer-effect/ ??? */
@@ -403,7 +403,6 @@ div.clanek {  /*overflow:hidden;*/ margin:0.5em; position:relative; }
 span.datum { background-color:#f2f2f2; color:#130D00; padding: 2px 5px; border-radius: 5px; border: 1px solid #e6e6e6}
 div.clanek span.datum { position: absolute; top: 0; left: 0; }
 div.podpis { text-align:right; font-style:italic; clear:both; padding: 0 15px 10px 0}
-div [data-oembed-url] { display: inline-block; margin: 1em; }
 div.new { background-image: url(img/new.png); background-repeat:no-repeat; background-position: top right; }
 div.upd { background-image: url(img/upd.png); background-repeat:no-repeat; background-position: top right; }
 #list {max-width: 1100px; margin: 0 auto; padding: 0 20px; padding-bottom: 30px;}

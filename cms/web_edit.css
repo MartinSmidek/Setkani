@@ -39,8 +39,6 @@ figure.image-wide img, img.image-wide {max-width: 500px;height: auto;}
 /* Embed center style. */
 .embed-align-center {margin-left: auto;margin-right: auto;}
 
-div [data-oembed-url] {max-width: 426px;max-height: 240px;/*margin:0 auto;*/}
-
 .embed-240p{max-width: 426px;max-height: 240px;margin:0 auto;}
 .embed-360p{max-width: 640px;max-height: 360px;margin:0 auto;}
 .embed-480p{max-width: 854px;max-height: 480px;margin:0 auto;}
