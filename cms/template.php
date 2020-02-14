@@ -2592,9 +2592,10 @@ function knihy($ids,$cpid0=0,$mid=0,$backref='') { trace();
       $pid0_kapitola= $kapitola;
     }
     $n= $tags=='C' ? "$autor: $title" : "$title";
+    $key = '';
     if ( $tags=='C' && $fe_group )
-      $n.= " <i class='fa fa-key' style='color:red'></i> ";
-    $xx[$cid][]= (object)array('pid'=>"$pid",'nadpis'=>$n,'text'=>$text,
+      $key = " <i class='fa fa-key' style='color:red'></i> ";
+    $xx[$cid][]= (object)array('pid'=>"$pid",'nadpis'=>$n.$key,'nadpis_plain'=>$n,'text'=>$text,
         'tags'=>$tags,'kapitola'=>$kapitola,'type'=>$type);
   }
   $found= count($xx)." knih";
@@ -2602,7 +2603,7 @@ function knihy($ids,$cpid0=0,$mid=0,$backref='') { trace();
   // generování stránky
   $h= "<div class='content'>";
   foreach($xx as $cid=>$xs) {
-    $nadpis_cid= $xs[0]->nadpis;
+    $nadpis_cid= $xs[0]->nadpis_plain;
     $back0= ''; //"onclick=\"go(arguments[0],'$href0');\"";
     $back= '';  //"onclick=\"go(arguments[0],'$href0!$cid');\"";
     $h.= $cid==$cid0 //&& $n>1
