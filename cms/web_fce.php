@@ -699,21 +699,8 @@ function delete_fotky($uid,$foto) {
 # --------------------------------------------------------------------------------------- main fotky
 # fotku redaktor vybral jako titulní ve fotogalerii
 function main_fotky($uid,$foto) { trace();
-  global $ezer_path_root;
-  // cesta k fotce $foto=originál, .$foto=pro prohlížeč, ..$foto je miniatura
-  $path= "$ezer_path_root/fileadmin/photo/$uid/$foto";
-
-  $found = '';
-  $mn= mysql_qry("SELECT * FROM setkani4.tx_gncase_part WHERE uid='$uid' LIMIT 1");
-  while ( $mn && ($m= mysql_fetch_object($mn)) ) {
-    $found = $m->abstract;
-  }
-
-  if ($found != '') {
-    echo 'query ' . $found;
-  } else {
-    echo '  query("UPDATE tx_gncase_part SET abstract=\'.$foto\' WHERE uid=\'$uid\'");';
-  }
+  //reuse 'abstract' column as photos do not use it...
+  query("UPDATE setkani4.tx_gncase_part SET abstract='$foto' WHERE uid='$uid'");
   return 1;
 }
 # --------------------------------------------------------------------------------------- note fotky

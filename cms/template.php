@@ -2182,7 +2182,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
   $p_show= ($show_hidden ?  '' : " AND !p.hidden").($show_deleted ? '' : " AND !p.deleted");
   $groups= $usergroups ? "AND fe_groups IN ($usergroups)" : 'AND fe_groups=0';
   $qry= "
-    SELECT p.uid, c.uid, fe_groups, tags, p.title, text, abstract,p.deleted,p.hidden,fromday,untilday,id_akce,
+    SELECT p.uid, c.uid, fe_groups, tags, p.title, text, p.abstract,p.deleted,p.hidden,fromday,untilday,id_akce,
       IF(c.tstamp>$news_time, IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),' upd',' new'),'')
       -- DATEDIFF(FROM_UNIXTIME(untilday),FROM_UNIXTIME(fromday))+1 AS _dnu,
       -- FROM_UNIXTIME(fromday) AS _od, FROM_UNIXTIME(untilday) AS _do
@@ -2205,8 +2205,12 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $xx_tags[$cid].= $hid ? 'h' : '';
     if ( $tags=='F' ) {
       $xx_tags[$cid].= $tags;
-      list($foto)= explode(',',$text);
-      $xx_foto[$cid]= "fileadmin/photo/$p_uid/..$foto";
+      if ($abstract) {       //fotogallery --> check if main photo defined
+        $xx_foto[$cid]= "fileadmin/photo/$p_uid/.$abstract";
+      } else {
+        list($foto)= explode(',',$text);
+        $xx_foto[$cid]= "fileadmin/photo/$p_uid/.$foto";
+      }
     }
     else {
       $text= web_text($text);
@@ -2245,21 +2249,28 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $flags= $mini= '';
     $foto= strpos($xx_tags[$cid],'F')!==false;
     if ( $foto ) {
+//      $http= $FREE && preg_match("/fileadmin/",$xx_foto[$cid]) ? "https://www.setkani.org/" : '';
+//      if ($typ=='foto' && $x->abs) {  //fotogallery with selected image as front saved in abstract
+//        $identificator = $x->ident;
+//        $selected_photo = $x->abs;
+//        $imgpath = "fileadmin/photo/$identificator/.$selected_photo";
+//        $mini = "style='background-image:url($http{$imgpath})'";
+//      } else if ($typ=='foto') { //fotogallery, no selected image, todo temporary solution just parse image url
+//        if ($xx_img[$cid]) {
+//          preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $xx_img[$cid], $image);
+//          $imgpath = str_replace('..', '.', $image['src']); // '..imagename' replace with '.imagename'
+//          $mini = "style='background-image:url($http{$imgpath})'";
+//        }
+//      } else {
+//          $mini = $xx_foto[$cid] ? "<div class='mini' style='background-image:url($http{$xx_foto[$cid]})'></div>" : '';
+//      }
+//      $flags.= "<i class='fa fa-camera-retro'></i>";
+      // překlad na globální odkazy pro ty lokální (pro servant.php)
       $http= $FREE && preg_match("/fileadmin/",$xx_foto[$cid]) ? "https://www.setkani.org/" : '';
-      if ($typ=='foto' && $x->abs) {  //fotogallery with selected image as front saved in abstract
-        $identificator = $x->ident;
-        $selected_photo = $x->abs;
-        $imgpath = "fileadmin/photo/$identificator/.$selected_photo";
-        $mini = "style='background-image:url($http{$imgpath})'";
-      } else if ($typ=='foto') { //fotogallery, no selected image, todo temporary solution just parse image url
-        if ($xx_img[$cid]) {
-          preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $xx_img[$cid], $image);
-          $imgpath = str_replace('..', '.', $image['src']); // '..imagename' replace with '.imagename'
-          $mini = "style='background-image:url($http{$imgpath})'";
-        }
-      } else {
-          $mini = $xx_foto[$cid] ? "<div class='mini' style='background-image:url($http{$xx_foto[$cid]})'></div>" : '';
-      }
+      $mini = $xx_foto[$cid] ?
+          ($typ=='foto' ?
+              "style='background-image:url($http{$xx_foto[$cid]})'"
+              : "<div class='mini' style='background-image:url($http{$xx_foto[$cid]})'></div>") : '';
       $flags.= "<i class='fa fa-camera-retro'></i>";
     }
     $flags.= strpos($xx_tags[$cid],'6')!==false
