@@ -166,8 +166,8 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
   $def_pars= array(
       'komu' => array(
           'rodiny'   => 'rodiny:1',
-          'manzele'  => 'manžele:2',
-          'chlapi'   => 'chlapy:3',
+          'manzele'  => 'manželé:2',
+          'chlapi'   => 'chlapi:3',
           'zeny'     => 'ženy:4',
           'mladez'   => 'mládež:5',
           'alberice' => 'pouze akce v Domě setkání:6', // nezobrazuje se
@@ -411,7 +411,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         $menuitem = $CMS || substr($mref,0,1)=='-'
             ? " <a onclick='go(arguments[0],\"$href$cont\",\"/$mref\",$input,1);' "
             . "class='jump$active$a_ref$upd1'$on>$nazev</a>"
-            : " <a href='/$mref' class='jump$active$upd1' onclick='go(arguments[0],\"$href$cont\",\" / $mref\",$input,1);'>$nazev</a>";
+            : " <a href='/$mref' class='jump$active$upd1'>$nazev</a>";
         if ($do_menu2) {
           $mainmenu2 .= $menuitem;
         } else {
@@ -465,8 +465,8 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         $id= array_shift($path);
         list($id)= explode('#',$id);
         $body.= knihy('',$id,$mid);
-        $body.= "<div class='content'><h2>Z vybraných článků</h2></div>";
-        $body.= clanky('',$id,$mid);
+//        $body.= "<div class='content'><h2>Z vybraných článků</h2></div>";
+//        $body.= clanky('',$id,$mid);
         break;
 
       case 'clanek': # ------------------------------------------------ . clanek
@@ -518,7 +518,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 //    $id= array_shift($path);
 //    list($id)= explode('#',$id);
         $body.= home();
-        $body.= facebook();
+        if (!$CMS) {$body.= facebook();}
         break;
 
       case 'team':    # ----------------------------------------------- . team
@@ -543,7 +543,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         list($id)= explode('#',$id);
 //                                                 display("page_mref/s=$page_mref");
         $body.= akce('hledej',$ids,$id,'',$search);
-        $body.= facebook();
+        if (!$CMS) {$body.= facebook();}
         break;
 
       case 'akce':   # ------------------------------------------------ . akce
@@ -598,7 +598,6 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
           global $def_pars,$href0, $kernel;
           display("kdo($x) - $href0 - $kernel");
           $html= "<div id='vyber' class='x'><div class='content'>";
-          $html.= "<span>&emsp; &emsp; prostor pro &emsp;</span>";
           foreach($def_pars['komu'] as $id=>$nazev_i) {
             list($nazev,$i)= explode(':',$nazev_i);
             $alberice= $i==6 ? " style='display:none'" : '';
@@ -781,6 +780,7 @@ __EOD;
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=9" />
   <meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1" />
   <base href="$base" />
@@ -829,8 +829,8 @@ __EOD;
            <i class='fa fa-user-secret'></i> přihlásit se emailem</span>" : ''
       );
   $menu= "
-  <span id='bar_menu' data-mode='$mode[1]' onclick=\"$choice_js\" oncontextmenu=\"$choice_js\">
-    <i class='fa fa-bars' id='bar_image'></i>
+  <span id='bar_menu' data-mode='$mode[1]' >
+    <i class='fa fa-bars' id='bar_image' onclick=\"$choice_js\" oncontextmenu=\"$choice_js\"></i>
   
     <div id='bar_items'>
        <div id='mobile_menu'>
@@ -1217,7 +1217,7 @@ function timeline()
         'text' => $text, 'program' => $program, 'ida' => $ida);
   }
 
-  $h = "<br><br><br><h2 class='float-left' style='margin-top: 0px;'>Chystáme</h2><div class='float-right legend'>akce pro&emsp;";
+  $h = "<br><br><br><h2 class='float-left' style='margin-top: 0px;'>Chystáme</h2><div class='float-right legend'>";
   foreach ($def_pars['komu'] as $ki) {
       list($k, $i) = explode(':', $ki);
       if ($i==6) $k="ostatní";
@@ -1544,7 +1544,7 @@ function clanky($pids,$uid=0,$mid=0,$chlapi='',$back='') { trace();
       $jmp= str_replace('*', $x->ident, $back);
     }
     else {
-      $jmp_code= "go(arguments[0],'$href0!$x->ident#vlakno','$page_mref$roks/$x->ident#anchor$x->ident');";
+      $jmp_code= "go_anchor(arguments[0],'$href0!$x->ident#vlakno','$page_mref$roks/$x->ident#anchor$x->ident');";
       $jmp= $CMS ? "onclick=\"$jmp_code\""
           : "href='$page_mref$roks/$x->ident#anchor$x->ident'";
     }
@@ -2009,7 +2009,7 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
               ? "{$href0}hledej!$rok$hledej#$mark" : ( $vyber=='dum'
                   ? "{$href0}!$rok#$mark"
                   : "{$href0}!$vyber,$rok#$mark" );
-          $next= "onclick=\"go(arguments[0],'$next','$page_mref/$rok#anchor$rok');\"";
+          $next= "onclick=\"go_anchor(arguments[0],'$next','$page_mref/$rok#anchor$rok');\"";
         }
         else {
           $next= "href='$page_mref/$rok#anchor$rok'";
@@ -2182,7 +2182,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
   $p_show= ($show_hidden ?  '' : " AND !p.hidden").($show_deleted ? '' : " AND !p.deleted");
   $groups= $usergroups ? "AND fe_groups IN ($usergroups)" : 'AND fe_groups=0';
   $qry= "
-    SELECT p.uid, c.uid, fe_groups, tags, p.title, text,p.deleted,p.hidden,fromday,untilday,id_akce,
+    SELECT p.uid, c.uid, fe_groups, tags, p.title, text, abstract,p.deleted,p.hidden,fromday,untilday,id_akce,
       IF(c.tstamp>$news_time, IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),' upd',' new'),'')
       -- DATEDIFF(FROM_UNIXTIME(untilday),FROM_UNIXTIME(fromday))+1 AS _dnu,
       -- FROM_UNIXTIME(fromday) AS _od, FROM_UNIXTIME(untilday) AS _do
@@ -2197,7 +2197,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     -- LIMIT 6,2
   ";
   $cr= mysql_qry($qry);
-  while ( $cr && (list($p_uid,$cid,$fe_group,$tags,$title,$text,$del,$hid,$uod,$udo,$ida,$upd)=
+  while ( $cr && (list($p_uid,$cid,$fe_group,$tags,$title,$text,$abstract,$del,$hid,$uod,$udo,$ida,$upd)=
           mysql_fetch_row($cr)) ) {
     if ( $ida && !in_array($kdy,array('nove','bude','bude_alberice')) )
       $ida= 0;
@@ -2207,28 +2207,19 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
       $xx_tags[$cid].= $tags;
       list($foto)= explode(',',$text);
       $xx_foto[$cid]= "fileadmin/photo/$p_uid/..$foto";
-//       $path= "$ezer_path_root/fileadmin/photo/$p_uid/..$foto";
-//       $xx_foto[$cid]= file_exists($path) ? "./fileadmin/photo/$p_uid/..$foto" : '';
     }
     else {
       $text= web_text($text);
       if ( $tags=='A' ) {
         $akdy= datum_akce($uod,$udo);
-//         $datum= sql_date1($od);
-//         $dnu= $dnu==1 ? '' : ($dnu<5 ? " - $dnu dny" : " - $dnu dnů");
-//         $dnu= $dnu ? "$datum $dnu" : $datum;
         if ( $p_uid!=$id || 1 ) { //todo always true -- delete?
           $text= xi_shorting($text,$img);
           if ( $img ) {
-            if ($typ=='foto') { //todo temporary solution to remove the html garbage around source --> create function getting img source instead
-              preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $img, $image);
-              $img = $image['src'];
-            }
             $xx_img[$cid]= $img;
           }
         }
         $xx[$cid]= (object)array('ident'=>$p_uid,'kdy'=>$akdy, 'rok'=>date("Y", $uod), 'nadpis'=>$title,
-            'abstract'=>$text,'upd'=>$upd,'ida'=>$ida);
+            'abstract'=>$text,'upd'=>$upd,'ida'=>$ida, 'abs'=>$abstract);
         if ( $fe_group ) {
           $spec++;
           $xx_tags[$cid].= '6';
@@ -2250,17 +2241,25 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
   $n= 0; // pořadí akce v roce
   foreach($xx as $cid=>$x) {
     $n++;
-//     $tagn= $tag ? "#n$n" : '';
     $tagn= "#n$n";
-    $flags= $mini= ''; // $xx_tags[$cid];
+    $flags= $mini= '';
     $foto= strpos($xx_tags[$cid],'F')!==false;
     if ( $foto ) {
-      // překlad na globální odkazy pro ty lokální (pro servant.php)
       $http= $FREE && preg_match("/fileadmin/",$xx_foto[$cid]) ? "https://www.setkani.org/" : '';
-      $mini = $xx_foto[$cid] ?
-          ($typ=='foto' ?
-              "style='background-image:url($http{$xx_foto[$cid]})'"
-              : "<div class='mini' style='background-image:url($http{$xx_foto[$cid]})'></div>") : '';
+      if ($typ=='foto' && $x->abs) {  //fotogallery with selected image as front saved in abstract
+        $identificator = $x->ident;
+        $selected_photo = $x->abs;
+        $imgpath = "fileadmin/photo/$identificator/.$selected_photo";
+        $mini = "style='background-image:url($http{$imgpath})'";
+      } else if ($typ=='foto') { //fotogallery, no selected image, todo temporary solution just parse image url
+        if ($xx_img[$cid]) {
+          preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $xx_img[$cid], $image);
+          $imgpath = str_replace('..', '.', $image['src']); // '..imagename' replace with '.imagename'
+          $mini = "style='background-image:url($http{$imgpath})'";
+        }
+      } else {
+          $mini = $xx_foto[$cid] ? "<div class='mini' style='background-image:url($http{$xx_foto[$cid]})'></div>" : '';
+      }
       $flags.= "<i class='fa fa-camera-retro'></i>";
     }
     $flags.= strpos($xx_tags[$cid],'6')!==false
@@ -2279,7 +2278,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     }
     else {
       $roks= $rok ? "/$rok" : '';
-      $jmp= $CMS ? "onclick=\"go(arguments[0],'$href0{$vyber}!$x->ident$hledej#vlakno','$page_mref$roks/$x->ident#anchor$x->ident');\""
+      $jmp= $CMS ? "onclick=\"go_anchor(arguments[0],'$href0{$vyber}!$x->ident$hledej#vlakno','$page_mref$roks/$x->ident#anchor$x->ident');\""
           : "href='$page_mref$roks/$x->ident#anchor$x->ident'";
       $back= $CMS ? $href0.($hledej?"$vyber!$hledej":"$vyber$tagn")
           : "$page_mref$roks";
@@ -2662,7 +2661,7 @@ function knihy($ids,$cpid0=0,$mid=0,$backref='') { trace();
           $jmp= str_replace('*', "$cid,$pid", $backref);
         }
         else {
-          $jmp= $CMS ? "onclick=\"go(arguments[0],'$href0!$cid,$pid#clanek','$page_mref/$cid,$pid#anchor$pid');\""
+          $jmp= $CMS ? "onclick=\"go_anchor(arguments[0],'$href0!$cid,$pid#clanek','$page_mref/$cid,$pid#anchor$pid');\""
               : ($chlapi_online ? "href='$page_mref!$x->kapitola'" : "href='$page_mref/$cid,$pid#anchor$pid'");
           //                  : "href='$href0!$cid,$pid#clanek'";
         }

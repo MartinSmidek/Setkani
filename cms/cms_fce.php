@@ -21,6 +21,10 @@ function db_get_file($path) {
 function db_transform($par) {
   $html= '';
   switch ($par->op) {
+    // ----------------------------------------- calendar
+    case 'calendar':
+
+      break;
   // ----------------------------------------- test pass 
   case 'test-pass':
     $je= select("COUNT(*)",'information_schema.tables',

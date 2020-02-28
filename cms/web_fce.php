@@ -546,12 +546,8 @@ function reload_fotky($uid) { global $gn;
       fclose($txt_desc);
     }
     $popisek= strtr($popisek,'"','\"');
-    $texty.= "$del\"$popisek\"";
     list($width, $height, $type, $attr) = getimagesize("$path/$file");
-    $popisy.= "$del'$file ({$width}x$height)'";
-    $fotky.= "$del'$filen'";
     $text.= $file . ',' . str_replace( ',','##44;',$popisek) . ',';
-    $del= ', ';
   }
   query ("UPDATE tx_gncase_part SET text=\"$text\" WHERE uid=$uid");
   #$gn->gn_echo("<hr>$text<hr>");
@@ -706,6 +702,18 @@ function main_fotky($uid,$foto) { trace();
   global $ezer_path_root;
   // cesta k fotce $foto=originál, .$foto=pro prohlížeč, ..$foto je miniatura
   $path= "$ezer_path_root/fileadmin/photo/$uid/$foto";
+
+  $found = '';
+  $mn= mysql_qry("SELECT * FROM tx_gncase_part WHERE uid='$uid' LIMIT 1", 0,0,0,'setkani');
+  while ( $mn && ($m= mysql_fetch_object($mn)) ) {
+    $found = $m->abstract;
+  }
+
+  if ($found != '') {
+    echo 'query ' . $found;
+  } else {
+    echo '  query("UPDATE tx_gncase_part SET abstract=\'.$foto\' WHERE uid=\'$uid\'");';
+  }
   return 1;
 }
 # --------------------------------------------------------------------------------------- note fotky

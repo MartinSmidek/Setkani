@@ -938,6 +938,8 @@ panel ADMIN [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu
       item { title:"[fa-recycle] transformace: old fields"   par:°{do:'t',op:'old-fields'}}
       // dočasné úživatelské účty
       item { title:"[fa-recycle] transformace: tmp users"    par:°{do:'t',op:'tmp-user'}}
+      // nastavit tag 'K' ke kalendářům
+      item { title:"[fa-recycle] transformace: calendar"    par:°{do:'t',op:'calendar'}}
       proc onclick(i) {
         info.fill(conc(i.owner.title,' - ',i.title),' ');
         { eq(i.par.do,'t'); info.append(ask('db_transform',i.par)) 
