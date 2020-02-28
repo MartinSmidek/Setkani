@@ -2249,22 +2249,6 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $flags= $mini= '';
     $foto= strpos($xx_tags[$cid],'F')!==false;
     if ( $foto ) {
-//      $http= $FREE && preg_match("/fileadmin/",$xx_foto[$cid]) ? "https://www.setkani.org/" : '';
-//      if ($typ=='foto' && $x->abs) {  //fotogallery with selected image as front saved in abstract
-//        $identificator = $x->ident;
-//        $selected_photo = $x->abs;
-//        $imgpath = "fileadmin/photo/$identificator/.$selected_photo";
-//        $mini = "style='background-image:url($http{$imgpath})'";
-//      } else if ($typ=='foto') { //fotogallery, no selected image, todo temporary solution just parse image url
-//        if ($xx_img[$cid]) {
-//          preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $xx_img[$cid], $image);
-//          $imgpath = str_replace('..', '.', $image['src']); // '..imagename' replace with '.imagename'
-//          $mini = "style='background-image:url($http{$imgpath})'";
-//        }
-//      } else {
-//          $mini = $xx_foto[$cid] ? "<div class='mini' style='background-image:url($http{$xx_foto[$cid]})'></div>" : '';
-//      }
-//      $flags.= "<i class='fa fa-camera-retro'></i>";
       // překlad na globální odkazy pro ty lokální (pro servant.php)
       $http= $FREE && preg_match("/fileadmin/",$xx_foto[$cid]) ? "https://www.setkani.org/" : '';
       $mini = $xx_foto[$cid] ?
@@ -2294,7 +2278,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
       $back= $CMS ? $href0.($hledej?"$vyber!$hledej":"$vyber$tagn")
           : "$page_mref$roks";
     }
-    $img= $mini ? $mini : $xx_img[$cid];
+    $img = $mini || $typ=='foto' ? $mini : $xx_img[$cid]; //do not user xx_img if typ==foto
     $ex= strpos($xx_tags[$cid],'d')!==false ? ' abstrakt_deleted' : (
     strpos($xx_tags[$cid],'h')!==false ? ' abstrakt_hidden' : '');
     $code= cid_pid($cid,$x->ident);
