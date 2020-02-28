@@ -704,7 +704,7 @@ function main_fotky($uid,$foto) { trace();
   $path= "$ezer_path_root/fileadmin/photo/$uid/$foto";
 
   $found = '';
-  $mn= mysql_qry("SELECT * FROM tx_gncase_part WHERE uid='$uid' LIMIT 1", 0,0,0,'setkani');
+  $mn= mysql_qry("SELECT * FROM setkani4.tx_gncase_part WHERE uid='$uid' LIMIT 1");
   while ( $mn && ($m= mysql_fetch_object($mn)) ) {
     $found = $m->abstract;
   }
