@@ -12,7 +12,7 @@
   display:none; z-index:9; font-size:7pt !important; }
 #info * { font-size:7pt !important; }
 div.fb_iframe_widget { margin:.5em;}
-div.code { position: absolute; background-color: rgba(255, 255, 255, 0.77); z-index:3;
+div.code { position: absolute; background-color: rgba(255, 255, 255, 0.77); z-index:15;
   color: black; border:1px dotted black; border-radius: 5px; cursor: pointer; margin-top:-5px; }
 
 /* -------------------------------------------------------------------------- css */
