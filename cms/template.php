@@ -565,7 +565,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 //                                                         display("* page_mref = $page_mref");
         $id= array_shift($path);
         if ( $ids=='prehled' ) {
-          $body.= "<div class='content'><h1>YMCA Setkání - naše akce</h1></div>";
+          $body.= "<div class='content'><h1>YMCA Setkání - naše akce</h1></div><br><br>";
           $body.= akce_prehled($vyber_rok,$rok,$id);
         }
         elseif ( $ids=='aprehled' ) { // proběhlé akce v Domě setkání
@@ -774,8 +774,8 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
     ga('send', 'pageview');
 __EOD;
   $head=  <<<__EOD
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="cs-CZ">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -1814,7 +1814,7 @@ function kalendare($vyber, $rok, $id) { trace();
   global $CMS, $news_time, $mode, $href0, $page_mref;
   $c_kdy= $rok=='nove'
       ? " LEFT(FROM_UNIXTIME(untilday),10)>=LEFT(NOW(),10)"
-      : " YEAR(FROM_UNIXTIME(untilday))=$rok";
+      : " YEAR(FROM_UNIXTIME(fromday))=$rok OR YEAR(FROM_UNIXTIME(untilday))=$rok";
   if ( !$news_time ) $news_time= time() - 1 * 24*60*60;
   $cr= mysql_qry("
       SELECT p.uid, p.cid,c.type,p.title,p.text,p.author,FROM_UNIXTIME(date),p.tags,
@@ -1967,10 +1967,12 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
         $akce= kolik_1_2_5($pocet,"akce,akcí,akcí");
         if ( $rok=='nove' ) {
           $zacatek= "Zveme vás na $akci:";
+          $kalendare_title = "Kalendáře všech plánovaných akcí:";
           $konec= "";
         }
         else {
           $zacatek= "Archiv $akce z roku $rok ...";
+          $kalendare_title = "Kalendáře akcí z roku $rok ...</div>";
           $konec= "... konec archivu roku $rok";
         }
         $back= "onclick=\"go(arguments[0],'$href0!$vyber#$mark','');\"";
@@ -1981,7 +1983,7 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
                 <span class='kniha_timeline_date_open'>$rok_display</span>";
 
         if ($kalendare != '') {
-          $openmarkhtml .= "Kalendáře akcí z roku $rok ...</div>";
+          $openmarkhtml .= "$kalendare_title</div>";
           $othertitle = "<div class=\"kniha_timeline_text_open_front\"><span class='kniha_timeline_date_open'>$rok_display</span>$zacatek</div>";
         } else {
           $openmarkhtml .= "$zacatek</div>";
