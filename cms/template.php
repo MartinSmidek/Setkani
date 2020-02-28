@@ -777,21 +777,19 @@ __EOD;
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="cs-CZ">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=9" />
-  <meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1" />
-  <base href="$base" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=9" >
+  <meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1" >
+  <base href="$base" >
   <title>YMCA Setkání - $web_title</title>
-  <link rel="shortcut icon" href="$icon" />
+  <link rel="shortcut icon" href="$icon" >
   
   $eb_link
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap&subset=latin-ext" rel="stylesheet">  <!--font-family: 'Open Sans', sans-serif;-->
-  <script src="https://kit.fontawesome.com/5e96e07517.js" crossorigin="anonymous"></script> <!-- Font Awesome Icons -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&amp;subset=latin-ext" rel="stylesheet">  <!--font-family: 'Open Sans', sans-serif;-->
    
   <link rel="stylesheet" href="cms/web.css" type="text/css" media="screen" charset="utf-8">
   <link rel="stylesheet" href="cms/web_edit.css" type="text/css" media="screen" charset="utf-8">
-  <script>
+  <script type="text/javascript">
     var Ezer={web:{ $Ezer_web},cms:{form:{}}};
     if ( !console ) {
       var console={};
@@ -952,8 +950,8 @@ $head
 
   $gallery 
   $demo
-    <a href="/" alt="domů"><img id='logo_ymca' src='cms/img/ymca_zakladni.png' alt='YMCA'></a>
-    <a href="/" alt="domů"><img id='logo_setkani' src='cms/img/husy_bile.png' onclick="change_info();"  alt='YMCA Setkání'></a>
+    <a href="/"><img id='logo_ymca' src='cms/img/ymca_zakladni.png' alt='YMCA Setkání - homepage'></a>
+    <a href="/"><img id='logo_setkani' src='cms/img/husy_bile.png' onclick="change_info();"  alt='YMCA Setkání - homepage'></a>
     <div id='menu'>
       <div class='content'>
         <div id='page_tm' class='x'>
@@ -1153,9 +1151,9 @@ function gallery() {
   }
 
   $result = "<div id='header_gallery' class='mobile_nodisplay'>";
-  $result .= "<img alt='YMCA setkání' src='$images[0]' class='act' />";
+  $result .= "<img alt='YMCA setkání' src='$images[0]' class='act'>";
   for ($i = 1; $i < $numOfImages; $i++) {
-    $result .= "<img alt='YMCA setkání' src='$images[$i]' style='display:none'/>";
+    $result .= "<img alt='YMCA setkání' src='$images[$i]' style='display:none'>";
   }
   return $result . "</div><div id='titler' class='mobile_nodisplay'></div><div id='gallery_shadow' class='mobile_nodisplay'></div>";
 }
