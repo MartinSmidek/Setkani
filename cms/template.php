@@ -565,9 +565,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 //                                                         display("* page_mref = $page_mref");
         $id= array_shift($path);
         if ( $ids=='prehled' ) {
-          $body.= "<div class='content'><h1>YMCA Setkání - naše akce</h1>";
-          $body .= akce_kalendar();
-          $body .= "</div>";
+          $body.= "<div class='content'><h1>YMCA Setkání - naše akce</h1></div>";
           $body.= akce_prehled($vyber_rok,$rok,$id);
         }
         elseif ( $ids=='aprehled' ) { // proběhlé akce v Domě setkání
@@ -1811,32 +1809,32 @@ function create_kniha($x) { //$pid,$autor,$nadpis,$obsah,$psano) { trace();
   return $uid;
 }
 # ============================================================================================> akce
-# kalenář akce akce je v databázi poznačen  todo fill in
-function akce_kalendar($typ='') { trace();
-  global $CMS;
-  global $news_time;
-  $h = '';
+# kalenář akce akce je v databázi poznačen
+function kalendare($vyber, $rok, $id) { trace();
+  global $CMS, $news_time, $mode, $href0, $page_mref;
+  $c_kdy= $rok=='nove'
+      ? " LEFT(FROM_UNIXTIME(untilday),10)>=LEFT(NOW(),10)"
+      : " YEAR(FROM_UNIXTIME(untilday))=$rok";
   if ( !$news_time ) $news_time= time() - 1 * 24*60*60;
   $cr= mysql_qry("
-      SELECT p.uid, p.cid,c.type,p.text,p.author,FROM_UNIXTIME(date),p.tags,
+      SELECT p.uid, p.cid,c.type,p.title,p.text,p.author,FROM_UNIXTIME(date),p.tags,
        p.deleted,p.hidden,fromday,untilday,FROM_UNIXTIME(fromday),id_akce,
        IF(c.tstamp>$news_time, IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),' upd',' new'),'')
       FROM setkani4.tx_gncase AS c
-      JOIN (SELECT * FROM setkani4.tx_gncase_part WHERE cid='1586') AS p ON c.uid=p.cid 
-      WHERE !p.hidden AND !p.deleted
-      ORDER BY fromday DESC LIMIT 1
+      JOIN (SELECT * FROM setkani4.tx_gncase_part WHERE tags='K') AS p ON c.uid=p.cid 
+      WHERE !p.hidden AND !p.deleted AND $c_kdy
+      ORDER BY fromday DESC
     ");
-  #--todo fixme type=kalendar
 
+  $h = "";
+  $n = 0;
   while ( $cr && (
-      list($uid,$cid,$type,$text,$autor,$psano,$tags,$del,$hid,$uod,$udo,$od,$ida,$upd)
+      list($uid,$cid,$type,$title,$text,$autor,$psano,$tags,$del,$hid,$uod,$udo,$od,$ida,$upd)
           = mysql_fetch_row($cr)) ) {
-
+    $n++;
+    $tagc = "#k$n";
     $year_od = date("Y", $uod);
     $year_do = date("Y", $udo);
-    $h.= "<div class='timeline_schedule'><h2 class='clickable' onclick='showOrHide()'><i class=\"fas fa-calendar-week\">&emsp;
-              </i>Kalendář akcí $year_od - $year_do
-          </h2><div id='vlakno-kalendar' class='x'>";
     $kdy= $ex= '';
     $ex.= $del ? 'd' : '';
     $ex.= $hid ? 'h' : '';
@@ -1851,34 +1849,26 @@ function akce_kalendar($typ='') { trace();
 //    $podpis.= "<i class='fas fa-user'></i>&nbsp;$autor,&nbsp;$psano</div>";
     $menu = '';
     $code= cid_pid($cid,$uid);
-      if ( $CMS )
-        $menu= " oncontextmenu=\"
-              Ezer.fce.contextmenu([
-                ['editovat článek',function(el){ opravit('$typ','$uid','$cid'); }],
-                ['přidat pokračování',function(el){ pridat('part','$cid'); }],
-                ['přidat fotky',function(el){ pridat('foto','$cid'); }],
-             // ['-posunout nahoru',function(el){ nahoru('$typ','$uid','$cid'); }],
-             // ['posunout dolů',function(el){ dolu('$typ','$uid','$cid'); }],
-                ['-skrýt článek',function(el){ skryt('$typ','$uid',1); }],
-                ['zobrazit článek',function(el){ skryt('$typ','$uid',0); }],
-                ['-zahodit článek',function(el){ zrusit('$typ','$uid',1); }],
-                ['obnovit článek',function(el){ zrusit('$typ','$uid',0); }],
-                ['-odstranit embeded img',function(el){ opravit('img','$uid','$cid'); }]
-              ],arguments[0],'clanek$uid');return false;\"";
-      $h.= "<div id='list'  class='x'>
-              $code
-             <div id='clanek$uid' class='clanek x $upd'$menu>
-              <div class='text'>
-                <!--todo include? $ podpis -->
-                $obsah
-              </div>
-            </div></div></div></div>";
+    $abstr= $mode[1] ? 'abstr' : 'abstr-line';
+    $roks= $rok ? "/$rok" : '';
+    $jmp= $CMS ? "onclick=\"go_anchor(arguments[0],'$href0{$vyber}!$uid#vlakno','$page_mref$roks/$uid#anchor$uid');\""
+        : "href='$page_mref$roks/$uid#anchor$uid'";
+    $back= $CMS ? $href0."$vyber$tagc"
+        : "$page_mref$roks";
+
+    $akdy= datum_akce($uod,$udo);
+    $text= xi_shorting($text,$img);
+
+    $h.= $uid==$id ? vlakno($cid,'clanek',$back)
+        : "<div class='$abstr' id='n$n'>
+           $code 
+           <a class='abstrakt$ex{$upd}' $jmp>
+             <b>$title:</b><div class='clear'></div>$img 
+               <p>$text</p>
+           </a>
+         </div>";
   }
-  return $h . "<script>function showOrHide() {
-    var kalendar = jQuery('#vlakno-kalendar');
-    kalendar.slideToggle();
-    kalendar.toggleClass('nodisplay');
-}</script>";
+  return $h . ($h? "<div class='clear'></div>" : '');
 }
 # ============================================================================================> akce
 # akce je tvořena vždy záznamem v CASE a záznamy v PART s tags A,F,D,T
@@ -1962,12 +1952,10 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
         IF(MAX(c.tstamp)>$news_time,IF(TO_DAYS(MAX(FROM_UNIXTIME(c.tstamp)))>TO_DAYS(MAX(FROM_UNIXTIME(c.crdate))),' upd',' new'),'')
       FROM setkani4.tx_gncase AS c
       JOIN setkani4.tx_gncase_part AS p ON p.cid=c.uid
-      -- JOIN setkani.pages AS g ON c.pid=g.uid
       WHERE !c.deleted AND !c.hidden $p_show
-        $groups AND $c_komu AND $c_kdy
+        $groups AND $c_komu AND $c_kdy AND p.tags!='K'
       GROUP BY _rok
       ORDER BY _rok DESC  ");
-
     $counter = 1;
     while ( $cr && (list($rok,$pocet,$upd)= mysql_fetch_row($cr)) ) {
       $mark= $rok=='nove' ? 'nove' : "rok$rok";
@@ -1987,12 +1975,23 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
         }
         $back= "onclick=\"go(arguments[0],'$href0!$vyber#$mark','');\"";
         $back= '';
+
+        $kalendare = kalendare($vyber, $kdy, $id);
+        $openmarkhtml = "<div class='kniha_timeline_text_open_front $upd'>
+                <span class='kniha_timeline_date_open'>$rok_display</span>";
+
+        if ($kalendare != '') {
+          $openmarkhtml .= "Kalendáře akcí z roku $rok ...</div>";
+          $othertitle = "<div class=\"kniha_timeline_text_open_front\"><span class='kniha_timeline_date_open'>$rok_display</span>$zacatek</div>";
+        } else {
+          $openmarkhtml .= "$zacatek</div>";
+          $othertitle = '';
+        }
+
         $h.= "<div id='$mark' class='timeline_bg relative' $back><div class='content'>
-              <span class='anchor' id='anchor$rok'></span>
-              <div class='kniha_timeline_text_open_front $upd'>
-                <span class='kniha_timeline_date_open'>$rok_display</span>
-                $zacatek
-              </div>";
+              <span class='anchor' id='anchor$rok'></span>";
+        $h.= "$openmarkhtml $kalendare $othertitle";
+
         $h.= akce($vyber,$kdy,$id,$fotogalerie,$hledej,$chlapi,$backref, false);
         $h.= "<div class='kniha_timeline_text_open_back'>
               <span class='kniha_timeline_date_open'>$rok_display</span>
@@ -2087,7 +2086,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $vyber= 'chlapi';
 //    $c_komu= " program=3";
     $c_komu= " chlapi RLIKE '$chlapi'";
-    $c_kdy= " YEAR(FROM_UNIXTkniIME(untilday))=$kdy";
+    $c_kdy= " YEAR(FROM_UNIXTIME(untilday))=$kdy";
     list($rok,$id)= explode(',',$id);
     $ORDER= "DESC";
   }
@@ -2396,14 +2395,14 @@ function vlakno($cid,$typ='',$back_href='') { trace();
     $ex.= $del ? 'd' : '';
     $ex.= $hid ? 'h' : '';
     $text= web_text($text);
-    if ( $type==2 && $tags=='A' ) {
+    if ( $type==2 && ($tags=='A' || $tags=='K')  ) {
       $kdy= datum_akce($uod,$udo);
 //       $kdy= "<span class='datum'>"
 //           . sql_date1($od) . ($dnu==1 ? '' : ($dnu<5 ? " - $dnu dny" : " - $dnu dnů"))
 //           . "</span> ";
     }
-    if ( $tags=='A' ) $uid_a= $uid;
-    if ( $tags=='A' && $fe_group ) $spec++;
+    if ( $tags=='A' || $tags=='K' ) $uid_a= $uid;
+    if ( ($tags=='A' || $tags=='K') && $fe_group ) $spec++;
     $xx[]= (object)array('uid'=>$uid,'nadpis'=>$title,'obsah'=>$text,'tags'=>$tags,'ex'=>$ex,
         'kdy'=>$kdy,'od'=>$od,'autor'=>$autor,'psano'=>sql_date1($psano),'ida'=>$ida,'upd'=>$upd);
   }
@@ -2423,7 +2422,7 @@ function vlakno($cid,$typ='',$back_href='') { trace();
     $menu= '';
     $event= '';
     $code= cid_pid($cid,$uid);
-    if ( ($x->tags=='A' || $x->tags=='D') && ($typ=='clanek' || $typ=='hledej')) {
+    if ( ($x->tags=='A' || $x->tags=='D' || $x->tags=='K') && ($typ=='clanek' || $typ=='hledej')) {
       if ( $CMS )
         $menu= " oncontextmenu=\"
             Ezer.fce.contextmenu([
@@ -2447,7 +2446,7 @@ function vlakno($cid,$typ='',$back_href='') { trace();
             </div>
           </div></div>";
     }
-    elseif ( ($x->tags=='A' || $x->tags=='D') && $typ=='akce') {
+    elseif ( ($x->tags=='A' || $x->tags=='D' || $x->tags=='K') && $typ=='akce') {
       $menu= '';
       if ( $CMS ) {
         $tabulku= $x->od>=$dnes ? "['přidat tabulku',function(el){ pridat('table','$cid'); }]," : '';

@@ -27,7 +27,7 @@ function db_transform($par) {
         cid='1046' OR 
         cid='1586' OR
         cid='1644' OR
-        cid='1562' OR
+        cid='1562'
         ");
       if ( $je ) {
         $html.= "ok";

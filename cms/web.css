@@ -331,8 +331,6 @@ span.akce_datum {background: white; border-radius: 5px; float: left;}
 @-webkit-keyframes text-show{ from {opacity: 0} to {opacity: 1}  }
 @keyframes text-show{ from {opacity: 0} to {opacity: 1}}
 
-#vlakno-kalendar{display: none; background: #dfdfdf; margin: 0px 20px; border-radius: 15px; margin-bottom: 50px;}
-
 /*masonry layout*/
 .masonry_container {column-count: 3;column-gap: 1em;}
 a.short_post, div.short_post { font-size: 11pt !important; width: 95%; display: inline-block; margin: 0 0 1em;
@@ -428,7 +426,6 @@ div.kniha_timeline_text_open_front {margin-left: 15%; padding: 12px 12px 22px 52
 div.kniha_timeline_text_open_back {margin-left: 15%; padding: 0px 22px 12px 52px; color: #7c6853;font-weight: bold; margin-bottom: 15px;}
 span.kniha_timeline_date_open {width: 70px; height: 70px; background: #dab894; color: white; position: absolute; transform: translate(-85px, -29px);
   border-radius: 50px; border: 5px solid white; text-align: -webkit-center; line-height: 70px;}
-.timeline_schedule {margin: 60px 0 75px 0}
 
 /* fotogalerie */
 div.fotorama__wrap {margin: 0 auto;}/*dirty but necessary - styling foreign element*/
