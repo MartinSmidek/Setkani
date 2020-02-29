@@ -62,7 +62,7 @@ function def_menu($from_table=false) { trace();
       # speciální stránky
         'home'        => "tm:32:0.9:home             ::<i class='fa fa-home'></i> Domů:::        home:                             Akce pro rodiny, muže i ženy pořádané YMCA Setkání",
 //      'kontakty'    => 'hm:33:0.9:kontakty         ::Kontakty:::                               vlakno=79:                        Kontakty na YMCA Setkání', //kontakty',
-        'hledej'    => 'tm:34:     :hledej           ::<i class="fas fa-search"></i>:::                               search:                             Hledej', //kontakty',
+        'hledej'    => 'tm:34:     :hledej           ::<i class="fa fa-search"></i>:::                               search:                             Hledej', //kontakty',
       #'clanek'      => 'hm:35:   :-                ::-:::                                      vlakno:                           Vybraný článek',
     );
 //    $def_mid= array();  // vznikne transformací i => mref
@@ -1844,7 +1844,7 @@ function kalendare($vyber, $rok, $id) { trace();
 //    $psano = sql_date1($psano);
 //    $podpis= "<div class='podpis'>";
 //    $podpis.= ($kdy) ? "<i class='far fa-calendar-alt'></i>&nbsp;$kdy&emsp;" : '';
-//    $podpis.= "<i class='fas fa-user'></i>&nbsp;$autor,&nbsp;$psano</div>";
+//    $podpis.= "<i class='fa fa-user'></i>&nbsp;$autor,&nbsp;$psano</div>";
     $menu = '';
     $code= cid_pid($cid,$uid);
     $abstr= $mode[1] ? 'abstr' : 'abstr-line';
@@ -1970,7 +1970,7 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
         }
         else {
           $zacatek= "Archiv $akce z roku $rok ...";
-          $kalendare_title = "Kalendáře akcí z roku $rok ...</div>";
+          $kalendare_title = "Kalendáře akcí z roku $rok ...";
           $konec= "... konec archivu roku $rok";
         }
         $back= "onclick=\"go(arguments[0],'$href0!$vyber#$mark','');\"";
@@ -2418,7 +2418,7 @@ function vlakno($cid,$typ='',$back_href='') { trace();
     $obsah= $x->obsah;
     $podpis= "<div class='podpis'>";
     $podpis.= ($x->kdy) ? "<i class='far fa-calendar-alt'></i>&nbsp;$x->kdy&emsp;" : '';
-    $podpis.= "<i class='fas fa-user'></i>&nbsp;$x->autor,&nbsp;$x->psano</div>";
+    $podpis.= "<i class='fa fa-user'></i>&nbsp;$x->autor,&nbsp;$x->psano</div>";
     $menu= '';
     $event= '';
     $code= cid_pid($cid,$uid);
@@ -2500,7 +2500,7 @@ function vlakno($cid,$typ='',$back_href='') { trace();
     }
     elseif ( $x->tags=='F' ) {
       $galery= show_fotky2($uid,$obsah,"$back_href!$uid_a#vlakno");
-      $podpis= "<div class='podpis'><i class='fas fa-user'></i>&nbsp;$x->autor, $x->psano</div>";
+      $podpis= "<div class='podpis'><i class='fa fa-user'></i>&nbsp;$x->autor, $x->psano</div>";
       $note= $CMS ? "<span style='float:right;color:red;font-style:italic;'>
             ... v režimu editace stránky je fotogalerie zobrazena zjednodušeně</span>" : '';
       if ( $CMS ) {
