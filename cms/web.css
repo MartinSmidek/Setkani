@@ -153,7 +153,8 @@ div.clanek span.cms_form:hover {
 
 /* ----------------------------------------------------------------------------- popup */
 #popup { position: fixed;
-  left: 50%; top: 50%; margin-top: -250px;margin-left: -375px;width: 720px;height: fit-content; background: white;
+  left: 50%; top: 50%; margin-top: -250px;margin-left: -375px;width: 720px;height: fit-content; height: -moz-max-content;
+  background: white;
   color: #000000;max-height: 500px;padding: 1.5em 1em 1em 1em;box-shadow: #000000 4px 6px 20px;z-index: 100; overflow-y: scroll; }
 #popup > span { position:absolute; top:0em; left:0em; width:100%; text-align:center; height:2em;
   font-weight:bold;line-height:28pt;}
@@ -463,7 +464,8 @@ div.home_info>b { color:#cadfd9; }
   transition: width 0.4s linear, max-height 0.4s linear;border-radius: 0.5em;background: white;position: absolute;}
 .timeline_text .timeline_text_style {max-height: 0;color: transparent;text-align: justify;word-break: break-word;hyphens: auto;overflow: hidden;}
 .timeline_circle {height: 20px; padding: 1px 4px; font-size: 14px; margin-bottom: 5px;
-  display: block; cursor: pointer !important; width: fit-content; white-space: nowrap; }
+  display: block; cursor: pointer !important; width: fit-content; width: -moz-max-content;
+  white-space: nowrap; }
 .timeline_bar{display: block;height: 5px;border-radius: 2.5px;border: 1px solid #a4a4a4;transform: translate(0px, -32px);
   z-index: 5}
 .timeline_radio {display: none}
@@ -483,7 +485,7 @@ div.home_info>b { color:#cadfd9; }
 /* ----------------------------------------------------------------------------- dům */
 
 /* popis */
-#pokoje { clear:both; }
+#pokoje { clear:both; position:relative }
 div.pokoje { color: black; overflow:hidden; margin:0.5em; position:relative; }
 div.pokoje span.datum { position: absolute; top: 0; left: 0; }
 span.mesic { background-color:#B48933; color:#EFFBDA; font-weight: bold; }
@@ -523,7 +525,8 @@ table.dum, table.dum tr, table.dum td {border: none}
 #dum td.obsazen { width:1.4em;}
 #dum td.obsazen.odd {background-color: #ffffff; }
 
-#order {position: fixed;left: 50%;top: 50%;margin-top: -250px;margin-left: -375px;width: 720px;height: fit-content; background: white;
+#order {position: fixed;left: 50%;top: 50%;margin-top: -250px;margin-left: -375px;width: 720px; height: -moz-max-content;
+  height: fit-content; background: white;
   color: #000000;max-height: 500px;padding: 2em 1em 1em 1em;box-shadow: #000000 4px 6px 20px;z-index: 100; overflow-y: scroll; }
 #order > span { position:absolute; top:0em; left:0em; width:100%; text-align:center; height:2em;
   font-weight:bold;line-height:22pt;margin-top: 10px;}
@@ -571,7 +574,7 @@ label.form_button {float: right}
   #menu #bar_items a.active { border-bottom: none; border-left: 14px solid #cadfd9; }
 
   #menu div#bar_items {width: 100vw;height: 100vh; height: calc(100vh - 9em); padding-bottom: 9em; left: -100vw; box-shadow:none; display: block;right: 0;position: fixed; overflow-y: scroll;}
-  #menu div#bar_items span {height: fit-content}
+  #menu div#bar_items span { height: -moz-max-content; height: fit-content}
   #page_tm {height: 3.5em; line-height: 3.5em; width: 100%}
   #page_tm input {background: #cadfd9; width: 3em; margin-top: 5px;}
   #page_hm {position: fixed;left: 0; top: 100px;z-index: 101;}
@@ -638,7 +641,7 @@ label.form_button {float: right}
   #menu #bar_items a.active { border-bottom: none; border-left: 14px solid #cadfd9; }
 
   #menu div#bar_items {width: 100vw;height: 100vh; height: calc(100vh - 5em); padding-bottom: 5em; left: -100vw; display: block;right: 0;position: fixed; box-shadow:none; overflow-y: scroll;}
-  #menu div#bar_items span {height: fit-content}
+  #menu div#bar_items span { height: -moz-max-content;height: fit-content}
   #page_tm input {background: #cadfd9 }
   #page_hm {position: fixed;left: 0; top: 100px;z-index: 101;}
   #page_hm a.jump {width: 100vw;}
