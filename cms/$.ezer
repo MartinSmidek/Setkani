@@ -907,7 +907,7 @@ panel ADMIN [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu
         | eq(i.par.do,'1'); 
           // pokud existuje _touch byl asi celý import dokončen
           ask('db_transform',°{op:'test-pass',table:'_touch'});
-          [ confirm('Opravdu mám lokální databázi přepsat tou, kterou teď vybereš?'); 
+          [ confirm('Opravdu mám lokální databázi přepsat tou, kterou teď vybereš? Máš ji uschovanou?'); 
             // zachovej historii přihlašování k setkani4 MSM+JHO
             [ ask('query',"DROP TABLE IF EXISTS _touch_") ];
             [ ask('query',"ALTER TABLE _touch RENAME TO _touch_") ];
