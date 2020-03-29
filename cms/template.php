@@ -1806,7 +1806,7 @@ function create_kniha($x) { //$pid,$autor,$nadpis,$obsah,$psano) { trace();
        ('$date','{$_SESSION['web']['fe_user']}','Insert','$pid','$mid','$cid','$uid')");
   return $uid;
 }
-# ============================================================================================> akce
+# =======================================================================================> kalendáře
 # kalenář akce akce je v databázi poznačen
 function kalendare($vyber, $rok, $id) { trace();
   global $CMS, $news_time, $mode, $href0, $page_mref;
@@ -1817,7 +1817,8 @@ function kalendare($vyber, $rok, $id) { trace();
   $cr= mysql_qry("
       SELECT p.uid, p.cid,c.type,p.title,p.text,p.author,FROM_UNIXTIME(date),p.tags,
        p.deleted,p.hidden,fromday,untilday,FROM_UNIXTIME(fromday),id_akce,
-       IF(c.tstamp>$news_time, IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),' upd',' new'),'')
+       IF(c.tstamp>$news_time, IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),
+         ' upd',' new'),'')
       FROM setkani4.tx_gncase AS c
       JOIN (SELECT * FROM setkani4.tx_gncase_part WHERE tags='K') AS p ON c.uid=p.cid 
       WHERE !p.hidden AND !p.deleted AND $c_kdy
@@ -1831,30 +1832,21 @@ function kalendare($vyber, $rok, $id) { trace();
           = mysql_fetch_row($cr)) ) {
     $n++;
     $tagc = "#k$n";
-    $year_od = date("Y", $uod);
-    $year_do = date("Y", $udo);
     $kdy= $ex= '';
     $ex.= $del ? 'd' : '';
     $ex.= $hid ? 'h' : '';
-    $obsah= web_text($text);
     if ( $type==2 && $tags=='A' ) {
       $kdy= datum_akce($uod,$udo);
     }
-    //todo delete?
-//    $psano = sql_date1($psano);
-//    $podpis= "<div class='podpis'>";
-//    $podpis.= ($kdy) ? "<i class='far fa-calendar-alt'></i>&nbsp;$kdy&emsp;" : '';
-//    $podpis.= "<i class='fa fa-user'></i>&nbsp;$autor,&nbsp;$psano</div>";
-    $menu = '';
     $code= cid_pid($cid,$uid);
     $abstr= $mode[1] ? 'abstr' : 'abstr-line';
-    $roks= $rok ? "/$rok" : '';
-    $jmp= $CMS ? "onclick=\"go_anchor(arguments[0],'$href0{$vyber}!$uid#vlakno','$page_mref$roks/$uid#anchor$uid');\""
+    $roks= $rok ? ",$rok" : '';
+    $jmp= $CMS ? "onclick=\"go_anchor(arguments[0],"
+               . "'$href0!{$vyber}$roks!$uid#anchor$uid','$page_mref/$roks$uid#anchor$uid');\""
         : "href='$page_mref$roks/$uid#anchor$uid'";
     $back= $CMS ? $href0."$vyber$tagc"
         : "$page_mref$roks";
-
-    $akdy= datum_akce($uod,$udo);
+    $img= '';
     $text= xi_shorting($text,$img);
 
     $h.= $uid==$id ? vlakno($cid,'clanek',$back)
@@ -2655,7 +2647,8 @@ function knihy($ids,$cpid0=0,$mid=0,$backref='') { trace();
           $jmp= str_replace('*', "$cid,$pid", $backref);
         }
         else {
-          $jmp= $CMS ? "onclick=\"go_anchor(arguments[0],'$href0!$cid,$pid#clanek','$page_mref/$cid,$pid#anchor$pid');\""
+          $jmp= $CMS ? "onclick=\"go_anchor(arguments[0],"
+                     . "'$href0!$cid,$pid#clanek','$page_mref/$cid,$pid#anchor$pid');\""
               : ($chlapi_online ? "href='$page_mref!$x->kapitola'" : "href='$page_mref/$cid,$pid#anchor$pid'");
           //                  : "href='$href0!$cid,$pid#clanek'";
         }
