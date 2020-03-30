@@ -493,7 +493,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       case 'vlakno': # ---------------------------------------------==> . vlakno
         # vlákno zadané cid
         if ( !$ids && count($path) ) $ids= array_shift($path);
-        $body.= vlakno($ids,'clanek','',false);
+        $body.= vlakno($ids,'clanek','',true);
         break;
 
       case 'clanky': # ------------------------------------------------ . clanky
@@ -1379,7 +1379,7 @@ function home() { trace();
     $code= cid_pid($cid,$x->uid);
     //todo ugly, consider "main page" category
     if ( $x->page==100 ) { // ---------------------------------------- hlavní strana - úvodní článek & timeline
-      $telo.= vlakno($cid,'clanek','home',false);
+      $telo.= vlakno($cid,'clanek','home',true);
     }
     elseif ( $x->home==2 || $x->home==6 ) { // ----------------------- abstrakt na home | nahoru
       $prihlaska= '';
@@ -1402,7 +1402,7 @@ function home() { trace();
              <div class='clear'></div>". masonry_text($x->text)."</div>";
     }
     elseif ( $x->home==8 ) { // --------------------------------------- víte, že
-      $vite[]= vlakno($cid,'clanek','home',false);
+      $vite[]= vlakno($cid,'clanek','home',true);
     }
   }
   $telo .= timeline();
@@ -2368,7 +2368,7 @@ __EOD;
 # typ=akce|clanek|foto
 #   pro typ=foto se zobrazí tag=A jako abstrakt
 # back=1 přidá návrat při kliknutí
-function vlakno($cid,$typ='',$back_href='') { trace();
+function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
   global $CMS, $href0;
   global $usergroups, $found; // skupiny, počet nalezených článků
   global $show_deleted, $show_hidden, $news_time;
@@ -2438,11 +2438,12 @@ function vlakno($cid,$typ='',$back_href='') { trace();
               ['obnovit článek',function(el){ zrusit('$typ','$uid',0); }],
               ['-odstranit embeded img',function(el){ opravit('img','$uid','$cid'); }]
             ],arguments[0],'clanek$uid');return false;\"";
+      $title = $h1 ? "<h1>$x->nadpis</h1>" : "<h2>$x->nadpis</h2>";
       $h.= "<div id='list' class='x relative' $event><span class='anchor' id='anchor$uid'></span>
             $code
            <div id='clanek$uid' class='clanek x$x->upd'$menu$style>
             <div class='text'>
-              <h2>$x->nadpis</h2>$podpis
+              $title$podpis
               $obsah
             </div>
           </div></div>";
@@ -2474,12 +2475,13 @@ function vlakno($cid,$typ='',$back_href='') { trace();
         $prihlaska= '';
         $prihlaska= cms_form_ref("on-line přihláška",'akce',$x->ida,$nazev_akce);
       }
+      $title = $h1 ? "<h1>$x->nadpis</h1>" : "<h2>$x->nadpis</h2>";
       $h.= "<div class='x relative' $event><span class='anchor' id='anchor$uid'></span>
             $code
             <div id='clanek$uid' class='clanek x$x->upd'$menu$style>
               $prihlaska
               <div class='text'>
-                <h2>$x->nadpis</h2>$podpis
+                $title$podpis
                 $obsah
               </div>
            </div></div>";
