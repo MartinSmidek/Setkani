@@ -89,11 +89,11 @@ function db_transform($par) {
 function db_drop_tables_but($db,$but_tables='') {
   $but= explode(',',$but_tables); 
   $cr= mysql_qry("
-    SELECT table_name FROM information_schema.columns WHERE table_schema='$db'
+    SELECT table_name FROM information_schema.columns WHERE table_schema='$db' GROUP BY table_name
   ");
   while ( $cr && (list($table)= mysql_fetch_row($cr)) ) {
     if ( !in_array($table,$but)) {
-      query("DROP TABLE $table");
+      query("DROP TABLE $db.`$table`");
     }
   }
   return 1;
@@ -522,7 +522,7 @@ function admin_web($typ,$uid=0) { trace();
   return $h;
 }
 /** ===========================================================================================> GIT */
-# --------------------------------------------------------------------------------------- img oprava
+# ----------------------------------------------------------------------------------------- git make
 # provede git par.cmd>.git.log a zobrazí jej
 function git_make($par) {
   global $abs_root;
@@ -549,12 +549,13 @@ function git_make($par) {
       chdir($abs_root);
     }
     debug($lines,$state);
-    $msg= "$state:$exec<hr>";
+    $msg.= "$state:$exec<hr>";
   case 'show':
     $msg.= file_get_contents("$abs_root/docs/.git.log");
     $msg= nl2br(htmlentities($msg));
     break;
   }
+  $msg= "<i>Synology: musí být spuštěný Git Server (po aktualizaci se vypíná)</i><hr>$msg";
   return $msg;
 }
 /** ==========================================================================================> EDIT */

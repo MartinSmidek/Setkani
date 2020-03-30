@@ -280,11 +280,13 @@ function go(e,href,mref,input,nojump) {
 }
 // --------------------------------------------------------------------------------------- go anchor
 // předá CMS info na kterou stránku webu přepnout
+// href se použije pro přepnutí v rámcí CMS
+// mref má být ve tvaru url bez CMS
 function go_anchor(e,href,mref,input,nojump) {
   if ( e ) e.stopPropagation();
   let anchor= '';
   nojump= nojump||0;
-  var url, http, page, u= href.split('page=');
+  var http, page, u= href.split('page=');
   if ( u.length==2 ) {
     http= u[0];
     page= u[1].split('#');

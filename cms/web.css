@@ -47,14 +47,14 @@ h1#ymca_setkani { position: absolute; top:3.8em; margin-left:.5em; font-size: 12
 .footer { clear: both; background: #232323; }
 .footer a { color : white;  font-weight: bold; }
 .footer h3 { font-size: 15px; color: #ff9933; }
-.footer .tile { width: 190px; display: inline-block;  margin: 1px; vertical-align:top; font-size: 8pt !important; padding: 10px 15px;  }
+.footer .tile { width: 205px; display: inline-block;  margin: 1px; vertical-align:top; font-size: 8pt !important; padding: 10px 15px;  }
 .footer .tile p {text-align: left}
 .footer hr.footer-hr { border: 0; height: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.3); margin: 0px 160px 0px 60px;}
 .footer #footer-left-part img { transform: translate(0, 3px); width: 12px !important; margin: 0 !important;}
 .footer .organizations img {}
 .footer .organizations p {display: inline-block !important;}
-.footer #footer-left-part {width: 65%; display: inline-block; vertical-align: top; min-width: 640px;}
-.footer #footer-right-part {width: 18%; display: inline-block; vertical-align: top; min-width: 150px;}
+.footer #footer-left-part {width: 70%; display: inline-block; vertical-align: top; min-width: 640px;}
+.footer #footer-right-part {width: 20%; display: inline-block; vertical-align: top; min-width: 150px;}
 .footerIcon {margin: 0 !important;}
 
 #page_footer_bar {padding-top: 14px; padding-bottom: 14px;}
@@ -422,11 +422,11 @@ div.kniha_bg div.upd, div.kniha_bg a.upd { background-image: url(img/upd.png); b
 a.kniha_timeline { color: black;}
 div.kniha_timeline_text {margin-left: 15%;border-left: 13px solid #bfc4cb;padding: 32px;color: #7c6853;font-weight: bold;}
 span.kniha_timeline_date { width: 50px; height: 50px; background: #7c6853; color:white; position: absolute; transform: translate(-67px, -15px);
-  border-radius: 30px; border: 5px solid white; text-align: -webkit-center; line-height: 50px;}
+  border-radius: 30px; border: 5px solid white; text-align: center; line-height: 50px;}
 div.kniha_timeline_text_open_front {margin-left: 15%; padding: 12px 12px 22px 52px; color: #7c6853;font-weight: bold; margin-top: 15px; margin-bottom: 10px;}
 div.kniha_timeline_text_open_back {margin-left: 15%; padding: 0px 22px 12px 52px; color: #7c6853;font-weight: bold; margin-bottom: 15px;}
 span.kniha_timeline_date_open {width: 70px; height: 70px; background: #dab894; color: white; position: absolute; transform: translate(-85px, -29px);
-  border-radius: 50px; border: 5px solid white; text-align: -webkit-center; line-height: 70px;}
+  border-radius: 50px; border: 5px solid white; text-align: center; line-height: 70px;}
 
 /* fotogalerie */
 div.fotorama__wrap {margin: 0 auto;}/*dirty but necessary - styling foreign element*/

@@ -474,8 +474,8 @@ panel FOTKY [0,0,680,240] { title:' Organizér fotek', type:'popup', css:'dialog
 # ----------------------------------------------------------------------------==> EDITOR
 # cesta pro imgs:
 # cid_00.set(minus(_cid,modulo(_cid,100)));path.set(conc('fileadmin/imgs/',cid_00,'/',_cid,'/'));
-# type: 1=článek, 2=akce, 3=kniha (NYI)
-panel EDITOR [0,0,720,385] { title:' Editor článků', type:'popup', css:'dialog'
+# type: 1=článek, 2=akce nebo kalendář, 3=kniha (NYI)
+panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialog'
   var path:text,
 #       typ:text,
       xobsah:text, co:text           // home|text - co teď editujeme: abstract|text
@@ -550,15 +550,15 @@ panel EDITOR [0,0,720,385] { title:' Editor článků', type:'popup', css:'dialo
     # ==> .. volba layout
     var size= 0         // 0 - malé, 1 - vysoké, 2 - plné
     var a_changed=0, o_changed=0
-    proc layout() {
-      eq(ctype.get,1); form.display(0,'a|k|p'); form.display(1,'c');      // článek
-    | eq(ctype.get,2); form.display(0,'c|k|p'); form.display(1,'a');      // akce
-    | eq(ctype.get,3); {                                                  // kniha
-        eq(tags.get,'C'); form.display(0,'a|k|p'); form.display(1,'c');   // .. úvod
-      | form.display(0,'a|c'); form.display(1,'k');                       // .. kapitola      
+    proc layout() {                                                       // nastavení tag =
+      eq(ctype.get,1); form.display(0,'a|k|p'); form.display(1,'c');      // článek        c
+    | eq(ctype.get,2); form.display(0,'c|k|p'); form.display(1,'a');      // akce+kalendář a
+    | eq(ctype.get,3); {                                                  // kniha        
+        eq(tags.get,'C'); form.display(0,'a|k|p'); form.display(1,'c');   // .. úvod       c
+      | form.display(0,'a|c'); form.display(1,'k');                       // .. kapitola   k   
       }
     | eq(ctype.get,7); 
-      form.display(0,'a|c|k'); form.display(1,'p');          // prezentace
+      form.display(0,'a|c|k'); form.display(1,'p');                       // prezentace    p
     | alert("pro článek typ=",ctype.get," ještě není připraven formulář"); panel.hide(0)
     }
     proc change_size() { var w:number,h:number
@@ -648,7 +648,9 @@ panel EDITOR [0,0,720,385] { title:' Editor článků', type:'popup', css:'dialo
     field cruser_id
     field abstract
     field autor  [35,15,100,]    { tag:'a,c,p', title:'^autor:' }
-    field nadpis [146,15,254,]   { tag:'a,c,k,p', title:'^název:' }
+    field nadpis [146,15,234,]   { tag:'a,c,k,p', title:'^název:' }
+    label          [372,2,80,18] { tag:'a' title:'kalendář' }
+    check kalendar [387,14,20,18]{ tag:'a' value:'0' } // udělá z článku kalendář
     field kapitola [410,15,60,]  { tag:'k', title:'^kapitola:', format:'r' }
     field psano  [412,15,85,]    { tag:'a,c,p', type:'date', title:'^psáno:', format:'r' }
     select pro   [502,15,80,]    { tag:'a,c,p', type:'map0', title:'^ jen pro:', options:web_skupina.zkratka }
@@ -668,7 +670,7 @@ panel EDITOR [0,0,720,385] { title:' Editor článků', type:'popup', css:'dialo
       }
     }
   }
-  # ==> . úprava kalendáře
+  # ==> . úprava paty stránky
   form _foot [10,10,710,460] {
     field id { data:footer.id }
     button [0,5,,]  { title:"[fa-chevron-left]", help:'předchozí'
@@ -907,7 +909,7 @@ panel ADMIN [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu
         | eq(i.par.do,'1'); 
           // pokud existuje _touch byl asi celý import dokončen
           ask('db_transform',°{op:'test-pass',table:'_touch'});
-          [ confirm('Opravdu mám lokální databázi přepsat tou, kterou teď vybereš?'); 
+          [ confirm('Opravdu mám lokální databázi přepsat tou, kterou teď vybereš? Máš ji uschovanou?'); 
             // zachovej historii přihlašování k setkani4 MSM+JHO
             [ ask('query',"DROP TABLE IF EXISTS _touch_") ];
             [ ask('query',"ALTER TABLE _touch RENAME TO _touch_") ];
