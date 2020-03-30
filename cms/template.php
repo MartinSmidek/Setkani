@@ -1218,7 +1218,7 @@ function timeline()
       list($k, $i) = explode(':', $ki);
       if ($i==6) $k="ostatní";
       $bgcolor = barva_programu_z_cisla($i);
-      $h .= "<span class='timeline_legend' style='background: $bgcolor;'>$k</span>&emsp;";
+      $h .= "<span class='timeline_legend' style='background: $bgcolor;'>$k&emsp;</span>&emsp;";
   }
   $h.= "</div><div class='relative clear'><div class='horizontal_scroll'><div class='relative'><ul id='timeline_header'>";
   $day = 24 * 3600;
@@ -1843,7 +1843,7 @@ function kalendare($vyber, $rok, $id) { trace();
     //todo delete?
 //    $psano = sql_date1($psano);
 //    $podpis= "<div class='podpis'>";
-//    $podpis.= ($kdy) ? "<i class='far fa-calendar-alt'></i>&nbsp;$kdy&emsp;" : '';
+//    $podpis.= ($kdy) ? "<i class='fa fa-calendar-alt'></i>&nbsp;$kdy&emsp;" : '';
 //    $podpis.= "<i class='fa fa-user'></i>&nbsp;$autor,&nbsp;$psano</div>";
     $menu = '';
     $code= cid_pid($cid,$uid);
@@ -2417,7 +2417,7 @@ function vlakno($cid,$typ='',$back_href='') { trace();
     $uid= $x->uid;
     $obsah= $x->obsah;
     $podpis= "<div class='podpis'>";
-    $podpis.= ($x->kdy) ? "<i class='far fa-calendar-alt'></i>&nbsp;$x->kdy&emsp;" : '';
+    $podpis.= ($x->kdy) ? "<i class='fa fa-calendar-alt'></i>&nbsp;$x->kdy&emsp;" : '';
     $podpis.= "<i class='fa fa-user'></i>&nbsp;$x->autor,&nbsp;$x->psano</div>";
     $menu= '';
     $event= '';

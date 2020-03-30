@@ -312,7 +312,7 @@ function pokoj_ikona($state) {
   case  '1': $i= "<i class='fa fa-$ico'></i>"; break;
   case  '2': $i= "<i class='fa fa-user'></i>"; break;
   case  '3': $i= "<i class='fa fa-futbol-o'></i>"; break;
-  case  '4': $i= "<i class='far fa-times-circle'></i>"; break;
+  case  '4': $i= "<i class='fa fa-times-circle'></i>"; break;
   }
   return $i;
 }
@@ -325,7 +325,7 @@ function pokoj_ikona_popis($state) {
     case  '1': $i= "<i class='fa fa-$ico'></i>&nbsp;zájmů o pobyt"; break;
     case  '2': $i= "<i class='fa fa-user'></i>&nbsp;závazných objednávek"; break;
     case  '3': $i= "<i class='fa fa-futbol-o'></i>&nbsp;pro akce YMCA"; break;
-    case  '4': $i= "<i class='far fa-times-circle'></i>&nbsp;nelze pronajmout"; break;
+    case  '4': $i= "<i class='fa fa-times-circle'></i>&nbsp;nelze pronajmout"; break;
   }
   return $i;
 }
