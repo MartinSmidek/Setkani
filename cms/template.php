@@ -1601,6 +1601,7 @@ function load_clanek($uid) { trace();
           "p.uid='$uid'");
   $x->od= sql_date1($od);
   $x->do= sql_date1($do);
+  $x->kalendar= $x->tags=='K' ? 1 : 0;
   $x->psano= sql_date1($psano);
   debug($x,"akce=$x->nadpis");
   return $x;
@@ -1609,6 +1610,7 @@ function load_clanek($uid) { trace();
 function save_clanek($x,$uid) { trace(); //debug($x,"save_clanek");
   // konec pokud nebyla změna
   if ( !$x ) { goto end; }
+  $msg= ''; // poznámka do logu
   // staré hodnoty
   list($cid,$mid,$type)= select("p.cid,c.mid,type",
       "tx_gncase_part AS p JOIN tx_gncase AS c ON cid=c.uid","p.uid='$uid'");
@@ -1629,6 +1631,9 @@ function save_clanek($x,$uid) { trace(); //debug($x,"save_clanek");
       case 'program':     $case[]= "$elem='".implode(',',(array)$val)."'"; break;
       case 'psano':       $sql_psano= "UNIX_TIMESTAMP('".sql_date1($val,1)."')";
         $part[]= "date=$sql_psano"; break;
+      // přepínání mezi 0=akcí a 1=kalendářem
+      case 'kalendar':    $val= $val?'K':'A'; $part[]= "tags='$val'"; 
+                          $msg= ($val=='K'?'založení':'zrušení').' kalendáře'; break;
       // nepodstatné pro klienty
       case 'ctype':       $upd= 0; $case[]= "type='$val'"; $type=$val; break;
       case 'cruser_id':   $upd= 0; $part[]= "$elem='$val'"; break;
@@ -1648,8 +1653,8 @@ function save_clanek($x,$uid) { trace(); //debug($x,"save_clanek");
   if ( $case ) query("UPDATE tx_gncase SET ".implode(',',$case)." WHERE uid=$cid");
   // zápis o opravě
   $date= date('YmdHis',time());
-  query("INSERT INTO gn_log (datetime,fe_user,action,uid_menu,uid_case,uid_part) VALUES
-       ('$date','{$_SESSION['we']['fe_user']}','Update','$mid','$cid','$uid')");
+  query("INSERT INTO gn_log (datetime,fe_user,action,uid_menu,uid_case,uid_part,message) VALUES
+       ('$date','{$_SESSION['web']['fe_user']}','Update','$mid','$cid','$uid','$msg')");
 
   // aktualizace bez podstatných změn => nepíšeme do menu
   if ( !$upd ) goto end;
@@ -1840,9 +1845,10 @@ function kalendare($vyber, $rok, $id) { trace();
     }
     $code= cid_pid($cid,$uid);
     $abstr= $mode[1] ? 'abstr' : 'abstr-line';
-    $roks= $rok ? ",$rok" : '';
+    $roks= $rok ? "/$rok" : '';
+    $cms_roks= $rok ? ",$rok" : '';
     $jmp= $CMS ? "onclick=\"go_anchor(arguments[0],"
-               . "'$href0!{$vyber}$roks!$uid#anchor$uid','$page_mref/$roks$uid#anchor$uid');\""
+               . "'$href0!{$vyber}$cms_roks!$uid#anchor$uid','$page_mref$roks/$uid#anchor$uid');\""
         : "href='$page_mref$roks/$uid#anchor$uid'";
     $back= $CMS ? $href0."$vyber$tagc"
         : "$page_mref$roks";
