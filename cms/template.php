@@ -2046,7 +2046,7 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
   }
   $h.= "</div>";
   // navrácení textu
-  $h.= $chlapi_online ? '' : $c_komu;
+  //$h.= $chlapi_online ? '' : $c_komu;
   return $h;
 }
 # --------------------------------------------------------------------------------------------- akce
@@ -2442,7 +2442,7 @@ function vlakno($cid,$typ='',$back_href='') { trace();
             $code
            <div id='clanek$uid' class='clanek x$x->upd'$menu$style>
             <div class='text'>
-              <h1>$x->nadpis</h1>$podpis
+              <h2>$x->nadpis</h2>$podpis
               $obsah
             </div>
           </div></div>";

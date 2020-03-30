@@ -21,6 +21,18 @@ function db_get_file($path) {
 function db_transform($par) {
   $html= '';
   switch ($par->op) {
+    // ----------------------------------------- fix 'dum'
+    case 'dum setkani: article':
+      $je= query("UPDATE setkani4.tx_gncase_part SET tags='K' WHERE 
+        cid='1046' OR 
+        cid='1586' OR
+        cid='1644' OR
+        cid='1562'
+        ");
+      if ( $je ) {
+        $html.= "ok";
+      }
+      break;
     // ----------------------------------------- calendar
     case 'calendar':
       $je= query("UPDATE setkani4.tx_gncase_part SET tags='K' WHERE 
