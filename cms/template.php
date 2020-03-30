@@ -2108,6 +2108,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
       $c_kdy.= " AND LEFT(FROM_UNIXTIME(untilday),10)<LEFT(NOW(),10)";
     }
     $rok= $kdy;
+    $ORDER= "DESC";
   }
   elseif ( $vyber=='hledej' ) {
     $typ= 'hledej';
