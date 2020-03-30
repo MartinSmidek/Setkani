@@ -28,23 +28,23 @@ function def_menu($from_table=false) { trace();
         'libr'        => 'hm:13:   :manzelak         ::     Knihov&shy;nička:bulletin::          menu=bulletin,tance,modlitby,knihy,audio,obrazy,odkazy',
         'my'          => 'hm:14:0.9:ymca-setkani     :clanek,21:O nás:::                         mclanky;-clanky=21,15,13,284,287,263:      Informace o YMCA Setkání', //o_nas',
 //      'team'        => "hm:33:   :team             ::Tým :::                                   team:                             Informace pro tým",
-        'a_web'       => "hm:15:   :-                ::web/admin:::                              menu=a_zmeny,a_odkazy,a_reconstr,a_sitemap",
-        'a_old'       => "hm:37:   :-                ::web/oldies:::                             menu=a_ys,a_ms,a_ds,a_lb,a_ch,a_us,a_wb,a_ja,a_my",
-        'a_online'    => 'hm:16:   :-                :clanek,324:chlapi.online:::                mclanky;-clanky=324:              Články na server chlapi.online',
-      # Web
-        'a_zmeny'     => 'sm:17:   :-                ::   změny obsahu:::                        web_zmeny',
-        'a_odkazy'    => 'sm:18:   :-                ::   staré odkazy:::                        web_odkazy',
-        'a_reconstr'  => 'sm:36:   :-                ::   rekontrukce:::                         web_reconstr',
-        'a_sitemap'   => 'sm:19:   :-                ::   sitemap.xml:::                         web_sitemap',
-        'a_ys'        => "sm:38:   :-                ::YS:::                                     mclanky;-clanky=12,14,16,17,20,246,323",
-        'a_ms'        => "sm:41:   :-                ::MS:::                                     mclanky;-clanky=72,198,260,303",
-        'a_ds'        => "sm:40:   :-                ::DS:::                                     mclanky;-clanky=259,108,131,132,236",
-        'a_lb'        => "sm:45:   :-                ::LIB:::                                    mclanky;-clanky=313",
-        'a_ch'        => "sm:44:   :-                ::CH:::                                     mclanky;-clanky=239,249,262,319,321",
-        'a_us'        => "sm:43:   :-                ::U.S:::                                    mclanky;-clanky=237",
-        'a_wb'        => "sm:42:   :-                ::WEB:::                                    mclanky;-clanky=251,304,264,245,244,209,210,211,213,215,216,217,219,229",
-        'a_ja'        => "sm:39:   :-                ::MŠ:::                                     mclanky;-clanky=317,311,308,261,291,293,295,294,300,301,302,309,310",
-        'a_my'        => "sm:46:   :-                ::ROD:::                                    mclanky;-clanky=316",
+//        'a_web'       => "hm:15:   :-                ::web/admin:::                              menu=a_zmeny,a_odkazy,a_reconstr,a_sitemap",
+//        'a_old'       => "hm:37:   :-                ::web/oldies:::                             menu=a_ys,a_ms,a_ds,a_lb,a_ch,a_us,a_wb,a_ja,a_my",
+//        'a_online'    => 'hm:16:   :-                :clanek,324:chlapi.online:::                mclanky;-clanky=324:              Články na server chlapi.online',
+//      # Web
+//        'a_zmeny'     => 'sm:17:   :-                ::   změny obsahu:::                        web_zmeny',
+//        'a_odkazy'    => 'sm:18:   :-                ::   staré odkazy:::                        web_odkazy',
+//        'a_reconstr'  => 'sm:36:   :-                ::   rekontrukce:::                         web_reconstr',
+//        'a_sitemap'   => 'sm:19:   :-                ::   sitemap.xml:::                         web_sitemap',
+//        'a_ys'        => "sm:38:   :-                ::YS:::                                     mclanky;-clanky=12,14,16,17,20,246,323",
+//        'a_ms'        => "sm:41:   :-                ::MS:::                                     mclanky;-clanky=72,198,260,303",
+//        'a_ds'        => "sm:40:   :-                ::DS:::                                     mclanky;-clanky=259,108,131,132,236",
+//        'a_lb'        => "sm:45:   :-                ::LIB:::                                    mclanky;-clanky=313",
+//        'a_ch'        => "sm:44:   :-                ::CH:::                                     mclanky;-clanky=239,249,262,319,321",
+//        'a_us'        => "sm:43:   :-                ::U.S:::                                    mclanky;-clanky=237",
+//        'a_wb'        => "sm:42:   :-                ::WEB:::                                    mclanky;-clanky=251,304,264,245,244,209,210,211,213,215,216,217,219,229",
+//        'a_ja'        => "sm:39:   :-                ::MŠ:::                                     mclanky;-clanky=317,311,308,261,291,293,295,294,300,301,302,309,310",
+//        'a_my'        => "sm:46:   :-                ::ROD:::                                    mclanky;-clanky=316",
       # Dům setkání
         'alberice'    => 'sm:20:0.9:alberice/dum     :clanek,37: Albeřice:::                     mclanky;-clanky=37,28,29:         Dům setkání',
         'chystame'    => "sm:21:0.9:alberice/akce    :aakce,222: Akce v Domě::  $def_vse:        proc=aplan; akce=bude:            Akce v Domě setkání",
@@ -1380,9 +1380,9 @@ function home() { trace();
     //todo ugly, consider "main page" category
     if ( $x->page==100 ) { // ---------------------------------------- hlavní strana - úvodní článek & timeline
       $telo.= vlakno($cid,'clanek','home',false);
-      $telo .= timeline();
     }
     elseif ( $x->home==2 || $x->home==6 ) { // ----------------------- abstrakt na home | nahoru
+      $prihlaska= '';
       $prihlaska= $x->ida ? cms_form_ref("on-line přihláška") : '';
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
       $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
@@ -1405,6 +1405,7 @@ function home() { trace();
       $vite[]= vlakno($cid,'clanek','home',false);
     }
   }
+  $telo .= timeline();
 
   $cist= ($cist ? $cist : 'Bohužel zde zatím není žádný článek.');
 
@@ -2280,6 +2281,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     strpos($xx_tags[$cid],'h')!==false ? ' abstrakt_hidden' : '');
     $code= cid_pid($cid,$x->ident);
 //     $back= $foto ? "#foto$cid" : '';
+    $prihlaska= '';
     $prihlaska= $x->ida ? cms_form_ref("on-line přihláška") : '';
 //    $prihlaska= cms_form_ref("on-line přihláška");
 
@@ -2468,6 +2470,7 @@ function vlakno($cid,$typ='',$back_href='') { trace();
 //      if ( $x->ida && isset($_SESSION['web']['try']) && $_SESSION['web']['try']=='prihlasky') {
       if ( $x->ida ) {
         $nazev_akce= trim(select('nazev','akce',"id_duakce=$x->ida",'ezer_db2'));
+        $prihlaska= '';
         $prihlaska= cms_form_ref("on-line přihláška",'akce',$x->ida,$nazev_akce);
       }
       $h.= "<div class='x relative' $event><span class='anchor' id='anchor$uid'></span>

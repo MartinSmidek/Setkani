@@ -93,7 +93,7 @@ function db_drop_tables_but($db,$but_tables='') {
   ");
   while ( $cr && (list($table)= mysql_fetch_row($cr)) ) {
     if ( !in_array($table,$but)) {
-      query("DROP TABLE $db.$table");
+      query("DROP TABLE $db.`$table`");
     }
   }
   return 1;
