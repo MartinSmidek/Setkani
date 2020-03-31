@@ -493,7 +493,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       case 'vlakno': # ---------------------------------------------==> . vlakno
         # vlákno zadané cid
         if ( !$ids && count($path) ) $ids= array_shift($path);
-        $body.= vlakno($ids,'clanek','',false);
+        $body.= vlakno($ids,'clanek','',true);
         break;
 
       case 'clanky': # ------------------------------------------------ . clanky
@@ -1218,7 +1218,7 @@ function timeline()
       list($k, $i) = explode(':', $ki);
       if ($i==6) $k="ostatní";
       $bgcolor = barva_programu_z_cisla($i);
-      $h .= "<span class='timeline_legend' style='background: $bgcolor;'>$k</span>&emsp;";
+      $h .= "<span class='timeline_legend' style='background: $bgcolor;'>$k&emsp;</span>&emsp;";
   }
   $h.= "</div><div class='relative clear'><div class='horizontal_scroll'><div class='relative'><ul id='timeline_header'>";
   $day = 24 * 3600;
@@ -1379,7 +1379,7 @@ function home() { trace();
     $code= cid_pid($cid,$x->uid);
     //todo ugly, consider "main page" category
     if ( $x->page==100 ) { // ---------------------------------------- hlavní strana - úvodní článek & timeline
-      $telo.= vlakno($cid,'clanek','home',false);
+      $telo.= vlakno($cid,'clanek','home',true);
     }
     elseif ( $x->home==2 || $x->home==6 ) { // ----------------------- abstrakt na home | nahoru
       $prihlaska= '';
@@ -1402,7 +1402,7 @@ function home() { trace();
              <div class='clear'></div>". masonry_text($x->text)."</div>";
     }
     elseif ( $x->home==8 ) { // --------------------------------------- víte, že
-      $vite[]= vlakno($cid,'clanek','home',false);
+      $vite[]= vlakno($cid,'clanek','home',true);
     }
   }
   $telo .= timeline();
@@ -2055,7 +2055,7 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
   }
   $h.= "</div>";
   // navrácení textu
-  $h.= $chlapi_online ? '' : $c_komu;
+  //$h.= $chlapi_online ? '' : $c_komu;
   return $h;
 }
 # --------------------------------------------------------------------------------------------- akce
@@ -2117,6 +2117,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
       $c_kdy.= " AND LEFT(FROM_UNIXTIME(untilday),10)<LEFT(NOW(),10)";
     }
     $rok= $kdy;
+    $ORDER= "DESC";
   }
   elseif ( $vyber=='hledej' ) {
     $typ= 'hledej';
@@ -2376,7 +2377,7 @@ __EOD;
 # typ=akce|clanek|foto
 #   pro typ=foto se zobrazí tag=A jako abstrakt
 # back=1 přidá návrat při kliknutí
-function vlakno($cid,$typ='',$back_href='') { trace();
+function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
   global $CMS, $href0;
   global $usergroups, $found; // skupiny, počet nalezených článků
   global $show_deleted, $show_hidden, $news_time;
@@ -2426,7 +2427,7 @@ function vlakno($cid,$typ='',$back_href='') { trace();
     $uid= $x->uid;
     $obsah= $x->obsah;
     $podpis= "<div class='podpis'>";
-    $podpis.= ($x->kdy) ? "<i class='far fa-calendar-alt'></i>&nbsp;$x->kdy&emsp;" : '';
+    $podpis.= ($x->kdy) ? "<i class='fa fa-calendar-alt'></i>&nbsp;$x->kdy&emsp;" : '';
     $podpis.= "<i class='fa fa-user'></i>&nbsp;$x->autor,&nbsp;$x->psano</div>";
     $menu= '';
     $event= '';
@@ -2446,11 +2447,12 @@ function vlakno($cid,$typ='',$back_href='') { trace();
               ['obnovit článek',function(el){ zrusit('$typ','$uid',0); }],
               ['-odstranit embeded img',function(el){ opravit('img','$uid','$cid'); }]
             ],arguments[0],'clanek$uid');return false;\"";
+      $title = $h1 ? "<h1>$x->nadpis</h1>" : "<h2>$x->nadpis</h2>";
       $h.= "<div id='list' class='x relative' $event><span class='anchor' id='anchor$uid'></span>
             $code
            <div id='clanek$uid' class='clanek x$x->upd'$menu$style>
             <div class='text'>
-              <h1>$x->nadpis</h1>$podpis
+              $title$podpis
               $obsah
             </div>
           </div></div>";
@@ -2482,12 +2484,13 @@ function vlakno($cid,$typ='',$back_href='') { trace();
         $prihlaska= '';
         $prihlaska= cms_form_ref("on-line přihláška",'akce',$x->ida,$nazev_akce);
       }
+      $title = $h1 ? "<h1>$x->nadpis</h1>" : "<h2>$x->nadpis</h2>";
       $h.= "<div class='x relative' $event><span class='anchor' id='anchor$uid'></span>
             $code
             <div id='clanek$uid' class='clanek x$x->upd'$menu$style>
               $prihlaska
               <div class='text'>
-                <h2>$x->nadpis</h2>$podpis
+                $title$podpis
                 $obsah
               </div>
            </div></div>";
