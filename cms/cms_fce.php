@@ -6,6 +6,42 @@
 // CMS/Ezer                                             (c) 2016 Martin Šmídek <martin@smidek.eu> //
 // ---------------------------------------------------------------------------------------------- //
 
+/** =========================================================================================> LOCKS */
+# -------------------------------------------------------------------------------------- record lock
+# pokud je rekord volný tj. lock_kdo=0 vrátí {kdo:''} a zapíše kdy kdo uzamkl
+# pokud je rekord zamknutý tj. lock_kdo=id_user vrátí {kdo:_user.username,kdy:datetime}
+function record_lock ($pid) {
+  $ret= (object)array();
+  list($kdo,$kdy)= select("lock_kdo,lock_kdy",'tx_gncase_part',"uid=$pid");
+  if ( $kdo ) {
+    // zamknutý záznam
+    $ret->idu= $kdo;
+    $ret->kdo= select("username","_user","id_user='$kdo'") ?: "???";
+    $ret->kdy= sql_date($kdy);
+  }
+  else {
+    // volný záznam - zmkni jej
+    $ret->idu= 0;
+    $ret->kdo= '';
+    $id_user= $_SESSION['cms']['user_id'];
+    query("UPDATE tx_gncase_part SET lock_kdo='$id_user',lock_kdy=NOW() WHERE uid=$pid");
+  }
+  return $ret;
+}
+# ------------------------------------------------------------------------------------ record unlock
+# uvolni rekord
+# pokud je $unlock_all - uvolni všechny které jsi zamkl 
+# (děje se při přihlášení a odhlášení tedy i při refresh)
+function record_unlock ($pid,$unlock_all=false) {
+  if ( $unlock_all ) {
+    $id_user= $_SESSION['cms']['user_id'];
+    query("UPDATE tx_gncase_part SET lock_kdo=0,lock_kdy=NOW() WHERE lock_kdo='$id_user'");
+  }
+  else {
+    query("UPDATE tx_gncase_part SET lock_kdo=0,lock_kdy=NOW() WHERE uid=$pid");
+  }
+  return 1;
+}
 /** ======================================================================================> DATABASE */
 # -------------------------------------------------------------------------------------- db get_file
 # ASK - vrátí obsah souboru

@@ -528,10 +528,13 @@ panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialo
     f.sav.set('[fa-save] Uložit'); f.app.enable(1);   // úprava form
     path.set(conc('/fileadmin/img/',_cid,'/'));                  // cesta pro img
     ask('session','cms,cid_path',path.get);
-    ret.set(ask('load_clanek',_uid)); copy_by_name(ret,f);
+    ret.set(ask('load_clanek',_uid)); 
+    not(ret.idu); // uid je id_user zamknutého článku
+    copy_by_name(ret,f);
     [ eq(f.ctype.get,1,2,3); f.layout; join_drop ];
     [ eq(f.ctype.get,7); f.fname.set(f.obsah.get); f.layout ];
     [ panel.modal ] //(10,30);
+  | ret.idu; alert(conc('článek opravuje od ',ret.kdy,' redaktor ',ret.kdo))
   | alert("editace ještě není dostupná pro typ článku=",f.ctype.get);
   }
   # ==> přidat kapitolu do knihy
@@ -613,8 +616,10 @@ panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialo
       }
     }
     button [-1,9,,] { title:'[fa-undo] Zpět', help:'ukončit editor bez vytvoření článku'
-      proc onclick() { UPLOAD.hide(0); panel.hide(0); }
-    }
+      proc onclick() { 
+        ask('record_unlock',uid.get);
+        UPLOAD.hide(0); panel.hide(0); 
+    }}
     # přepínání mezi editací textu a abstraktu=textu na home-page
     button abs [-70,34,,] { tag:'a,c,k,p', title:'[fa-pencil] Home', 
         help:'editace abstraktu resp. textu'

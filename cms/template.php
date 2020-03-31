@@ -1137,7 +1137,7 @@ function hide_part($uid,$hide,$on) {
   }
   return $ask;
 }
-# ============================================================================================> GALLERY
+# =========================================================================================> GALLERY
 # nageneruje fotky do záhlaví
 # zatím samostantná tabulka, neví kde má brát fotky
 function gallery() {
@@ -1179,10 +1179,10 @@ function facebook() {
   </div>
 __EOD;
 }
-# ============================================================================================> TIMELINE
+# ========================================================================================> TIMELINE
 # nageneruje fotky do záhlaví
 # zatím samostantná tabulka, neví kde má brát fotky
-# ============================================================================================> TIMELINE
+# ========================================================================================> TIMELINE
 # nageneruje fotky do záhlaví
 # zatím samostantná tabulka, neví kde má brát fotky
 function timeline()
@@ -1282,7 +1282,7 @@ function timeline()
   return $h;
 }
 
-# ============================================================================================> FOOTER
+# ==========================================================================================> FOOTER
 # footer ze své vlastní tabulky
 function footer() {
   global $CMS, $href0, $mode;
@@ -1591,6 +1591,12 @@ function clanky($pids,$uid=0,$mid=0,$chlapi='',$back='') { trace();
 # přenos článku do editoru
 function load_clanek($uid) { trace();
   $x= (object)array();
+  // zamkni článek
+  $x= record_lock($uid);
+  if ( $x->uid ) {
+    // článek je zamknutý 
+    goto end;
+  }
   list($x->uid,$x->mid,$x->tags,$x->autor,$x->nadpis,$x->obsah,$x->abstract,$psano,$od,$do,
       $x->program,$x->homepage,$x->cruser_id,$x->ctype,$x->sorting,$x->kapitola,$x->pro,
       $x->id_akce)=
@@ -1605,6 +1611,7 @@ function load_clanek($uid) { trace();
   $x->kalendar= $x->tags=='K' ? 1 : 0;
   $x->psano= sql_date1($psano);
   debug($x,"akce=$x->nadpis");
+end:  
   return $x;
 }
 # ---------------------------------------------------------------------------------==> . save clanek
@@ -1652,6 +1659,8 @@ function save_clanek($x,$uid) { trace(); //debug($x,"save_clanek");
   if ( $upd ) $part[]= $case[]= "tstamp=UNIX_TIMESTAMP()";
   if ( $part ) query("UPDATE tx_gncase_part SET ".implode(',',$part)." WHERE uid=$uid");
   if ( $case ) query("UPDATE tx_gncase SET ".implode(',',$case)." WHERE uid=$cid");
+  // odemkni článek
+  record_unlock($uid);
   // zápis o opravě
   $date= date('YmdHis',time());
   query("INSERT INTO gn_log (datetime,fe_user,action,uid_menu,uid_case,uid_part,message) VALUES

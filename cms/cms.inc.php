@@ -70,4 +70,10 @@ $ezer_server=
 //                                                                    echo("3:ezer{$EZER->version}/ezer_ajax.php");
   require_once("$kernel/ezer_ajax.php");
   
+  // při reload odemkni zamknuté články
+  if ( isset($_SESSION['cms']['refresh']) && $_SESSION['cms']['refresh'] ) {
+    $_SESSION['cms']['refresh']= 0;
+    record_unlock($uid,true);
+  }
+  
 ?>

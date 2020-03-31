@@ -114,8 +114,8 @@
 function specific(&$template_meta,&$template) {
   $debugger= '';
   if ( isset($_GET['dbg']) && $_GET['dbg'] ) {
-    $dbg_script= isset($_SESSION[$app_root]['dbg_script'])
-      ? trim($_SESSION[$app_root]['dbg_script'])
+    $dbg_script= isset($_SESSION['cms']['dbg_script'])
+      ? trim($_SESSION['cms']['dbg_script'])
       : "set_trace('m',1,'init,set,key');";
     $debugger= <<<__EOD
       <form action="" method="post" enctype="multipart/form-data" id="form">

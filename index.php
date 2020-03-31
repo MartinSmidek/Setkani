@@ -19,9 +19,7 @@ $ezer_server=
 
 // pro již přihlášeného přejdi do CMS
 if ( !count($_POST) && isset($_SESSION['cms']['user_id']) && $_SESSION['cms']['user_id'] ) {
-  // pokud je přihlášený be_user proveď reload
-  global $feu;
-  $feu= 'refresh';
+  $_SESSION['cms']['refresh']= 1;
   require_once("cms/cms.php");
   die();
 }
@@ -83,6 +81,11 @@ $fe_host= $fe_user || $be_user ? 0 : (
           isset($_SESSION['web']['fe_host']) ? $_SESSION['web']['fe_host'] : 0);
 $mode= array(1=>isset($_COOKIE['web_mode_1']) ? $_COOKIE['web_mode_1'] : 1); // mode1=dlaždice
 $fe_user_display= isset($_GET['login']) ? 'block' : 'none';
+
+// pokud je přihlášený be_user jde o reload
+if ( $be_user) {
+  $_SESSION['cms']['refresh']= 1;
+}
 
 // absolutní cesta
 global $ezer_path_root;
