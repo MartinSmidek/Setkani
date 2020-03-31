@@ -1,3 +1,5 @@
+/* global Ezer */
+
 // ---------------------------------------------------------------------------------------------- //
 // uživatelské funkce aplikace Ezer/CMS specifické pro FE (nepřihlášené)                          //
 //                                                                                                //

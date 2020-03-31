@@ -1762,8 +1762,6 @@ function server($x) {  trace();
             $_SESSION['cms']['user_id']= $idu;
             $_SESSION['cms']['user_key']= $key_ok;
             $y->msg= "logged user $uid, be_user changed to user={$_SESSION['cms']['user_id']}";
-            // odemkni dříve rozpracované opravy
-            record_unlock(0,true);
           }
         }
       }

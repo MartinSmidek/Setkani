@@ -938,7 +938,7 @@ panel ADMIN [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu
         }
       }
     }
-    menu { title:'Transformace databáze',type:'group',skill:'m'
+    menu { title:'Transformace databáze',type:'group',skill:'martin'
       // DROP nepoužitých tabulek
       item { title:"[fa-recycle] transformace: old tables"   par:°{do:'t',op:'old-tables'}}
       // nepoužitá pole
