@@ -47,8 +47,8 @@ function def_menu($from_table=false) { trace();
 //        'a_my'        => "sm:46:   :-                ::ROD:::                                    mclanky;-clanky=316",
       # Dům setkání
         'alberice'    => 'sm:20:0.9:alberice/dum     :clanek,37: Dům Setkání:::                  mclanky;:                         Dům setkání',
-        'informace'   => "sm:21:0.9:alberice/informace :clanek,37: Informace :::                 clanky=37:                        Informace k Domu Setkání",
-        'chystame'    => "sm:22:0.9:alberice/akce    :akce,222: Akce v Domě::  $def_vse:        proc=aplan; akce=bude:            Akce v Domě setkání",
+        'informace'   => "sm:22:0.9:alberice/informace :clanek,37: Informace :::                 mclanky;:                        Informace k Domu Setkání",
+        'chystame'    => "sm:0:0.9:alberice/akce    :akce,222: Akce v Domě::  $def_vse:        proc=aplan; akce=bude:            Akce v Domě setkání",
         'objednavky'  => 'sm:23:0.8:alberice/objednavky::        Objed&shy;návky:::              dum:                              Objednávky pobytů v Domě setkání',
         'ceny'        => 'sm:24:0.8:alberice/ceny    ::          Ceny:::                         vlakno=51:                        Ceny služeb Domu setkání',
         'archiv'      => "sm:25:   :alberice/$letos  ::          Prožili jsme:::                 akce=aprehled:                    Archiv akcí v Domě setkání",
