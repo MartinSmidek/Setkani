@@ -581,7 +581,12 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         }
         elseif ( $ids=='aprehled' ) { // proběhlé akce v Domě setkání
                                                  debug($path,"path= $id,...");
-          $body .= "<div class='content'><h1>Archiv akcí v domě</h1></div>";
+          $body .= "<div class='content'><h1>Archiv akcí v domě</h1><br>";
+
+          $body.= "Prohlédněte si seznam akcí které proběhly v Domě Setkání. Některé fotografie z akcí 
+                naleznete ve fotogalerii, více je pak dostupné na dalších
+                webech z odkazů ve fotogalerii.
+                <br><br></div>";
           $rok= $id?:date('Y');
           $id= array_shift($path);
           list($page_mref,$roks)= explode('/',$page_mref);

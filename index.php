@@ -82,6 +82,11 @@ $fe_host= $fe_user || $be_user ? 0 : (
 $mode= array(1=>isset($_COOKIE['web_mode_1']) ? $_COOKIE['web_mode_1'] : 1); // mode1=dlaždice
 $fe_user_display= isset($_GET['login']) ? 'block' : 'none';
 
+if (strpos($_SERVER["REQUEST_URI"], "index.php?id=") !== false && $path[0] == "home") {
+     $paths = implode(" ", $path);
+    query("INSERT INTO url_log VALUES ('{$_SERVER["REQUEST_URI"]}', '$paths','$php_errormsg')");
+}
+
 // pokud je přihlášený be_user jde o reload
 if ( $be_user) {
   $_SESSION['cms']['refresh']= 1;
