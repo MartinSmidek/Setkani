@@ -70,6 +70,7 @@ RewriteRule ^alberice/informace/(\d+)$          index.php?page=dum!informace!$1 
 # .. Akce v Dome
 RewriteRule ^alberice/akce$                     index.php?page=dum!chystame                     [L]
 RewriteRule ^alberice/akce/(\d+)$               index.php?page=dum!chystame!alberice!$1         [L]
+RewriteRule ^alberice/akce/nove/(\d+)$          index.php?page=dum!chystame!alberice!$1         [L]
 
 # .. Prozili jsme
 RewriteRule ^alberice/(\d+)$                    index.php?page=dum!archiv!$1                    [L]

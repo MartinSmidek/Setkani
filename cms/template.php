@@ -1838,7 +1838,7 @@ function create_kniha($x) { //$pid,$autor,$nadpis,$obsah,$psano) { trace();
   return $uid;
 }
 # =======================================================================================> kalendáře
-# kalenář akce akce je v databázi poznačen
+# kalenář akce je v databázi poznačen
 function kalendare($vyber, $rok, $id) { trace();
   global $CMS, $news_time, $mode, $href0, $page_mref, $def_pars;
   // výběr podle programu - překlad na regexpr
@@ -2113,6 +2113,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
   $rok= $tag= $chlapi_url= '';
   $typ= 'akce';
   $hledej= trim($hledej);
+  $calendar="";
   $xx= $xx_tags= $xx_foto= $xx_img= array();
   if ( !$news_time ) $news_time= time() - 1 * 24*60*60;
   if ( $vyber=='foto' ) {
@@ -2211,6 +2212,10 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     elseif ( $kdy=='bude' || $kdy=='bude_alberice' ) {
       $c_kdy= "LEFT(FROM_UNIXTIME(untilday),10)>=LEFT(NOW(),10)";
       $ORDER= "ASC";
+
+      //in case alberice future events, display calendar
+      $calendar = kalendare('alberice', 'nove', $id);
+      $calendar .= "<div class='content'><h2>Plánované akce</h2></div>";
     }
     else {
       foreach(explode(',',$vyber) as $v) {
@@ -2290,6 +2295,8 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
   // generování stránky
   $rok_ted = '';
   $h= ($wrap_container ? "<div class='content'>" : "") . $info;
+  $h.= $calendar;
+
   $abstr= $mode[1] ? 'abstr' : 'abstr-line';
   $n= 0; // pořadí akce v roce
   foreach($xx as $cid=>$x) {
