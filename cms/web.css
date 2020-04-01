@@ -30,9 +30,14 @@ div.LabelDrop { outline: 3px solid #cadfd9; background-color:#cadfd9; }
 html { height:100%; width:100%; }
 body { /*overflow-y:auto;*/ font-family: 'Open Sans', sans-serif; overflow-x:hidden; margin: 0; min-height: 100%; background: #f2f2f2 }
 
+/*Container stretches to the webpage width, used for main page layout*/
 .container { width: 100vw; position: relative; padding-bottom: 30px; }
 .content { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 .inner_container {display: flex; flex-direction: column;}
+
+/*Same as above for divs inside class content, first uses the full web width, second will center the content*/
+.full_width {width: 100vw;position: relative;left: 50%;right: 50%;margin-left: -50vw;margin-right: -50vw;}
+.centered_infull { text-align: center;display: block !important;}
 
 #page { margin: 0 auto; }
 #work {  }
@@ -134,6 +139,7 @@ h3 {margin-top: 30px}
 
 /* ------------------------------------------------------------------- facebook */
 
+.facebook {background: #bacddc;}
 #facebook_content:before {content: "\f09a"; font-family: FontAwesome, serif; color: #ffffff;
   font-size: 60px; vertical-align: middle; position: absolute; transform: translate(-100px, 10px);}
 

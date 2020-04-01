@@ -1176,7 +1176,7 @@ function gallery() {
 
 function facebook() {
   return <<<__EOD
-    <div id='pr_bar' class='container inner_container' style='background:#bacddc'>
+    <div id='pr_bar' class='container inner_container facebook'>
     <div class='content' id='facebook_content'>
       <div id="fb-root"></div>
       <script async defer crossorigin="anonymous" src="https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v5.0"></script>
