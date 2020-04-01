@@ -87,6 +87,7 @@ h1, #web h2,h3 { -webkit-column-break-inside: avoid; -moz-column-break-inside: a
 #vlakno a:visited:not(.plain_href), a.styled:visited { color: #848483; background: #848483; border: 1px solid #848483; }
 #vlakno a:visited:hover:not(.plain_href), a.styled:visited:hover { color: white;}
 #web img {margin:.5em;height:auto !important;max-width:100%;}
+#web .abstr img {margin: 0 5px 0 0}
 
 h1 {margin-top: 60px}
 h2 {margin-top: 40px}
@@ -306,7 +307,9 @@ a.abstrakt, div.abstrakt { background-color:white; margin:0.5em; cursor:pointer;
   -moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06); box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06); overflow: hidden; }
 a.new { background-image: url(img/new.png); background-repeat:no-repeat; background-position: top right; }
 a.upd { background-image: url(img/upd.png); background-repeat:no-repeat; background-position: top right; }
-div.abstr a.abstrakt { height:12.8em; overflow:hidden; }
+div.abstr a.abstrakt { height:11.2em; overflow:hidden; }
+.abstr p {font-size: 11pt; margin-top: 2px; margin-top: 2px;white-space: pre-wrap;
+  overflow-wrap: break-word;}
 /*a.abstrakt:hover, div.abstrakt:hover { background-color:#fff4de !important; color:#130D00 !important; }*/
 a.abstrakt_hidden { background-color:silver }
 a.abstrakt_deleted { background-color:silver; border:5px solid black;}
@@ -671,7 +674,8 @@ label.form_button {float: right}
   .footer #footer-left-part {min-width: 90vw;}
 
   /* abstrakty */
-  div.abstr { width:50%; }
+  div.abstr { width:100%; }
+  div.abstr a.abstrakt{height: 8.8em}
   .abstr-fotogalerie {width:46%; padding: 0 1% }
   .mobile_nodisplay {display: none !important;}
 }
@@ -704,7 +708,7 @@ label.form_button {float: right}
   /* větší písmo menu */
   #menu div, #menu span, #menu input {font-size: 10pt; }
   /* abstrakty */
-  div.abstr { width:33.3%; }
+  div.abstr { width:50%; }
   .abstr-fotogalerie {width:30%; padding: 0 0.5% }
 }
 
@@ -723,5 +727,5 @@ label.form_button {float: right}
   /* větší písmo menu */
   #menu div, #menu span, #menu input {font-size:10pt; }
   /* abstrakty */
-  div.abstr { width:25%; }
+  div.abstr { width:33.3%; }
 }

@@ -23,7 +23,7 @@ function def_menu($from_table=false) { trace();
     $def_block= array( // je používáno také fcí admin_web
       # hlavní menu    typ  i site mref             on    název             next/default       elem ...                          title
         'akce'        => "hm:10:   :akce             :akce,102: Naše akce::   $def_vse:          proc=plan_rok; akce=prehled:      Akce pro rodiny, muže i ženy pořádané YMCA Setkání",
-        'dum'         => "hm:11:   :alberice/dum     ::     Dům setkání:::                       menu=alberice,chystame,archiv,objednavky,ceny",
+        'dum'         => "hm:11:   :alberice/dum     ::     Dům setkání:::                       menu=alberice,informace,chystame,objednavky,ceny,archiv",
         'foto'        => 'hm:12:   :fotogalerie      ::     Foto&shy;galerie:::                  foto:                             Fotografie z akcí YMCA Setkání',
         'libr'        => 'hm:13:   :manzelak         ::     Knihov&shy;nička:bulletin::          menu=bulletin,tance,modlitby,knihy,audio,obrazy,odkazy',
         'my'          => 'hm:14:0.9:ymca-setkani     :clanek,21:O nás:::                         mclanky;-clanky=21,15,13,284,287,263:      Informace o YMCA Setkání', //o_nas',
@@ -46,22 +46,22 @@ function def_menu($from_table=false) { trace();
 //        'a_ja'        => "sm:39:   :-                ::MŠ:::                                     mclanky;-clanky=317,311,308,261,291,293,295,294,300,301,302,309,310",
 //        'a_my'        => "sm:46:   :-                ::ROD:::                                    mclanky;-clanky=316",
       # Dům setkání
-        'alberice'    => 'sm:20:0.9:alberice/dum     :clanek,37: Albeřice:::                     mclanky;-clanky=37,28,29:         Dům setkání',
-        'chystame'    => "sm:21:0.9:alberice/akce    :aakce,222: Akce v Domě::  $def_vse:        proc=aplan; akce=bude:            Akce v Domě setkání",
-        'archiv'      => "sm:22:   :alberice/$letos  ::          Prožili jsme:::                 akce=aprehled:                    Archiv akcí v Domě setkání",
+        'alberice'    => 'sm:20:0.9:alberice/dum     :clanek,37: Dům Setkání:::                  mclanky;:                         Dům setkání',
+        'informace'   => "sm:21:0.9:alberice/informace :clanek,37: Informace :::                 clanky=37:                        Informace k Domu Setkání",
+        'chystame'    => "sm:22:0.9:alberice/akce    :akce,222: Akce v Domě::  $def_vse:        proc=aplan; akce=bude:            Akce v Domě setkání",
         'objednavky'  => 'sm:23:0.8:alberice/objednavky::        Objed&shy;návky:::              dum:                              Objednávky pobytů v Domě setkání',
         'ceny'        => 'sm:24:0.8:alberice/ceny    ::          Ceny:::                         vlakno=51:                        Ceny služeb Domu setkání',
+        'archiv'      => "sm:25:   :alberice/$letos  ::          Prožili jsme:::                 akce=aprehled:                    Archiv akcí v Domě setkání",
       # knihovnička
-        'bulletin'    => 'sm:25:0.9:manzelak         ::          Manželák:::                     vlakno=80:                        Manželák - časopis YMCA Setkání',
-        'tance'       => 'sm:26:0.9:tance            :clanek,322:Tance:::                        mclanky;-clanky=322:              Biblické tance',    // 322=tance
-        'modlitby'    => 'sm:27:0.1:modlitby         :clanek,254:Modlitby:::                     mclanky;-clanky=254:              Modlitby',    // 254=modlitby
-        'knihy'       => 'sm:28:0.0:cetba            :kniha,228: Četba:::                        mknihy;-knihy=228,250,241:                Vybrané texty', // 241=články
-        'audio'       => 'sm:29:0.2:audio            :kniha,242: Audio:::                        mknihy;-knihy=242:                Vybraná audia',
-        'obrazy'      => 'sm:30:0.4:video            :clanek,320:Video:::                        mclanky;-clanky=320:              Videa a obrazy',
-        'odkazy'      => 'sm:31:0.8:doporuceni       :clanek,320:Doporu&shy;čujeme:::            mclanky;-clanky=223,9:            Doporučujeme s podobnou tématikou',
+        'bulletin'    => 'sm:26:0.9:manzelak         ::          Manželák:::                     vlakno=80:                        Manželák - časopis YMCA Setkání',
+        'tance'       => 'sm:27:0.9:tance            :clanek,322:Tance:::                        mclanky;-clanky=322:              Biblické tance',    // 322=tance
+        'modlitby'    => 'sm:28:0.1:modlitby         :clanek,254:Modlitby:::                     mclanky;-clanky=254:              Modlitby',    // 254=modlitby
+        'knihy'       => 'sm:29:0.0:cetba            :kniha,228: Četba:::                        mknihy;-knihy=228,250,241:        Vybrané texty', // 241=články
+        'audio'       => 'sm:30:0.2:audio            :kniha,242: Audio:::                        mknihy;-knihy=242:                Vybraná audia',
+        'obrazy'      => 'sm:31:0.4:video            :clanek,320:Video:::                        mclanky;-clanky=320:              Videa a obrazy',
+        'odkazy'      => 'sm:32:0.8:doporuceni       :clanek,320:Doporu&shy;čujeme:::            mclanky;-clanky=223,9:            Doporučujeme s podobnou tématikou',
       # speciální stránky
-        'home'        => "tm:32:0.9:home             ::<i class='fa fa-home'></i> Domů:::        home:                             Akce pro rodiny, muže i ženy pořádané YMCA Setkání",
-//      'kontakty'    => 'hm:33:0.9:kontakty         ::Kontakty:::                               vlakno=79:                        Kontakty na YMCA Setkání', //kontakty',
+        'home'        => "tm:33:0.9:home             ::<i class='fa fa-home'></i> Domů:::        home:                             Akce pro rodiny, muže i ženy pořádané YMCA Setkání",
         'hledej'    => 'tm:34:     :hledej           ::<i class="fa fa-search"></i>:::                               search:                             Hledej', //kontakty',
       #'clanek'      => 'hm:35:   :-                ::-:::                                      vlakno:                           Vybraný článek',
     );
@@ -436,7 +436,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
   foreach (explode(';',$elems) as $elem) {
     list($typ,$ids)= explode('=',$elem.'=');
     $typ= str_replace(' ','',$typ);
-//                                                         display("elem:$typ=$ids, vyber=$vyber");
+//                                            display("elem:$typ=$ids, vyber=$vyber");
     switch ($typ) {
       /** ==========================================> ELEMENTY */
       case 'web_zmeny':    # ----------------------------------------- . web zmeny
@@ -565,7 +565,18 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 //                                                         display("* page_mref = $page_mref");
         $id= array_shift($path);
         if ( $ids=='prehled' ) {
-          $body.= "<div class='content'><h1>YMCA Setkání - naše akce</h1></div><br><br>";
+          $body.= "<div class='content'><h1>YMCA Setkání - naše akce</h1><br>";
+
+          $body.= "Prohlédněte si seznam akcí které nabízíme, nebo těch které již proběhly.
+                Pokud je k dispozici i kalendář, pak je zobrazen vepředu přede všemi akcemi.
+                Akce lze třídit podle toho, komu jsou určeny - akce pro rodiny, manžele, chlapy,
+                ženy či mládež. Akce pořádané v Domě Setkání v Krkonošských Albeřicích jsou také
+                dostupné v menu 'Dům Setkání > Akce v Domě' nebo 'Dům Setkání > Prožili jsme'.
+                Některé fotografie z akcí naleznete ve fotogalerii, více je pak dostupné na dalších
+                webech z odkazů ve fotogalerii.
+                
+                <br><br></div>";
+          
           $body.= akce_prehled($vyber_rok,$rok,$id);
         }
         elseif ( $ids=='aprehled' ) { // proběhlé akce v Domě setkání
