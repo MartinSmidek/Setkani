@@ -23,7 +23,7 @@ function def_menu($from_table=false) { trace();
     $def_block= array( // je používáno také fcí admin_web
       # hlavní menu    typ  i site mref             on    název             next/default       elem ...                          title
         'akce'        => "hm:10:   :akce             :akce,102: Naše akce::   $def_vse:          proc=plan_rok; akce=prehled:      Akce pro rodiny, muže i ženy pořádané YMCA Setkání",
-        'dum'         => "hm:11:   :alberice/dum     ::     Dům setkání:::                       menu=alberice,informace,chystame,objednavky,ceny,menu,archiv",
+        'dum'         => "hm:11:   :alberice/dum     ::     Dům setkání:::                       menu=alberice,informace,chystame,objednavky,ceny,archiv",
         'foto'        => 'hm:12:   :fotogalerie      ::     Foto&shy;galerie:::                  foto:                             Fotografie z akcí YMCA Setkání',
         'libr'        => 'hm:13:   :manzelak         ::     Knihov&shy;nička:bulletin::          menu=bulletin,tance,modlitby,knihy,audio,obrazy,odkazy',
         'my'          => 'hm:14:0.9:ymca-setkani     :clanek,21:O nás:::                         mclanky;-clanky=21,15,13,284,287,263:      Informace o YMCA Setkání', //o_nas',
@@ -51,7 +51,6 @@ function def_menu($from_table=false) { trace();
         'chystame'    => "sm:22:0.9:alberice/akce    :akce,222: Akce v Domě::  $def_vse:        proc=aplan; akce=bude:            Akce v Domě setkání",
         'objednavky'  => 'sm:23:0.8:alberice/objednavky::        Objed&shy;návky:::              dum:                              Objednávky pobytů v Domě setkání',
         'ceny'        => 'sm:24:0.8:alberice/ceny    ::          Ceny:::                         vlakno=51:                        Ceny služeb Domu setkání',
-        'menu'        => 'sm:24:0.8:alberice/menu    ::          MENU:::                         :                                 Title of menu',
         'archiv'      => "sm:25:   :alberice/$letos  ::          Prožili jsme:::                 akce=aprehled:                    Archiv akcí v Domě setkání",
       # knihovnička
         'bulletin'    => 'sm:26:0.9:manzelak         ::          Manželák:::                     vlakno=80:                        Manželák - časopis YMCA Setkání',

@@ -82,9 +82,6 @@ RewriteRule ^alberice/objednavky/(\d+-\d+)$     index.php?page=dum!objednavky!$1
 # .. Ceny
 RewriteRule ^alberice/ceny$                     index.php?page=dum!ceny                         [L]
 
-# .. Menu
-RewriteRule ^alberice/menu$                     index.php?page=dum!menu                         [L]
-
 # Fotogalerie
 RewriteRule ^fotogalerie$                       index.php?page=foto                             [L]
 RewriteRule ^fotogalerie/(\d+)$                 index.php?page=foto!$1                          [L]
