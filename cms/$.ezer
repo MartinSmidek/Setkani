@@ -4,7 +4,7 @@
 
 panel p [0,0,*,*] { type:'main'
   var do_go=1
-  var last='my!5129'  //'home'
+  var last='my!5129',last_anch=''  //'home'
   var TEST=0            // předat jako Ezer.cms.TEST a $EZER->CMS->TEST
   var history: array, top=-1
   use f: form _f [0,0,,]
@@ -13,6 +13,7 @@ panel p [0,0,*,*] { type:'main'
     gets.set(function('fe_init(); return Ezer.get;'));
     ask('session','cms,cid_pid',0);
     last.set(cconc(gets.page,gets.page,'home'));
+    last_anch.set('');
     [ has_skill('a');   // pouze admin má plné prostředí
       /*admin*/ function('return admin(1)')
     | /*user*/  f.display(0); w.property(°{top:0}); function('return admin(0)')
@@ -34,6 +35,7 @@ panel p [0,0,*,*] { type:'main'
     [ has_skill('a'); f.clr.get; clear ];
     history.set(last.get);
     last.set(ref);
+    last_anch.set('');
     f.verze.set(sys('ezer','version')); 
     w.page_set(ask('page',CMS.from_table.get,function("return Ezer.app_root;"),ref));
     function("return jump_fokus();");
@@ -42,6 +44,7 @@ panel p [0,0,*,*] { type:'main'
     [ has_skill('a'); f.clr.get; clear ];
     history.set(last.get);
     last.set(ref);
+    last_anch.set(anch);
     f.verze.set(sys('ezer','version')); 
     w.page_set(ask('page',CMS.from_table.get,function("return Ezer.app_root;"),ref));
     function('anch',"return jump_fokus(anch);",anch);
@@ -58,6 +61,7 @@ panel p [0,0,*,*] { type:'main'
     [ has_skill('a'); f.clr.get; clear ];
     history.set(last.get);
     last.set(ref);
+    last_anch.set('');
     f.verze.set(sys('ezer','version')); 
     w.page_set(ask('page',CMS.from_table.get,function("return Ezer.app_root;"),ref));
   }
@@ -600,7 +604,8 @@ panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialo
         [ a_changed.get; abstract.change ];
         { uid.get;
           copy_by_name(f,values,0,1);
-          { eq(ctype.get,1,2,3); ask('save_clanek',values,uid.get);
+          { eq(ctype.get,1,2,3); 
+            ask('save_clanek',values,uid.get,cconc(1,p.last.get,p.last_anch.get,conc('#',p.last_anch.get)));
           | eq(ctype.get,7); ask('save_prezentace',values,uid.get);
           | alert("ještě nelze uschovat data pro článek typu=",ctype.get); panel.hide(0)
           }
