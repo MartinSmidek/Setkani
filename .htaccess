@@ -64,7 +64,7 @@ RewriteRule ^alberice(/dum|)$                   index.php?page=dum!alberice!41  
 RewriteRule ^alberice/dum/(\d+)$                index.php?page=dum!alberice!$1                  [L]
 
 # .. Informace
-RewriteRule ^alberice/informace$                index.php?page=dum!informace!2082               [L]
+RewriteRule ^alberice/informace$                index.php?page=dum!informace                    [L]
 RewriteRule ^alberice/informace/(\d+)$          index.php?page=dum!informace!$1                 [L]
 
 # .. Akce v Dome
