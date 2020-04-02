@@ -47,7 +47,7 @@ function def_menu($from_table=false) { trace();
 //        'a_my'        => "sm:46:   :-                ::ROD:::                                    mclanky;-clanky=316",
       # Dům setkání
         'alberice'    => 'sm:20:0.9:alberice/dum     :clanek,37: Dům Setkání:::                  mclanky;:                         Dům setkání',
-        'informace'   => "sm:34:0.9:alberice/informace :clanek,37: Informace :::                 mclanky;:                        Informace k Domu Setkání",
+        'informace'   => "sm:47:0.9:alberice/informace :clanek,37: Informace :::                 mclanky;:                        Informace k Domu Setkání",
         'chystame'    => "sm:21:0.9:alberice/akce    :akce,222: Akce v Domě::  $def_vse:        proc=aplan; akce=bude:            Akce v Domě setkání",
         'objednavky'  => 'sm:23:0.8:alberice/objednavky::        Objed&shy;návky:::              dum:                              Objednávky pobytů v Domě setkání',
         'ceny'        => 'sm:24:0.8:alberice/ceny    ::          Ceny:::                         vlakno=51:                        Ceny služeb Domu setkání',
@@ -62,7 +62,7 @@ function def_menu($from_table=false) { trace();
         'odkazy'      => 'sm:31:0.8:doporuceni       :clanek,320:Doporu&shy;čujeme:::            mclanky;-clanky=223,9:            Doporučujeme s podobnou tématikou',
       # speciální stránky
         'home'        => "tm:32:0.9:home             ::<i class='fa fa-home'></i> Domů:::        home:                             Akce pro rodiny, muže i ženy pořádané YMCA Setkání",
-        'hledej'    => 'tm:33:     :hledej           ::<i class="fa fa-search"></i>:::                               search:                             Hledej', //kontakty',
+        'hledej'    =>   'tm:34:     :hledej         ::<i class="fa fa-search"></i>:::           search:                           Hledej'
       #'clanek'      => 'hm:35:   :-                ::-:::                                      vlakno:                           Vybraný článek',
     );
 //    $def_mid= array();  // vznikne transformací i => mref
