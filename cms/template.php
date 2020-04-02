@@ -49,20 +49,20 @@ function def_menu($from_table=false) { trace();
         'alberice'    => 'sm:20:0.9:alberice/dum     :clanek,37: Dům Setkání:::                  mclanky;:                         Dům setkání',
         'informace'   => "sm:22:0.9:alberice/informace :clanek,37: Informace :::                 mclanky;:                        Informace k Domu Setkání",
         'chystame'    => "sm:0:0.9:alberice/akce    :akce,222: Akce v Domě::  $def_vse:        proc=aplan; akce=bude:            Akce v Domě setkání",
-        'objednavky'  => 'sm:23:0.8:alberice/objednavky::        Objed&shy;návky:::              dum:                              Objednávky pobytů v Domě setkání',
+        'objednavky'  => 'sm:0:0.8:alberice/objednavky::        Objed&shy;návky:::              dum:                              Objednávky pobytů v Domě setkání',
         'ceny'        => 'sm:24:0.8:alberice/ceny    ::          Ceny:::                         vlakno=51:                        Ceny služeb Domu setkání',
-        'archiv'      => "sm:25:   :alberice/$letos  ::          Prožili jsme:::                 akce=aprehled:                    Archiv akcí v Domě setkání",
+        'archiv'      => "sm:0:   :alberice/$letos  ::          Prožili jsme:::                 akce=aprehled:                    Archiv akcí v Domě setkání",
       # knihovnička
-        'bulletin'    => 'sm:26:0.9:manzelak         ::          Manželák:::                     vlakno=80:                        Manželák - časopis YMCA Setkání',
-        'tance'       => 'sm:27:0.9:tance            :clanek,322:Tance:::                        mclanky;-clanky=322:              Biblické tance',    // 322=tance
-        'modlitby'    => 'sm:28:0.1:modlitby         :clanek,254:Modlitby:::                     mclanky;-clanky=254:              Modlitby',    // 254=modlitby
-        'knihy'       => 'sm:29:0.0:cetba            :kniha,228: Četba:::                        mknihy;-knihy=228,250,241:        Vybrané texty', // 241=články
-        'audio'       => 'sm:30:0.2:audio            :kniha,242: Audio:::                        mknihy;-knihy=242:                Vybraná audia',
-        'obrazy'      => 'sm:31:0.4:video            :clanek,320:Video:::                        mclanky;-clanky=320:              Videa a obrazy',
-        'odkazy'      => 'sm:32:0.8:doporuceni       :clanek,320:Doporu&shy;čujeme:::            mclanky;-clanky=223,9:            Doporučujeme s podobnou tématikou',
+        'bulletin'    => 'sm:25:0.9:manzelak         ::          Manželák:::                     vlakno=80:                        Manželák - časopis YMCA Setkání',
+        'tance'       => 'sm:26:0.9:tance            :clanek,322:Tance:::                        mclanky;-clanky=322:              Biblické tance',    // 322=tance
+        'modlitby'    => 'sm:27:0.1:modlitby         :clanek,254:Modlitby:::                     mclanky;-clanky=254:              Modlitby',    // 254=modlitby
+        'knihy'       => 'sm:28:0.0:cetba            :kniha,228: Četba:::                        mknihy;-knihy=228,250,241:        Vybrané texty', // 241=články
+        'audio'       => 'sm:29:0.2:audio            :kniha,242: Audio:::                        mknihy;-knihy=242:                Vybraná audia',
+        'obrazy'      => 'sm:30:0.4:video            :clanek,320:Video:::                        mclanky;-clanky=320:              Videa a obrazy',
+        'odkazy'      => 'sm:31:0.8:doporuceni       :clanek,320:Doporu&shy;čujeme:::            mclanky;-clanky=223,9:            Doporučujeme s podobnou tématikou',
       # speciální stránky
-        'home'        => "tm:33:0.9:home             ::<i class='fa fa-home'></i> Domů:::        home:                             Akce pro rodiny, muže i ženy pořádané YMCA Setkání",
-        'hledej'    => 'tm:34:     :hledej           ::<i class="fa fa-search"></i>:::                               search:                             Hledej', //kontakty',
+        'home'        => "tm:32:0.9:home             ::<i class='fa fa-home'></i> Domů:::        home:                             Akce pro rodiny, muže i ženy pořádané YMCA Setkání",
+        'hledej'    => 'tm:33:     :hledej           ::<i class="fa fa-search"></i>:::                               search:                             Hledej', //kontakty',
       #'clanek'      => 'hm:35:   :-                ::-:::                                      vlakno:                           Vybraný článek',
     );
 //    $def_mid= array();  // vznikne transformací i => mref
