@@ -30,7 +30,7 @@ function def_menu($from_table=false) { trace();
 //      'team'        => "hm:33:   :team             ::Tým :::                                   team:                             Informace pro tým",
 //        'a_web'       => "hm:15:   :-                ::web/admin:::                              menu=a_zmeny,a_odkazy,a_reconstr,a_sitemap",
 //        'a_old'       => "hm:37:   :-                ::web/oldies:::                             menu=a_ys,a_ms,a_ds,a_lb,a_ch,a_us,a_wb,a_ja,a_my",
-//        'a_online'    => 'hm:16:   :-                :clanek,324:chlapi.online:::                mclanky;-clanky=324:              Články na server chlapi.online',
+//        'a_online'    => 'hm:16:   :-             :clanek,324:chlapi.online:::                mclanky;-clanky=324:              Články na server chlapi.online',
 //      # Web
 //        'a_zmeny'     => 'sm:17:   :-                ::   změny obsahu:::                        web_zmeny',
 //        'a_odkazy'    => 'sm:18:   :-                ::   staré odkazy:::                        web_odkazy',
@@ -47,11 +47,11 @@ function def_menu($from_table=false) { trace();
 //        'a_my'        => "sm:46:   :-                ::ROD:::                                    mclanky;-clanky=316",
       # Dům setkání
         'alberice'    => 'sm:20:0.9:alberice/dum     :clanek,37: Dům Setkání:::                  mclanky;:                         Dům setkání',
-        'informace'   => "sm:22:0.9:alberice/informace :clanek,37: Informace :::                 mclanky;:                        Informace k Domu Setkání",
-        'chystame'    => "sm:0:0.9:alberice/akce    :akce,222: Akce v Domě::  $def_vse:        proc=aplan; akce=bude:            Akce v Domě setkání",
-        'objednavky'  => 'sm:0:0.8:alberice/objednavky::        Objed&shy;návky:::              dum:                              Objednávky pobytů v Domě setkání',
+        'informace'   => "sm:34:0.9:alberice/informace :clanek,37: Informace :::                 mclanky;:                        Informace k Domu Setkání",
+        'chystame'    => "sm:21:0.9:alberice/akce    :akce,222: Akce v Domě::  $def_vse:        proc=aplan; akce=bude:            Akce v Domě setkání",
+        'objednavky'  => 'sm:23:0.8:alberice/objednavky::        Objed&shy;návky:::              dum:                              Objednávky pobytů v Domě setkání',
         'ceny'        => 'sm:24:0.8:alberice/ceny    ::          Ceny:::                         vlakno=51:                        Ceny služeb Domu setkání',
-        'archiv'      => "sm:0:   :alberice/$letos  ::          Prožili jsme:::                 akce=aprehled:                    Archiv akcí v Domě setkání",
+        'archiv'      => "sm:22:   :alberice/$letos  ::          Prožili jsme:::                 akce=aprehled:                    Archiv akcí v Domě setkání",
       # knihovnička
         'bulletin'    => 'sm:25:0.9:manzelak         ::          Manželák:::                     vlakno=80:                        Manželák - časopis YMCA Setkání',
         'tance'       => 'sm:26:0.9:tance            :clanek,322:Tance:::                        mclanky;-clanky=322:              Biblické tance',    // 322=tance
