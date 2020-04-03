@@ -61,7 +61,7 @@ h1#ymca_setkani { position: absolute; top:3.8em; margin-left:.5em; font-size: 12
 .footer #footer-left-part {width: 70%; display: inline-block; vertical-align: top; min-width: 640px;}
 .footer #footer-right-part {width: 20%; display: inline-block; vertical-align: top; min-width: 150px;}
 .footerIcon {margin: 0 !important;}
-#page_footer_info {background-image: url("fileadmin/obloha.jpg")}
+/*#page_footer_info {background-image: url("fileadmin/obloha.jpg")}*/
 #page_footer_bar {padding-top: 14px; padding-bottom: 14px;}
 #page_footer_bar:after {content: ''; clear: both; display: block;} /*makes the div to stretch to contain floating children*/
 
