@@ -52,7 +52,7 @@ h1#ymca_setkani { position: absolute; top:3.8em; margin-left:.5em; font-size: 12
 .footer { clear: both; background: #232323; }
 .footer a { color : #9ad6f9;  }
 .footer h3 { font-size: 15px; color: white; }
-.footer .tile { width: 205px; display: inline-block;  margin: 1px; vertical-align:top; font-size: 10pt !important; padding: 10px 15px; font-weight: normal  }
+.footer .tile { width: 225px; display: inline-block;  margin: 1px; vertical-align:top; font-size: 11pt !important; padding: 10px 15px; font-weight: normal  }
 .footer .tile p {text-align: left; color: #9ad6f9;}
 .footer hr.footer-hr { border: 0; height: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.3); margin: 0px 160px 0px 60px;}
 .footer #footer-left-part img { transform: translate(0, 3px); width: 15px !important; margin: 0 !important;}
@@ -632,7 +632,9 @@ label.form_button {float: right}
   .footer .tile {display: block; padding: initial; margin: 0 auto; }
   .footer hr.footer-hr {display: none}
   .footer #footer-left-part {min-width: initial;}
-
+  .footer #footer-right-part {width: fit-content; display: block; }
+  .footer p.image-align-center {width: auto;}
+  .footer #footer-right-part a {vertical-align: middle;}
   .mobile_nodisplay {display: none !important;}
 }
 
@@ -683,7 +685,10 @@ label.form_button {float: right}
 
   /*footer*/
   .footer hr.footer-hr {display: none}
-  .footer #footer-left-part {min-width: 90vw;}
+  .footer #footer-left-part {width: 100%; min-width: auto;}
+  .footer #footer-right-part {width: fit-content; display: block; }
+  .footer p.image-align-center {width: auto;}
+  .footer #footer-right-part a {vertical-align: middle;}
 
   /* abstrakty */
   div.abstr { width:100%; }
@@ -707,7 +712,10 @@ label.form_button {float: right}
   /*footer*/
   .tile {width: 160px;}
   #site_signature {padding-top: 20px;}
-
+  .footer #footer-left-part {width: 100%; min-width: 540px;}
+  .footer #footer-right-part {width: fit-content; display: block; }
+  .footer p.image-align-center {width: auto;}
+  .footer #footer-right-part a {vertical-align: middle;}
   /*popup*/
   #popup {width: 80%; margin-left: -40%; }
   #order {width: 80%; margin-left: -40%; }
@@ -740,6 +748,8 @@ label.form_button {float: right}
   #menu div, #menu span, #menu input {font-size:10pt; }
   /* abstrakty */
   div.abstr { width:33.3%; }
+  .footer #footer-left-part {width: 75%;}
+
 }
 
 @media all and (min-width: 1400px) {
