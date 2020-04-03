@@ -1,4 +1,12 @@
+/* emulace stránky bez CMS */
+
+div.page {
+   width:100%; z-index:0; height:100%;
+}
+
+
 /* ---------------------- opravy ladícího stylu */
+
 #dolni span, #dolni div {
   font-size:8pt; font-family:Consolas !important; }
 div.Popup3 span, div.Popup3 input,
@@ -29,7 +37,8 @@ textarea.edit_ch {
 div.Popup3 {
   left: 20px;  
   background: #c0e2c2db;
-  font-size: 10pt; font-family: Arial !important; 
+  font-size: 10pt; 
+  /*font-family: Arial !important;*/ 
 }
 div.Popup3 div.MenuLeft3 {
   max-height: calc(100% - 40px);     
@@ -80,9 +89,6 @@ img.StatusIcon { filter: drop-shadow(3px 3px 3px #333); margin-top: -7px; }
 
 /*.Check3 { font-size: .8em; }*/
 div.MenuLeft3 { width: 210px; float: left; height: 100%; }  
-
-.Label3 h1 {
-  font-size:12pt; margin:0; padding:0; }
 
 /* konec oprav kvůli webu */
 
@@ -148,7 +154,8 @@ span.ipad_menu>i { text-shadow: 2px 2px 5px #000; }
 html,body { 
   background:silver }
 body {
-  font-family:Arial,Helvetica,sans-serif; padding:0; margin:0; 
+  /*font-family:Arial,Helvetica,sans-serif;*/ 
+  padding:0; margin:0; 
   position:static; overflow:hidden; }
 textarea { resize: none; }
 #logo {
@@ -172,20 +179,3 @@ textarea { resize: none; }
 /* obecné barvy a hodnoty pro atributy css */
 
 .grey   { background-color:#aaa !important; }
-
-/* ... v možném konfliktu
-.red    { background-color:#faa !important; }
-.red2   { background-color:#f00 !important; }
-.green  { background-color:#afa !important; }
-.green2 { background-color:#3f3 !important; }
-.blue   { background-color:#abf !important; }
-.yellow { background-color:#ffa !important; }
-.yellow2{ background-color:#ff0 !important; }
-.orange { background-color:#fa0 !important; }
-.white  { background-color:#fff !important; }
-.grey   { background-color:#aaa !important; }
-
-.red_text   { color:#f00 !important; }
-.green_text { color:#0f0 !important; }
-.blue_text  { color:#00f !important; }
-*/

@@ -157,7 +157,7 @@ panel p [0,0,*,*] { type:'main'
   }
 # ----------------------------------------------------------------------------==> page
   form _w [,,*,*] { style:"overflow-x:hidden;overflow-y:auto;bottom:0px;height:initial"
-    label page { style:'width:100%;z-index:0;height:100%' }
+    label page { css:'page' }
     proc page_set(pg) { var net:text
       f.info.set(conc(pg.kb,' KB, ',pg.ms,' + ',minus(ask('ms_from',pg.start),pg.ms),' ms'));
       function('label','value',"jQuery(label.DOM_Block).html(value);",page,pg.html)
