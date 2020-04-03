@@ -50,9 +50,9 @@ h1#ymca_setkani { position: absolute; top:3.8em; margin-left:.5em; font-size: 12
 
 /* patička */
 .footer { clear: both; background: #232323; }
-.footer a { color : white;  font-weight: bold; }
+.footer a { color : white;  }
 .footer h3 { font-size: 15px; color: #ff9933; }
-.footer .tile { width: 205px; display: inline-block;  margin: 1px; vertical-align:top; font-size: 8pt !important; padding: 10px 15px;  }
+.footer .tile { width: 205px; display: inline-block;  margin: 1px; vertical-align:top; font-size: 10pt !important; padding: 10px 15px; font-weight: normal  }
 .footer .tile p {text-align: left}
 .footer hr.footer-hr { border: 0; height: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.3); margin: 0px 160px 0px 60px;}
 .footer #footer-left-part img { transform: translate(0, 3px); width: 12px !important; margin: 0 !important;}
