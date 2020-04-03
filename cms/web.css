@@ -50,18 +50,23 @@ h1#ymca_setkani { position: absolute; top:3.8em; margin-left:.5em; font-size: 12
 
 /* patička */
 .footer { clear: both; background: #232323; }
-.footer a { color : white;  }
-.footer h3 { font-size: 15px; color: #ff9933; }
+.footer a { color : #9ad6f9;  }
+.footer h3 { font-size: 15px; color: white; }
 .footer .tile { width: 205px; display: inline-block;  margin: 1px; vertical-align:top; font-size: 10pt !important; padding: 10px 15px; font-weight: normal  }
-.footer .tile p {text-align: left}
+.footer .tile p {text-align: left; color: #9ad6f9;}
 .footer hr.footer-hr { border: 0; height: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.3); margin: 0px 160px 0px 60px;}
-.footer #footer-left-part img { transform: translate(0, 3px); width: 12px !important; margin: 0 !important;}
+.footer #footer-left-part img { transform: translate(0, 3px); width: 15px !important; margin: 0 !important;}
 .footer .organizations img {}
 .footer .organizations p {display: inline-block !important;}
 .footer #footer-left-part {width: 70%; display: inline-block; vertical-align: top; min-width: 640px;}
 .footer #footer-right-part {width: 20%; display: inline-block; vertical-align: top; min-width: 150px;}
+.footer p.image-align-center {text-align: center;width: 100%;}
 .footerIcon {margin: 0 !important;}
-/*#page_footer_info {background-image: url("fileadmin/obloha.jpg")}*/
+#page_footer_info {     background: #060a2d;
+  background-position: top;
+  background-size: cover;
+  background-image: url(img/mars_venuse.jpg);
+  background-repeat: no-repeat;}
 #page_footer_bar {padding-top: 14px; padding-bottom: 14px;}
 #page_footer_bar:after {content: ''; clear: both; display: block;} /*makes the div to stretch to contain floating children*/
 
@@ -735,4 +740,10 @@ label.form_button {float: right}
   #menu div, #menu span, #menu input {font-size:10pt; }
   /* abstrakty */
   div.abstr { width:33.3%; }
+}
+
+@media all and (min-width: 1400px) {
+  #page_footer_info {
+    background-size: contain;
+  }
 }

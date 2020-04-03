@@ -1324,7 +1324,7 @@ function footer() {
       $organizations .= ($title) ? "<h3>$title</h3>" : "" . $text;
     }
   }
-  return "<div id='page_footer_info' class='container footer'$menu>
+  return "<div id='page_footer_info' class='container footer'$menu><div id='page_footer_info_overlay'>
             <div class='content white'>
               <div id='footer-left-part'>
                  $contacts
@@ -1335,6 +1335,7 @@ function footer() {
                   $organizations
                 </div>
               </div>
+            </div>
             </div>
           </div>";
 }
