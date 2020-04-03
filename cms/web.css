@@ -99,6 +99,7 @@ h1, #web h2,h3 { -webkit-column-break-inside: avoid; -moz-column-break-inside: a
 #web img {margin:.5em;height:auto !important;max-width:100%;}
 #web .abstr img {margin: 0 5px 0 0}
 
+
 h1 {margin-top: 60px; font-size:32pt; margin-left: 1.2em; font-weight: 250; }
 h2 {margin-top: 40px; font-size:20pt; margin-left: 1.2em; font-weight: 300; }
 h3 {margin-top: 30px; font-size:15pt; }
@@ -115,6 +116,7 @@ h3 {margin-top: 30px; font-size:15pt; }
 .nodisplay {display: none; }
 .clickable {cursor: pointer;}
 .bold {font-weight: bold;}
+.image-align-left {float: left;}
 .h7 {padding: 0.2em 0.3em; font-weight: bold; display: block} /*smallest title level*/
 
 .hr-text {line-height: 1em;position: relative;outline: 0;border: 0;color: black;text-align: center;height: 1.5em;opacity: .5;}
