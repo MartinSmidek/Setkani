@@ -140,6 +140,7 @@ __EOD;
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=9" />
     <meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&amp;subset=latin-ext" rel="stylesheet">
 __EOD;
 
   $template= <<<__EOD
