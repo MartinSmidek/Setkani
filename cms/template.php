@@ -797,14 +797,12 @@ __EOD;
   <meta http-equiv="X-UA-Compatible" content="IE=9" >
   <meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1" >
   <base href="$base" >
-  <title>YMCA Setkání - $web_title</title>
+  <title>YMCA Setkání</title>
   <link rel="shortcut icon" href="$icon" >
   
   $eb_link
   <link href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&amp;subset=latin-ext" rel="stylesheet">  <!--font-family: 'Open Sans', sans-serif;-->
-   
   <link rel="stylesheet" href="cms/web.css" type="text/css" media="screen" charset="utf-8">
-  <link rel="stylesheet" href="cms/web_edit.css" type="text/css" media="screen" charset="utf-8">
   <script type="text/javascript">
     var Ezer={web:{ $Ezer_web},cms:{form:{}}};
     if ( !console ) {
@@ -1326,7 +1324,7 @@ function footer() {
       $organizations .= ($title) ? "<h3>$title</h3>" : "" . $text;
     }
   }
-  return "<div id='page_footer_info' class='container footer'$menu>
+  return "<div id='page_footer_info' class='container footer'$menu><div id='page_footer_info_overlay'>
             <div class='content white'>
               <div id='footer-left-part'>
                  $contacts
@@ -1337,6 +1335,7 @@ function footer() {
                   $organizations
                 </div>
               </div>
+            </div>
             </div>
           </div>";
 }

@@ -28,7 +28,7 @@ div.LabelDrop { outline: 3px solid #cadfd9; background-color:#cadfd9; }
 /* podle https://chrisbracco.com/css-sticky-footer-effect/ ??? */
 
 html { height:100%; width:100%; }
-body { /*overflow-y:auto;*/ font-family: 'Open Sans', sans-serif; overflow-x:hidden; margin: 0; min-height: 100%; background: #f2f2f2 }
+body { /*overflow-y:auto;*/ font-family: 'Open Sans', sans-serif; overflow-x:hidden; margin: 0; min-height: 100%; background: #f2f2f2; font-size:10pt;  }
 
 /*Container stretches to the webpage width, used for main page layout*/
 .container { width: 100vw; position: relative; padding-bottom: 30px; }
@@ -50,18 +50,23 @@ h1#ymca_setkani { position: absolute; top:3.8em; margin-left:.5em; font-size: 12
 
 /* patička */
 .footer { clear: both; background: #232323; }
-.footer a { color : white;  font-weight: bold; }
-.footer h3 { font-size: 15px; color: #ff9933; }
-.footer .tile { width: 205px; display: inline-block;  margin: 1px; vertical-align:top; font-size: 8pt !important; padding: 10px 15px;  }
-.footer .tile p {text-align: left}
+.footer a { color : #9ad6f9;  }
+.footer h3 { font-size: 15px; color: white; }
+.footer .tile { width: 225px; display: inline-block;  margin: 1px; vertical-align:top; font-size: 11pt !important; padding: 10px 15px; font-weight: normal  }
+.footer .tile p {text-align: left; color: #9ad6f9;}
 .footer hr.footer-hr { border: 0; height: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.3); margin: 0px 160px 0px 60px;}
-.footer #footer-left-part img { transform: translate(0, 3px); width: 12px !important; margin: 0 !important;}
+.footer #footer-left-part img { transform: translate(0, 3px); width: 15px !important; margin: 0 !important;}
 .footer .organizations img {}
 .footer .organizations p {display: inline-block !important;}
 .footer #footer-left-part {width: 70%; display: inline-block; vertical-align: top; min-width: 640px;}
 .footer #footer-right-part {width: 20%; display: inline-block; vertical-align: top; min-width: 150px;}
+.footer #footer-right-part p  {text-align: center;width: 100%;}
 .footerIcon {margin: 0 !important;}
-
+#page_footer_info {     background: #060a2d;
+  background-position: top;
+  background-size: cover;
+  background-image: url(img/mars_venuse.jpg);
+  background-repeat: no-repeat;}
 #page_footer_bar {padding-top: 14px; padding-bottom: 14px;}
 #page_footer_bar:after {content: ''; clear: both; display: block;} /*makes the div to stretch to contain floating children*/
 
@@ -94,9 +99,11 @@ h1, #web h2,h3 { -webkit-column-break-inside: avoid; -moz-column-break-inside: a
 #web img {margin:.5em;height:auto !important;max-width:100%;}
 #web .abstr img {margin: 0 5px 0 0}
 
-h1 {margin-top: 60px}
-h2 {margin-top: 40px}
-h3 {margin-top: 30px}
+
+h1 {margin-top: 60px; font-size:32pt; margin-left: 1.2em; font-weight: 250; }
+h2 {margin-top: 40px; font-size:20pt; margin-left: 1.2em; font-weight: 300; }
+h3 {margin-top: 30px; font-size:15pt; }
+
 
 .clear { clear:both; }
 .center { position: relative; display: block; margin: 0 auto; }
@@ -109,6 +116,7 @@ h3 {margin-top: 30px}
 .nodisplay {display: none; }
 .clickable {cursor: pointer;}
 .bold {font-weight: bold;}
+.image-align-left {float: left;}
 .h7 {padding: 0.2em 0.3em; font-weight: bold; display: block} /*smallest title level*/
 
 .hr-text {line-height: 1em;position: relative;outline: 0;border: 0;color: black;text-align: center;height: 1.5em;opacity: .5;}
@@ -626,7 +634,9 @@ label.form_button {float: right}
   .footer .tile {display: block; padding: initial; margin: 0 auto; }
   .footer hr.footer-hr {display: none}
   .footer #footer-left-part {min-width: initial;}
-
+  .footer #footer-right-part {width: fit-content; display: block; }
+  .footer p.image-align-center {width: auto;}
+  .footer #footer-right-part a {vertical-align: middle;}
   .mobile_nodisplay {display: none !important;}
 }
 
@@ -677,7 +687,10 @@ label.form_button {float: right}
 
   /*footer*/
   .footer hr.footer-hr {display: none}
-  .footer #footer-left-part {min-width: 90vw;}
+  .footer #footer-left-part {width: 100%; min-width: auto;}
+  .footer #footer-right-part {width: fit-content; display: block; }
+  .footer p.image-align-center {width: auto;}
+  .footer #footer-right-part a {vertical-align: middle;}
 
   /* abstrakty */
   div.abstr { width:100%; }
@@ -701,7 +714,10 @@ label.form_button {float: right}
   /*footer*/
   .tile {width: 160px;}
   #site_signature {padding-top: 20px;}
-
+  .footer #footer-left-part {width: 100%; min-width: 540px;}
+  .footer #footer-right-part {width: fit-content; display: block; }
+  .footer p.image-align-center {width: auto;}
+  .footer #footer-right-part a {vertical-align: middle;}
   /*popup*/
   #popup {width: 80%; margin-left: -40%; }
   #order {width: 80%; margin-left: -40%; }
@@ -734,4 +750,12 @@ label.form_button {float: right}
   #menu div, #menu span, #menu input {font-size:10pt; }
   /* abstrakty */
   div.abstr { width:33.3%; }
+  .footer #footer-left-part {width: 75%;}
+
+}
+
+@media all and (min-width: 1400px) {
+  #page_footer_info {
+    background-size: contain;
+  }
 }
