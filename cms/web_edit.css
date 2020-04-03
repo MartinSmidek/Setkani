@@ -2,9 +2,9 @@
 
 body { font-size:10pt; font-family: 'Open Sans', sans-serif;}
 div.cke_maximized { z-index: 100000 !important; }
-h1 { font-size:32pt; margin-left: 1.2em; font-weight: 250; }
-h2 { font-size:20pt; margin-left: 1.2em; font-weight: 300; }
-h3 { font-size:15pt;  }
+div.Label3 h1 { margin-top: 60px; font-size: 32pt; margin-left: 1.2em; }
+div.Label3 h2 { margin-top: 40px; font-size: 20pt; margin-left: 1.2em; }
+div.Label3 h3 { margin-top: 30px; font-size: 15pt;  }
 
 span.zlute  { background-color:yellow; }
 span.zelene { background-color:lime; }
