@@ -804,7 +804,6 @@ __EOD;
   <link href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&amp;subset=latin-ext" rel="stylesheet">  <!--font-family: 'Open Sans', sans-serif;-->
    
   <link rel="stylesheet" href="cms/web.css" type="text/css" media="screen" charset="utf-8">
-  <link rel="stylesheet" href="cms/web_edit.css" type="text/css" media="screen" charset="utf-8">
   <script type="text/javascript">
     var Ezer={web:{ $Ezer_web},cms:{form:{}}};
     if ( !console ) {
