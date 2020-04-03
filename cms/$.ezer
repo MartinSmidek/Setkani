@@ -548,7 +548,7 @@ panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialo
   # ==> . oprava zápatí
   proc footer() { 
     panel.display(2,'t');
-    path.set('/fileadmin/img/footer');                  // cesta pro img
+    path.set('/fileadmin/img/footer');  // cesta pro img - pro vše ve footer tatáž
     t.init; 
     t.next_foot(0);
     panel.modal 
