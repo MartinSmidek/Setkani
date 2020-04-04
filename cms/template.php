@@ -801,7 +801,7 @@ __EOD;
   <link rel="shortcut icon" href="$icon" >
   
   $eb_link
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&amp;subset=latin-ext" rel="stylesheet">  <!--font-family: 'Open Sans', sans-serif;-->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&amp;subset=latin-ext" rel="stylesheet">
   <link rel="stylesheet" href="cms/web.css" type="text/css" media="screen" charset="utf-8">
   <script type="text/javascript">
     var Ezer={web:{ $Ezer_web},cms:{form:{}}};
