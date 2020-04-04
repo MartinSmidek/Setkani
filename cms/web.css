@@ -39,6 +39,10 @@ body { /*overflow-y:auto;*/ font-family: 'Open Sans', sans-serif; overflow-x:hid
 .full_width {width: 100vw;position: relative;left: 50%;right: 50%;margin-left: -50vw;margin-right: -50vw;}
 .centered_infull { text-align: center;display: block !important;}
 
+/*Responsive iframe*/
+.iframe_outer {position: relative;overflow: hidden;padding-top: 30%;}
+.iframe_inner {position: absolute;top: 0;left: 0;width: 100%;height: 100%;border: none; max-width: 600px}
+
 #page { margin: 0 auto; }
 #work {  }
 a.mereni { float:right; }
