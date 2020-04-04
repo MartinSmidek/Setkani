@@ -738,7 +738,7 @@ panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialo
 panel FE_LOG [0,0,400,400] { title:'Pohled do log-file', type:'popup', css:'dialog'
   use gs: form _gs [0,10,,]
   use g1: form _g1 [0,318,,]
-  proc onfirstfocus() { [ /*gs.lst.action.set_query(1,'log',0) ];*/ gs.lst.browse_load; }
+  proc onfocus() { [ /*gs.lst.action.set_query(1,'log',0) ];*/ gs.lst.browse_load; }
   form _gs [,,400,100] {
     view g: table gn_log
     browse lst [0,0,,] { rows:14, qry_rows:1
@@ -747,7 +747,7 @@ panel FE_LOG [0,0,400,400] { title:'Pohled do log-file', type:'popup', css:'dial
       show [,,45,]  { data:g.action, title:'akce', format:'tq*s'  }
       show [,,30,] { data:g.fe_user, title:'uživatel', format:'rq*s' }
       show [,,45,] { data:g.uid_case, title:'case', format:'rq*s' }
-      show [,,90,] { data:g.message, title:'jméno', format:'tq*s' }
+      show [,,90,] { data:g.message, title:'jméno/mref', format:'tq*s' }
       show [,,65,] { data:g.ip, title:'IP', format:'tq*s' }
       proc onrowclick() { g1.load(idl.get) }
       menu { type:'context'
@@ -764,29 +764,20 @@ panel FE_LOG [0,0,400,400] { title:'Pohled do log-file', type:'popup', css:'dial
   form _g1 [,,407,87] { css:'work'
     view g: table gn_log
     view u: table fe_users { join_type:'LEFT', join:"ON g.fe_user=u.uid" }
-    field [7,16,45,]  { data:g.uid_page, title:'^page', format:'r' }
+    field upid { data:g.uid_page }
     field  { data:u.uid }
-    field cid [66,16,45,]  { data:g.uid_case, title:'^case', format:'r' }
-    field pid [150,16,45,]  { data:g.uid_part, title:'^part', format:'r' }
-    field [256,16,96,]  { data:g.table_name, title:'^table ...', format:'' }
-    field [362,16,29,]  { data:g.table_uid, title:'^... id', format:'r' }
-    field [7,54,45,]  { data:g.fe_user, title:'^fe_user', format:'r' }
-    field [66,54,153,]  { expr:"IFNULL(CONCAT(u.firstname,' ',u.name),'?')", title:'^jméno' }
+    field cid [7,16,45,]  { data:g.uid_case, title:'^case', format:'r' }
+    field pid [58,16,45,]  { data:g.uid_part, title:'^part', format:'r' }
+    field url [119,16,237,] { expr:"IF(uid_case,g.message,'')" title:'^stránka' }
+    field [7,54,45,]  { data:g.fe_user, title:'^redaktor', format:'r' }
+    field [58,54,153,]  { expr:"IFNULL(CONCAT(u.firstname,' ',u.name),'?')", title:'^jméno' }
     field [233,54,123,]  { data:g.ip, title:'^IP' }
     # operace
-    button [368,54,,] { tag:'c', title:'[fa-question-circle]'
-      proc onclick () { p.cms_cid_pid(cid.get,pid.get) }}
-    button [113,16,,] { tag:'c', title:'[fa-eye]'
-      proc onclick () { cid.get; p.cms_go(conc('clanek!',cid.get)) | alert('nedefinované case')}}
-    button [197,16,,] { tag:'c', title:'[fa-eye]'
-      proc onclick () { var cd:number
-        pid.get;
-        cid.set(ask('select','cid','tx_gncase_part',conc('uid=',pid.get)));
-        { p.cms_go(conc('clanek!',cid.get))
-        | alert('nedefinované case')
-        }
-      | alert('nedefinované part')
-    }}
+    button [368,16,,] { tag:'c', title:'[fa-eye]' help:'přepne web na změněnou stránku'
+      proc onclick () { url.get; p.go_anchor(split(url.get,'#',0),split(url.get,'#',1)); }}
+    button [368,54,,] { tag:'c' title:'[fa-question-circle]' help:'zobrazí všechny informace'
+      proc onclick () { cid.get; pid.get; p.cms_cid_pid(cid.get,pid.get) }
+    }
   }
 }
 # ----------------------------------------------------------------------------==> FE USER
