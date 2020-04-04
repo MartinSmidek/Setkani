@@ -684,6 +684,9 @@ label.form_button {float: right}
 
   #list {padding: 0;}
 
+    .iframe_outer {padding-top: 56%;}
+  .iframe_inner {left: 0;}
+
   /*popup*/
   #popup {width: 80vw; margin-left: -40vw; height: 80vh; margin-top: -40vh;}
   #order {width: 80vw; margin-left: -40vw; height: 80vh; margin-top: -40vh;}
