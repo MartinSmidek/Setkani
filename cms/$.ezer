@@ -877,6 +877,14 @@ panel ADMIN [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu
       y.set(ask('sys_activity',i.par,skip.get,'',sys('options','watch_access_opt')));
       info.fill(conc(i.owner.title,' - ',i.title),y);
     }
+    menu { title:'Speciální obsah',type:'group'
+      item { title:"[fa-camera-retro] výběr fotografií záhlaví"}
+      proc onclick() {
+        UPLOAD.ckeditor.set(0);
+        UPLOAD.path.set(conc('fileadmin/index/'));
+        UPLOAD.modal;
+      }
+    }
     menu { title:'GitHub',type:'group',skill:'m'
       item { title:'[fa-question] CMS: git status'  par:°{folder:'cms',op:'cmd',cmd:'status'}}
       item { title:'[fa-gear] CMS: git log'         par:°{folder:'cms',op:'cmd',cmd:'log'}}
