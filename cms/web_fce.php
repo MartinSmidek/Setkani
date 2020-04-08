@@ -1474,7 +1474,7 @@ function server($x) {  trace();
     error_reporting(E_ALL ^ E_NOTICE);
     $fileadmin= array(
         "http://setkani.bean:8080/fileadmin",
-        "http://xxx.setkani.org/fileadmin",
+        "http://www.setkani.org/fileadmin",
         "http://setkani4.doma/fileadmin",
         "http://setkani4.bean:8080/fileadmin"
       )[$ezer_server];

@@ -769,7 +769,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 // samostatná hlavička
   $base= array(
       "http://setkani.bean:8080",
-      "http://xxx.setkani.org",
+      "http://www.setkani.org",
       "http://setkani4.doma",
       "http://setkani4.bean:8080",
       "http://setkani4m.bean:8080"
@@ -781,7 +781,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       ? "jQuery(document).ready( function() { fe_init(); });"
       : "window.addEvent('load', function() { fe_init(); });";
 // Google Analytics
-  $GoogleAnalytics= in_array($ezer_server,array(0,1,2,3,4)) ? '' : <<<__EOD
+  $GoogleAnalytics= $ezer_server!=1 ? '' : <<<__EOD
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -816,7 +816,7 @@ __EOD;
 __EOD;
 
 // SSL viditelný
-  $navrcholu= in_array($ezer_server,array(0,1,2,3,4)) ? '' : <<<__EOD
+  $navrcholu= $ezer_server!=1 ? '' : <<<__EOD
   <a href="http://navrcholu.cz/Statistika/75293/" class="mereni" target='statistika'>
     <img src="https://s1.navrcholu.cz/hit?site=75293;t=o14;ref=;jss=0"
       width="14" height="14" alt="NAVRCHOLU.cz" style="border:none" />
