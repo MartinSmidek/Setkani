@@ -258,7 +258,7 @@ div.LabelDrop * {cursor:pointer; }
 #page_tm { float: right; text-align:right; padding-right:.4em; height: 4.5em; line-height: 4.5em; }
 #page_tm input {width:10em; border: none; padding: 6px 10px; outline: none; font-size: 13pt; font-weight: 300;
   display: inline-block; margin-top: 13px; margin-right: 12px;}
-#page_tm a.jump { /*todo*/ }
+#page_tm a.jump { vertical-align: top; }
 #page_tm a:hover { box-sizing: border-box; background-color: #cadfd9; -webkit-animation-name: select-menu;
   -webkit-animation-duration: 0.5s; animation-name: select-menu; animation-duration: 0.5s; animation-timing-function: ease-in-out; }
 #page_tm a:hover span { /*todo*/ }
@@ -683,8 +683,7 @@ label.form_button {float: right}
   #facebook_content:before {transform: translate(00px, -70px);}
 
   #list {padding: 0;}
-
-    .iframe_outer {padding-top: 56%;}
+  .iframe_outer {padding-top: 56%;}
   .iframe_inner {left: 0;}
 
   /*popup*/
@@ -713,7 +712,7 @@ label.form_button {float: right}
   #titler {right: 38vw}
   #logo_setkani { position:absolute; margin: 0 0 0 120px !important; top: 200px; right: 68vw; width: 130px; }
   #logo_ymca { position:absolute; margin: 0 0 0 230px !important; top: 80px; right: 68vw; width: 120px; }
-
+  .iframe_outer {padding-top: 40%;}
   /*homepage changes*/
   #facebook_content {width: 632px; padding-top: 60px; padding-left: 15px;}
   #facebook_content:before {transform: translate(0, -70px);}

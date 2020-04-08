@@ -35,9 +35,14 @@ jQuery(window).resize(function () {
     adjustGallery();
 });
 
+
+jQuery(window).on("load", function() {
+    setInterval("swapImages()", 10000);
+    adjustGallery();
+});
+
 jQuery(document).ready(function () {
     adjustGallery();
-    setInterval("swapImages()", 10000);
 });
 
 jQuery(window).bind('scroll', function () {

@@ -1163,7 +1163,7 @@ function gallery() {
   if ($numOfImages < 1) {
     return "";
   }
-
+  shuffle($images);
   $result = "<div id='header_gallery' class='mobile_nodisplay'>";
   $result .= "<img alt='YMCA setkání' src='$images[0]' class='act'>";
   for ($i = 1; $i < $numOfImages; $i++) {
