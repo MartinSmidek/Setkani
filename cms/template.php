@@ -802,7 +802,7 @@ __EOD;
   
   $eb_link
   <link href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&amp;subset=latin-ext" rel="stylesheet">
-  <link rel="stylesheet" href="cms/web.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="cms/web.css?v=4.0" type="text/css" media="screen" charset="utf-8">
   <script type="text/javascript">
     var Ezer={web:{ $Ezer_web},cms:{form:{}}};
     if ( !console ) {
