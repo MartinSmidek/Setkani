@@ -38,7 +38,7 @@
     );
   $rel_roots= array(
       "http://setkani.bean:8080",
-      "http://xxx.setkani.org",
+      "https://www.setkani.org",
       "http://setkani4.doma",
       "http://setkani4.bean:8080",
       "http://setkani4m.bean:8080"

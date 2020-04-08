@@ -1,24 +1,24 @@
 RewriteEngine on
-#RewriteCond %{HTTPS} off
-#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301]
-#
-## pristupove adresy *.setkani.org
-#RewriteCond %{SERVER_NAME} ^setkani\.org                                                        [NC]
-#RewriteRule ^.*$                                https://www.setkani.org
-#RewriteCond %{SERVER_NAME} ^(www\.)?alberice\.setkani\.org                                      [NC]
-#RewriteRule ^.*$                                https://www.setkani.org/alberice
-#RewriteCond %{SERVER_NAME} ^(www\.)?archiv\.setkani\.org                                        [NC]
-#RewriteRule ^.*$                                https://www.setkani.org/archiv
-#RewriteCond %{SERVER_NAME} ^(www\.)?rodiny\.setkani\.org                                        [NC]
-#RewriteRule ^.*$                                https://www.setkani.org/rodiny
-#RewriteCond %{SERVER_NAME} ^(www\.)?manzele\.setkani\.org                                       [NC]
-#RewriteRule ^.*$                                https://www.setkani.org/manzele
-#RewriteCond %{SERVER_NAME} ^(www\.)?chlapi\.setkani\.org                                        [NC]
-#RewriteRule ^.*$                                https://www.setkani.org/chlapi
-#RewriteCond %{SERVER_NAME} ^(www\.)?zeny\.setkani\.org                                          [NC]
-#RewriteRule ^.*$                                https://www.setkani.org/zeny
-#RewriteCond %{SERVER_NAME} ^(www\.)?mladez\.setkani\.org                                        [NC]
-#RewriteRule ^.*$                                https://www.setkani.org/mladez
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301]
+
+# pristupove adresy *.setkani.org
+RewriteCond %{SERVER_NAME} ^setkani\.org                                                        [NC]
+RewriteRule ^.*$                                https://www.setkani.org
+RewriteCond %{SERVER_NAME} ^(www\.)?alberice\.setkani\.org                                      [NC]
+RewriteRule ^.*$                                https://www.setkani.org/alberice
+RewriteCond %{SERVER_NAME} ^(www\.)?archiv\.setkani\.org                                        [NC]
+RewriteRule ^.*$                                https://www.setkani.org/archiv
+RewriteCond %{SERVER_NAME} ^(www\.)?rodiny\.setkani\.org                                        [NC]
+RewriteRule ^.*$                                https://www.setkani.org/rodiny
+RewriteCond %{SERVER_NAME} ^(www\.)?manzele\.setkani\.org                                       [NC]
+RewriteRule ^.*$                                https://www.setkani.org/manzele
+RewriteCond %{SERVER_NAME} ^(www\.)?chlapi\.setkani\.org                                        [NC]
+RewriteRule ^.*$                                https://www.setkani.org/chlapi
+RewriteCond %{SERVER_NAME} ^(www\.)?zeny\.setkani\.org                                          [NC]
+RewriteRule ^.*$                                https://www.setkani.org/zeny
+RewriteCond %{SERVER_NAME} ^(www\.)?mladez\.setkani\.org                                        [NC]
+RewriteRule ^.*$                                https://www.setkani.org/mladez
 
 # adresy <soubor>.php
 RewriteRule ^((index|servant|ses).php.*|)$      $1                                          [QSA,L]

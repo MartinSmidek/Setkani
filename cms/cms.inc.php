@@ -12,10 +12,11 @@
 
 $ezer_server= 
     $_SERVER["SERVER_NAME"]=='setkani.bean'    ? 0 : (        // 0:lokální 
-    $_SERVER["SERVER_NAME"]=='xxx.setkani.org' ? 1 : (        // Synology YMCA
+    $_SERVER["SERVER_NAME"]=='setkani.org'     ? 1 : (        // Synology YMCA
+    $_SERVER["SERVER_NAME"]=='www.setkani.org' ? 1 : (        // Synology YMCA
     $_SERVER["SERVER_NAME"]=='setkani4.doma'   ? 2 : (        // Synology DOMA
     $_SERVER["SERVER_NAME"]=='setkani4.bean'   ? 3 : (        // 3:lokální VERZE 4 - Jirka
-    $_SERVER["SERVER_NAME"]=='setkani4m.bean'  ? 4 : -1))));  // 4:lokální VERZE 4 - Martin
+    $_SERVER["SERVER_NAME"]=='setkani4m.bean'  ? 4 : -1))))); // 4:lokální VERZE 4 - Martin
   
   // rozlišení verze jádra
   $kernel= 'ezer'.$_SESSION['cms']['ezer'];
