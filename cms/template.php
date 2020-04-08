@@ -769,7 +769,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 // samostatná hlavička
   $base= array(
       "http://setkani.bean:8080",
-      "http://www.setkani.org",
+      "https://www.setkani.org",
       "http://setkani4.doma",
       "http://setkani4.bean:8080",
       "http://setkani4m.bean:8080"

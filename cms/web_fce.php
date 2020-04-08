@@ -333,7 +333,7 @@ function query2menu($pid,$cid,$mid,$ref,$mref,$type,$program,$rok) { trace();
 #  - překlad odkazů dovnitř webu
 function web_text($txt) { //trace();
   global $href0,$href1;
-  $txt= str_replace("http://www.setkani.org/","",$txt);
+  $txt= str_replace("https://www.setkani.org/","",$txt);
 //   $txt= str_replace("img","hr",$txt);
 //   $txt= strtr($txt,array("<img"=>"<hr"));
 //   $txt= strtr($txt,array("i"=>"x"));
@@ -1474,7 +1474,7 @@ function server($x) {  trace();
     error_reporting(E_ALL ^ E_NOTICE);
     $fileadmin= array(
         "http://setkani.bean:8080/fileadmin",
-        "http://www.setkani.org/fileadmin",
+        "https://www.setkani.org/fileadmin",
         "http://setkani4.doma/fileadmin",
         "http://setkani4.bean:8080/fileadmin"
       )[$ezer_server];
