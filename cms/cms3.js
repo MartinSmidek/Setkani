@@ -328,19 +328,61 @@ function _table_chng(y) {
 // den je Y-m-d prvního dne objednávky
 // vrátí hodnoty formuláře tzn. input, select jako json
 function objednavka(e,op,p) {
+  function verify() {
+    // kontroly správného vyplnění
+    let jmeno= x.form['name'].replace(' ',''),
+        spojeni= x.form['email'].replace(' ','')+x.form['telephone'].replace(' ','');
+    if ( !jmeno ) 
+      msg+= "<br>Napište prosím své <b>jméno a příjmení </b> abychom vás mohli kontaktovat";
+    else if ( !spojeni )
+      msg+= "<br>Napište prosím svůj <b>telefon</b> nebo <b>email</b> abychom vás mohli kontaktovat";
+    else for (let fld of ['rooms1','adults','untilday']) {
+      let val= x.form[fld].replace(' ','');
+      switch (fld) {
+      case 'rooms1':{
+        let pokoj= "(1|2|11|12|13|14|15|16|17|21|22|23|24|26|27|28|29)",
+            qry= new RegExp(`^\\*|${pokoj}(-${pokoj})?(,${pokoj}(-${pokoj})?)*$`,'g');
+        if ( !val || !qry.test(val) ) {
+          msg+= "<br><b>Objednané pokoje</b> zapište číslem z nabídky&nbsp;(1-2,11-17,21-24,26-29) "
+              + "<br>nebo více čísly oddělenými čárkou či pomlčkou."
+              + " Žádost o všechny pokoje zapište hvězdičkou. "
+              + "<br>... (např. 1 nebo 12,13 nebo 11-13 nebo *)"
+        }
+        break;}
+      case 'adults':{
+        if ( !val || !val.match(/^\d+$/g) ) {
+          msg+= "<br>Zadejte prosím předpokládaný počet <b>dospělých</b> osob číslem";
+        }
+        break;}
+      case 'untilday':
+        let u= val.split('.'),
+            f= x.form['fromday'].split('.'),
+            fromday= new Date(f[2],f[1]-1,f[0],0,0,0,0),
+            untilday= new Date(u[2],u[1]-1,u[0],0,0,0,0),
+            max_days= 31,
+            days= (untilday-fromday)/86400000;
+        if ( !val || days<0 || days>max_days ) {
+          msg+= "<br>Opravte prosím <b>datum odjezdu</b> zapište jej jako den.měsíc.rok ";
+        }
+        break;
+      }
+    }
+  }
   if ( e ) e.stopPropagation();
-  var x= {cmd:'dum',dum:op}, f= jQuery('#order');
+  var x= {cmd:'dum',dum:op}, 
+      f= jQuery('#order'),
+      msg= '';
   switch (op) {
-  case 'wanted':
+  case 'wanted':{
     x.orders= p.orders;
     x.order= p.order||0;
-    break;
-  case 'form':
+    break;}
+  case 'form':{
     x.den= p.den;
     x.order= p.order||0;
     jQuery('#web-shadow').css('display', 'block');
-    break;
-  case 'create':
+    break;}
+  case 'create':{
     x.order= 0;
     x.form= {};
     var elems= f.find('select,input');
@@ -349,11 +391,12 @@ function objednavka(e,op,p) {
         x.form[this.name]= this.value;
       }
     });
-    break;
-  case 'delete':
+    verify();
+    break;}
+  case 'delete':{
     x.order= p && p.order ? p.order : 0;
-    break;
-  case 'update':
+    break;}
+  case 'update':{
     x.order= p && p.order ? p.order : 0;
     x.form= {};
     var elems= f.find('select,input');
@@ -362,17 +405,23 @@ function objednavka(e,op,p) {
       if ( this.name && ord.hasClass('changed') ) {
         x.form[this.name]= this.value;
       }
+    verify();
     });
-    break;
-  default: alert('objednavka('+op+'/'+p+') NYI !!!');
+    break;}
+  default:{
+    alert('objednavka('+op+'/'+p+') NYI !!!');
+    break; }
   }
-  ask(x,_objednavka);
+  if ( msg ) 
+    Ezer.fce.alert("<b style='color:red'>opravte prosím následující údaje:</b>"+msg);
+  else
+    ask(x,_objednavka);
 }
 function _objednavka(y) {
   if ( !y ) return;
   var tit= jQuery('#order_tit');
   switch (y.dum) {
-  case 'wanted':
+  case 'wanted':{
     var order= jQuery('#order'), div= jQuery('#order_div'), tit= jQuery('#order_tit');
     order.css('display','block');
     div.html(y.html);
@@ -390,31 +439,31 @@ function _objednavka(y) {
       n++;
     });
     tit.html("Čekající objednávk"+(n===1?"a ":"y: ")+list);
-    break;
-  case 'form':
+    break;}
+  case 'form':{
     var order= jQuery('#order'), div= jQuery('#order_div'), tit= jQuery('#order_tit');
     order.css('display','block');
     div.html(y.html);
     tit.html(
       y.dum==='wanted' ? "Čekající objednávky "+y.orders : (
-      y.order===0 ? 'Nová objednávka' : 'Objednávka '+y.order
+      y.order==0 ? 'Nová objednávka' : 'Objednávka '+y.order
     ));
-    break;
-  case 'create':
+    break;}
+  case 'create':{
     tit.html('Objednávka '+y.order + ' byla zaslána správci Domu setkání');
     if ( y.ok ) block_display('order',0);
     refresh();
-    break;
-  case 'delete':
+    break;}
+  case 'delete':{
     tit.html(y.ok ? 'Objednávka '+y.order + ' byla smazána' : 'Smazání se nepovedlo');
     if ( y.ok ) block_display('order',0);
     refresh();
-    break;
-  case 'update':
+    break;}
+  case 'update':{
     tit.html(y.ok ? 'Objednávka '+y.order + ' byla upravena' : 'Oprava se nepovedla');
     if ( y.ok ) block_display('order',0);
     refresh();
-    break;
+    break;}
   }
   if ( y.msg ) alert(y.msg);
 }

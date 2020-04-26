@@ -101,7 +101,7 @@ end:
 }
 function dum_form($x) {
   global $y,$dum_data,$dum_data_open;
-  global $trace, $totrace;
+//  global $trace, $totrace;
 //                                                         debug($x,"dum_form");
   $ord= $x->order;
   $user= $_SESSION['web']['fe_user'];
