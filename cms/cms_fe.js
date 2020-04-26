@@ -21,7 +21,7 @@ function go(e,ref,mref,input) {
 //       ref+= '!!'+$('search').value;
 //     }
 //     location.href= ref;
-//   }
+//   }b
 //   else {
 //     var selection= document.getSelection(),
 //         caret= selection && !selection.isCollapsed;       // selection.type=='Caret' FF neumí

@@ -517,6 +517,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       case 'home':    # ----------------------------------------------- . home
 //    $id= array_shift($path);
 //    list($id)= explode('#',$id);
+        $body.= "<div class='content'><h1>YMCA Setkání</h1></div>";
         $body.= home();
         if (!$CMS) {$body.= facebook();}
         break;
@@ -802,7 +803,7 @@ __EOD;
   
   $eb_link
   <link href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&amp;subset=latin-ext" rel="stylesheet">
-  <link rel="stylesheet" href="cms/web.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="cms/web.css?v=4.0" type="text/css" media="screen" charset="utf-8">
   <script type="text/javascript">
     var Ezer={web:{ $Ezer_web},cms:{form:{}}};
     if ( !console ) {
@@ -1067,14 +1068,14 @@ __EOJ;
 __EOJ;
   $eb_link= <<<__EOJ
     $framework    
-    <script src="cms/cms{$k3}.js" type="text/javascript" charset="utf-8"></script>
-    <script src="cms/cms{$k3}_fe.js" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/cms{$k3}.js?v=4.0" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/cms{$k3}_fe.js?v=4.0" type="text/javascript" charset="utf-8"></script>
     <script src="cms/modernizr-custom.js" type="text/javascript" charset="utf-8"></script>
     $fotorama
     <link rel="stylesheet" href="./$kernel/client/licensed/font-awesome/css/font-awesome.min.css" type="text/css" media="screen" charset="utf-8">
     <link rel="stylesheet" href="$cms_root/client/ezer_cms3.css" type="text/css" media="screen" charset="utf-8">
     <script src="$cms_root/client/ezer_cms3.js" type="text/javascript" charset="utf-8"></script>
-    <script src="cms/custom.js" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/custom.js?v=4.0" type="text/javascript" charset="utf-8"></script>
 __EOJ;
 //     <link rel="stylesheet" href="cms/gallery/baguetteBox.min.css">
 //     <script src="cms/gallery/baguetteBox.min.js" async>
@@ -1394,7 +1395,7 @@ function home() { trace();
     $code= cid_pid($cid,$x->uid);
     //todo ugly, consider "main page" category
     if ( $x->page==100 ) { // ---------------------------------------- hlavní strana - úvodní článek & timeline
-      $telo.= vlakno($cid,'clanek','home',true);
+      $telo.= vlakno($cid,'clanek','home',false);
     }
     elseif ( $x->home==2 || $x->home==6 ) { // ----------------------- abstrakt na home | nahoru
       $prihlaska= '';
