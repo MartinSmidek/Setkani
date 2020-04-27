@@ -790,7 +790,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
     ga('send', 'pageview');
 __EOD;
   $head=  <<<__EOD
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "https://www.w3.org/TR/html4/strict.dtd">
 <html lang="cs-CZ">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
@@ -817,7 +817,7 @@ __EOD;
 
 // SSL viditelný
   $navrcholu= $ezer_server!=1 ? '' : <<<__EOD
-  <a href="http://navrcholu.cz/Statistika/75293/" class="mereni" target='statistika'>
+  <a href="https://navrcholu.cz/Statistika/75293/" class="mereni" target='statistika'>
     <img src="https://s1.navrcholu.cz/hit?site=75293;t=o14;ref=;jss=0"
       width="14" height="14" alt="NAVRCHOLU.cz" style="border:none" />
   </a>
@@ -2410,8 +2410,8 @@ __EOD;
         <div class='help'>
           <b>Fotografie z akcí naleznete také na následujících webech:</b>
           <br><br>
-          <a class='styled' target="picasa" $sty href="http://manzelska.setkani.org/o-nas/galerie">$pic Galerie Manželských setkání</a>
-          <a class='styled' target="picasa" $sty href="http://dum.setkani.org/o-nas/galerie">$pic Galerie Domu setkání</a>
+          <a class='styled' target="picasa" $sty href="https://manzelska.setkani.org/o-nas/galerie">$pic Galerie Manželských setkání</a>
+          <a class='styled' target="picasa" $sty href="https://dum.setkani.org/o-nas/galerie">$pic Galerie Domu setkání</a>
           </b>
       </div>
 __EOD;
