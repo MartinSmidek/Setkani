@@ -11,6 +11,8 @@ function dum_server($x) {
   $CMS= count($_SESSION['cms']);
   global $trace, $totrace;
   $totrace= $x->totrace;
+  $pokoje= select1("GROUP_CONCAT(number ORDER BY number SEPARATOR ',')",'tx_gnalberice_room',
+                   "NOT deleted AND NOT hidden AND version=1");
 //                                                         debug($x,"dum_server");
 //                                                         display("dum_server({op:{$x->dum},...})");
   $y= $x;
@@ -36,6 +38,9 @@ function dum_server($x) {
       if ( in_array($fld,array('fromday','untilday')) ) {
         list($d,$m,$r)= explode('.',$val);
         $val= mktime(0, 0, 0, $m, $d, $r);
+      }
+      if ( $fld=='rooms1' && $val=='*' ) {
+        $val= $pokoje;
       }
       $flds.= ",$fld";
       $vals.= ",'$val'";
@@ -72,6 +77,9 @@ function dum_server($x) {
           list($d,$m,$r)= explode('.',$val);
           $val= mktime(0, 0, 0, $m, $d, $r);
         }
+        if ( $fld=='rooms1' && $val=='*' ) {
+          $val= $pokoje;
+        }
         $flds.= "$del$fld='$val'";
         $del= ', ';
       }
@@ -106,6 +114,8 @@ function dum_form($x) {
   $ord= $x->order;
   $user= $_SESSION['web']['fe_user'];
   $spravce= $user ? access_get(1) : 0;
+  $pokoje= select1("GROUP_CONCAT(number ORDER BY number SEPARATOR '|')",'tx_gnalberice_room',
+                   "NOT deleted AND NOT hidden AND version=1");
   $dum_data_open= 0;
   if ( $ord ) {                                                             // !!! pak jen správce
     $dum_data_open= 0; //$spravce;
@@ -135,7 +145,7 @@ function dum_form($x) {
   . inp("poznámka k objednávce","note",35)."<br>"
   . inp("příjezd",            "fromday",       8, $ord)
   . inp("odjezd",             "untilday",      8)
-  . inp("pokoje",             "rooms1",       14)."<br>"
+  . inp("pokoje",             "rooms1",       40)."<br>"
   . inp("dospělých",          "adults",        3)
   . inp("děti 10-15",         "kids_10_15",    3)
   . inp("děti 3-9",           "kids_3_9",      3)
@@ -152,14 +162,14 @@ function dum_form($x) {
   ) : '<br><br>(Osobní údaje jsou přístupné pouze pro správce Domu setkání)')
   . ( $ord && $spravce ? (
         but("Opravit","block_enable('order',1,'uid')")
-      . but("Uložit opravu","objednavka(0,'update',{order:'$ord'});",0,'order_save')
+      . but("Uložit opravu","objednavka(0,'update',{order:'$ord',rooms:'$pokoje'});",0,'order_save')
       . but("Smazat","objednavka(0,'delete',{order:'$ord'});")
       . but("Zpět","block_display('order',0);", 0, '')
       ) : (
       $ord ? (
         "<br>".but("Zavřít","block_display('order',0);",1)
       ) : (
-        but("Přidat objednávku","objednavka(0,'create');")
+        but("Přidat objednávku","objednavka(0,'create',{rooms:'$pokoje'});")
       . but("Zrušit","block_display('order',0,'uid');")
       )
     ))

@@ -250,6 +250,14 @@ function msg_on(text,title) {
   jQuery('#msg div.box_text').html(text);
   jQuery('#msg').css({display:'block'});
 }
+// ------------------------------------------------------------------------------------------ msg on
+// zobrazí zprávu - alert
+function msg4_on(text,title) {
+  if ( !title ) title= 'Upozornění';
+  jQuery('#user_msg span').html(title);
+  jQuery('#user_msg div').html(text);
+  jQuery('#user_msg').css({display:'block'});
+}
 // ----------------------------------------------------------------------------------------- box off
 // zhasne všechny typy boxů
 function box_off() {
@@ -327,31 +335,32 @@ function _table_chng(y) {
 // -------------------------------------------------------------------------------------- objednavka
 // den je Y-m-d prvního dne objednávky
 // vrátí hodnoty formuláře tzn. input, select jako json
+// pro create a update p.rooms=seznam pokojů pro match
 function objednavka(e,op,p) {
-  function verify() {
+  function verify() { 
     // kontroly správného vyplnění
     let jmeno= x.form['name'].replace(' ',''),
         spojeni= x.form['email'].replace(' ','')+x.form['telephone'].replace(' ','');
     if ( !jmeno ) 
-      msg+= "<br>Napište prosím své <b>jméno a příjmení </b> abychom vás mohli kontaktovat";
+      msg+= "<p>Napište prosím své <b>jméno a příjmení </b> abychom vás mohli kontaktovat</p>";
     else if ( !spojeni )
-      msg+= "<br>Napište prosím svůj <b>telefon</b> nebo <b>email</b> abychom vás mohli kontaktovat";
+      msg+= "<p>Napište prosím svůj <b>telefon</b> nebo <b>email</b> abychom vás mohli kontaktovat</p>";
     else for (let fld of ['rooms1','adults','untilday']) {
       let val= x.form[fld].replace(' ','');
       switch (fld) {
       case 'rooms1':{
-        let pokoj= "(1|2|11|12|13|14|15|16|17|21|22|23|24|26|27|28|29)",
-            qry= new RegExp(`^\\*|${pokoj}(-${pokoj})?(,${pokoj}(-${pokoj})?)*$`,'g');
+        let pokoj= `(${p.rooms})`,
+            qry= new RegExp(`^\s*\\*|${pokoj}(\s*,\s*${pokoj})*\s*$`,'g');
         if ( !val || !qry.test(val) ) {
-          msg+= "<br><b>Objednané pokoje</b> zapište číslem z nabídky&nbsp;(1-2,11-17,21-24,26-29) "
-              + "<br>nebo více čísly oddělenými čárkou či pomlčkou."
-              + " Žádost o všechny pokoje zapište hvězdičkou. "
-              + "<br>... (např. 1 nebo 12,13 nebo 11-13 nebo *)"
+          msg+= "<p><b>Objednané pokoje</b> zapište číslem pokoje (jsou uvedena v záhlaví"
+              + " tabulky spolu s počtem postelí a popisem viditelným při dotyku myši) "
+              + " nebo více čísly oddělenými čárkou. Žádost o všechny pokoje zapište hvězdičkou. "
+              + "<br>... např. 1 nebo 12,13 nebo *</p>"
         }
         break;}
       case 'adults':{
         if ( !val || !val.match(/^\d+$/g) ) {
-          msg+= "<br>Zadejte prosím předpokládaný počet <b>dospělých</b> osob číslem";
+          msg+= "<p>Zadejte prosím předpokládaný počet <b>dospělých</b> osob číslem</p>";
         }
         break;}
       case 'untilday':
@@ -361,8 +370,8 @@ function objednavka(e,op,p) {
             untilday= new Date(u[2],u[1]-1,u[0],0,0,0,0),
             max_days= 31,
             days= (untilday-fromday)/86400000;
-        if ( !val || days<0 || days>max_days ) {
-          msg+= "<br>Opravte prosím <b>datum odjezdu</b> zapište jej jako den.měsíc.rok ";
+        if ( !val || isNaN(days) || days<0 || days>max_days ) {
+          msg+= "<p>Opravte prosím <b>datum odjezdu</b> a zapište je jako den.měsíc.rok</p>";
         }
         break;
       }
@@ -413,7 +422,7 @@ function objednavka(e,op,p) {
     break; }
   }
   if ( msg ) 
-    Ezer.fce.alert("<b style='color:red'>opravte prosím následující údaje:</b>"+msg);
+    msg4_on("<b style='color:red'>opravte prosím následující údaje:</b>"+msg);
   else
     ask(x,_objednavka);
 }

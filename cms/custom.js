@@ -26,6 +26,10 @@ function searchByQuery() {
     form.submit();
 }
 
+
+// ========================================================================================> MOBILE (todo move to file that is loaded on mobile only)
+
+
 // ========================================================================================> RUNNING
 jQuery(window).resize(function () {
     adjustGallery();
