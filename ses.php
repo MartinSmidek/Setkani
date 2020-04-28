@@ -1,21 +1,26 @@
 <?php
-# ------------------------------------------------------------------------------------------ IP test
 
-$ips= array(0,
-//   '88.86.120.249',                                   // chlapi.online
-//   '89.176.167.5','94.112.129.207',                   // zdenek
-  '83.208.101.130','80.95.103.170',                     // martin
-  '127.0.0.1','192.168.1.146'                           // local
-);
+$ezer_root= 'web';
 
-// $ip= my_ip();
-// $ip_ok= in_array($ip,$ips);
-// if ( !$ip_ok ) die('Error 404');
+if ( !isset($_SESSION) ) session_start();
 
 # -------------------------------------------------------------------- identifikace ladícího serveru
-$ezer_localhost= preg_match('/^localhost|^192\.168\./',$_SERVER["SERVER_NAME"])?1:0;
-$ezer_local= $ezer_localhost || preg_match('/^\w+\.bean/',$_SERVER["SERVER_NAME"])?1:0;
-if ( !isset($_SESSION) ) session_start();
+// definice podporovaných serverů
+$ezer_server= 
+    $_SERVER["SERVER_NAME"]=='setkani.bean'    ? 0 : (        // 0:lokální 
+    $_SERVER["SERVER_NAME"]=='setkani.org'     ? 1 : (        // Synology YMCA
+    $_SERVER["SERVER_NAME"]=='www.setkani.org' ? 1 : (        // Synology YMCA
+    $_SERVER["SERVER_NAME"]=='setkani4.doma'   ? 2 : (        // Synology DOMA
+    $_SERVER["SERVER_NAME"]=='setkani4.bean'   ? 3 : (        // 3:lokální VERZE 4 - Jirka
+    $_SERVER["SERVER_NAME"]=='setkani4m.bean'  ? 4 : -1))))); // 4:lokální VERZE 4 - Martin
+$ezer_local= $ezer_server==0;
+$paths_log= array(
+  'C:\Apache\logs\php_error.log',       // Win10
+  "/var/log/apache2/error.log",         // YMCA
+  "/var/log/httpd/apache24-error_log",  // DOMA
+  '',                                   // ?
+  'C:\Apache\logs\php_error.log'        // Win10
+);
 # ----------------------------------------------------------------------------------------------- js
 $js= <<<__EOD
 function op(op_arg) {
@@ -41,19 +46,14 @@ if ( isset($_GET['op']) ) {
     phpinfo();
     break;
   case 'log':
-    $server= $_SESSION['fis']['ezer_server'];
-    $paths_log= array(
-      'C:\Apache\logs\php_error.log',
-      "",
-      "/var/log/apache2/error.log",
-      "/var/log/httpd/apache24-error_log"
-    );
-//    $log= $paths_log[$server];
-    $log= isset($paths_log[$server]) ? tailCustom($paths_log[$server],$arg) : '---';
-//    $log= isset($paths_log[$server]) ? tailShell($paths_log[$server],$arg) : '---';
+    $log= isset($paths_log[$ezer_server]) ? tailCustom($paths_log[$ezer_server],$arg) : '---';
+//    $log= isset($paths_log[$ezer_server]) ? tailShell($paths_log[$ezer_server],$arg) : '---';
     $log= nl2br($log);
-    
     goto render;
+  case 'down':
+    copy($paths_log[$ezer_server],"docs/error.log");
+    goto render;
+    break;
   case 'cookie':
     setcookie('error_reporting',$arg);
     break;
@@ -67,7 +67,7 @@ if ( isset($_GET['op']) ) {
 # ------------------------------------------------------------------------------------------- client
 render:
 $all= true;
-$icon= $ezer_local ? "img/ses_local.png" : "img/ses.png";
+$icon= $ezer_local ? "$ezer_root/img/ses_local.png" : "$ezer_root/img/ses.png";
 
 $cms= debug($_GET,'GET').'<br/>';
 $cms.= debug($_POST,'POST').'<br/>';
@@ -81,7 +81,10 @@ $cms.= "
   </div>
 ";
 $cms.= "<div>
-         <button style='float:left;' onclick=\"op('log.10');\">log</button>
+         <div style='float:left'>
+           <button onclick=\"op('log.10');\">log</button><br>
+           <button onclick=\"op('down.');\" title='copy logfile to docs')>vvv</button>
+         </div>  
          <div style='width:800px;height:100px;overflow:auto;background:white;margin:5px 40px'>$log</div>
        </div>";
 $cms.= debug($_SESSION,'SESSION').'<br/>';
@@ -94,16 +97,19 @@ echo <<<__EOD
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <link rel="shortcut icon" href="$icon">
   <style>
-    body { background: silver; font-family: Arial,Helvetica,sans-serif; padding: 0;
-            margin: 0; position: static; padding: 5px; }
-    .Label { position:relative; }
-    button { position:relative; }
+    body { background:silver; 
+      font-family:Arial,Helvetica,sans-serif; padding:0; margin:0; position:static; padding: 5px; }
+
+    button { position:relative; font-size:9pt; white-space:nowrap; z-index:1; padding:1px 4px; }
+      @-moz-document url-prefix() { button { padding:0px 4px; } }
+      button::-moz-focus-inner { border:0; padding:0; }
     .dbg { margin:0; overflow-y:auto; font-size:8pt; line-height:13px; }
     .dbg table { border-collapse:collapse; margin:1px 0;}
-    .dbg td { border:1px solid #aaa; font:x-small Arial; padding:1px 3px; line-height:11px; }
+    .dbg td { border:1px solid #aaa; font:x-small Arial;color:#777;padding:1px 3px; line-height:11px; }
     .dbg td.title { color:#000; background-color:#aaa; }
-    .dbg td.label { color:#a33; }
-    .dbg table.dbg_array { background-color: #ddeeff; }
+    .dbg td.label { color:#a33;}
+    .dbg table.dbg_array { background-color:#ddeeff; }
+    .dbg table.dbg_object { background-color:#ffffaa; }
   </style>
   <script type="text/javascript">
     $js
@@ -212,7 +218,7 @@ function my_ip() {
 	function tailCustom($filepath, $lines = 1, $adaptive = true) {
 		// Open file
 		$f = @fopen($filepath, "rb");
-		if ($f === false) return false;
+		if ($f === false) return "cannot read $filepath";
 		// Sets buffer size, according to the number of lines to retrieve.
 		// This gives a performance boost when reading a few lines from the file.
 		if (!$adaptive) $buffer = 4096;
