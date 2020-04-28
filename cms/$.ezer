@@ -487,7 +487,7 @@ panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialo
   use t: form _foot [0,0,,] { tag:'t' }
   proc onstart() {
     f.program.selects("rodiny:1,manželé:2,chlapi:3,ženy:4,mládež:5,Albeřice:6");
-    f.homepage.selects(conc("-:0,... abstrakt na homepage:2,... abstrakt nahoru:6",
+    f.homepage.selects(conc("-:0,Abs. na homepage:2,Abs. nahoru:6",
       ",Aktuálně ...:1,Doporučujeme ...:8,Přečtěte si ...:7"));
   }
   proc join_drop() {
@@ -670,7 +670,7 @@ panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialo
     field do     [145,39,85,]    { tag:'a', type:'date', title:'do:', format:'r' }
     select program [255,39,120,] { tag:'a', type:'multi', title:'pro:' }
     field sorting [300,39,60,]   { tag:'c', title:'priorita:', format:'r' }
-    select homepage [413,39,85,] { tag:'a,c', title:'home:' }
+    select homepage [413,39,85,] { tag:'a,c', title:'home:' format:'t' }
     field id_akce [540,39,40,]   { tag:'a', title:'ID akce', format:'r', skill:'r|m' }
     edit obsah   [0,62,730,320] { type:'html', par:°{toolbar:'CMS'}
       proc ondrop(f) {                   // odmítnutí přenosu při novém článku

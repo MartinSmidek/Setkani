@@ -9,9 +9,9 @@ div.page {
 
 #dolni span, #dolni div {
   font-size:8pt; font-family:Consolas !important; }
-div.Popup3 span, div.Popup3 input,
+div.Popup3 span, div.Popup3 input, div.Select3 li,
 div.Popup3 div.Label3, div.Popup3 div.Label3 * {
-  font-size: 10pt; /*font-family: Arial !important;*/ color:black; }
+  font-size: 9pt; color:black; }
 .Check3 {
   font-size: 8pt; }
 div.Popup3 table *, div.Popup3 dl, div.Popup3 dl * {
