@@ -84,8 +84,10 @@ $mode= array(1=>isset($_COOKIE['web_mode_1']) ? $_COOKIE['web_mode_1'] : 1); // 
 $fe_user_display= isset($_GET['login']) ? 'block' : 'none';
 
 if (strpos($_SERVER["REQUEST_URI"], "index.php?id=") !== false) {
-     $paths = implode(" ", $path);
-    query("INSERT INTO url_log VALUES ('{$_SERVER["REQUEST_URI"]}', '$paths','$php_errormsg')");
+  $paths= implode(" ", $path);
+  $ip= $_SERVER['REMOTE_ADDR'];
+  query("INSERT INTO url_log (url,path,errormsg,ip,date)
+         VALUES ('{$_SERVER["REQUEST_URI"]}', '$paths','$php_errormsg','$ip',NOW())");
 }
 
 // pokud je přihlášený be_user jde o reload
