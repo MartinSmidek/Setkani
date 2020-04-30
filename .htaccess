@@ -1,33 +1,33 @@
-RewriteEngine on
-RewriteCond %{SERVER_NAME} ^setkani\.org
-RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301]
-RewriteCond %{HTTPS} on
-RewriteCond %{SERVER_NAME} !^setkani\.org
-RewriteRule (.*) http://%{HTTP_HOST}%{REQUEST_URI} [R=301]
+RewriteEngine on 
+
+# pro ostrý server vnutíme https
+RewriteCond %{SERVER_NAME} ^(.*)\.org
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}                                         [R=301]
 
 # pristupove adresy *.setkani.org
-RewriteCond %{SERVER_NAME} ^setkani\.org                                                        [NC]
+RewriteCond %{SERVER_NAME} ^setkani\.org                                                       [NC]
 RewriteRule ^.*$                                https://www.setkani.org
-RewriteCond %{SERVER_NAME} ^(www\.)?alberice\.setkani\.org                                      [NC]
+RewriteCond %{SERVER_NAME} ^(www\.)?alberice\.setkani\.org                                     [NC]
 RewriteRule ^.*$                                https://www.setkani.org/alberice
-RewriteCond %{SERVER_NAME} ^(www\.)?archiv\.setkani\.org                                        [NC]
+RewriteCond %{SERVER_NAME} ^(www\.)?archiv\.setkani\.org                                       [NC]
 RewriteRule ^.*$                                https://www.setkani.org/archiv
-RewriteCond %{SERVER_NAME} ^(www\.)?rodiny\.setkani\.org                                        [NC]
+RewriteCond %{SERVER_NAME} ^(www\.)?rodiny\.setkani\.org                                       [NC]
 RewriteRule ^.*$                                https://www.setkani.org/rodiny
-RewriteCond %{SERVER_NAME} ^(www\.)?manzele\.setkani\.org                                       [NC]
+RewriteCond %{SERVER_NAME} ^(www\.)?manzele\.setkani\.org                                      [NC]
 RewriteRule ^.*$                                https://www.setkani.org/manzele
-RewriteCond %{SERVER_NAME} ^(www\.)?chlapi\.setkani\.org                                        [NC]
+RewriteCond %{SERVER_NAME} ^(www\.)?chlapi\.setkani\.org                                       [NC]
 RewriteRule ^.*$                                https://www.setkani.org/chlapi
-RewriteCond %{SERVER_NAME} ^(www\.)?zeny\.setkani\.org                                          [NC]
+RewriteCond %{SERVER_NAME} ^(www\.)?zeny\.setkani\.org                                         [NC]
 RewriteRule ^.*$                                https://www.setkani.org/zeny
-RewriteCond %{SERVER_NAME} ^(www\.)?mladez\.setkani\.org                                        [NC]
+RewriteCond %{SERVER_NAME} ^(www\.)?mladez\.setkani\.org                                       [NC]
 RewriteRule ^.*$                                https://www.setkani.org/mladez
 
 # adresy <soubor>.php
 RewriteRule ^((index|servant|ses).php.*|)$      $1                                          [QSA,L]
 
 # staré linky       nedát se zmást - i když je to znak komentáře, funguje
-RewriteRule ^kontakty/?$                        /#page_footer_info                            [R,NE,L]
+RewriteRule ^kontakty/?$                        /#page_footer_info                         [R,NE,L]
 
 # archivy
 RewriteRule ^archiv/?$                          archiv/index.htm                                [L]
@@ -124,7 +124,7 @@ RewriteRule ^ymca-setkani$                      index.php?page=my!91            
 RewriteRule ^ymca-setkani/(\d+)$                index.php?page=my!$1                            [L]
 
 # zachytne pravidlo
-RewriteRule ^[^.]*$                             index.php                                       [QSA,L]
+RewriteRule ^[^.]*$                             index.php                                   [QSA,L]
 
 # prepnout na Google weby
 #RewriteCond %{HTTP_HOST} ds.setkani.org
