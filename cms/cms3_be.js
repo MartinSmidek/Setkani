@@ -281,7 +281,7 @@ function go(e,href,mref,input,nojump) {
 // --------------------------------------------------------------------------------------- go anchor
 // předá CMS info na kterou stránku webu přepnout
 // href se použije pro přepnutí v rámcí CMS
-// mref má být ve tvaru url bez CMS
+// mref má být ve tvaru url bez CMS - pokud nebude definované, neuplatní se
 function go_anchor(e,href,mref,input,nojump) {
   if ( e ) e.stopPropagation();
   let anchor= '';
@@ -303,7 +303,7 @@ function go_anchor(e,href,mref,input,nojump) {
     document.cookie= 'web_search='+search+';path=/';
     page= page + '!!'+ search;
   }
-  history.pushState({},'',mref ? mref : http+'page='+page);
+  if ( mref ) history.pushState({},'',mref);
   Ezer.run.$.part.p._call(0,nojump?'cms_menu':'cms_go_anchor',page,anchor)
   return false;
 }

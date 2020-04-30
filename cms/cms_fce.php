@@ -642,6 +642,46 @@ function img_oprava($pid) {
   return $msg;
 }
 /** ===========================================================================================> CMS */
+# --------------------------------------------------------------------------------------- cms report
+# vrátí seznam 
+# - změn obsahu
+# - chybných pokusů o přihlášení do chlapi.online
+function cms_report($par) { debug($par,'log_report');
+  $html= "";
+  switch ($par->cmd) {
+  case 'obsah':    // -------------------------------------- obsah
+    $dnu= $par->days;
+    $html.= "<dl>";
+    $cr= mysql_qry("
+      SELECT fe_user,LEFT(MAX(datetime),16),
+        GROUP_CONCAT(DISTINCT LEFT(action,1) ORDER BY action) AS _jak,
+        uid_menu,uid_case,uid_part,CONCAT(firstname,' ',name),COUNT(*) AS _krat,message
+      FROM gn_log AS g LEFT JOIN fe_users AS u ON u.uid=g.fe_user
+      WHERE datetime > DATE_SUB(NOW(),INTERVAL $dnu DAY)
+        AND action IN ('Insert','Update')
+      GROUP BY uid_case,uid_part,fe_user,DATE(datetime)
+      ORDER BY datetime DESC
+    ");
+    while ( $cr && (list($kdo,$kdy,$_jak,$mid,$cid,$pid,$username,$krat,$path)
+        = mysql_fetch_row($cr)) ) {
+      $jak= '';
+      foreach (explode(',',$_jak) as $j) {
+        $jak.= $j=='U' ? ' úprava' : (
+            $j=='I' ? ' <b>vložení</b>' : (
+            $j=='D' ? ' smazání' : (
+            $j=='H' ? ' skrytí' : '?')));
+      }
+      $krat= $krat==1 ? "" : " ($krat x)";
+      $path.= strchr($path,'#') ? '' : "#anchor$pid";
+      $go= "<a onclick=\"go_anchor(0,'page=$path','')\" title='$path'>
+          &nbsp;<i class='fa fa-arrow-right'></i>&nbsp;</a>";
+      $html.= "$kdy <b>$username</b> - $jak $co $cid/$pid $krat $go<br>";
+    }
+    $html.= "</dl>";
+    break;
+  }
+  return $html;
+}
 # ----------------------------------------------------------------------------------------- cms test
 # vývoj
 function cms_test($values) {

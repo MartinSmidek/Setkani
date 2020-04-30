@@ -1711,7 +1711,7 @@ function save_clanek($x,$uid,$ref='') { trace(); //debug($x,"save_clanek");
 }
 # -------------------------------------------------------------------------------==> . create clanek
 # vytvoření článku
-function create_clanek($x) { //$pid,$autor,$nadpis,$obsah,$psano) { trace();
+function create_clanek($x,$ref) { //$pid,$autor,$nadpis,$obsah,$psano) { trace();
   debug($x,'create_clanek');
   $pid= $x->pid;
   $mid= $x->mid;
@@ -1748,8 +1748,9 @@ function create_clanek($x) { //$pid,$autor,$nadpis,$obsah,$psano) { trace();
   $uid= mysql_insert_id();
   // zápis o vložení
   $date= date('YmdHis',time());
-  query("INSERT INTO gn_log (datetime,fe_user,action,uid_page,uid_menu,uid_case,uid_part) VALUES
-       ('$date','{$_SESSION['web']['fe_user']}','Insert','$pid','$mid','$cid','$uid')");
+  $ref.= "!$uid#anchor$uid";
+  query("INSERT INTO gn_log (datetime,fe_user,action,uid_page,uid_menu,uid_case,uid_part,message) VALUES
+       ('$date','{$_SESSION['web']['fe_user']}','Insert','$pid','$mid','$cid','$uid','$ref')");
   return $uid;
 }
 # -------------------------------------------------------------------------------==> . create clanek

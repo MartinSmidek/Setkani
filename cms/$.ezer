@@ -117,7 +117,8 @@ panel p [0,0,*,*] { type:'main'
   }
 # ----------------------------------------------------------------------------==> control bar
   form _f [,,*,30] { css:'grey', style:'z-index:9999'
-    proc hide_all() { ADMIN.hide; FE_LOG.hide; FE_USER.hide; BE_USER.hide; OPTIONS.hide; CMS.hide }
+    proc hide_all() { 
+      ADMIN.hide; BOARD.hide; FE_LOG.hide; FE_USER.hide; BE_USER.hide; OPTIONS.hide; CMS.hide }
     button [80,5,,]  { skill:'a|a', title:"[fa-chevron-left]"    proc onclick() { hide_all; go(history.get) } }
     button [101,5,,] { skill:'a|a', title:"[fa-repeat]"          proc onclick() { hide_all; cms_go(last.get) } }
     button [123,5,,] { skill:'a|a', title:"[fa-chevron-right]", format:'d'
@@ -127,7 +128,8 @@ panel p [0,0,*,*] { type:'main'
     button [280,5,,] { skill:'a|a', title:"[fa-user] WEB"        proc onclick() { hide_all; FE_USER.modal } }
     button [336,5,,] { skill:'a|a', title:"[fa-file] změny"      proc onclick() { hide_all; FE_LOG.modal } }
     button [425,5,,] { skill:'a|a', title:"[fa-user-plus] správci"   proc onclick() { hide_all; BE_USER.modal } }
-    button [497,5,,] { skill:'a|a', title:"[fa-file-text] admin" proc onclick() { hide_all; ADMIN.modal } }
+    button [497,5,,] { skill:'a|a', title:"[fa-empire] admin" proc onclick() { hide_all; ADMIN.modal } }
+    button [564,5,,] { title:"[fa-edit] redakce" proc onclick() { hide_all; BOARD.modal } }
 //    button [583,5,,] { skill:'m|m', title:"[fa-gears] CMS" proc onclick() { hide_all; CMS.modal } }
     check [-272,4,65,] { title:"c/p", value:'0', format:'t', style:'color:white'
       proc onchange() { 
@@ -590,7 +592,8 @@ panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialo
     button full [0,9,,] { title:"[fa-expand]", proc onclick() { change_size; } }
     button half [0,5,,] { title:"[fa-compress]", format:'n', proc onclick() { change_size; } }
     button sav [-70,9,,] { title:'[fa-save] Vytvořit', help:'ukončit editor a vytvořit článek'
-      proc onclick() { var values:object values.set(object());
+      proc onclick() { var values:object, ref:text
+        values.set(object());
         [ f.same; warning("nebyla provedena žádná změna"); return ];
         [ lt(date2sql(do.get),date2sql(od.get)); 
           warning("POZOR: konec akce předchází začátek"); 
@@ -603,16 +606,17 @@ panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialo
         echo('o=',o_changed.get,', a=',a_changed.get);
         [ o_changed.get; obsah.change ];
         [ a_changed.get; abstract.change ];
+        ref.set(cconc(1,p.last.get,p.last_anch.get,conc('#',p.last_anch.get)));
         { uid.get;
           copy_by_name(f,values,0,1);
           { eq(ctype.get,1,2,3); 
-            ask('save_clanek',values,uid.get,cconc(1,p.last.get,p.last_anch.get,conc('#',p.last_anch.get)));
+            ask('save_clanek',values,uid.get,ref);
           | eq(ctype.get,7); ask('save_prezentace',values,uid.get);
           | alert("ještě nelze uschovat data pro článek typu=",ctype.get); panel.hide(0)
           }
         | not(uid.get);
           copy_by_name(f,values);
-          { eq(ctype.get,1,2); ask('create_clanek',values);
+          { eq(ctype.get,1,2); ask('create_clanek',values,ref);
           | eq(ctype.get,3); ask('create_kniha',values);
           | eq(ctype.get,7); ask('create_prezentace',values);
           | alert("ještě nelze uschovat data pro článek typu=",ctype.get); panel.hide(0)
@@ -725,8 +729,8 @@ panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialo
       <br><i class='fa fa-phone'></i> {phone}
       <br><i class='fa fa-facebook-square'></i> {facebook-square}
       <br><i class='fa fa-bank'></i> {bank}
-      <br><br>... jako jméno lze použít cokoliv z fontu Awesome v.4.7
-    " }
+      <br><br>... jako jméno lze použít cokoliv z fontu Awesome v.4.7" 
+    }
     // funkce
     proc next_foot(smer) { var y:object
       id.set(ask('edit_next_footer',id.get,smer)); 
@@ -852,6 +856,33 @@ panel FE_USER [0,0,400,400] { title:'Uživatelé webu', type:'popup', css:'dialo
     }
   }
 }
+# ----------------------------------------------------------------------------==> BOARD
+panel BOARD [0,0,600,465] { title:'Redakce - přehledy', type:'popup', css:'dialog_menu'
+    style:"min-width:590px", _sys:'cms'
+  proc onfirstfocus() { }
+  menu m { type:'left'
+    menu o {title:'Změny obsahu',type:'group'
+      item d {title:'Přehled změn dnes',      par:°{cmd:'obsah',days:1} }
+      item   {title:'Přehled změn za týden',  par:°{cmd:'obsah',days:7} }
+      item   {title:'Přehled změn za měsíc',  par:°{cmd:'obsah',days:30} }
+      item   {title:'Přehled změn za rok',    par:°{cmd:'obsah',days:365} }
+      item   {title:'Přehled uskutečněných změn', par:°{cmd:'obsah',days:99999} }
+      proc onclick(i) {
+        function("jQuery('#popup_mask3').hide();return 1;");
+        info.fill(conc(i.owner.title,' - ',replace_fa(i.title)),ask('cms_report',i.par));
+      }
+    }
+    menu { title:'Speciální obsah',type:'group'
+      item { title:"[fa-camera-retro] výběr fotografií záhlaví"}
+      proc onclick() {
+        UPLOAD.ckeditor.set(0);
+        UPLOAD.path.set(conc('fileadmin/index/'));
+        UPLOAD.modal;
+      }
+    }
+  }
+  use info: form _text [0,0,,] { tag:'mu' }
+}
 # ----------------------------------------------------------------------------==> ADMIN
 panel ADMIN [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu'
     style:"min-width:590px", _sys:'cms'
@@ -969,31 +1000,6 @@ panel ADMIN [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu
   use info: form _text [0,0,,] { tag:'mu' }
   use msg_a: form _msg_a [0,0,,] { tag:'ma', format:'n' }
   var skip=0
-# --------------------------------------------- form+browse
-  proc the_formsave (f,b) {
-    f.same
-  | f.key; f.save; { b.browse_seek; f.load | f.init }
-  | f.insert; f.load;
-    b.raise('onrowclick',b.browse_seek(conc(f.id_key,'=',f.key)))
-  }
-# --------------------------------------------- text
-# formulář pro levostranné menu s textem
-form _text [,,*,*] { css:'popup-right'
-  label head [0,0,*,50]  { title:'' }
-  label msg  [0,35,*,20] { title:'' }
-  label note [0,55,*,410] { title:'' style:'overflow:auto' }
-  proc Init() { head.set(''); msg.set(''); note.set(''); }
-  proc fill(x,y) {
-    [ x; head.set(conc("<div class='karta'>",replace_fa(x),"</div>")) ];
-    [ y; note.set(y) ]
-  }
-  proc append(x) {
-    note.set(conc(note.get,x)) 
-  }
-  proc shift(x) {
-    note.set(conc(x,note.get)) 
-  }
-}
   # --------------------------------------==> . zápis změny
   form _msg_a [,,605,*] { css:'popup-right', style:'border-right:2px solid white'
     var virgin= 1
@@ -1405,6 +1411,32 @@ panel DUMP [0,0,570,230] { title:' Zobrazení dat', type:'popup', css:'dialog'
       proc onclick () { p.cms_go(conc('clanek!',c_cid.get)) }}
     button [236,180,,] { tag:'c', title:'[fa-upload] part'
       proc onclick () { p.cms_go_case(p_pid.get) }}
+  }
+}
+# ----------------------------------------------------------------------------==> obecné form, proc
+# --------------------------------------------- form+browse
+  proc the_formsave (f,b) {
+    f.same
+  | f.key; f.save; { b.browse_seek; f.load | f.init }
+  | f.insert; f.load;
+    b.raise('onrowclick',b.browse_seek(conc(f.id_key,'=',f.key)))
+  }
+# --------------------------------------------- text
+# formulář pro levostranné menu s textem
+form _text [,,*,*] { css:'popup-right'
+  label head [0,0,*,50]  { title:'' }
+  label msg  [0,35,*,20] { title:'' }
+  label note [0,55,*,410] { title:'' style:'overflow:auto' }
+  proc Init() { head.set(''); msg.set(''); note.set(''); }
+  proc fill(x,y) {
+    [ x; head.set(conc("<div class='karta'>",replace_fa(x),"</div>")) ];
+    [ y; note.set(y) ]
+  }
+  proc append(x) {
+    note.set(conc(note.get,x)) 
+  }
+  proc shift(x) {
+    note.set(conc(x,note.get)) 
   }
 }
 # ----------------------------------------------------------------------------==> tabulky
