@@ -395,7 +395,7 @@ span.input { font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,D
 
 /* vlákno */
 div.vlakno { clear:both; }
-div.text { padding:.4em;}
+div.text { padding:.4em; border-radius: 5px; background-color: white; }
 
 /* fotky */
 /*span.foto { width: 80px; height: 80px; overflow: hidden; display: inline-block; }*/

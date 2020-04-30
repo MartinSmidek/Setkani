@@ -16,7 +16,7 @@ $ezer_server=
 $ezer_local= $ezer_server==0;
 $paths_log= array(
   'C:\Apache\logs\php_error.log',       // Win10
-  "/var/log/httpd/apache24-error.log",  // YMCA
+  "/var/log/httpd/apache24-error_log",  // YMCA
   "/var/log/httpd/apache24-error_log",  // DOMA
   '',                                   // ?
   'C:\Apache\logs\php_error.log'        // Win10
