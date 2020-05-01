@@ -119,18 +119,20 @@ panel p [0,0,*,*] { type:'main'
   form _f [,,*,30] { css:'grey', style:'z-index:9999'
     proc hide_all() { 
       ADMIN.hide; BOARD.hide; FE_LOG.hide; FE_USER.hide; BE_USER.hide; OPTIONS.hide; CMS.hide }
-    button [80,5,,]  { skill:'a|a', title:"[fa-chevron-left]"    proc onclick() { hide_all; go(history.get) } }
-    button [101,5,,] { skill:'a|a', title:"[fa-repeat]"          proc onclick() { hide_all; cms_go(last.get) } }
-    button [123,5,,] { skill:'a|a', title:"[fa-chevron-right]", format:'d'
-                                                                 proc onclick() { hide_all } }
+    button [80,5,,]  { title:"[fa-chevron-left]"    proc onclick() { hide_all; go(history.get) } }
+    button [101,5,,] { title:"[fa-repeat]"          proc onclick() { hide_all; cms_go(last.get) } }
+    button [123,5,,] { title:"[fa-chevron-right]", format:'d' proc onclick() { hide_all } }
     label info [150,8,130,] { style:'font-size:9pt;color:white' 
         help:'velikost stránky, čas výpočtu + čas přenosu'} 
-    button [280,5,,] { skill:'a|a', title:"[fa-user] WEB"        proc onclick() { hide_all; FE_USER.modal } }
-    button [336,5,,] { skill:'a|a', title:"[fa-file] změny"      proc onclick() { hide_all; FE_LOG.modal } }
-    button [425,5,,] { skill:'a|a', title:"[fa-user-plus] správci"   proc onclick() { hide_all; BE_USER.modal } }
-    button [497,5,,] { skill:'a|a', title:"[fa-empire] admin" proc onclick() { hide_all; ADMIN.modal } }
-    button [564,5,,] { title:"[fa-edit] redakce" proc onclick() { hide_all; BOARD.modal } }
+    // nové dialogy
+    button [280,5,,] { skill:'a|a', title:"[fa-empire] admin" proc onclick() { hide_all; ADMIN.modal } }
+    button [347,5,,] { title:"[fa-edit] redakce" proc onclick() { hide_all; BOARD.modal } }
+    // staré dialogy
+    button [480,5,,] { skill:'m|m', title:"[fa-user] WEB"        proc onclick() { hide_all; FE_USER.modal } }
+    button [534,5,,] { skill:'m|m', title:"[fa-file] změny"      proc onclick() { hide_all; FE_LOG.modal } }
+    button [600,5,,] { skill:'m|m', title:"[fa-user-plus] správci"   proc onclick() { hide_all; BE_USER.modal } }
 //    button [583,5,,] { skill:'m|m', title:"[fa-gears] CMS" proc onclick() { hide_all; CMS.modal } }
+    // přepínače stavu
     check [-272,4,65,] { title:"c/p", value:'0', format:'t', style:'color:white'
       proc onchange() { 
         ask('session','cms,cid_pid',this.get);
@@ -868,6 +870,7 @@ panel BOARD [0,0,600,465] { title:'Redakce - přehledy', type:'popup', css:'dial
       item   {title:'Přehled změn za rok',    par:°{cmd:'obsah',days:365} }
       item   {title:'Přehled uskutečněných změn', par:°{cmd:'obsah',days:99999} }
       proc onclick(i) {
+        UPLOAD.close;
         function("jQuery('#popup_mask3').hide();return 1;");
         info.fill(conc(i.owner.title,' - ',replace_fa(i.title)),ask('cms_report',i.par));
       }
@@ -876,7 +879,7 @@ panel BOARD [0,0,600,465] { title:'Redakce - přehledy', type:'popup', css:'dial
       item { title:"[fa-camera-retro] výběr fotografií záhlaví"}
       proc onclick() {
         UPLOAD.ckeditor.set(0);
-        UPLOAD.path.set(conc('fileadmin/index/'));
+        UPLOAD.path.set(conc('/fileadmin/index/'));
         UPLOAD.modal;
       }
     }
@@ -908,26 +911,17 @@ panel ADMIN [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu
       y.set(ask('sys_activity',i.par,skip.get,'',sys('options','watch_access_opt')));
       info.fill(conc(i.owner.title,' - ',i.title),y);
     }
-    menu { title:'Speciální obsah',type:'group'
-      item { title:"[fa-camera-retro] výběr fotografií záhlaví"}
-      proc onclick() {
-        UPLOAD.ckeditor.set(0);
-        UPLOAD.path.set(conc('fileadmin/index/'));
-        UPLOAD.modal;
-      }
-    }
     menu { title:'GitHub',type:'group',skill:'m'
       item { title:'[fa-question] CMS: git status'  par:°{folder:'cms',op:'cmd',cmd:'status'}}
       item { title:'[fa-gear] CMS: git log'         par:°{folder:'cms',op:'cmd',cmd:'log'}}
       item { title:'[fa-gear] CMS: git pull'        par:°{folder:'cms',op:'cmd',cmd:'pull'}}
-//    item { title:'[fa-gear] CMS: git reset --hard origin/master' 
-//                                                par:°{folder:'cms',op:'cmd',cmd:'reset --hard origin/master'}}
+      item { title:'[fa-gear] CMS: git fetch ...'   help:"po fetch>git reset --hard origin/master"
+                                                    par:°{folder:'cms',op:'cmd',cmd:'fetch'}}
       item { title:'[fa-question] Ezer: git status' par:°{folder:'ezer',op:'cmd',cmd:'status'}}
       item { title:'[fa-gears] Ezer: git log'       par:°{folder:'ezer',op:'cmd',cmd:'log'}}
       item { title:'[fa-gears] Ezer: git pull'      par:°{folder:'ezer',op:'cmd',cmd:'pull'}}
-//    item { title:'[fa-gears] Ezer: git reset --hard origin/master' 
-//                                                par:°{folder:'ezer',op:'cmd',cmd:'reset --hard origin/master'}}
-//    item { title:'[fa-question] poslední git.log'   par:°{op:'show'}}
+      item { title:'[fa-gears] Ezer: git fetch ...' help:"po fetch>git reset --hard origin/master"
+                                                    par:°{folder:'ezer',op:'cmd',cmd:'fetch'}}
       proc onclick (i) {  
         panel.display(2,'mu'); 
         info.fill(conc(i.owner.title,' - ',i.title),ask('git_make',i.par));
