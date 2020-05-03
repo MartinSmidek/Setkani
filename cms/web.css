@@ -170,6 +170,7 @@ div.clanek span.cms_form:hover {
   padding: 0.2em 0.4em; font-weight: bold; text-decoration: none;
   margin: -0.2em -0.2em; background-color: #f1d095; color: black; text-align: center; }
 
+
 /* ----------------------------------------------------------------------------- popup */
 #popup { position: fixed;
   left: 50%; top: 50%; margin-top: -250px;margin-left: -375px;width: 720px;height: fit-content; height: -moz-max-content;
@@ -335,12 +336,13 @@ div.text a span:hover { background-color:#B48933 !important; color:#EFFBDA !impo
 /* seznamy abstraktů */
 div.abstrakt_foto { background-color:#cadfd9;  margin:0.5em; cursor:pointer; padding:.4em;  }
 div.abstrakt_foto:after {content: ''; clear: both; display: block;} /*makes the div to stretch to contain floating children*/
-a.abstrakt, div.abstrakt { background-color:white; margin:0.5em; cursor:pointer; padding:.6em; display:block;
+a.abstrakt, div.abstrakt { background-color:white; margin:0.5em 1.5em; cursor:pointer; padding:.6em; display:block;
   text-decoration:none; color: black; border-radius: 5px; -webkit-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06);
   -moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06); box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06); overflow: hidden; }
 a.new { background-image: url(img/new.png); background-repeat:no-repeat; background-position: top right; }
 a.upd { background-image: url(img/upd.png); background-repeat:no-repeat; background-position: top right; }
 div.abstr a.abstrakt { height:11.2em; overflow:hidden; }
+.abstrakt h3 {margin: 0; font-size: 16px}
 .abstr p {font-size: 11pt; margin-top: 2px; margin-top: 2px;white-space: pre-wrap;
   overflow-wrap: break-word;}
 /*a.abstrakt:hover, div.abstrakt:hover { background-color:#fff4de !important; color:#130D00 !important; }*/
@@ -395,7 +397,7 @@ span.input { font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,D
 
 /* vlákno */
 div.vlakno { clear:both; }
-div.text { padding:.4em; border-radius: 5px; background-color: white; }
+div.text { padding: .4em 1.5em; border-radius: 5px; background-color: white; }
 
 /* fotky */
 /*span.foto { width: 80px; height: 80px; overflow: hidden; display: inline-block; }*/
@@ -440,7 +442,7 @@ div.clanek span.datum { position: absolute; top: 0; left: 0; }
 div.podpis { text-align:right; font-style:italic; clear:both; padding: 0 15px 10px 0}
 div.new { background-image: url(img/new.png); background-repeat:no-repeat; background-position: top right; }
 div.upd { background-image: url(img/upd.png); background-repeat:no-repeat; background-position: top right; }
-#list {max-width: 1100px; margin: 0 auto; padding: 0 20px; padding-bottom: 30px;}
+#list {max-width: 1100px; margin: 0 auto; padding-bottom: 30px;}
 
 /* knihy */
 div.kapitola  { background-color:#FFF4DE; color:#130D00; overflow:hidden; margin:0.5em; position:relative; }
