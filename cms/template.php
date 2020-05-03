@@ -1407,11 +1407,11 @@ function home() { trace();
       $prihlaska= $x->ida ? cms_form_ref("on-line přihláška") : '';
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
       $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
-      $telo.= "<br>$code
+      $telo.= "$code
            <div class='abstrakt x$x->upd' $jmp>
              $prihlaska 
              $x->text
-             $clear
+             <div class='clear'></div>
            </div><br>";
     }
     elseif ( $x->home==7 ) { // --------------------------------------- přečtěte si

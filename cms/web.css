@@ -336,7 +336,7 @@ div.text a span:hover { background-color:#B48933 !important; color:#EFFBDA !impo
 /* seznamy abstraktů */
 div.abstrakt_foto { background-color:#cadfd9;  margin:0.5em; cursor:pointer; padding:.4em;  }
 div.abstrakt_foto:after {content: ''; clear: both; display: block;} /*makes the div to stretch to contain floating children*/
-a.abstrakt, div.abstrakt { background-color:white; margin:0.5em 1.5em; cursor:pointer; padding:.6em; display:block;
+a.abstrakt, div.abstrakt { background-color:white; margin:.5em; cursor:pointer; padding:.6em 1.5em; display:block;
   text-decoration:none; color: black; border-radius: 5px; -webkit-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06);
   -moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06); box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06); overflow: hidden; }
 a.new { background-image: url(img/new.png); background-repeat:no-repeat; background-position: top right; }
