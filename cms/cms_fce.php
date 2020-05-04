@@ -595,23 +595,25 @@ function git_make($par) {
         ftruncate($f, 0);
         fclose($f);
     }
-    if ( $folder=='ezer') chdir("ezer3.1");
+    if ( $folder=='ezer') chdir("../_ezer3.1");
     $exec= "git $cmd>$abs_root/docs/.git.log";
     exec($exec,$lines,$state);
+                            display("$state::$exec");
     // po fetch ještě nastav shodu s github
     if ( $cmd=='fetch') {
-      $msg.= "$state:$exec<br>";
+      $msg.= "$state:$exec\n";
+      $cmd= "reset --hard origin/master";
       $exec= "git $cmd>$abs_root/docs/.git.log";
       exec($exec,$lines,$state);
+                            display("$state::$exec");
     }
     if ( $folder=='ezer') chdir($abs_root);
-    debug($lines,$state);
-    $msg.= "$state:$exec<hr>";
+    $msg.= "$state:$exec\n";
   case 'show':
     $msg.= file_get_contents("$abs_root/docs/.git.log");
-    $msg= nl2br(htmlentities($msg));
     break;
   }
+  $msg= nl2br(htmlentities($msg));
   $msg= "<i>Synology: musí být spuštěný Git Server (po aktualizaci se vypíná)</i><hr>$msg";
   return $msg;
 }

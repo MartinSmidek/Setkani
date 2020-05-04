@@ -337,43 +337,50 @@ function _table_chng(y) {
 // vrátí hodnoty formuláře tzn. input, select jako json
 // pro create a update p.rooms=seznam pokojů pro match
 function objednavka(e,op,p) {
-  function verify() { 
+  function verify(full) { // full=1 kontroluje vše; full=0 jen změněné
     // kontroly správného vyplnění
-    let jmeno= x.form['name'].replace(' ',''),
-        spojeni= x.form['email'].replace(' ','')+x.form['telephone'].replace(' ','');
-    if ( !jmeno ) 
-      msg+= "<p>Napište prosím své <b>jméno a příjmení </b> abychom vás mohli kontaktovat</p>";
-    else if ( !spojeni )
-      msg+= "<p>Napište prosím svůj <b>telefon</b> nebo <b>email</b> abychom vás mohli kontaktovat</p>";
-    else for (let fld of ['rooms1','adults','untilday']) {
-      let val= x.form[fld].replace(' ','');
-      switch (fld) {
-      case 'rooms1':{
-        let pokoj= `(${p.rooms})`,
-            qry= new RegExp(`^\s*\\*|${pokoj}(\s*,\s*${pokoj})*\s*$`,'g');
-        if ( !val || !qry.test(val) ) {
-          msg+= "<p><b>Objednané pokoje</b> zapište číslem pokoje (jsou uvedena v záhlaví"
-              + " tabulky spolu s počtem postelí a popisem viditelným při dotyku myši) "
-              + " nebo více čísly oddělenými čárkou. Žádost o všechny pokoje zapište hvězdičkou. "
-              + "<br>... např. 1 nebo 12,13 nebo *</p>"
+    if ( full ) {
+      let jmeno= x.form['name'].replace(' ',''),
+          spojeni= x.form['email'].replace(' ','')+x.form['telephone'].replace(' ','');
+      if ( !jmeno ) 
+        msg+= "<p>Napište prosím své <b>jméno a příjmení </b> abychom vás mohli kontaktovat</p>";
+      else if ( !spojeni )
+        msg+= "<p>Napište prosím svůj <b>telefon</b> nebo <b>email</b> abychom vás mohli kontaktovat</p>";
+    }
+    if ( !msg ) {
+      for (let fld of ['rooms1','adults','untilday']) {
+        let val= x.form[fld];
+        if ( val ) {
+          val= val.replace(' ','');
+          switch (fld) {
+          case 'rooms1':{
+            let pokoj= `(${p.rooms})`,
+                qry= new RegExp(`^\s*\\*|${pokoj}(\s*,\s*${pokoj})*\s*$`,'g');
+            if ( !val || !qry.test(val) ) {
+              msg+= "<p><b>Objednané pokoje</b> zapište číslem pokoje (jsou uvedena v záhlaví"
+                  + " tabulky spolu s počtem postelí a popisem viditelným při dotyku myši) "
+                  + " nebo více čísly oddělenými čárkou. Žádost o všechny pokoje zapište hvězdičkou. "
+                  + "<br>... např. 1 nebo 12,13 nebo *</p>"
+            }
+            break;}
+          case 'adults':{
+            if ( !val || !val.match(/^\d+$/g) ) {
+              msg+= "<p>Zadejte prosím předpokládaný počet <b>dospělých</b> osob číslem</p>";
+            }
+            break;}
+          case 'untilday':
+            let u= val.split('.'),
+                f= x.form['fromday'].split('.'),
+                fromday= new Date(f[2],f[1]-1,f[0],0,0,0,0),
+                untilday= new Date(u[2],u[1]-1,u[0],0,0,0,0),
+                max_days= 31,
+                days= (untilday-fromday)/86400000;
+            if ( !val || isNaN(days) || days<0 || days>max_days ) {
+              msg+= "<p>Opravte prosím <b>datum odjezdu</b> a zapište je jako den.měsíc.rok</p>";
+            }
+            break;
+          }
         }
-        break;}
-      case 'adults':{
-        if ( !val || !val.match(/^\d+$/g) ) {
-          msg+= "<p>Zadejte prosím předpokládaný počet <b>dospělých</b> osob číslem</p>";
-        }
-        break;}
-      case 'untilday':
-        let u= val.split('.'),
-            f= x.form['fromday'].split('.'),
-            fromday= new Date(f[2],f[1]-1,f[0],0,0,0,0),
-            untilday= new Date(u[2],u[1]-1,u[0],0,0,0,0),
-            max_days= 31,
-            days= (untilday-fromday)/86400000;
-        if ( !val || isNaN(days) || days<0 || days>max_days ) {
-          msg+= "<p>Opravte prosím <b>datum odjezdu</b> a zapište je jako den.měsíc.rok</p>";
-        }
-        break;
       }
     }
   }
@@ -400,7 +407,7 @@ function objednavka(e,op,p) {
         x.form[this.name]= this.value;
       }
     });
-    verify();
+    verify(1);
     break;}
   case 'delete':{
     x.order= p && p.order ? p.order : 0;
@@ -408,14 +415,13 @@ function objednavka(e,op,p) {
   case 'update':{
     x.order= p && p.order ? p.order : 0;
     x.form= {};
-    var elems= f.find('select,input');
+    var elems= f.find('select.changed,input.changed');
     elems.each(function() {
-      let ord= jQuery(this);
-      if ( this.name && ord.hasClass('changed') ) {
+      if ( this.name ) {
         x.form[this.name]= this.value;
       }
-    verify();
     });
+    verify(0);
     break;}
   default:{
     alert('objednavka('+op+'/'+p+') NYI !!!');
