@@ -54,7 +54,7 @@ function def_menu($from_table=false) { trace();
         'archiv'      => "sm:22:   :alberice/$letos  ::          Prožili jsme:::                 akce=aprehled:                    Archiv akcí v Domě setkání",
       # knihovnička
         'bulletin'    => 'sm:25:0.9:manzelak         ::          Manželák:::                     vlakno=80:                        Manželák - časopis YMCA Setkání',
-        'tance'       => 'sm:26:0.9:tance            :clanek,322:Tance:::                        mclanky;-clanky=322:              Biblické tance',    // 322=tance
+        'tance'       => 'sm:26:0.9:tance            :clanek,322:Tance:::                        mclanky;-clanky=322:              Židovské biblické tance',    // 322=tance
         'modlitby'    => 'sm:27:0.1:modlitby         :clanek,254:Modlitby:::                     mclanky;-clanky=254:              Modlitby',    // 254=modlitby
         'knihy'       => 'sm:28:0.0:cetba            :kniha,228: Četba:::                        mknihy;-knihy=228,250,241:        Vybrané texty', // 241=články
         'audio'       => 'sm:29:0.2:audio            :kniha,242: Audio:::                        mknihy;-knihy=242:                Vybraná audia',
