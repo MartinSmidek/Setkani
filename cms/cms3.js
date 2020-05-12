@@ -337,16 +337,14 @@ function _table_chng(y) {
 // vrátí hodnoty formuláře tzn. input, select jako json
 // pro create a update p.rooms=seznam pokojů pro match
 function objednavka(e,op,p) {
-  function verify(full) { // full=1 kontroluje vše; full=0 jen změněné
+  function verify() {
     // kontroly správného vyplnění
-    if ( full ) {
-      let jmeno= x.form['name'].replace(' ',''),
-          spojeni= x.form['email'].replace(' ','')+x.form['telephone'].replace(' ','');
-      if ( !jmeno ) 
-        msg+= "<p>Napište prosím své <b>jméno a příjmení </b> abychom vás mohli kontaktovat</p>";
-      else if ( !spojeni )
-        msg+= "<p>Napište prosím svůj <b>telefon</b> nebo <b>email</b> abychom vás mohli kontaktovat</p>";
-    }
+    let jmeno= x.form['name'].replace(' ',''),
+        spojeni= x.form['email'].replace(' ','')+x.form['telephone'].replace(' ','');
+    if ( !jmeno ) 
+      msg+= "<p>Napište prosím své <b>jméno a příjmení </b> abychom vás mohli kontaktovat</p>";
+    else if ( !spojeni )
+      msg+= "<p>Napište prosím svůj <b>telefon</b> nebo <b>email</b> abychom vás mohli kontaktovat</p>";
     if ( !msg ) {
       for (let fld of ['rooms1','adults','untilday']) {
         let val= x.form[fld];
@@ -407,7 +405,7 @@ function objednavka(e,op,p) {
         x.form[this.name]= this.value;
       }
     });
-    verify(1);
+    verify();
     break;}
   case 'delete':{
     x.order= p && p.order ? p.order : 0;
@@ -415,13 +413,20 @@ function objednavka(e,op,p) {
   case 'update':{
     x.order= p && p.order ? p.order : 0;
     x.form= {};
-    var elems= f.find('select.changed,input.changed');
+    var elems= f.find('select,input');
     elems.each(function() {
       if ( this.name ) {
         x.form[this.name]= this.value;
       }
     });
-    verify(0);
+    verify();
+    x.form= {};
+    elems= f.find('select.changed,input.changed');
+    elems.each(function() {
+      if ( this.name ) {
+        x.form[this.name]= this.value;
+      }
+    });
     break;}
   default:{
     alert('objednavka('+op+'/'+p+') NYI !!!');
