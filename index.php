@@ -18,6 +18,8 @@ $ezer_server=
     $_SERVER["SERVER_NAME"]=='setkani4.bean'   ? 3 : (        // 3:lokální VERZE 4 - Jirka
     $_SERVER["SERVER_NAME"]=='setkani4m.bean'  ? 4 : -1))))); // 4:lokální VERZE 4 - Martin
 
+if ( $ezer_server==4 ) $_GET['dbg']= 1;
+
 // pro již přihlášeného přejdi do CMS
 if ( !count($_POST) && isset($_SESSION['cms']['user_id']) && $_SESSION['cms']['user_id'] ) {
   $_SESSION['cms']['refresh']= 1;
