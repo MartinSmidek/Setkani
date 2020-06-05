@@ -597,7 +597,7 @@ panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialo
       proc onclick() { var values:object, ref:text, msg: text
         values.set(object());
         [ f.same; warning("nebyla provedena žádná změna"); return ];
-        [ id_akce.change; msg.set(ask('edit_test_online',id_akce.get,p.last.get)); 
+        [ id_akce.get; id_akce.change; msg.set(ask('edit_test_online',id_akce.get,p.last.get)); 
           msg; alert(msg); return;
         ];
         [ lt(date2sql(do.get),date2sql(od.get)); 
