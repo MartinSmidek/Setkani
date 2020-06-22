@@ -2412,8 +2412,8 @@ __EOD;
         <div class='help'>
           <b>Fotografie z akcí naleznete také na následujících webech:</b>
           <br><br>
-          <a class='styled' target="picasa" $sty href="https://manzelska.setkani.org/o-nas/galerie">$pic Galerie Manželských setkání</a>
-          <a class='styled' target="picasa" $sty href="https://dum.setkani.org/o-nas/galerie">$pic Galerie Domu setkání</a>
+          <a class='styled' target="picasa" $sty href="http://manzelska.setkani.org/o-nas/galerie">$pic Galerie Manželských setkání</a>
+          <a class='styled' target="picasa" $sty href="http://dum.setkani.org/o-nas/galerie">$pic Galerie Domu setkání</a>
           </b>
       </div>
 __EOD;
