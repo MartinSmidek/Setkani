@@ -458,13 +458,13 @@ div.kniha_bg div.upd, div.kniha_bg a.upd { background-image: url(img/upd.png); b
 
 /* seznam akcí */
 a.kniha_timeline { color: black;}
-div.kniha_timeline_text {margin-left: 15%;border-left: 13px solid #bfc4cb;padding: 32px;color: #7c6853;font-weight: bold;}
-span.kniha_timeline_date { width: 50px; height: 50px; background: #7c6853; color:white; position: absolute; transform: translate(-67px, -15px);
-  border-radius: 30px; border: 5px solid white; text-align: center; line-height: 50px;}
-div.kniha_timeline_text_open_front {margin-left: 15%; padding: 12px 12px 22px 52px; color: #7c6853;font-weight: bold; margin-top: 15px; margin-bottom: 10px;}
-div.kniha_timeline_text_open_back {margin-left: 15%; padding: 0px 22px 12px 52px; color: #7c6853;font-weight: bold; margin-bottom: 15px;}
-span.kniha_timeline_date_open {width: 70px; height: 70px; background: #dab894; color: white; position: absolute; transform: translate(-85px, -29px);
-  border-radius: 50px; border: 5px solid white; text-align: center; line-height: 70px;}
+div.kniha_timeline_text {margin-left: 15%;border-left: 13px solid #bfc4cb;padding: 20px 34px;color: black;font-weight: bold;}
+span.kniha_timeline_date {width: 50px;height: 50px;background: #f2f2f2;color: black;position: absolute;transform: translate(-67px, -15px);
+  border-radius: 30px;border: 1px solid black;text-align: center;line-height: 50px;}
+div.kniha_timeline_text_open_front {margin-left: 15.5%; padding: 12px 12px 22px 52px; color: black;font-weight: bold; margin-top: 8px; }
+div.kniha_timeline_text_open_back {margin-left: 15.5%; padding: 0px 22px 12px 52px; color: black;font-weight: bold; margin-bottom: 22px;margin-top: 16px;}
+span.kniha_timeline_date_open {width: 60px;height: 60px;background: #f2f2f2;color: black;position: absolute;transform: translate(-85px, -29px);
+  border-radius: 50px;border: 2px solid black;text-align: center;line-height: 60px;}
 
 /* fotogalerie */
 div.fotorama__wrap {margin: 0 auto;}/*dirty but necessary - styling foreign element*/
@@ -741,6 +741,8 @@ label.form_button {float: right}
   .footer #footer-right-part {width: fit-content; display: block; }
   .footer p.image-align-center {width: auto;}
   .footer #footer-right-part a {vertical-align: middle;}
+  .footer #footer-right-part p {width: auto;}
+
   /*popup*/
   #popup {width: 80%; margin-left: -40%; }
   #order {width: 80%; margin-left: -40%; }

@@ -1404,7 +1404,7 @@ function home() { trace();
     }
     elseif ( $x->home==2 || $x->home==6 ) { // ----------------------- abstrakt na home | nahoru
       $prihlaska= '';
-      $prihlaska= $x->ida ? cms_form_ref("on-line přihláška") : '';
+      $prihlaska= $x->ida ? cms_form_ref("online přihláška") : '';
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
       $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
       $telo.= "$code
@@ -1418,7 +1418,7 @@ function home() { trace();
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
       $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
       $cist.= "$code
-           <div class='abstrakt short_post x $x->upd' $jmp>
+           <div class='abstrakt short_post x $x->upd' style='width:auto' $jmp>
              $x->kdy<span class='post_title'>$x->nadpis</span>
              <div class='clear'></div>". masonry_text($x->text)."</div>";
     }
