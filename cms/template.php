@@ -1355,18 +1355,17 @@ function home() { trace();
   global $CMS, $def_pars, $href0, $clear, $usergroups;
   global $show_deleted, $show_hidden, $news_time;
   $xx= array();
-  $vite= array();       // pole kandidátů na obsazení pole "Víte, že ..." - zobrazí náhodně seřazené
   $p_show= ($show_hidden ?  '' : " AND !p.hidden").($show_deleted ? '' : " AND !p.deleted");
   if ( !$news_time ) $news_time= time() - 1 * 24*60*60;
   $cr= mysql_qry("
     SELECT p.pid, p.uid, p.cid, c.mid, m.ref, m.mref, c.type, p.homepage, p.title, p.text, p.abstract,
-      c.fromday, c.untilday, c.program, p.id_akce,
+      c.fromday, c.untilday, c.program, p.id_akce, tags,
       IF(c.tstamp>$news_time,IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),' upd',' new'),''),
       IF(LEFT(FROM_UNIXTIME(untilday),10)>=LEFT(NOW(),10),'nove',YEAR(FROM_UNIXTIME(fromday)))
     FROM setkani4.tx_gncase AS c
     JOIN setkani4.tx_gncase_part AS p ON p.cid=c.uid
     LEFT JOIN setkani4.tx_gnmenu AS m USING (mid)
-    WHERE tags='A' AND !c.deleted AND !c.hidden $p_show
+    WHERE (tags='A' OR tags='D') AND !c.deleted AND !c.hidden $p_show
       AND (p.pid=100 OR (p.homepage>0 AND p.homepage NOT IN (5)))
       AND fe_groups IN ($usergroups)
     ORDER BY IF(p.pid=100,2,IF(homepage=6,0,1)),
@@ -1377,8 +1376,10 @@ function home() { trace();
     END,
     untilday DESC
   ");
+
+  $num_of_present_articles = 0;
   while ($cr && (list($page,$uid,$cid,$mid,$ref,$mref,$type,$home,$title,$text,
-          $abstract,$uod,$udo,$program,$ida,$upd,$rok)= mysql_fetch_row($cr))) {
+          $abstract,$uod,$udo,$program,$ida,$tags,$upd,$rok)= mysql_fetch_row($cr))) {
     $kdy= '';
     $text= web_text($text);
 
@@ -1386,24 +1387,28 @@ function home() { trace();
       $text= $abstract && mb_strlen($abstract)>10
           ? web_text($abstract)
           : x_shorting($text);
+      if ($home != 2 && $home != 6) $num_of_present_articles++;
     }
     if ( $type==2 ) {
       $kdy= "<span class='post_date'>". datum_cesky($uod,$udo) . "</span> ";
     }
     $xx[$cid]= (object)array('uid'=>$uid,'type'=>$type,'page'=>$page,'mid'=>$mid,'ref'=>$ref,'mref'=>$mref,'ida'=>$ida,
-        'nadpis'=>$title,'abstract'=>$abstract, 'text'=>$text,'home'=>$home,'program'=>$program,'kdy'=>$kdy,'upd'=>$upd, 'rok'=>$rok);
+        'nadpis'=>$title,'abstract'=>$abstract, 'text'=>$text,'home'=>$home,'program'=>$program,'kdy'=>$kdy,'tags'=>$tags,'upd'=>$upd, 'rok'=>$rok);
   }
   $telo= $akce= $aktual= $cist= '';
 
   // články obsahují odkazy, takže nemůže být použito zanoření do <a>..</a>
+  $counter = 0;
+  $num_of_articles = 8;
+  $selector = (date("d", $news_time) + date("m", $news_time)) % $num_of_articles;
+  $increase = ceil($num_of_present_articles / $num_of_articles);
   foreach($xx as $cid=>$x) {
     $code= cid_pid($cid,$x->uid);
     //todo ugly, consider "main page" category
-    if ( $x->page==100 ) { // ---------------------------------------- hlavní strana - úvodní článek & timeline
+    if ( $x->page==100 && $x->tags == 'A' ) { // ---------------------------------------- hlavní strana - úvodní článek & timeline
       $telo.= vlakno($cid,'clanek','home',false);
     }
     elseif ( $x->home==2 || $x->home==6 ) { // ----------------------- abstrakt na home | nahoru
-      $prihlaska= '';
       $prihlaska= $x->ida ? cms_form_ref("online přihláška") : '';
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
       $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
@@ -1413,18 +1418,17 @@ function home() { trace();
              $x->text
              <div class='clear'></div>
            </div><br>";
-    }
-    elseif ( $x->home==7 ) { // --------------------------------------- přečtěte si
+    }                                //always include first article='Literatura nejen pro muže'
+    elseif ($selector == $counter || $counter==0)/*if ( $x->home==7 )*/{ // --------------------------------------- přečtěte si
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
       $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
       $cist.= "$code
-           <div class='abstrakt short_post x $x->upd' style='padding: 9px' $jmp>
+           <div class='abstrakt short_post x $x->upd' style='padding: 9px;max-height: 350px;' $jmp>
              $x->kdy<span class='post_title'>$x->nadpis</span>
              <div class='clear'></div>". masonry_text($x->text)."</div>";
+      $selector += $increase;
     }
-    elseif ( $x->home==8 ) { // --------------------------------------- víte, že
-      $vite[]= vlakno($cid,'clanek','home',true);
-    }
+    $counter++;
   }
   $telo .= timeline();
 
