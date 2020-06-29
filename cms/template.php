@@ -1399,7 +1399,7 @@ function home() { trace();
 
   // články obsahují odkazy, takže nemůže být použito zanoření do <a>..</a>
   $counter = 0;
-  $num_of_articles = 8;
+  $num_of_articles = 15;
   $selector = (date("d", $news_time) + date("m", $news_time)) % $num_of_articles;
   $increase = ceil($num_of_present_articles / $num_of_articles);
   foreach($xx as $cid=>$x) {
