@@ -1417,7 +1417,7 @@ function home() { trace();
              $prihlaska 
              $x->text
              <div class='clear'></div>
-           </div><div class='notif-separator'></div>";
+           </div>";
     }                                //always include first article='Literatura nejen pro muže'
     elseif ($selector == $counter || $counter==0)/*if ( $x->home==7 )*/{ // --------------------------------------- přečtěte si
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
