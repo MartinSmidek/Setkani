@@ -472,7 +472,7 @@ div.kniha_timeline_text {margin-left: 15%;border-left: 13px solid #bfc4cb;paddin
 span.kniha_timeline_date {width: 50px;height: 50px;background: #f2f2f2;color: black;position: absolute;transform: translate(-67px, -15px);
   border-radius: 30px;border: 1px solid black;text-align: center;line-height: 50px;}
 div.kniha_timeline_text_open_front {margin-left: 15.5%; padding: 12px 12px 22px 52px; color: black;font-weight: bold; margin-top: 8px; }
-div.kniha_timeline_text_open_back {margin-left: 15.5%; padding: 0px 22px 12px 52px; color: black;font-weight: bold; margin-top: 16px;}
+div.kniha_timeline_text_open_back {margin-left: 15.5%; padding: 0px 22px 12px 54px; color: black;font-weight: bold; margin-top: 16px;}
 span.kniha_timeline_date_open {width: 60px;height: 60px;background: #f2f2f2;color: black;position: absolute;transform: translate(-85px, -29px);
   border-radius: 50px;border: 2px solid black;text-align: center;line-height: 60px;}
 

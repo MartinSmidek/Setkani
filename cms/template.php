@@ -621,8 +621,8 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
             $checked= strpos($x,$id)!==false ? ' checked' : '';
 //         if ( $kdy ) {
             $on= $kernel=='ezer3.1'
-                ? " onchange='if(jQuery(\"#inclusion_icon\").hasClass(\"exclusive\")) {jQuery(this).parent().parent().children(\"label\").each(function() {jQuery(this).removeClass(\"checked\");jQuery(this).find(\"input\").prop( \"checked\", false);}); jQuery(this).prop( \"checked\", true);} jQuery(this).parent().toggleClass(\"checked\"); history_push(\"$href0\",\"komu\",$level,\"$kdy\");'"
-                : " onchange='this.parentNode.toggleClass(\"checked\");history_push(\"$href0\",\"komu\",$level,\"$kdy\");'"; //exlcusion does not work here...
+                ? " onchange='if(jQuery(\"#inclusion_icon\").hasClass(\"exclusive\")) {jQuery(this).parent().parent().children(\"label\").each(function() {jQuery(this).find(\"input\").prop( \"checked\", false);}); jQuery(this).prop( \"checked\", true);} jQuery(this).parent().toggleClass(\"checked\"); history_push(\"$href0\",\"komu\",$level,\"$kdy\");'"
+                : " onchange='this.parentNode.toggleClass(\"checked\");history_push(\"$href0\",\"komu\",$level,\"$kdy\");'"; //exlcusion does not work here for now.. remove all ezer-version conditions?...
             $html.= "<label class='$checked'>$nazev
                      <input name='komu' data-value='$i' value='$id' type='checkbox'$checked$on$alberice>
                    </label>";
@@ -1418,7 +1418,7 @@ function home() { trace();
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
       $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
       $cist.= "$code
-           <div class='abstrakt short_post x $x->upd' style='width:auto' $jmp>
+           <div class='abstrakt short_post x $x->upd' style='padding: 9px' $jmp>
              $x->kdy<span class='post_title'>$x->nadpis</span>
              <div class='clear'></div>". masonry_text($x->text)."</div>";
     }
