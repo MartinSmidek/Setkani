@@ -612,7 +612,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         $proc_kdo= function ($x,$level,$kdy='') { trace();
           global $def_pars,$href0, $kernel;
           display("kdo($x) - $href0 - $kernel");
-          $html= "<div id='vyber' class='x'><div class='content'>";
+          $html= "<div id='vyber' class='x'><div class='content'><img id='inclusion_icon' src='cms/img/inclusion.png' alt='Změna selekce' title='Přepni pro výběr jedné kategorie' onclick='jQuery(this).toggleClass(\"exclusive\");'/>";
           foreach($def_pars['komu'] as $id=>$nazev_i) {
             list($nazev,$i)= explode(':',$nazev_i);
             $alberice= $i==6 ? " style='display:none'" : '';
@@ -621,8 +621,8 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
             $checked= strpos($x,$id)!==false ? ' checked' : '';
 //         if ( $kdy ) {
             $on= $kernel=='ezer3.1'
-                ? " onchange='jQuery(this).parent().toggleClass(\"checked\");history_push(\"$href0\",\"komu\",$level,\"$kdy\");'"
-                : " onchange='this.parentNode.toggleClass(\"checked\");history_push(\"$href0\",\"komu\",$level,\"$kdy\");'";
+                ? " onchange='if(jQuery(\"#inclusion_icon\").hasClass(\"exclusive\")) {jQuery(this).parent().parent().children(\"label\").each(function() {jQuery(this).removeClass(\"checked\");jQuery(this).find(\"input\").prop( \"checked\", false);}); jQuery(this).prop( \"checked\", true);} jQuery(this).parent().toggleClass(\"checked\"); history_push(\"$href0\",\"komu\",$level,\"$kdy\");'"
+                : " onchange='this.parentNode.toggleClass(\"checked\");history_push(\"$href0\",\"komu\",$level,\"$kdy\");'"; //exlcusion does not work here...
             $html.= "<label class='$checked'>$nazev
                      <input name='komu' data-value='$i' value='$id' type='checkbox'$checked$on$alberice>
                    </label>";
@@ -901,7 +901,7 @@ __EOD;
     <div class="content white">
       $navrcholu            
       Vaše dary na účet <img src="cms/img/bank.png" class="footerIcon">  <b>2400465447/2010</b> nám pomáhají uskutečňovat naše programy pro vás i vaše blízké
-      <span id='site_signature'> YMCA setkání, 2020&emsp;</div>
+      <span id='site_signature'> YMCA Setkání, 2020&emsp;</div>
       <div>$info_note</div>
     </div>
   </div>
