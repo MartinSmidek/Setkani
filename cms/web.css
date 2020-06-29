@@ -380,6 +380,11 @@ span.akce_datum {background: white; border-radius: 5px; float: left;}
 @-webkit-keyframes text-show{ from {opacity: 0} to {opacity: 1}  }
 @keyframes text-show{ from {opacity: 0} to {opacity: 1}}
 
+/*notices*/
+#notifications {display: flex;overflow-x: auto;overflow-y: hidden;margin-left: auto;margin-right: auto;}
+.abstrakt.notif_event {width: fit-content; background-color: #f2f2f2; display: inline-block; min-width: 350px; max-width: 350px; padding: 0.6em 0.5em;}
+.notif-separator {width: 1px; background: #888; height: inherit}
+
 /*masonry layout*/
 .masonry_container {column-count: 3;column-gap: 1em;}
 a.short_post, div.short_post { font-size: 11pt !important; width: 95%; display: inline-block; margin: 0 0 1em;

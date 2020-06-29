@@ -1406,18 +1406,18 @@ function home() { trace();
     $code= cid_pid($cid,$x->uid);
     //todo ugly, consider "main page" category
     if ( $x->page==100 && $x->tags == 'A' ) { // ---------------------------------------- hlavní strana - úvodní článek & timeline
-      $telo.= vlakno($cid,'clanek','home',false);
+      $telo = vlakno($cid,'clanek','home',false);
     }
     elseif ( $x->home==2 || $x->home==6 ) { // ----------------------- abstrakt na home | nahoru
       $prihlaska= $x->ida ? cms_form_ref("online přihláška") : '';
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
       $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
-      $telo.= "$code
-           <div class='abstrakt x$x->upd' $jmp>
+      $aktual.= "$code
+           <div class='abstrakt notif_event x$x->upd' $jmp>
              $prihlaska 
              $x->text
              <div class='clear'></div>
-           </div><br>";
+           </div><div class='notif-separator'></div>";
     }                                //always include first article='Literatura nejen pro muže'
     elseif ($selector == $counter || $counter==0)/*if ( $x->home==7 )*/{ // --------------------------------------- přečtěte si
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
@@ -1430,6 +1430,8 @@ function home() { trace();
     }
     $counter++;
   }
+  //add new events first
+  $telo = ($aktual) ? "<H2>Pozvánky na akce</H2><div id='notifications'>" . $aktual . "</div><br><br>" . $telo : $telo;
   $telo .= timeline();
 
   $cist= ($cist ? $cist : 'Bohužel zde zatím není žádný článek.');
