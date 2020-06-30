@@ -1431,7 +1431,7 @@ function home() { trace();
     $counter++;
   }
   //add new events first
-  $telo = ($aktual) ? "<H2>Pozvánky na akce</H2><div id='notifications'>" . $aktual . "</div><br><br>" . $telo : $telo;
+  $telo = ($aktual) ? "<H2>Pozvánky na akce</H2>" . $aktual . "<br><br>" . $telo : $telo;
   $telo .= timeline();
 
   $cist= ($cist ? $cist : 'Bohužel zde zatím není žádný článek.');
