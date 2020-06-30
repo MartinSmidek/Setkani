@@ -381,7 +381,7 @@ span.akce_datum {background: white; border-radius: 5px; float: left;}
 @keyframes text-show{ from {opacity: 0} to {opacity: 1}}
 
 /*notices*/
-.abstrakt.notif_event {width: fit-content; background-color: #f2f2f2; display: inline-block; min-width: 340px; max-width: 340px; padding: 0.6em 0.8em; margin: 0.8em 0.3em}
+.abstrakt.notif_event {width: fit-content; vertical-align:top; background-color: #f2f2f2; display: inline-block; max-width: 340px; padding: 0.6em 0.8em; margin: 0.8em 0.3em}
 
 /*masonry layout*/
 .masonry_container {column-count: 3;column-gap: 1em;}
