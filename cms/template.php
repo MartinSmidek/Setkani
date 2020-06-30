@@ -519,7 +519,6 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 //    list($id)= explode('#',$id);
         $body.= "<div class='content'><h1>YMCA Setkání</h1></div>";
         $body.= home();
-        if (!$CMS) {$body.= facebook();}
         break;
 
       case 'team':    # ----------------------------------------------- . team
@@ -1180,22 +1179,22 @@ function gallery() {
 
 function facebook() {
   return <<<__EOD
-    <div id='pr_bar' class='container inner_container facebook'>
-    <div class='content' id='facebook_content'>
-      <div id="fb-root"></div>
-      <script async defer crossorigin="anonymous" src="https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v5.0"></script>
-      <div id="fb-root"></div>
-      <script async defer crossorigin="anonymous" src="https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v5.0"></script>
-      <div class="fb-page" data-href="https://www.facebook.com/dum.setkani.org/" data-tabs="timeline" data-width="300px" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="false">
-        <blockquote cite="https://www.facebook.com/dum.setkani.org/" class="fb-xfbml-parse-ignore">
-          <a href="https://www.facebook.com/dum.setkani.org/">Dům setkání Albeřice, YMCA</a>
-        </blockquote>
-      </div><div class="fb-page" data-href="https://www.facebook.com/manzelska.setkani.org/" data-tabs="timeline" data-width="300px" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="false">
-        <blockquote cite="https://www.facebook.com/manzelska.setkani.org/" class="fb-xfbml-parse-ignore">
-          <a href="https://www.facebook.com/manzelska.setkani.org/">Manželská Setkání YMCA</a>
-        </blockquote>
-      </div>
-    </div> 
+    <div class='full_width facebook'>
+      <div class='content' id='facebook_content'>
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v5.0"></script>
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v5.0"></script>
+        <div class="fb-page" data-href="https://www.facebook.com/dum.setkani.org/" data-tabs="timeline" data-width="300px" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="false">
+          <blockquote cite="https://www.facebook.com/dum.setkani.org/" class="fb-xfbml-parse-ignore">
+            <a href="https://www.facebook.com/dum.setkani.org/">Dům setkání Albeřice, YMCA</a>
+          </blockquote>
+        </div><div class="fb-page" data-href="https://www.facebook.com/manzelska.setkani.org/" data-tabs="timeline" data-width="300px" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="false">
+          <blockquote cite="https://www.facebook.com/manzelska.setkani.org/" class="fb-xfbml-parse-ignore">
+            <a href="https://www.facebook.com/manzelska.setkani.org/">Manželská Setkání YMCA</a>
+          </blockquote>
+        </div>
+      </div> 
   </div>
 __EOD;
 }
@@ -1408,40 +1407,43 @@ function home() { trace();
     if ( $x->page==100 && $x->tags == 'A' ) { // ---------------------------------------- hlavní strana - úvodní článek & timeline
       $telo = vlakno($cid,'clanek','home',false);
     }
-    elseif ( $x->home==2 || $x->home==6 ) { // ----------------------- abstrakt na home | nahoru
+    elseif ( ($x->home==2 || $x->home==6) && $x->tags == 'A' ) { // ----------------------- abstrakt na home | nahoru
       $prihlaska= $x->ida ? cms_form_ref("online přihláška") : '';
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
       $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
-      $aktual.= "$code
+      $akce.= "$code
            <div class='abstrakt notif_event x$x->upd' $jmp>
              $prihlaska 
              $x->text
              <div class='clear'></div>
            </div>";
-    }                                //always include first article='Literatura nejen pro muže'
-    elseif ($selector == $counter || $counter==0)/*if ( $x->home==7 )*/{ // --------------------------------------- přečtěte si
+    }
+    elseif ($x->home==1) {
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
       $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
-      $cist.= "$code
-           <div class='abstrakt short_post x $x->upd' style='padding: 9px;max-height: 350px;' $jmp>
-             $x->kdy<span class='post_title'>$x->nadpis</span>
-             <div class='clear'></div>". masonry_text($x->text)."</div>";
+      $cist.= masonry_item($code, $x->upd, $jmp, $x->kdy, $x->nadpis, $x->text);
+    } //all other sections in masonry, always include first article='Literatura nejen pro muže'
+    elseif ($selector == $counter || ($x->uid == 2502 && $x->page == 223))/*if ( $x->home==7 )*/{ // --------------------------------------- přečtěte si
+      $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
+      $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
+      $cist.= masonry_item($code, $x->upd, $jmp, $x->kdy, $x->nadpis, $x->text);
       $selector += $increase;
     }
     $counter++;
   }
   //add new events first
-  $telo = ($aktual) ? "<H2>Pozvánky na akce</H2>" . $aktual . "<br><br>" . $telo : $telo;
+  $telo = ($akce) ? "<H2>Pozvánky na akce</H2>" . $akce . "<br><br>" . $telo : $telo;
   $telo .= timeline();
+  if (!$CMS) {$telo.= "</div>" .  facebook() . "<div class='content'>";}
 
-  $cist= ($cist ? $cist : 'Bohužel zde zatím není žádný článek.');
+  $aktual = ($aktual) ? "<h2>Novinky na webu</h2><div class='masonry_container x'>" . $aktual . "</div>" : $aktual;
+  $cist= $cist ? "<h2>Přečtěte si</h2><div class='masonry_container x'>" . $cist . "</div>" : $cist;
 
   $h= <<<__EOD
   <div class='content'>
   <div id='home_telo' class='x'>$telo</div>
-  
-  <h2>Přečtěte si</h2>
-  <div class='masonry_container x'>$cist</div>
+  $aktual
+  $cist
   </div>
 __EOD;
   return $h;
@@ -1461,6 +1463,11 @@ function masonry_text($text) {
   }
   $ret .= preg_replace("/<img[^>]+\>/i", "", $text);
   return $ret;
+}
+function masonry_item($cms_code, $updated, $jmp, $date, $title, $text) {
+  return "$cms_code <div class='abstrakt short_post x $updated$x->upd' style='padding: 9px;max-height: 350px;' $jmp>
+             $date<span class='post_title'>$title</span>
+             <div class='clear'></div>". masonry_text($text)."</div>";
 }
 /*function masonry_text($abstract, $text) { //todo verze pro abstrakt..
   $image = null;
