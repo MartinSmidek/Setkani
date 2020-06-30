@@ -1180,7 +1180,7 @@ function gallery() {
 function facebook() {
   return <<<__EOD
     <div class='full_width facebook'>
-      <div class='content' id='facebook_content'>
+      <div class='content centered_infull' id='facebook_content'>
         <div id="fb-root"></div>
         <script async defer crossorigin="anonymous" src="https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v5.0"></script>
         <div id="fb-root"></div>
@@ -1353,6 +1353,7 @@ function footer() {
 function home() { trace();
   global $CMS, $def_pars, $href0, $clear, $usergroups;
   global $show_deleted, $show_hidden, $news_time;
+  $now = time();
   $xx= array();
   $p_show= ($show_hidden ?  '' : " AND !p.hidden").($show_deleted ? '' : " AND !p.deleted");
   if ( !$news_time ) $news_time= time() - 1 * 24*60*60;
@@ -1367,6 +1368,7 @@ function home() { trace();
     WHERE (tags='A' OR tags='D') AND !c.deleted AND !c.hidden $p_show
       AND (p.pid=100 OR (p.homepage>0 AND p.homepage NOT IN (5)))
       AND fe_groups IN ($usergroups)
+      AND (homepage!=2 OR fromday > $now)  --ignore started events
     ORDER BY IF(p.pid=100,2,IF(homepage=6,0,1)),
     CASE
       WHEN homepage IN (2) THEN untilday
