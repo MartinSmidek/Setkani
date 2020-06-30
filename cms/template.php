@@ -1368,7 +1368,7 @@ function home() { trace();
     WHERE (tags='A' OR tags='D') AND !c.deleted AND !c.hidden $p_show
       AND (p.pid=100 OR (p.homepage>0 AND p.homepage NOT IN (5)))
       AND fe_groups IN ($usergroups)
-      AND (homepage!=2 OR fromday > $now) 
+      AND (homepage!=2 OR untilday > $now) 
     ORDER BY IF(p.pid=100,2,IF(homepage=6,0,1)),
     CASE
       WHEN homepage IN (2) THEN untilday
