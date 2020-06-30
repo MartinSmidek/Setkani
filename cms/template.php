@@ -1214,9 +1214,10 @@ function timeline()
   $groups = $usergroups ? "AND fe_groups IN ($usergroups)" : 'AND fe_groups=0';
   //AND LEFT(FROM_UNIXTIME(fromday) + INTERVAL 1 MONTH,10) >= LEFT(FROM_UNIXTIME(untilday),10)
   $qry = "
-        SELECT p.uid, c.uid, p.title, p.text, fromday, untilday, c.program, p.id_akce
+        SELECT p.uid, c.uid, p.title, p.text, fromday, untilday, c.program, p.id_akce, a.zruseno
         FROM setkani4.tx_gncase AS c
         JOIN setkani4.tx_gncase_part AS p ON p.cid=c.uid
+        LEFT OUTER JOIN ezer_db2.akce AS a ON p.id_akce=a.id_duakce
         WHERE !c.deleted AND !c.hidden AND !p.hidden AND !p.deleted
           $groups
           AND LEFT(FROM_UNIXTIME(untilday),10)>=LEFT(NOW(),10)
@@ -1225,11 +1226,11 @@ function timeline()
       ";
   $cr = mysql_qry($qry);
   $max_date = 0;
-  while ($cr && (list($p_uid, $cid, $title, $text, $uod, $udo, $program, $ida) = mysql_fetch_row($cr))) {
+  while ($cr && (list($p_uid, $cid, $title, $text, $uod, $udo, $program, $ida, $zruseno) = mysql_fetch_row($cr))) {
     $text = x_shorting($text);
     $max_date = max($max_date, $udo);
-    $xx[$cid] = (object)array('ident' => $p_uid, 'od' => $uod, 'do' => $udo, 'nadpis' => $title,
-        'text' => $text, 'program' => $program, 'ida' => $ida);
+    $xx[$cid] = (object)array('ident' => $p_uid, 'od' => $uod, 'do' => $udo, 'nadpis' => $zruseno ? "<span style=\"text-decoration: line-through;\">" .$title. "</span>" : $title,
+        'text' => $text, 'program' => $program, 'ida' => $ida, 'zruseno' => $zruseno);
   }
 
   $h = "<br><br><br><h2 class='float-left' style='margin-top: 0px;'>Chystáme</h2><div class='float-right legend'>";
@@ -1274,7 +1275,7 @@ function timeline()
     $width = ($duration / $day) * $day_size;
     $gap = ($in_time / $day) * $day_size;
     //
-    $color = barva_programu($x->program);
+    $color = ($x->zruseno) ? "#000000"  : barva_programu($x->program);
     $date = datum_cesky($x->od, $x->do);
     $h .= "<li>
                 <input class='timeline_radio' id='akce$n' name='akce' type='radio'>
@@ -1400,7 +1401,7 @@ function home() { trace();
 
   // články obsahují odkazy, takže nemůže být použito zanoření do <a>..</a>
   $counter = 0;
-  $num_of_articles = 15;
+  $num_of_articles = 10;
   $selector = (date("d", $news_time) + date("m", $news_time)) % $num_of_articles;
   $increase = ceil($num_of_present_articles / $num_of_articles);
   foreach($xx as $cid=>$x) {
