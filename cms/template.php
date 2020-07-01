@@ -1636,11 +1636,11 @@ function load_clanek($uid) { trace();
   }
   list($x->uid,$x->mid,$x->tags,$x->autor,$x->nadpis,$x->obsah,$x->abstract,$psano,$od,$do,
       $x->program,$x->homepage,$x->cruser_id,$x->ctype,$x->sorting,$x->kapitola,$x->pro,
-      $x->id_akce)=
+      $x->id_akce, $x->status)=
       select(
           "p.uid,c.mid,tags,author,title,text,abstract,FROM_UNIXTIME(p.date),FROM_UNIXTIME(fromday),
        FROM_UNIXTIME(untilday),program,homepage,p.cruser_id,type,c.sorting,p.kapitola,c.fe_groups,
-       id_akce",
+       id_akce, status",
           "setkani4.tx_gncase_part AS p JOIN setkani4.tx_gncase AS c ON cid=c.uid",
           "p.uid='$uid'");
   $x->od= sql_date1($od);
@@ -1682,8 +1682,8 @@ function save_clanek($x,$uid,$ref='') { trace(); //debug($x,"save_clanek");
       // nepodstatné pro klienty
       case 'ctype':       $upd= 0; $case[]= "type='$val'"; $type=$val; break;
       case 'cruser_id':   $upd= 0; $part[]= "$elem='$val'"; break;
-      case 'id_akce':     $upd= 0; $part[]= "$elem='$val'"; break;
       case 'homepage':    $upd= 0; $part[]= "$elem='$val'"; break;
+      case 'status':      $upd= 0; $part[]= "$elem='$val'"; break;
       case 'sorting':     $upd= 0; $case[]= "$elem='$val'"; break;
       case 'kapitola':    $upd= 0; $part[]= "$elem='$val'"; break;
       case 'pro':         $upd= 0; $case[]= "fe_groups='$val'"; break;
@@ -2258,7 +2258,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
   $p_show= ($show_hidden ?  '' : " AND !p.hidden").($show_deleted ? '' : " AND !p.deleted");
   $groups= $usergroups ? "AND fe_groups IN ($usergroups)" : 'AND fe_groups=0';
   $qry= "
-    SELECT p.uid, c.uid, fe_groups, tags, p.title, text, p.abstract,p.deleted,p.hidden,fromday,untilday,id_akce,
+    SELECT p.uid, c.uid, fe_groups, tags, p.title, text, p.abstract,p.deleted,p.hidden,fromday,untilday,id_akce,status,
       IF(c.tstamp>$news_time, IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),' upd',' new'),'')
       -- DATEDIFF(FROM_UNIXTIME(untilday),FROM_UNIXTIME(fromday))+1 AS _dnu,
       -- FROM_UNIXTIME(fromday) AS _od, FROM_UNIXTIME(untilday) AS _do
@@ -2273,7 +2273,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     -- LIMIT 6,2
   ";
   $cr= mysql_qry($qry);
-  while ( $cr && (list($p_uid,$cid,$fe_group,$tags,$title,$text,$abstract,$del,$hid,$uod,$udo,$ida,$upd)=
+  while ( $cr && (list($p_uid,$cid,$fe_group,$tags,$title,$text,$abstract,$del,$hid,$uod,$udo,$ida,$status,$upd)=
           mysql_fetch_row($cr)) ) {
     if ( $ida && !in_array($kdy,array('nove','bude','bude_alberice')) )
       $ida= 0;
@@ -2299,7 +2299,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
           }
         }
         $xx[$cid]= (object)array('ident'=>$p_uid,'kdy'=>$akdy, 'rok'=>date("Y", $uod), 'nadpis'=>$title,
-            'abstract'=>$text,'upd'=>$upd,'ida'=>$ida, 'abs'=>$abstract);
+            'abstract'=>$text,'upd'=>$upd,'ida'=>$ida,'status'=>status_class($status),'abs'=>$abstract);
         if ( $fe_group ) {
           $spec++;
           $xx_tags[$cid].= '6';
@@ -2361,7 +2361,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     strpos($xx_tags[$cid],'h')!==false ? ' abstrakt_hidden' : '');
     $code= cid_pid($cid,$x->ident);
 //     $back= $foto ? "#foto$cid" : '';
-    $prihlaska= '';
+
     $prihlaska= $x->ida ? cms_form_ref("on-line přihláška") : '';
 //    $prihlaska= cms_form_ref("on-line přihláška");
 
@@ -2382,7 +2382,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     } else {
       $h.= $x->ident==$id
           ? vlakno($cid,$typ,$back)
-          : "<div class='$abstr' id='n$n'>
+          : "<div class='$abstr $x->status' id='n$n'>
            $code 
            <a class='abstrakt$ex{$x->upd}' $jmp>
              $prihlaska
@@ -2436,6 +2436,17 @@ __EOD;
   }
   return $info;
 }
+# ------------------------------------------------------------------------------------------- status by int
+# 1... event was canceled  2... event is full
+function status_class($status) {
+  switch ($status) {
+    case 1: return "relative status_cancelled";
+    case 2: return "relative status_full";
+    default:
+      return "";
+  }
+}
+
 # ==========================================================================================> vlakno
 # vlákno je tvořeno záznamem v CASE a záznamy v PART:
 #   A-záznam = základní text
@@ -2460,7 +2471,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
   $groups= $usergroups ? "AND fe_groups IN ($usergroups)" : 'AND fe_groups=0';
   $cr= mysql_qry("
     SELECT p.uid,fe_groups,c.type,p.title,p.text,p.author,FROM_UNIXTIME(date),p.tags,
-      p.deleted,p.hidden,fromday,untilday,FROM_UNIXTIME(fromday),id_akce,
+      p.deleted,p.hidden,fromday,untilday,FROM_UNIXTIME(fromday),id_akce,status,
       IF(c.tstamp>$news_time, IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),' upd',' new'),'')
     FROM setkani4.tx_gncase AS c
     JOIN setkani4.tx_gncase_part AS p ON c.uid=p.cid
@@ -2469,7 +2480,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
     ORDER BY tags,date
   ");
   while ( $cr && (
-      list($uid,$fe_group,$type,$title,$text,$autor,$psano,$tags,$del,$hid,$uod,$udo,$od,$ida,$upd)
+      list($uid,$fe_group,$type,$title,$text,$autor,$psano,$tags,$del,$hid,$uod,$udo,$od,$ida,$status,$upd)
           = mysql_fetch_row($cr)) ) {
     $kdy= $ex= '';
     $ex.= $del ? 'd' : '';
@@ -2484,7 +2495,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
     if ( $tags=='A' || $tags=='K' ) $uid_a= $uid;
     if ( ($tags=='A' || $tags=='K') && $fe_group ) $spec++;
     $xx[]= (object)array('uid'=>$uid,'nadpis'=>$title,'obsah'=>$text,'tags'=>$tags,'ex'=>$ex,
-        'kdy'=>$kdy,'od'=>$od,'autor'=>$autor,'psano'=>sql_date1($psano),'ida'=>$ida,'upd'=>$upd);
+        'kdy'=>$kdy,'od'=>$od,'autor'=>$autor,'psano'=>sql_date1($psano),'ida'=>$ida,'status'=>status_class($status),'upd'=>$upd);
   }
 //                                                         debug($x,"vlákno=$cid");
   $found= count($xx)." článků" . ($spec ? " ($spec)" : '');
@@ -2559,7 +2570,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
             $code
             <div id='clanek$uid' class='clanek x$x->upd'$menu$style>
               $prihlaska
-              <div class='text'>
+              <div class='text $x->status'>
                 $title$podpis
                 $obsah
               </div>
@@ -2599,7 +2610,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
       $h.= "
         $code
         <div id='clanek$uid' class='relative galerie$x->upd'$menu><span class='anchor' id='anchor$uid'></span>
-          <div class='text'>
+          <div class='text $x->status'>
             <h3>$x->nadpis $note</h3> $podpis
             $galery
           </div>
@@ -2619,7 +2630,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
       $h.= "<div class='x' $event>
            <div id='clanek$uid' class='relative clanek x$x->upd'$menu$style><span class='anchor' id='anchor$uid'></span>
             $code
-            <div class='text'>
+            <div class='text $x->status'>
               <h2>$x->nadpis</h2>$podpis
                  $obsah
             </div>

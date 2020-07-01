@@ -493,6 +493,7 @@ panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialo
     f.program.selects("rodiny:1,manželé:2,chlapi:3,ženy:4,mládež:5,Albeřice:6");
     f.homepage.selects(conc("-:0,Abs. na homepage:2,Abs. nahoru:6",
       ",Aktuálně ...:1,Doporučujeme ...:8,Přečtěte si ...:7"));
+    f.status.selects("-:0,zrušeno:1,obsazeno:2");
   }
   proc join_drop() {
     UPLOAD.ckeditor.set(f.obsah);
@@ -513,6 +514,7 @@ panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialo
     { eq(_typ,'akce'); f.ctype.set(2);
       f.od.set(now); f.do.set(now);
       f.program.key(function("return vyber();"));
+      f.status.key(0);
     | eq(_typ,'aakce'); f.ctype.set(2);
       f.od.set(now); f.do.set(now);
       f.program.key(6);
@@ -675,12 +677,13 @@ panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialo
     field psano  [412,15,85,]    { tag:'a,c,p', type:'date', title:'^psáno:', format:'r' }
     select pro   [502,15,80,]    { tag:'a,c,p', type:'map0', title:'^ jen pro:', options:web_skupina.zkratka }
     field fname  [146,39,200,]   { tag:'p', title:'jméno souboru PDF (bez typu))', help:'ve složce PDF' }
-    field od     [35,39,85,]     { tag:'a', type:'date', title:'od:', format:'r' }
-    field do     [145,39,85,]    { tag:'a', type:'date', title:'do:', format:'r' }
-    select program [255,39,120,] { tag:'a', type:'multi', title:'pro:' }
+    field od     [35,39,83,]     { tag:'a', type:'date', title:'od:', format:'r' }
+    field do     [143,39,83,]    { tag:'a', type:'date', title:'do:', format:'r' }
+    select program [253,39,60,] { tag:'a', type:'multi', title:'pro:' }
     field sorting [300,39,60,]   { tag:'c', title:'priorita:', format:'r' }
-    select homepage [413,39,85,] { tag:'a,c', title:'home:' format:'t' }
-    field id_akce [540,39,40,]   { tag:'a', title:'ID akce', format:'r', skill:'r|m' }
+    select status [350,39,50,]   { tag:'a', title:'status:' format:'t' }
+    select homepage [440,39,60,] { tag:'a,c', title:'home:' format:'t' }
+    field id_akce [542,39,40,]   { tag:'a', title:'ID akce', format:'r', skill:'r|m' }
     edit obsah   [0,62,730,320] { type:'html', par:°{toolbar:'CMS'}
       proc ondrop(f) {                   // odmítnutí přenosu při novém článku
         echo('CKEDIT dropped=',f.name);  //  kterého neznáme cid
