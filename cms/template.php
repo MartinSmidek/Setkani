@@ -2299,7 +2299,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
           }
         }
         $xx[$cid]= (object)array('ident'=>$p_uid,'kdy'=>$akdy, 'rok'=>date("Y", $uod), 'nadpis'=>$title,
-            'abstract'=>$text,'upd'=>$upd,'ida'=>$ida,'status'=>status_class($status),'abs'=>$abstract);
+            'abstract'=>strlen($abstract) < 25 ? $text : $abstract ,'upd'=>$upd,'ida'=>$ida,'status'=>status_class($status));
         if ( $fe_group ) {
           $spec++;
           $xx_tags[$cid].= '6';
@@ -2362,7 +2362,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $code= cid_pid($cid,$x->ident);
 //     $back= $foto ? "#foto$cid" : '';
 
-    $prihlaska= $x->ida ? cms_form_ref("on-line přihláška") : '';
+    $prihlaska= $x->ida ? cms_form_ref("ONLINE PŘIHLÁŠKA") : '';
 //    $prihlaska= cms_form_ref("on-line přihláška");
 
     if ($typ=='foto') {
