@@ -1424,12 +1424,12 @@ function home() { trace();
     elseif ($x->home==1) {
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
       $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
-      $cist.= masonry_item($code, $x->upd, $jmp, $x->kdy, $x->nadpis, $x->text);
+      $cist.= masonry_item($code, $x->upd, $jmp, $x->kdy, $x->nadpis, strlen($x->abstract) > 30 ? $x->abstract : $x->text);
     } //all other sections in masonry, always include first article='Literatura nejen pro muže'
     elseif ($selector == $counter || ($x->uid == 2502 && $x->page == 223))/*if ( $x->home==7 )*/{ // --------------------------------------- přečtěte si
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
       $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
-      $cist.= masonry_item($code, $x->upd, $jmp, $x->kdy, $x->nadpis, $x->text);
+      $cist.= masonry_item($code, $x->upd, $jmp, $x->kdy, $x->nadpis, strlen($x->abstract) > 30 ? $x->abstract : $x->text);
       $selector += $increase;
     }
     $counter++;
@@ -2299,7 +2299,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
           }
         }
         $xx[$cid]= (object)array('ident'=>$p_uid,'kdy'=>$akdy, 'rok'=>date("Y", $uod), 'nadpis'=>$title,
-            'abstract'=>strlen($abstract) < 25 ? $text : $abstract ,'upd'=>$upd,'ida'=>$ida,'status'=>status_class($status));
+            'abstract'=> web_text($abstract) ,'upd'=>$upd,'ida'=>$ida,'status'=>status_class($status));
         if ( $fe_group ) {
           $spec++;
           $xx_tags[$cid].= '6';
@@ -2377,7 +2377,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
                <div class='fbg'></div>
                <div class='fimg' $img></div>
                <div class='ftitle'>$x->kdy $flags&nbsp;<b>$x->nadpis:</b></div>
-               <div class='ftext'>$x->abstract</div>
+               <div class='ftext'>$x->text</div>
          </a>";
     } else {
       $h.= $x->ident==$id
@@ -2387,7 +2387,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
            <a class='abstrakt$ex{$x->upd}' $jmp>
              $prihlaska
              <span class='akce_datum'>$x->kdy $flags</span>  <b>$x->nadpis:</b><div class='clear'></div>$img 
-               <p>$x->abstract</p>
+               <p>$x->text</p>
            </a>
          </div>";
     }
