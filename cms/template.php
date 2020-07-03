@@ -2377,7 +2377,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
                <div class='fbg'></div>
                <div class='fimg' $img></div>
                <div class='ftitle'>$x->kdy $flags&nbsp;<b>$x->nadpis:</b></div>
-               <div class='ftext'>$x->text</div>
+               <div class='ftext'>$x->abstract</div>
          </a>";
     } else {
       $h.= $x->ident==$id
@@ -2387,7 +2387,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
            <a class='abstrakt$ex{$x->upd}' $jmp>
              $prihlaska
              <span class='akce_datum'>$x->kdy $flags</span>  <b>$x->nadpis:</b><div class='clear'></div>$img 
-               <p>$x->text</p>
+               <p>$x->abstract</p>
            </a>
          </div>";
     }
