@@ -2299,7 +2299,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
           }
         }
         $xx[$cid]= (object)array('ident'=>$p_uid,'kdy'=>$akdy, 'rok'=>date("Y", $uod), 'nadpis'=>$title,
-            'abstract'=> web_text($abstract) ,'upd'=>$upd,'ida'=>$ida,'status'=>status_class($status));
+            'abstract'=> $text,'upd'=>$upd,'ida'=>$ida,'status'=>status_class($status));
         if ( $fe_group ) {
           $spec++;
           $xx_tags[$cid].= '6';
