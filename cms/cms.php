@@ -93,8 +93,7 @@
         embed_provider: '//iframe.ly/api/oembed?url={url}&callback={callback}&api_key=313b5144bfdde37b95c235',
         uploadUrl:'cms/upload.php?root=cms&type=Images',
         stylesSet:[
-          {name:'název',     element:'h1'},
-          {name:'nadpis',    element:'h2'},
+          {name:'nadpis',    element:'h2'}
           {name:'podnadpis', element:'h3'},
           {name:'odstavec',  element:'p'},
           {name:'odstavec!', element:'p',    attributes:{'class':'p-clear'}},

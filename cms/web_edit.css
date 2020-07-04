@@ -14,6 +14,10 @@ img.shadow, p.shadow img { filter: drop-shadow(5px 5px 10px #567); }
 
 body.cke_editable img { margin:.2em; height:auto !important; max-width:100%; }
 
+/*remove table cellpadding/cellspacing*/
+table {border-collapse: collapse;}
+th, td {padding: 0;}
+
 /* zúžení lišty */
 a.cke_button { padding: 4px 4px !important; }
 a.cke_button_off:hover, a.cke_button_off:focus, a.cke_button_off:active {

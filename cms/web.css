@@ -113,6 +113,9 @@ h1 {margin-top: 60px; font-size:32pt; margin-left: 1.2em; font-weight: 250; }
 h2 {margin-top: 40px; font-size:20pt; margin-left: 1.2em; font-weight: 300; }
 h3 {margin-top: 30px; font-size:15pt; }
 
+/*remove table cellpadding/cellspacing*/
+table {border-collapse: collapse;}
+th, td {padding: 0;}
 
 .clear { clear:both; }
 .center { position: relative; display: block; margin: 0 auto; }

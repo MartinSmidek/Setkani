@@ -1582,9 +1582,8 @@ function clanky($pids,$uid=0,$mid=0,$chlapi='',$back='') { trace();
       $jmp= str_replace('*', $x->ident, $back);
     }
     else {
-      $jmp_code= "go_anchor(arguments[0],'$href0!$x->ident#vlakno','$page_mref$roks/$x->ident#anchor$x->ident');";
-      $jmp= $CMS ? "onclick=\"$jmp_code\""
-          : "href='$page_mref$roks/$x->ident#anchor$x->ident'";
+      $jmp_code= "go_anchor(arguments[0],'$href0!$x->ident#vlakno','$page_mref/$x->ident#anchor$x->ident');";
+      $jmp= $CMS ? "onclick=\"$jmp_code\"" : "href='$page_mref/$x->ident#anchor$x->ident'";
     }
     $menu= '';
     $typ= 'clanek';
@@ -1593,7 +1592,7 @@ function clanky($pids,$uid=0,$mid=0,$chlapi='',$back='') { trace();
       $menu= $x->type==3
           ? " oncontextmenu=\"
             Ezer.fce.contextmenu([
-              ['otevřít knihu',function(el){ go(null,'$href0!$x->ident#vlakno','$page_mref$roks/$x->ident'); }],
+              ['otevřít knihu',function(el){ go(null,'$href0!$x->ident#vlakno','$page_mref/$x->ident'); }],
               ['editovat knihu',function(el){ opravit('$typ','$ident','$cid'); }],
               ['-skrýt knihu',function(el){ skryt('$typ','$ident',1); }],
               ['zobrazit knihu',function(el){ skryt('$typ','$ident',0); }],
@@ -1619,7 +1618,7 @@ function clanky($pids,$uid=0,$mid=0,$chlapi='',$back='') { trace();
             ? vlakno($cid,'clanek','')
             : "<div class='$abstr x'$menu>
              $code
-             <a id='abstr$ident' class='abstrakt $ex x$css $x->upd' $jmp>
+             <a id='abstr$ident' class='abstrakt $ex x $x->upd' $jmp>
                $flags <span class='h7'>$x->nadpis:</span> $x->abstract
              </a>
            </div>"
@@ -1673,7 +1672,10 @@ function save_clanek($x,$uid,$ref='') { trace(); //debug($x,"save_clanek");
       case 'autor':       $part[]= "author='".mysql_real_escape_string($val)."'"; break;
       case 'nadpis':      $part[]= "title='".mysql_real_escape_string($val)."'"; break;
       case 'obsah':       $part[]= "text='".mysql_real_escape_string($val)."'"; break;
-      case 'abstract':    $part[]= "$elem='".mysql_real_escape_string($val)."'"; break;
+      case 'abstract':    //check whether abstract filled in (database had abstract fields with '&nbsp;' content only)
+        if (strlen($val) < 20) $part[]= "$elem=''";
+        else  $part[]= "$elem='".mysql_real_escape_string($val)."'";
+        break;
       case 'id_akce':     $part[]= "id_akce='$val'"; break;
       case 'od':          $case[]= "fromday=UNIX_TIMESTAMP('".sql_date1($val,1)."')"; break;
       case 'do':          $case[]= "untilday=UNIX_TIMESTAMP('".sql_date1($val,1)."')"; break;
