@@ -662,7 +662,7 @@ label.form_button {float: right}
   h2, h3, h4 {margin-left: 0.1em !important;}
 
   /*todo delete?*/#cist_dole { display:block; }
-  #web {margin-top: 50px;}
+  #web {margin-top: 80px;}
   #list {padding: 0;}
   .content {padding: 0 12px;}
   /*popup*/
@@ -717,7 +717,7 @@ label.form_button {float: right}
   /* velká tlačítka */
   #page_sm span.label { padding-top:0.4em; }
   /* střední písmo menu */
-  #web {margin-top: 50px;}
+  #web {margin-top: 80px;}
   .masonry_container { column-count: 2;}
   #facebook_content {width: 300px; padding-top: 80px; padding-right: 40px;}
   #facebook_content:before {transform: translate(00px, -70px);}

@@ -849,6 +849,7 @@ __EOD;
            $submenu
        </div>
        $mainmenu2
+       <a href='#footer_contacts' class='jump'><span>Kontakty</span></a>
     </div>
       <span onclick=\"bar_menu(arguments[0],'new1');\"><img src='cms/img/new.png'> změny za den</span>
       <span onclick=\"bar_menu(arguments[0],'new7');\"><img src='cms/img/new.png'> změny za týden</span>
@@ -985,6 +986,7 @@ $head
         </div>
         <div id='page_hm' class='x mobile_nodisplay'>
           $mainmenu1 $mainmenu2
+           <a href='#footer_contacts' class='jump'><span>Kontakty</span></a>
         </div>
       </div>
       <div class='clear'></div>
@@ -1014,6 +1016,7 @@ __EOD;
         </div>
         <div id='page_hm' class='x mobile_nodisplay'>
           $mainmenu1 $mainmenu2
+           <a href='#footer_contacts' class='jump'><span>Kontakty</span></a>
         </div>
       </div>
       <div class='clear'></div>
@@ -1331,6 +1334,7 @@ function footer() {
     }
   }
   return "<div id='page_footer_info' class='container footer'$menu><div id='page_footer_info_overlay'>
+            <span class='anchor' id='footer_contacts'></span>
             <div class='content white'>
               <div id='footer-left-part'>
                  $contacts
