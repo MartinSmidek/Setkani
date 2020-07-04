@@ -880,6 +880,7 @@ __EOD;
     </ul>
   </li>
   <li><b>Začínejte vždy nějaký odstavcem textu</b>, alespoň dva-tři řádky. Tento bude často (hlavně u akcí) zobrazen v náhledech a web bude vypadat mnohem lépe.</li>
+  <li><b>Nepřehánějte to s různorodostí textu či vlastními styly:</b> <span style='color: red'>barevné</span>, <span style='background: #00FFFF'>strakaté</span> a <span style='font-family: \"Courier New\", Monospace; font-size: 18pt;'>různorodé</span> fonty jsou <b>fuj!</b> Méně je často více.</li>
  </ul></div>" : "";
 
   $body= <<<__EOD
