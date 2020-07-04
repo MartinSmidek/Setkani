@@ -43,10 +43,25 @@ body { /*overflow-y:auto;*/ font-family: 'Open Sans', sans-serif; overflow-x:hid
 .iframe_outer {position: relative;overflow: hidden;padding-top: 30%;}
 .iframe_inner {position: absolute;top: 0;left: 0;width: 100%;height: 100%;border: none; max-width: 600px}
 
+/*remove table cellpadding/cellspacing*/
+table {border-collapse: collapse;}
+th {padding: 0;}
+td {padding: 2px 8px;}
+
 /*Table for articles*/
-.text table {border: none; width: 100%}
-.text table tr:nth-child(even) {background: #CCC}
-.text table tr:nth-child(odd) {background: #FFF}
+table.table1 {border: none;width: 98% !important;}
+table.table1 th {background: #89b3cc; font-weight: bold;}
+table.table1 tr:nth-child(even) {background: #e0e0e0}
+table.table1 tr:nth-child(odd) {background: #FFF}
+
+table.table2 {border: 1px solid;width: 98% !important;}
+table.table2 th {background: #89b3cc; font-weight: bold;}
+table.table2 td {border-left: 1px solid; border-right: 1px solid;}
+
+table.table3 {border: 1px solid;width: 98% !important;}
+table.table3 th {background: #89b3cc; font-weight: bold;}
+table.table3 td {border: 1px solid;}
+
 
 #page { margin: 0 auto; }
 #work {  }
@@ -108,14 +123,13 @@ h1, #web h2,h3 { -webkit-column-break-inside: avoid; -moz-column-break-inside: a
 #web img {margin:.5em;height:auto !important;max-width:100%;}
 #web .abstr img {margin: 0 5px 0 0}
 
+hr {height: 3px;border: none; background: #f2f2f2;}
+.akce_prehled hr {background: #ccd2d9;}
 
 h1 {margin-top: 60px; font-size:32pt; margin-left: 1.2em; font-weight: 250; }
 h2 {margin-top: 40px; font-size:20pt; margin-left: 1.2em; font-weight: 300; }
 h3 {margin-top: 30px; font-size:15pt; }
 
-/*remove table cellpadding/cellspacing*/
-table {border-collapse: collapse;}
-th, td {padding: 0;}
 
 .clear { clear:both; }
 .center { position: relative; display: block; margin: 0 auto; }

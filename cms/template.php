@@ -620,10 +620,9 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
             $checked= strpos($x,$id)!==false ? ' checked' : '';
 //         if ( $kdy ) {
 
-            //if(jQuery(\"#inclusion_icon\").hasClass(\"exclusive\")) {jQuery(this).parent().parent().children(\"label\").each(function() {jQuery(this).find(\"input\").prop( \"checked\", false);}); jQuery(this).prop( \"checked\", true);} jQuery(this).parent().toggleClass(\"checked\"); history_push(\"$href0\",\"komu\",$level,\"$kdy\");
 
             $on= $kernel=='ezer3.1'
-                ? " onchange='jQuery(this).parent().toggleClass(\"checked\"); history_push(\"$href0\",\"komu\",$level,\"$kdy\");'"
+                ? " onchange='if(jQuery(\"#inclusion_icon\").hasClass(\"exclusive\")) {jQuery(this).parent().parent().children(\"label\").each(function() {jQuery(this).find(\"input\").prop( \"checked\", false);}); jQuery(this).prop( \"checked\", true);} jQuery(this).parent().toggleClass(\"checked\"); history_push(\"$href0\",\"komu\",$level,\"$kdy\");'"
                 : " onchange='this.parentNode.toggleClass(\"checked\");history_push(\"$href0\",\"komu\",$level,\"$kdy\");'"; //exlcusion does not work here for now.. remove all ezer-version conditions?...
             $html.= "<label class='$checked'>$nazev
                      <input name='komu' data-value='$i' value='$id' type='checkbox'$checked$on$alberice>
@@ -866,8 +865,26 @@ __EOD;
 // body
   $footer = footer();
 
+  $notice = ($CMS) ? "<div class='content' style='background: #efbf54; padding: 12px;'>
+  <h2>Zásady psaní pěkných článků</h2>
+  <ul>
+  <li><b>Nepoužívejte</b> pouze <b>velká písmena</b>. Je to obecně chápano jako KŘIČENÍ/NADÁVÁNÍ, nechtěli byste, aby na vás články křičely.</li>
+  <li>Pozor málo nadpisů. <b>Každá logická část textu by měla mít nadpis</b>. Jinak se v těxtu špatně orientuje. Použijte menší styl, pokud si nejste jistí, vypadá to lépe (například ten největší bude použit na titulek a jen zřídka jej chcete znovu použít v textu).</li>
+  <li><b>Pozor dlouhé nebo velký počet napisů</b>. Pokud je výrazná část příliš dlouhá nebo je nadpisů přiliš mnoho, text vypadá přeplácaný.</li>
+  <li><b>Nepoužívejte</b> ASCII art (<b>vykreslování či pozicování pomocí znaků</b>). Většinou se rozbije kvůli různým velikostem písem atd.
+    <ul>
+      <li><b>Na ceníky použijte tabulky.</b> Zadejte jen počet sloupců/řádků a nezapomeňte si přidat záhlaví.</li>
+      <li>Místo -------- a podobných odsazení <b>použijte vodorovnou linku</b> (hned vedle 'obrázek').</li>
+      <li>Na odsazení textu používejte bloky (odrážky, zarovnání..) a ne bílé mezery. Pokud vám chybí nějaký prvek, dejte vědět programátorům.</li>
+      <li><b>Používejte styly</b> (vlevo nahoře v editoru). <b>Klikněte na objekt</b>, u kterého chcete změnit vzhled <b>a vyberte ze sekce 'Objektové styly'</b> svůj vlastní. Tyto styly mizí a objevují se podle toho, kde je váš kurzor.</li>
+    </ul>
+  </li>
+  <li><b>Začínejte vždy nějaký odstavcem textu</b>, alespoň dva-tři řádky. Tento bude často (hlavně u akcí) zobrazen v náhledech a web bude vypadat mnohem lépe.</li>
+ </ul></div>" : "";
+
   $body= <<<__EOD
   <div id='page'>
+    $notice
     $body
    
     <div id='user_login' style="display:$fe_user_display">
@@ -2577,7 +2594,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
       $title = $h1 ? "<h1>$x->nadpis</h1>" : "<h2>$x->nadpis</h2>";
       $h.= "<div class='x relative' $event><span class='anchor' id='anchor$uid'></span>
             $code
-            <div id='clanek$uid' class='clanek x$x->upd'$menu$style>
+            <div id='clanek$uid' class='akce_prehled clanek x$x->upd'$menu$style>
               $prihlaska
               <div class='text $x->status'>
                 $title$podpis

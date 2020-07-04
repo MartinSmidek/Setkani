@@ -16,7 +16,24 @@ body.cke_editable img { margin:.2em; height:auto !important; max-width:100%; }
 
 /*remove table cellpadding/cellspacing*/
 table {border-collapse: collapse;}
-th, td {padding: 0;}
+th {padding: 0;}
+td {padding: 2px 8px;}
+
+/*Table for articles*/
+table.table1 {border: none;width: 98% !important;}
+table.table1 th {background: #89b3cc; font-weight: bold;}
+table.table1 tr:nth-child(even) {background: #e0e0e0}
+table.table1 tr:nth-child(odd) {background: #FFF}
+
+table.table2 {border: 1px solid;width: 98% !important;}
+table.table2 th {background: #89b3cc; font-weight: bold;}
+table.table2 td {border-left: 1px solid; border-right: 1px solid;}
+
+table.table3 {border: 1px solid;width: 98% !important;}
+table.table3 th {background: #89b3cc; font-weight: bold;}
+table.table3 td {border: 1px solid;}
+
+hr {height: 3px;border: none; background: #ccd2d9;}
 
 /* zúžení lišty */
 a.cke_button { padding: 4px 4px !important; }

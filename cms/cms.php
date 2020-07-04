@@ -100,7 +100,10 @@
           {name:'neodkaz',   element:'span', attributes:{'class':'neodkaz'}},
           {name:'stín',      element:'p',    attributes:{'class':'shadow'}},
           {name:'stín/i',    element:'img',  attributes:{'class':'shadow'}},
-          {name:'odkaz',     element:'a',    attributes:{'class':'jump'}}
+          {name:'plná šířka',  element:'table', attributes:{'class':'fill_parent'}},
+          {name:'styl 1',     element:'table',    attributes:{'class':'table1'}},
+          {name:'styl 2',     element:'table',    attributes:{'class':'table2'}},
+          {name:'styl 3',     element:'table',    attributes:{'class':'table3'}}
         ],
         contentsCss:'/cms/web_edit.css'
       }
