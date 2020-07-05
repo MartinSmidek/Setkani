@@ -14,7 +14,7 @@ img.shadow, p.shadow img { filter: drop-shadow(5px 5px 10px #567); }
 body.cke_editable img { margin:.2em; height:auto !important; max-width:100%; }
 
 /*Paragraphs*/
-div.pquote {position: relative !important; padding: 10px 50px;margin: 0 auto;background-color: antiquewhite; clear: both; width: fit-content; max-width: 85%; overflow: hidden}
+div.pquote {position: relative !important; padding: 10px 50px;margin: 0 auto; clear: both; width: fit-content; max-width: 85%; overflow: hidden}
 div.pquote:before {content: '”'; position: absolute; font-size: 50px;font-family: serif;left: 13px;bottom: -10px; color: grey;}
 div.pquote:after {content: '“'; position: absolute; font-size: 50px;font-family: serif;right: 13px; top: 10px; color: grey;}
 

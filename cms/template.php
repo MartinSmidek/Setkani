@@ -869,7 +869,7 @@ __EOD;
   <h2>Zásady psaní pěkných článků</h2>
   <ul>
   <li><b>Nepoužívejte</b> pouze <b>velká písmena</b>. Je to obecně chápano jako KŘIČENÍ/NADÁVÁNÍ, nechtěli byste, aby na vás články křičely.</li>
-  <li>Pozor málo nadpisů. <b>Každá logická část textu by měla mít nadpis</b>. Jinak se v těxtu špatně orientuje. Použijte menší styl, pokud si nejste jistí, vypadá to lépe (například ten největší bude použit na titulek a jen zřídka jej chcete znovu použít v textu).</li>
+  <li>Pozor na málo nadpisů. <b>Každá logická část textu by měla mít nadpis</b>. Jinak se v těxtu špatně orientuje. Použijte menší styl, pokud si nejste jistí, vypadá to lépe (například ten největší bude použit na titulek a jen zřídka jej chcete znovu použít v textu).</li>
   <li><b>Pozor dlouhé nebo velký počet napisů</b>. Pokud je výrazná část příliš dlouhá nebo je nadpisů přiliš mnoho, text vypadá přeplácaný.</li>
   <li><b>Nepoužívejte</b> ASCII art (<b>vykreslování či pozicování pomocí znaků</b>). Většinou se rozbije kvůli různým velikostem písem atd.
     <ul>
@@ -879,13 +879,14 @@ __EOD;
       <li><b>Používejte styly</b> (vlevo nahoře v editoru). <b>Klikněte na objekt</b>, u kterého chcete změnit vzhled <b>a vyberte ze sekce 'Objektové styly'</b> svůj vlastní. Tyto styly mizí a objevují se podle toho, kde je váš kurzor.</li>
          <ul>
              <li>Styly 'citace', 'upozornění' apod. nepodporují odřádkování - použijte vodorovnou linku (hned vedle ikony vložení obrázku).</li>
-             <li><b>Nenadužívejte grafických zvýraznění textu</b> - platí to, co s nadpisy. Moc - přeplácané.</li>
+             <li><b>Nenadužívejte grafických zvýraznění textu</b> - platí to, co s nadpisy. Moc zvýrazňování = přeplácané.</li>
         </ul>
     </ul>
   </li>
-  <li><b>Začínejte vždy nějaký odstavcem textu</b>, alespoň dva-tři řádky. Tento bude často (hlavně u akcí) zobrazen v náhledech a web bude vypadat mnohem lépe.</li>
   <li><b>Nepřehánějte to s různorodostí textu či vlastními styly:</b> <span style='color: red'>barevné</span>, <span style='background: #00FFFF'>strakaté</span> a <span style='font-family: \"Courier New\", Monospace; font-size: 18pt;'>různorodé</span> fonty jsou <b>fuj!</b> Méně je často více.</li>
- </ul></div>" : "";
+ </ul>
+ <p>A hlavně: <b>začínejte vždy nějaký odstavcem textu</b>, alespoň dva-tři řádky. Tento bude často (hlavně u akcí) zobrazen v náhledech a web bude vypadat mnohem lépe.</p>
+ </div>" : "";
 
   $body= <<<__EOD
   <div id='page'>
