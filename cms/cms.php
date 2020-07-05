@@ -97,6 +97,8 @@
           {name:'nadpis sekce', element:'h3'},
           {name:'text',  element:'p'},
           {name:'text na novém řádku', element:'p',    attributes:{'class':'p-clear'}},
+          {name:'obtékání textu zleva', element:'p',    attributes:{'class':'float-left'}},
+          {name:'obtékání textu zprava', element:'p',    attributes:{'class':'float-right'}},
           {name:'upozornění',      element:'div',    attributes:{'class':'notice_style notice_warning'}},
           {name:'zajímavost',      element:'div',    attributes:{'class':'notice_style notice_info'}},
           {name:'citace',      element:'div',    attributes:{'class':'pquote'}},

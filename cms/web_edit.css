@@ -24,6 +24,9 @@ div.notice_warning:before {content: 'Upozornění:';position: absolute;left: 20p
 div.notice_info {background-color: #d7f192; }
 div.notice_info:before {content: 'Zajímavost:';position: absolute;left: 20px; top: 10px; color: #618011; font-weight: bold;}
 
+.float-right { float: right; }
+.float-left { float: left; }
+
 /*Tables*/
 /*remove table cellpadding/cellspacing*/
 table {border-collapse: collapse;}
