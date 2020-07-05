@@ -122,7 +122,7 @@ h1, #web h2,h3 { -webkit-column-break-inside: avoid; -moz-column-break-inside: a
 #web .abstr img {margin: 0 5px 0 0}
 
 hr {height: 3px;border: none; background: #f2f2f2;}
-div.pquote hr {display: none;}
+div.pquote hr, div.notice_style hr {display: none;}
 
 .akce_prehled hr {background: #ccd2d9;}
 
