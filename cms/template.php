@@ -804,7 +804,7 @@ __EOD;
   
   $eb_link
   <link href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&amp;subset=latin-ext" rel="stylesheet">
-  <link rel="stylesheet" href="cms/web.css?v=4.1" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="cms/web.css?v=4.2" type="text/css" media="screen" charset="utf-8">
   <script type="text/javascript">
     var Ezer={web:{ $Ezer_web},cms:{form:{}}};
     if ( !console ) {
@@ -877,6 +877,10 @@ __EOD;
       <li>Místo -------- a podobných odsazení <b>použijte vodorovnou linku</b> (hned vedle 'obrázek').</li>
       <li>Na odsazení textu používejte bloky (odrážky, zarovnání..) a ne bílé mezery. Pokud vám chybí nějaký prvek, dejte vědět programátorům.</li>
       <li><b>Používejte styly</b> (vlevo nahoře v editoru). <b>Klikněte na objekt</b>, u kterého chcete změnit vzhled <b>a vyberte ze sekce 'Objektové styly'</b> svůj vlastní. Tyto styly mizí a objevují se podle toho, kde je váš kurzor.</li>
+         <ul>
+             <li>Styly 'citace', 'upozornění' apod. nepodporují odřádkování - použijte vodorovnou linku (hned vedle ikony vložení obrázku).</li>
+             <li><b>Nenadužívejte grafických zvýraznění textu</b> - platí to, co s nadpisy. Moc - přeplácané.</li>
+        </ul>
     </ul>
   </li>
   <li><b>Začínejte vždy nějaký odstavcem textu</b>, alespoň dva-tři řádky. Tento bude často (hlavně u akcí) zobrazen v náhledech a web bude vypadat mnohem lépe.</li>

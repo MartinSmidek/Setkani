@@ -93,17 +93,19 @@
         embed_provider: '//iframe.ly/api/oembed?url={url}&callback={callback}&api_key=313b5144bfdde37b95c235',
         uploadUrl:'cms/upload.php?root=cms&type=Images',
         stylesSet:[
-          {name:'nadpis',    element:'h2'},
-          {name:'podnadpis', element:'h3'},
-          {name:'odstavec',  element:'p'},
-          {name:'odstavec!', element:'p',    attributes:{'class':'p-clear'}},
-          {name:'neodkaz',   element:'span', attributes:{'class':'neodkaz'}},
-          {name:'stín',      element:'p',    attributes:{'class':'shadow'}},
-          {name:'stín/i',    element:'img',  attributes:{'class':'shadow'}},
-          {name:'plná šířka',  element:'table', attributes:{'class':'fill_parent'}},
-          {name:'styl 1',     element:'table',    attributes:{'class':'table1'}},
-          {name:'styl 2',     element:'table',    attributes:{'class':'table2'}},
-          {name:'styl 3',     element:'table',    attributes:{'class':'table3'}}
+          {name:'nadpis článku', element:'h2'},
+          {name:'nadpis sekce', element:'h3'},
+          {name:'text',  element:'p'},
+          {name:'text na novém řádku', element:'p',    attributes:{'class':'p-clear'}},
+          {name:'upozornění',      element:'div',    attributes:{'class':'notice_style notice_warning'}},
+          {name:'zajímavost',      element:'div',    attributes:{'class':'notice_style notice_info'}},
+          {name:'citace',      element:'div',    attributes:{'class':'pquote'}},
+          {name:'stín odstavce',      element:'p',    attributes:{'class':'shadow'}},
+          {name:'stín obrázku',    element:'img',  attributes:{'class':'shadow'}},
+          {name:'plná šířka tabulky',  element:'table', attributes:{'class':'fill_parent'}},
+          {name:'styl tabulky 1',     element:'table',    attributes:{'class':'table1'}},
+          {name:'styl tabulky 2',     element:'table',    attributes:{'class':'table2'}},
+          {name:'styl tabulky 3',     element:'table',    attributes:{'class':'table3'}}
         ],
         contentsCss:'/cms/web_edit.css'
       }
