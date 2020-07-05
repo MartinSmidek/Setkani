@@ -45,8 +45,7 @@ table.table3 td {border: 1px solid;}
 
 /*Horizonal line*/
 hr {height: 3px;border: none; background: #ccd2d9;}
-div.pquote hr {display: none;}
-div.pquote hr, div.notice_style hr {display: none;}
+div.pquote hr, div.notice_style hr {height: 0;}
 
 /*Hypertext redirects*/
 iframe a:not(.plain_href), iframe a.styled, #vlakno a:not(.plain_href), #vlakno a.styled { color: #883434; padding: 0 4px; font-weight: bold;}
