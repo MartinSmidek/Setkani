@@ -1911,7 +1911,7 @@ function kalendare($vyber, $rok, $id) { trace();
          ' upd',' new'),'')
       FROM setkani4.tx_gncase AS c
       JOIN (SELECT * FROM setkani4.tx_gncase_part WHERE tags='K') AS p ON c.uid=p.cid 
-      WHERE $p_show $groups $c_kdy
+      WHERE $c_kdy $groups $p_show
       ORDER BY fromday DESC
     ");
 
