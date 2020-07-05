@@ -1894,44 +1894,24 @@ function create_kniha($x) { //$pid,$autor,$nadpis,$obsah,$psano) { trace();
 # =======================================================================================> kalendáře
 # kalenář akce je v databázi poznačen
 function kalendare($vyber, $rok, $id) { trace();
-  global $CMS, $news_time, $mode, $href0, $page_mref, $def_pars;
+  global $CMS, $news_time, $mode, $href0, $page_mref, $usergroups, $show_hidden, $show_deleted;
   // výběr podle programu - překlad na regexpr
-  $c_komu= " 1";
-  $rkomu= array();
-  foreach(explode(',',$vyber) as $kdo) {
-    $ki= $def_pars['komu'][$kdo];
-    if ( $ki ) {
-      $kis= explode(':',$ki);
-      if ( !in_array($kis[1],$rkomu) )
-        $rkomu[]= $kis[1];
-    }
-  }
-  $c_komu= "0";
-  if ( $rkomu ) {
-    $komu= implode('|',$rkomu);
-    $i= array_search('6',$rkomu);
-    if ( $i===false ) {
-      $c_komu= "program REGEXP '$komu'";
-    }
-    else {
-//                                                           debug($rkomu);
-      unset($rkomu[$i]);
-      $c_komu= ($rkomu ? "program REGEXP '$komu' AND" : '')." program REGEXP '6'";
-    }
-  }
+  $groups= $usergroups ? "AND fe_groups IN ($usergroups)" : 'AND fe_groups=0';
+  $p_show= ($show_hidden ?  '' : " AND !p.hidden").($show_deleted ? '' : " AND !p.deleted");
+
   // výběr podle času
   $c_kdy= $rok=='nove'
       ? " LEFT(FROM_UNIXTIME(untilday),10)>=LEFT(NOW(),10)"
-      : " YEAR(FROM_UNIXTIME(fromday))=$rok OR YEAR(FROM_UNIXTIME(untilday))=$rok";
+      : " (YEAR(FROM_UNIXTIME(fromday))=$rok OR YEAR(FROM_UNIXTIME(untilday))=$rok)";
   if ( !$news_time ) $news_time= time() - 1 * 24*60*60;
   $cr= mysql_qry("
-      SELECT p.uid, p.cid,c.type,p.title,p.text,p.author,FROM_UNIXTIME(date),p.tags,
+      SELECT p.uid, p.cid, c.type,p.title,p.text,p.author,FROM_UNIXTIME(date),p.tags,
        p.deleted,p.hidden,fromday,untilday,FROM_UNIXTIME(fromday),id_akce,
        IF(c.tstamp>$news_time, IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),
          ' upd',' new'),'')
       FROM setkani4.tx_gncase AS c
       JOIN (SELECT * FROM setkani4.tx_gncase_part WHERE tags='K') AS p ON c.uid=p.cid 
-      WHERE !p.hidden AND !p.deleted AND $c_kdy AND $c_komu
+      WHERE $p_show $groups $c_kdy
       ORDER BY fromday DESC
     ");
 
