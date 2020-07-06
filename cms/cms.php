@@ -95,6 +95,7 @@
         stylesSet:[
           {name:'nadpis článku', element:'h2'},
           {name:'nadpis sekce', element:'h3'},
+          {name:'nadpis podsekce', element:'h4'},
           {name:'text',  element:'p'},
           {name:'text na novém řádku', element:'p',    attributes:{'class':'p-clear'}},
           {name:'upozornění',      element:'div',    attributes:{'class':'notice_style notice_warning'}},

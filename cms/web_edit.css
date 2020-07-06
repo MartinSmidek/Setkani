@@ -33,16 +33,16 @@ table {border-collapse: collapse;}
 th {padding: 0;}
 td {padding: 2px 8px;}
 
-table.table1 {border: none;width: 98% !important;}
+table.table1 {border: none; margin: 0 auto !important;}
 table.table1 th {background: #89b3cc; font-weight: bold;}
 table.table1 tr:nth-child(even) {background: #e0e0e0}
 table.table1 tr:nth-child(odd) {background: #FFF}
 
-table.table2 {border: 1px solid;width: 98% !important;}
+table.table2 {border: 1px solid; margin: 0 auto !important;}
 table.table2 th {background: #89b3cc; font-weight: bold;}
 table.table2 td {border-left: 1px solid; border-right: 1px solid;}
 
-table.table3 {border: 1px solid;width: 98% !important;}
+table.table3 {border: 1px solid; margin: 0 auto !important;}
 table.table3 th {background: #89b3cc; font-weight: bold;}
 table.table3 td {border: 1px solid;}
 
@@ -57,6 +57,8 @@ iframe a:hover:not(.plain_href), iframe a.styled:hover, #vlakno a:hover:not(.pla
 /*------------------------------------------------*/
 /*      OTHER CSS                                 */
 /*------------------------------------------------*/
+
+.nodisplay {display: none;}
 
 /*roztažení panele stylů*/
 .cke_combopanel {width: 180px !important;}

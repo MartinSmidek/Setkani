@@ -865,29 +865,7 @@ __EOD;
 // body
   $footer = footer();
 
-  $notice = ($CMS) ? "<div class='content' style='background: #efbf54; padding: 12px;'>
-  <h2>Zásady psaní pěkných článků</h2>
-  <ul>
-  <li><b>Nepoužívejte</b> pouze <b>velká písmena</b>. Je to obecně chápano jako KŘIČENÍ/NADÁVÁNÍ, nechtěli byste, aby na vás články křičely.</li>
-  <li>Pozor na málo nadpisů. <b>Každá logická část textu by měla mít nadpis</b>. Jinak se v těxtu špatně orientuje. Použijte menší styl, pokud si nejste jistí, vypadá to lépe (například ten největší bude použit na titulek a jen zřídka jej chcete znovu použít v textu).</li>
-  <li><b>Pozor dlouhé nebo velký počet napisů</b>. Pokud je výrazná část příliš dlouhá nebo je nadpisů přiliš mnoho, text vypadá přeplácaný.</li>
-  <li><b>Nepoužívejte</b> ASCII art (<b>vykreslování či pozicování pomocí znaků</b>). Většinou se rozbije kvůli různým velikostem písem atd.
-    <ul>
-      <li><b>Na ceníky použijte tabulky.</b> Zadejte jen počet sloupců/řádků a nezapomeňte si přidat záhlaví.</li>
-      <li>Místo -------- a podobných odsazení <b>použijte vodorovnou linku</b> (hned vedle 'obrázek').</li>
-      <li>Na odsazení textu používejte bloky (odrážky, zarovnání..) a ne bílé mezery. Pokud vám chybí nějaký prvek, dejte vědět programátorům.</li>
-      <li><b>Používejte styly</b> (vlevo nahoře v editoru). <b>Klikněte na objekt</b>, u kterého chcete změnit vzhled <b>a vyberte ze sekce 'Objektové styly'</b> svůj vlastní. Tyto styly mizí a objevují se podle toho, kde je váš kurzor.</li>
-         <ul>
-             <li>Styly 'citace', 'upozornění' apod. nepodporují odřádkování - použijte vodorovnou linku (hned vedle ikony vložení obrázku).</li>
-             <li><b>Nenadužívejte grafických zvýraznění textu</b> - platí to, co s nadpisy. Moc zvýrazňování = přeplácané.</li>
-        </ul>
-    </ul>
-  </li>
-  <li><b>Nepřehánějte to s různorodostí textu či vlastními styly:</b> <span style='color: red'>barevné</span>, <span style='background: #00FFFF'>strakaté</span> a <span style='font-family: \"Courier New\", Monospace; font-size: 18pt;'>různorodé</span> fonty jsou <b>fuj!</b> Méně je často více.</li>
- </ul>
- <p>A hlavně: <b>začínejte vždy nějaký odstavcem textu</b>, alespoň dva-tři řádky. Tento bude často (hlavně u akcí) zobrazen v náhledech a web bude vypadat mnohem lépe.</p>
- </div>" : "";
-
+  $notice = $CMS ? tutorial(!isset($_COOKIE["article_tutorial"]) && !$_COOKIE["article_tutorial"]) : "";
   $body= <<<__EOD
   <div id='page'>
     $notice
@@ -1055,6 +1033,89 @@ __EOD;
     </div>
 __EOD;
 }
+
+function tutorial($doDisplay = true) {
+  $positive = $doDisplay ? "" : "nodisplay";
+  $negated = $doDisplay ? "nodisplay" : "";
+  return "
+  <div id='article_button' class='content mobile_nodisplay $negated'> 
+     <div style='cursor: pointer; text-align: right; margin-top: 10px' onclick='jQuery(\"#article_tutorial\").toggleClass(\"nodisplay\"); jQuery(\"#article_button\").toggleClass(\"nodisplay\");'>
+      Ukázat návod 'Jak psát články'.</div >
+      </div>
+  <div id='article_tutorial' class='content mobile_nodisplay $positive' style='background: #efbf54; padding: 12px;'>
+  <h2>Zásady psaní pěkných článků</h2>
+  <ul>
+  <li><b>Nepoužívejte</b> pouze <b>velká písmena</b>. Je to obecně chápano jako KŘIČENÍ/NADÁVÁNÍ, nechtěli byste, aby na vás články křičely.</li>
+  <li>Pozor na málo nadpisů. <b>Každá logická část textu by měla mít nadpis</b>. Jinak se v těxtu špatně orientuje. Použijte menší styl, pokud si nejste jistí, vypadá to lépe (například ten největší bude použit na titulek a jen zřídka jej chcete znovu použít v textu).</li>
+  <li><b>Pozor na dlouhé nebo velký počet napisů</b>. Pokud je výrazná část příliš dlouhá nebo je nadpisů přiliš mnoho, text vypadá přeplácaný.</li>
+  <li><b>Nepoužívejte</b> ASCII art (<b>vykreslování či pozicování pomocí znaků</b>). Většinou se rozbije kvůli různým velikostem písem atd.
+    <ul>
+      <li><b>Na ceníky použijte tabulky.</b> Zadejte jen počet sloupců/řádků a nezapomeňte si přidat záhlaví.</li>
+      <li>Místo -------- a podobných odsazení <b>použijte vodorovnou linku</b> (hned vedle 'obrázek').</li>
+      <li>Na odsazení textu používejte bloky (odrážky, zarovnání..) a ne bílé mezery. Pokud vám chybí nějaký prvek, dejte vědět programátorům.</li>
+      <li><b>Používejte styly</b> (vlevo nahoře v editoru). <b>Klikněte na objekt</b>, u kterého chcete změnit vzhled <b>a vyberte ze sekce 'Objektové styly'</b> svůj vlastní. Tyto styly mizí a objevují se podle toho, kde je váš kurzor.</li>
+         <ul>
+             <li>Styly 'citace', 'upozornění' apod. nepodporují odřádkování - použijte vodorovnou linku (hned vedle ikony vložení obrázku).</li>
+             <li><b>Nenadužívejte grafických zvýraznění textu</b> - platí to, co s nadpisy. Moc zvýrazňování = přeplácané.</li>
+        </ul>
+    </ul>
+  </li>
+  <li><b>Nepřehánějte to s různorodostí textu či vlastními styly:</b> <span style='color: red'>barevné</span>, <span style='background: #00FFFF'>strakaté</span> a <span style='font-family: \"Courier New\", Monospace; font-size: 18pt;'>různorodé</span> fonty jsou <b>fuj!</b> Méně je často více.</li>
+ </ul>
+ <p>A hlavně: článek <b>začínejte vždy odstavcem textu</b>, alespoň dva-tři řádky. </p><p style='text-align: center'><span style='cursor:pointer;' onclick='jQuery(\"#article-example\").toggleClass(\"nodisplay\")'><b>Ukaž mi příklad.</b></span> </p>
+ <div id='article-example' class='nodisplay' style='background: white; margin: 0 auto; max-width: 850px; clear: both'>
+    <img src='cms/img/banner-tutorial.png' style='margin: 0; width: 100%;'/>
+    <div style='padding: 0 15px 10px 15px; max-height: 450px; overflow-x: hidden; overflow-y: scroll;'>
+     <p>Začínám odstavcem textu. Hlavní nadpis jsem vyplnil nahoře v kolonce 'název:' a chci, aby článek hned pod nadpisem (bude mít styl 'nadpis článku') pokračoval textem - jak z informačních, tak vizuálních důvodů.
+     Nedávám nahoru žádné tabulky, pokud obrázek tak je obtékán textem zprava/zleva.
+    U článku je důležité začít textem z několika důvodů: asi budete chtít představit/shrnout, o čem vlastně píšete. Tento text bude často
+    zobrazen jako abstrakt u článků ('abstrakt', který máte možnost editovat, se používá na hlavní straně) - začněte tak zajímavě, jak to jen jde!
+    </p>
+    <h3>Povídání o textu a nadpisech</h3>
+     <p>Všimněte si, že se v textu dobře orientuje, když je použit nadpis. A také si všimněte, že nepoužívám ten největší - ten bude u titulku a to stačí. Nadpis je krátký a zlepšuje
+    orientaci v mém článku. </p>
+    <img style='float: right; width: 263px' src='cms/img/foto_home.jpg' />
+    <p>Nedávám nadpis podsekce hned pod nadpis sekce. Začnu textem. Podsekce se hodí až v případě, že mám pocit, že v dané sekci popisuji
+    větší detaily a sekce se natahuje. Pokud tomu tak je, nadpis podsekce opět zlepší orientaci. Jinak zvýší jen přeplácanost.</p>
+    <p>Zde už je dobré (na rozdíl od úvodu) dát nějaký obrázek a trochu si pohrát s jeho pozicí a velikostí. Udělá to text vzdušnější a líbivější. Obrázek se hodí k odstavci s velkým množstvím textu.
+    S nadpisy to nepřeháním, dávám nový až v momentě, kdy se přesunu k další části článku. Dělám větší odstavce, pokud to jde. Píšu smysluplné věty, ne výtah z textu. Pokud chci použít méně textu
+     pro informativní účely, použiji odrážky místo jednořádkových odstavců. Pro odsazení textu použiji ikonu označenou číslem 2. Celkově snažím o to, aby text objímal elementy,
+    které do něj přidávám a působil dojmem, že všechno je umistěno tam, kde to má být, a má to k tomu svůj důvod.</p>
+    <h3>ASCII art</h3>
+    <div class='pquote'>Zde se budu snažit na kousku představit všemožné možnosti vyhýbání-se ascii art.<hr><span style='float: right; font-style: italic;'>Jirka</span></div>
+    <p>Napsal jsem výše uvedený text, pak jej označil a ve stylech (1.) zvolil 'citace'. Jenže jsem zapomněl přidat svůj podpis! Nevadí, použiji vodorovnou linku
+    pro nový řádek (4.), podepíšu se, nastavím zarovnání doprava a kurzívu.</p>
+    <h4>Ceníky a tabulky</h4>
+    <p>Kliknutím na ikonu tabulky (3.) přidám tabulku do textu. Jediné, co musím nastavit, je počet řádků/sloupců, šířku a zda chci záhlaví (většinou ano).
+    Tyto vlastnosti lze kdykoliv měnit - stačí kliknout pravým tlačítkem na tabulku. Kromě 'vlastnosti tabulky' nabídka umožňuje i složitější operace typu
+    slučování buněk atp.</p>
+    <img src='cms/img/tabulky-tutorial.png' style='display: block; margin: 0 auto; max-width: 100%'/>
+     <p>Vlastní ceník tedy netvořím mezerami, ale v tabulce. Ta se sama přizpůsobí obsahu. Pokud se mi nelíbí normální tabulka s černými okraji (obrázek
+     uprostřed), kliknu někam do tabulky a zvolím jiný styl. Ceník tak bude <b>pěknější a výraznější</b>.</p>
+     <table border=\"1\" class=\"table3\" style=\"width:500px;margin: 0 auto;\">
+      <thead><tr>
+          <th scope=\"col\">Položka</th>
+          <th scope=\"col\">Cena</th>
+          </tr>
+      </thead>
+      <tbody><tr><td>Za manželský pár celkem</td><td style=\"text-align:center\">8840,-</td></tr><tr><td colspan=\"2\"><strong>Dítě od 6let</strong></td></tr><tr><td>lůžko, celá porce, pečovatel+program</td><td style=\"text-align:center\">4280,-</td></tr><tr><td>lůžko, dětská porce, pečovatel+program&nbsp;</td><td style=\"text-align:center\">3960,-</td></tr>
+      </tbody>
+      </table>
+     <br>
+     <hr>
+     <p>Pro oddělení použiji vodorovnou linku (4.). Většinou se ale zamyslete: chci použít linku nebo nadpis?
+     Zde by se místo linky mnohem více hodil nadpis 'Vodorovné linky', podobně jako je to u 'Ceníky a tabulky'.
+     <h3>Závěrem...</h3>
+     <p>A mohl bych takto pokračovat dál. Děkuji, že jste se prokousali až sem. Doufám, že se nám společně podaří udržet obsah
+     našeho webu líbivý a čtivý, abychom mohli dál růst.</p>
+     </div>
+ </div>
+      <br>
+      <div style='cursor: pointer; text-align: right' onclick='document.cookie=\"article_tutorial=true; expires=Fri, 31 Dec 9999 23:59:59 GMT\"; jQuery(\"#article_tutorial\").toggleClass(\"nodisplay\"); jQuery(\"#article_button\").toggleClass(\"nodisplay\");'>
+      Všechno to už vím. Dám ruku do ohně za svoje články [trvale skrýt].</div>
+ </div>";
+}
+
 # -------------------------------------------------------------------------------------- gn militime
 function gn_militime($microtime) {
   // konvertuje čas získaný funkcí microtime() na milisekundy
