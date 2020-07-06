@@ -1040,10 +1040,10 @@ function tutorial($doDisplay = true) {
   return "
   <div id='article_button' class='content mobile_nodisplay $negated'> 
      <div style='cursor: pointer; text-align: right; margin-top: 10px' onclick='jQuery(\"#article_tutorial\").toggleClass(\"nodisplay\"); jQuery(\"#article_button\").toggleClass(\"nodisplay\");'>
-      Ukázat návod 'Jak psát články'.</div >
+      <span style='padding: 6px 12px; background-color: #efbf54'>Ukázat návod 'Zásady psaní pěkných článků'.</span></div >
       </div>
-  <div id='article_tutorial' class='content mobile_nodisplay $positive' style='background: #efbf54; padding: 12px;'>
-  <h2>Zásady psaní pěkných článků</h2>
+  <div id='article_tutorial' class='content mobile_nodisplay $positive' style='background: #efbf54; padding: 12px; padding-bottom: 25px;'>
+  <h2>Zásady psaní pěkných článků</h2> 
   <ul>
   <li><b>Nepoužívejte</b> pouze <b>velká písmena</b>. Je to obecně chápano jako KŘIČENÍ/NADÁVÁNÍ, nechtěli byste, aby na vás články křičely.</li>
   <li>Pozor na málo nadpisů. <b>Každá logická část textu by měla mít nadpis</b>. Jinak se v těxtu špatně orientuje. Použijte menší styl, pokud si nejste jistí, vypadá to lépe (například ten největší bude použit na titulek a jen zřídka jej chcete znovu použít v textu).</li>
@@ -1062,13 +1062,13 @@ function tutorial($doDisplay = true) {
   </li>
   <li><b>Nepřehánějte to s různorodostí textu či vlastními styly:</b> <span style='color: red'>barevné</span>, <span style='background: #00FFFF'>strakaté</span> a <span style='font-family: \"Courier New\", Monospace; font-size: 18pt;'>různorodé</span> fonty jsou <b>fuj!</b> Méně je často více.</li>
  </ul>
- <p>A hlavně: článek <b>začínejte vždy odstavcem textu</b>, alespoň dva-tři řádky. </p><p style='text-align: center'><span style='cursor:pointer;' onclick='jQuery(\"#article-example\").toggleClass(\"nodisplay\")'><b>Ukaž mi příklad.</b></span> </p>
- <div id='article-example' class='nodisplay' style='background: white; margin: 0 auto; max-width: 850px; clear: both'>
+ <p>&emsp;A hlavně: článek <b>začínejte vždy odstavcem textu</b>, alespoň dva-tři řádky. </p><p style='text-align: center'></p>
+ <div id='article-example' style='background: white; margin: 0 auto; max-width: 850px; clear: both; '>
     <img src='cms/img/banner-tutorial.png' style='margin: 0; width: 100%;'/>
     <div style='padding: 0 15px 10px 15px; max-height: 450px; overflow-x: hidden; overflow-y: scroll;'>
      <p>Začínám odstavcem textu. Hlavní nadpis jsem vyplnil nahoře v kolonce 'název:' a chci, aby článek hned pod nadpisem (bude mít styl 'nadpis článku') pokračoval textem - jak z informačních, tak vizuálních důvodů.
      Nedávám nahoru žádné tabulky, pokud obrázek tak je obtékán textem zprava/zleva.
-    U článku je důležité začít textem z několika důvodů: asi budete chtít představit/shrnout, o čem vlastně píšete. Tento text bude často
+    U článku je důležité začít textem z několika důvodů: asi budete chtít představit/shrnout, o čem vlastně píšete. Ale hlavně bude tento text často
     zobrazen jako abstrakt u článků ('abstrakt', který máte možnost editovat, se používá na hlavní straně) - začněte tak zajímavě, jak to jen jde!
     </p>
     <h3>Povídání o textu a nadpisech</h3>
@@ -1082,7 +1082,7 @@ function tutorial($doDisplay = true) {
      pro informativní účely, použiji odrážky místo jednořádkových odstavců. Pro odsazení textu použiji ikonu označenou číslem 2. Celkově snažím o to, aby text objímal elementy,
     které do něj přidávám a působil dojmem, že všechno je umistěno tam, kde to má být, a má to k tomu svůj důvod.</p>
     <h3>ASCII art</h3>
-    <div class='pquote'>Zde se budu snažit na kousku představit všemožné možnosti vyhýbání-se ascii art.<hr><span style='float: right; font-style: italic;'>Jirka</span></div>
+    <div class='pquote'>Zde se budu snažit na co nejkratším kousku textu představit všemožné možnosti vyhýbání-se ascii art.<hr><span style='float: right; font-style: italic;'>Jirka</span></div>
     <p>Napsal jsem výše uvedený text, pak jej označil a ve stylech (1.) zvolil 'citace'. Jenže jsem zapomněl přidat svůj podpis! Nevadí, použiji vodorovnou linku
     pro nový řádek (4.), podepíšu se, nastavím zarovnání doprava a kurzívu.</p>
     <h4>Ceníky a tabulky</h4>
@@ -1103,16 +1103,19 @@ function tutorial($doDisplay = true) {
       </table>
      <br>
      <hr>
-     <p>Pro oddělení použiji vodorovnou linku (4.). Většinou se ale zamyslete: chci použít linku nebo nadpis?
-     Zde by se místo linky mnohem více hodil nadpis 'Vodorovné linky', podobně jako je to u 'Ceníky a tabulky'.
+     <p>V případě, že chci následující část textu oddělit od předchozí, použiji vodorovnou linku (4.). 
+     Většinou se ale musím zamyslet: chci použít linku nebo nadpis? Oddělení znamená říci 'a teď jdu psát o něčem jiném'.
+     Zde by se místo linky mnohem více hodil nadpis 'Vodorovné linky', podobně jako je to u 'Ceníky a tabulky'. Kromě toho, 
+     že také text oddělí, navíc sdělí čtenáři o čem bude následující část.
      <h3>Závěrem...</h3>
      <p>A mohl bych takto pokračovat dál. Děkuji, že jste se prokousali až sem. Doufám, že se nám společně podaří udržet obsah
      našeho webu líbivý a čtivý, abychom mohli dál růst.</p>
      </div>
  </div>
       <br>
-      <div style='cursor: pointer; text-align: right' onclick='document.cookie=\"article_tutorial=true; expires=Fri, 31 Dec 9999 23:59:59 GMT\"; jQuery(\"#article_tutorial\").toggleClass(\"nodisplay\"); jQuery(\"#article_button\").toggleClass(\"nodisplay\");'>
-      Všechno to už vím. Dám ruku do ohně za svoje články [trvale skrýt].</div>
+      <div style='float: left'>S problémy se obracejte na <i>horakj7@gmail.com</i>.</div>
+      <div style='cursor: pointer; float: right' onclick='document.cookie=\"article_tutorial=true; expires=Fri, 31 Dec 9999 23:59:59 GMT\"; jQuery(\"#article_tutorial\").toggleClass(\"nodisplay\"); jQuery(\"#article_button\").toggleClass(\"nodisplay\");'>
+      Všechno to už vím. Dám ruku do ohně za svoje články [skrýt].</div>
  </div>";
 }
 
