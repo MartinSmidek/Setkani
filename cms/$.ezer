@@ -473,9 +473,9 @@ panel FOTKY [0,0,680,240] { title:' Organizér fotek', type:'popup', css:'dialog
     form _ff {
       field zip [0,0,300,] { format:'t' }
       button [0,30,,] { title:"[fa-camera-retro] Přidej fotky"
-        proc onclick() { panel.close(zip.get) } }
+        proc onclick() { panel.hide(zip.get) } }
       button [100,30,,] { title:"[fa-undo] Zpět"
-        proc onclick() { panel.close(0) } }
+        proc onclick() { panel.hide(0) } }
     }
   }
 }
@@ -1251,9 +1251,9 @@ panel UPLOAD [0,0,400,130] { title:' Nahrát soubor', type:'popup', css:'dialog'
     form _ff {
       field zip [0,0,300,] { format:'t' }
       button [0,30,,] { title:"[fa-save] Přidej přílohu"
-        proc onclick() { panel.close(zip.get) } }
+        proc onclick() { panel.hide(zip.get) } }
       button [100,30,,] { title:"[fa-undo] Zpět"
-        proc onclick() { panel.close(0) } }
+        proc onclick() { panel.hide(0) } }
     }
   }
 }
