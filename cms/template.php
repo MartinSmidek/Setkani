@@ -2375,7 +2375,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
           }
         }
         $xx[$cid]= (object)array('ident'=>$p_uid,'kdy'=>$akdy, 'rok'=>date("Y", $uod), 'nadpis'=>$title,
-            'abstract'=> $text,'upd'=>$upd,'ida'=>$ida,'status'=>status_class($status));
+            'abstract'=> $text,'upd'=>$upd,'ida'=>$ida,'status'=>status_class($status),'from'=>$uod);
         if ( $fe_group ) {
           $spec++;
           $xx_tags[$cid].= '6';
@@ -2386,6 +2386,26 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
       }
     }
   }
+  // pokud je typ==akce a je požadavek na akce pro chlapy, doplníme xx voláním servant_ch
+  if ( $typ=='akce' ) {
+    $key= -1;
+    $parm= is_numeric($kdy) ? "typ=2&rok=$kdy" : "typ=1";
+    $chlapi_cz= "http://chlapi.bean:8080/servant_ch.php?$parm&err=3";
+    $a_json= url_get_contents($chlapi_cz,false,false); 
+    if ( $a_json ) {
+      $json= json_decode($a_json);
+      foreach( $json->clanky as $c) {
+        $from= strtotime($c->od);
+        $od_do= datum_oddo($c->od,$c->do);
+        $xx[$key]= (object)array('extern'=>1,'from'=>$from,'href'=>$c->href,'flags'=>$c->flags,
+                  'kdy'=>$od_do,'nadpis'=>$c->nadpis,'abstract'=>$c->abstrakt
+                  );
+        $key--;
+      }
+    }
+  }
+  // seřadíme podle začátku akce
+  uasort($xx,function ($a,$b) { return ($a->from > $b->from ? 1 : -1); });
   $found= count($xx)." akcí" . ($spec ? " ($spec)" : '');
 //                                                         debug($xx);
   // případné doplnění helpu na začátek
@@ -2399,6 +2419,26 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
   $n= 0; // pořadí akce v roce
   foreach($xx as $cid=>$x) {
     $n++;
+    if ( isset($x->extern) ) {
+      $code= $CMS ? "<div class='code'>chlapi.cz</div>" : '';
+      $flags= '';
+      if ( $x->flags ) {
+        foreach (str_split($x->flags) as $f) {
+          $flags.= 
+              $f=='T' ? " <i class='fa fa-table'></i>" : (
+              $f=='F' ? " <i class='fa fa-camera-retro'></i>" : '');
+        }
+      }
+      $jmp= "href='$x->href' target='chlapi.cz'";
+      $h.= "<div class='$abstr relative status_chlapi'>
+           $code 
+           <a class='abstrakt' $jmp>
+             <span class='akce_datum'>$x->kdy $flags</span>  <b>$x->nadpis:</b><div class='clear'></div> 
+               <p>$x->abstract</p>
+           </a>
+         </div>";
+      continue;
+    }
     $tagn= "#n$n";
     $flags= $mini= '';
     $foto= strpos($xx_tags[$cid],'F')!==false;
