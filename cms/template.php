@@ -2431,8 +2431,10 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
               $f=='F' ? " <i class='fa fa-camera-retro'></i>" : '');
         }
       }
-      $jmp= "href='$x->href' target='chlapi.cz'";
-      $h.= "<div class='$abstr relative status_chlapi'>
+      //$jmp= "href='$x->href' target='chlapi.cz'";
+      $jmp= " onclick=\"go_chlapi_cz('$x->href')\"";
+      $h.= "<div class='$abstr relative status_chlapi' 
+             title='Po kliknutí přepnu na text na web chlapi.cz'>
            $code 
            <a class='abstrakt' $jmp>
              <span class='akce_datum'>$x->kdy $flags</span>  <b>$x->nadpis:</b><div class='clear'></div> 

@@ -242,6 +242,12 @@ function history_back() {
   history.back();
 }
 // ============================================================================================> MSG
+// ------------------------------------------------------------------------------------ go chlapi_cz
+// zobrazí upozornění a přepne na stránku na webu chlapi.cz
+function go_chlapi_cz(ref) {
+  msg_on("Plný text této akce najdete na webu chlapi.cz","Přepnutí na chlapi.cz za 3s");
+  setTimeout(function(){ location.href= ref; }, 3000);
+}
 // ------------------------------------------------------------------------------------------ msg on
 // zobrazí zprávu - alert
 function msg_on(text,title) {

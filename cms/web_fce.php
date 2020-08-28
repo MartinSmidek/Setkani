@@ -1868,12 +1868,15 @@ function datum_oddo($x1,$x2) {
   $r1= 0+substr($x1,0,4); 
   $r2= 0+substr($x2,0,4);
   $r= date('Y');
-  if ( $x1==$x2 ) {  //zacatek a konec je stejny den
+  if ( $x1==$x2 ) {  // zacatek a konec je stejny den
     $datum= "$d1. $m1" . ($r1!=$r ? ". $r1" : '');
   }
   elseif ( $r1==$r2 ) {
-    if ( $m1==$m2 ) { //zacatek a konec je stejny mesic
-      $datum= "$d1 - $d2. $m1. $r1";
+    if ( $m1==$m2 ) { // zacatek a konec je stejny mesic
+      $datum= "$d1 - $d2. $m1. ".($r1==$r ? '' : $r1);
+    }
+    elseif ( $r1==$r ) { // letošní měsíce
+      $datum= "$d1. $m1 - $d2. $m2.";
     }
     else { //ostatni pripady
       $datum= "$d1. $m1 - $d2. $m2. $r1";
