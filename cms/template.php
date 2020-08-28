@@ -2387,11 +2387,13 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     }
   }
   // pokud je typ==akce a je požadavek na akce pro chlapy, doplníme xx voláním servant_ch
-  if ( $typ=='akce' ) {
+  if ( $typ=='akce' && in_array(3,$rkomu) ) {
+    global $chlapi_cz;
     $key= -1;
     $parm= is_numeric($kdy) ? "typ=2&rok=$kdy" : "typ=1";
-    $chlapi_cz= "http://chlapi.bean:8080/servant_ch.php?$parm&err=3";
-    $a_json= url_get_contents($chlapi_cz,false,false); 
+    $chlapi_url= "$chlapi_cz/servant_ch.php?$parm&err=3";
+                                                          trace($chlapi_url);
+    $a_json= url_get_contents($chlapi_url,false,false); 
     if ( $a_json ) {
       $json= json_decode($a_json);
       foreach( $json->clanky as $c) {
