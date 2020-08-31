@@ -56,7 +56,7 @@ function fe_init() {
 }
 function accept_key(key) {
   if ( key ) {
-    ask({cmd:'fe_key_ok',akey:key},_accept_key,'jo?');
+    ask({cmd:'fe_key_ok',akey:key}, _accept_key,'jo?');
   }
   else {
     fe_init();

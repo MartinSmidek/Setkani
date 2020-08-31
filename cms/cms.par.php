@@ -122,7 +122,7 @@
               'Okontakt'  => array('h'),
               'Oid_rodina'=> array('h'),
               'Oweb_souhlas'=> array('h'),
-              'Rpoznamka' => array('t','-','poznámka pro pořadatele',435,50)
+              'Rpoznamka' => array('t','-','poznámka pro pořadatele','95%;',50) //dirty trick to make width 95% instead of px
             ),
             'SQL'=>array(
               'O'=>array('osoba','id_osoba','email'), // ale musí být kontakt=1

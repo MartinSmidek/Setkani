@@ -565,7 +565,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 //                                                         display("* page_mref = $page_mref");
         $id= array_shift($path);
         if ( $ids=='prehled' ) {
-          $body.= "<div class='content'><h1>YMCA Setkání - naše akce</h1><br>";
+          $body.= "<div class='content'><br><br><h1>YMCA Setkání - naše akce</h1><br>";
 
           $body.= "Prohlédněte si seznam akcí které nabízíme, nebo těch které již proběhly.
                 Pokud je k dispozici i kalendář, pak je zobrazen vepředu přede všemi akcemi.
@@ -729,7 +729,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       $attrs= " style='display:none' ";
       $popup= "
       <!-- order -->
-      <div id='order' $attrs>
+      <div id='order' class='order_popup' $attrs>
         <span id='order_tit'>$popup_tit</span>
         <div id='order_div'>
         $popup_vol
@@ -804,7 +804,7 @@ __EOD;
   
   $eb_link
   <link href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&amp;subset=latin-ext" rel="stylesheet">
-  <link rel="stylesheet" href="cms/web.css?v=4.2" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="cms/web.css?v=4.3" type="text/css" media="screen" charset="utf-8">
   <script type="text/javascript">
     var Ezer={web:{ $Ezer_web},cms:{form:{}}};
     if ( !console ) {
@@ -851,7 +851,7 @@ __EOD;
            $submenu
        </div>
        $mainmenu2
-       <a href='#footer_contacts' class='jump'><span>Kontakty</span></a>
+       <a href='$href0#footer_contacts' class='jump'><span>Kontakty</span></a>
     </div>
       <span onclick=\"bar_menu(arguments[0],'new1');\"><img src='cms/img/new.png'> změny za den</span>
       <span onclick=\"bar_menu(arguments[0],'new7');\"><img src='cms/img/new.png'> změny za týden</span>
@@ -895,7 +895,7 @@ __EOD;
     <div id='user_msg' style="display:none">
       <span></span>
       <div></div>
-      <button onclick="jQuery('#user_msg').hide();">Ok</button>
+      <button onclick="jQuery('#user_msg').hide();" style="margin:0">Ok</button>
     </div>
   </div>
 
@@ -990,7 +990,7 @@ $head
         </div>
         <div id='page_hm' class='x mobile_nodisplay'>
           $mainmenu1 $mainmenu2
-           <a href='#footer_contacts' class='jump'><span>Kontakty</span></a>
+           <a href='$href0#footer_contacts' class='jump'><span>Kontakty</span></a>
         </div>
       </div>
       <div class='clear'></div>
@@ -1167,12 +1167,12 @@ __EOJ;
     $framework    
     <script src="cms/cms{$k3}.js?v=4.0" type="text/javascript" charset="utf-8"></script>
     <script src="cms/cms{$k3}_fe.js?v=4.0" type="text/javascript" charset="utf-8"></script>
-    <script src="cms/modernizr-custom.js" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/modernizr-custom.js?v=4.0" type="text/javascript" charset="utf-8"></script>
     $fotorama
     <link rel="stylesheet" href="./$kernel/client/licensed/font-awesome/css/font-awesome.min.css" type="text/css" media="screen" charset="utf-8">
     <link rel="stylesheet" href="$cms_root/client/ezer_cms3.css" type="text/css" media="screen" charset="utf-8">
     <script src="$cms_root/client/ezer_cms3.js" type="text/javascript" charset="utf-8"></script>
-    <script src="cms/custom.js?v=4.0" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/custom.js?v=4.1" type="text/javascript" charset="utf-8"></script>
 __EOJ;
 //     <link rel="stylesheet" href="cms/gallery/baguetteBox.min.css">
 //     <script src="cms/gallery/baguetteBox.min.js" async>
@@ -1505,7 +1505,7 @@ function home() { trace();
       $telo = vlakno($cid,'clanek','home',false);
     }
     elseif ( ($x->home==2 || $x->home==6) && $x->tags == 'A' ) { // ----------------------- abstrakt na home | nahoru
-      $prihlaska= $x->ida ? cms_form_ref("online přihláška") : '';
+      $prihlaska= $x->ida ? cms_form_ref("ONLINE PŘIHLÁŠKA") : '';
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
       $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
       $akce.= "$code
@@ -2439,7 +2439,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
 //     $back= $foto ? "#foto$cid" : '';
 
     $prihlaska= $x->ida ? cms_form_ref("ONLINE PŘIHLÁŠKA") : '';
-//    $prihlaska= cms_form_ref("on-line přihláška");
+//    $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA");
 
     if ($typ=='foto') {
       if ($rok_ted != $x->rok) {
@@ -2638,8 +2638,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
 //      if ( $x->ida && isset($_SESSION['web']['try']) && $_SESSION['web']['try']=='prihlasky') {
       if ( $x->ida ) {
         $nazev_akce= trim(select('nazev','akce',"id_duakce=$x->ida",'ezer_db2'));
-        $prihlaska= '';
-        $prihlaska= cms_form_ref("on-line přihláška",'akce',$x->ida,$nazev_akce);
+        $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA",'akce',$x->ida,$nazev_akce);
       }
       $title = $h1 ? "<h1>$x->nadpis</h1>" : "<h2>$x->nadpis</h2>";
       $h.= "<div class='x relative' $event><span class='anchor' id='anchor$uid'></span>

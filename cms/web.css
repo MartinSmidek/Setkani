@@ -43,6 +43,10 @@ body { /*overflow-y:auto;*/ font-family: 'Open Sans', sans-serif; overflow-x:hid
 .iframe_outer {position: relative;overflow: hidden;padding-top: 30%;}
 .iframe_inner {position: absolute;top: 0;left: 0;width: 100%;height: 100%;border: none; max-width: 600px}
 
+/*Because iOS is great... is it? //fixes stupid iOS (no)support for date input field*/
+input[type="date"]
+{display:block;-webkit-appearance: textfield;-moz-appearance: textfield;min-height: 1.2em;}
+
 /*remove table cellpadding/cellspacing*/
 table {border-collapse: collapse;}
 th {padding: 0;}
@@ -125,6 +129,7 @@ h1, #web h2,h3 { -webkit-column-break-inside: avoid; -moz-column-break-inside: a
 hr {height: 3px;border: none; background: #f2f2f2;}
 div.pquote hr, div.notice_style hr {height: 0;}
 .akce_prehled hr {background: #ccd2d9;}
+hr.dark {background: #adb2b8;}
 
 div.pquote {position: relative !important; padding: 10px 50px;margin: 0 auto; clear: both; width: fit-content; max-width: 85%; overflow: hidden}
 div.pquote:before {content: '”'; position: absolute; font-size: 50px;font-family: serif;left: 13px;bottom: -7px; color: grey;}
@@ -135,6 +140,7 @@ div.notice_warning {background-color: #f4d778; }
 div.notice_warning:before {content: 'Upozornění:';position: absolute;left: 20px;top: 10px;color: #a78208;font-weight: bold;}
 div.notice_info {background-color: #d7f192; }
 div.notice_info:before {content: 'Zajímavost:';position: absolute;left: 20px; top: 10px; color: #618011; font-weight: bold;}
+div.notice_order:before {content: 'Objednávka'}
 
 h1 {margin-top: 60px; font-size:32pt; margin-left: 1.2em; font-weight: 250; }
 h2 {margin-top: 40px; font-size:20pt; margin-left: 1.2em; font-weight: 300; }
@@ -147,6 +153,7 @@ h3 {margin-top: 30px; font-size:15pt; }
 .float-right { float: right; }
 .float-left { float: left; }
 .white { color:white; }
+.no_padding\! {padding: 0 !important;}
 .relative { position: relative; }
 .display {display: initial;}
 .nodisplay {display: none; }
@@ -164,8 +171,8 @@ ul#timeline li .status_full:before {transform:scale(0.8); right:-103px; top: -22
 .hr-text:before {content: '';position: absolute;left: 0;top: 35%;width: 100%;height: 7px;background: #ccd2d9;}
 .hr-text:after {content: attr(data-content);position: relative;display: inline-block;padding: 0 .5em;line-height: 1.5em;
    background: #f2f2f2;} /*color of the underlying background*/
-
-#web-shadow {position: fixed; top: 0; width: 100%; height: 100%; background: black;
+textarea {resize: vertical;}
+#web-shadow {position: fixed; top: 0; width: 100vw; height: 100%; background: black;
   opacity: 0.55; z-index: 99; display:none;}
 
 /* tabulky */
@@ -203,19 +210,17 @@ ul#timeline li .status_full:before {transform:scale(0.8); right:-103px; top: -22
 
 /* ------------------------------------------------------------------- online přihlášky */
 
-div.clanek span.cms_form {
-  float:right; display: inline-block; border-radius: .4em;
-  padding: 0.5em 1em; font-weight: bold; text-decoration: none; cursor: pointer;
-  margin: 1.5em 2em; background-color: #f1d095; color: black; text-align: center;
-  box-shadow: 2px 2px 8px grey, -1px 1px 0px silver, 1px -1px 0px silver, -1px -1px 0px silver; }
-div.clanek span.cms_form:hover {
-  background-color: white !important; color: black !important; }
 
-.abstrakt span.cms_form {
+div.clanek span.cms_form:hover {
+  background-color: #65a4c3 !important; color: white !important; }
+
+span.cms_form {
   float:right; font-size:10pt !important; display: inline-block; border: 3px solid  #65a4c3;
-  padding: 0.2em 0.4em; font-weight: bold; text-decoration: none; padding-top: 4px;
+  padding: 0.2em 0.4em; font-weight: bold; text-decoration: none;
   margin-top: -5px; margin-right: -10px; color: #65a4c3; text-align: center; line-height: 11px; }
 
+.clanek span.cms_form {font-size:15pt !important; margin-top: 15px; margin-right: 15px; line-height: 18px; cursor: pointer; padding-top: 6px; }
+.abstrakt span.cms_form {font-size:10pt !important; margin-top: -5px; margin-right: -10px; line-height: 11px; padding-top: 4px; }
 /* ----------------------------------------------------------------------------- popup */
 #popup { position: fixed;
   left: 50%; top: 50%; margin-top: -250px;margin-left: -375px;width: 720px;height: fit-content; height: -moz-max-content;
@@ -265,9 +270,20 @@ div.box_input { padding:2em 0 1em; }
 /* -------------------------- ------------------------------------------------- user_msg */
 
 #user_msg {
-  position:fixed; left: 50vw; top:50vh; line-height: 22pt;
-  padding:1em 3em; opacity:1; background: white;
-  box-shadow: black 4px 6px 20px; transform:translate(-50%, -50%); z-index: 101; }
+  position: fixed;
+  left: 50vw;
+  top: 50vh;
+  width: 50vw;
+  margin-left: -30vw;
+  margin-top: -10vh;
+  line-height: 22pt;
+  max-width: 350px;
+  padding: 1em 2em;
+  opacity: 1;
+  background: white;
+  box-shadow: black 4px 6px 20px;
+  z-index: 101;
+}
 #user_msg span {
   position:absolute; top:0.8em; left:0em; width:100%; text-align:center; height: 2em;
   font-weight:bold; font-size: 20px; ;}
@@ -347,11 +363,9 @@ div.LabelDrop * {cursor:pointer; }
 #page_sm a:hover { background-color: #67827a; color:white; }
 #page_sm a:hover span { /*todo*/ }
 
-
-
 /* výběrové podmínky */
 #vyber {width:100%; font-weight:bold; color: black; font-size: 9pt;display:inline-flex; background-color: #cadfd9;
-  height: 33px; line-height: 31px; }
+  height: 33px; line-height: 31px; position: absolute; }
 #vyber input { margin-left:1em; }
 #vyber span { font-weight:bold; font-size: 9pt  }
 #vyber label { cursor:pointer; display:inline-block; padding: 0px 7px; font-size: 9pt }
@@ -446,7 +460,7 @@ span.input { font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,D
 
 /* vlákno */
 div.vlakno { clear:both; }
-div.text { padding: .4em 1.5em; border-radius: 5px; background-color: white; }
+div.text { padding: .4em 1.4em; border-radius: 5px; background-color: white; }
 
 /* fotky */
 /*span.foto { width: 80px; height: 80px; overflow: hidden; display: inline-block; }*/
@@ -484,7 +498,7 @@ div.galerie { overflow:hidden; padding-bottom: 15px; margin-bottom: 30px; }
 div.galerie span.datum { position: absolute; top: 0; left: 0; }
 
 /* článek */
-div.clanek {  /*overflow:hidden;*/ margin:0.5em; position:relative; }
+div.clanek {  overflow:hidden; margin:0.5em; position:relative; }
 .mediaqueries div.clanek { /*todo*/ }
 span.datum { background-color:#f2f2f2; color:#130D00; padding: 2px 5px; border-radius: 5px; border: 1px solid #e6e6e6}
 div.clanek span.datum { position: absolute; top: 0; left: 0; }
@@ -583,7 +597,7 @@ table.dum td { border: 1px solid navy; min-width:1.2em; text-align: center; }
 table.dum, table.dum tr, table.dum td {border: none}
 
 #dum td {padding: initial;}
-
+.months-row {overflow-x: scroll;display: flex;}
 #dum td.room:hover { background-color:white; color:black; border: 1px solid; box-sizing: border-box }
 #dum td.obsazen:hover, #dum td.sent:hover { background-color:black !important; color:white; }
 #dum td.room { background-color: black;  font-weight: bold; color: white; cursor: pointer; }
@@ -597,35 +611,62 @@ table.dum, table.dum tr, table.dum td {border: none}
 #dum td.datum_weekend.odd {background-color: #c5dcf8;}
 #dum img { margin:-2px; }
 
+.ordersSelectedDay {-moz-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4); -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);}
+
 #dum tr.header1 {border-bottom: 3px solid; border-top: 3px solid}
 #dum tr.header1.odd {}
 #dum tr.header2 {border-bottom: 1px solid; border-top: 1px solid}
 #dum tr.header2.odd {}
 
-#dum .datum_plno, td.obsazeno { background-color: #b47671; width:2em; }
-#dum .datum_prazdno, td.volno { background-color: #8cb082; width:2em; }
-#dum .datum_poloplno, td.konflikt { background-color: #e1d52f; width:2em; }
-#dum .datum_plno.odd, td.obsazeno.odd { background-color: #da9088; width:2em; }
-#dum .datum_prazdno.odd, td.volno.odd { background-color: #a9d49d; width:2em; }
-#dum .datum_poloplno.odd, td.konflikt.odd { background-color: #f5e933; width:2em; }
+#dum .datum_plno, .obsazeno { background-color: #b47671; width:2em; }
+#dum .datum_prazdno, .volno { background-color: #8cb082; width:2em; }
+#dum .datum_poloplno, .konflikt { background-color: #e1d52f; width:2em; }
+#dum .datum_plno.odd, .obsazeno.odd { background-color: #da9088; width:2em; }
+#dum .datum_prazdno.odd, .volno.odd { background-color: #a9d49d; width:2em; }
+#dum .datum_poloplno.odd, .konflikt.odd { background-color: #f5e933; width:2em; }
 #dum td.sent { cursor:pointer; }
 #dum td.nic { width:1.4em;}
 #dum td.nic.odd {background-color: #ffffff; }
 #dum td.obsazen { width:1.4em;}
 #dum td.obsazen.odd {background-color: #ffffff; }
 
-#order {position: fixed;left: 50%;top: 50%;margin-top: -250px;margin-left: -375px;width: 720px; height: -moz-max-content;
-  height: fit-content; background: white;
-  color: #000000;max-height: 500px;padding: 2em 1em 1em 1em;box-shadow: #000000 4px 6px 20px;z-index: 100; overflow-y: scroll; }
-#order > span { position:absolute; top:0em; left:0em; width:100%; text-align:center; height:2em;
-  font-weight:bold;line-height:22pt;margin-top: 10px;}
-#order span.choose { background:black; color:white;}
-#order > div { top:2em; height:100%;  }
-#order table>tbody>tr>td {height:100%; vertical-align: initial; }
-#order label { display:inline-table; font-size:small; }
-#order input, #order select { display: block; border: 1px solid;color: black; padding: 3px 9px; margin: 5px 7px; text-decoration: none; font-size: 15px; }
-input.form_button {background: white; padding: 6px 13px !important;cursor: pointer;}
-input.form_button:hover {background: black; color: white !important; border-color: white;}
+/*overriding cms_form class styles from ezer/client*/
+div.cms_form > div {padding: initial !important;}
+div.cms_form > span {background-color: white !important; color: black !important; border-radius: 0 !important;}
+div.cms_form > div div label {color: #2b2b2b !important;}
+div.cms_form > div div button {margin-top: 5px;}
+
+button .setkani_padding {padding-top: 5px;}
+
+.order_popup {position: fixed;left: 50% !important;top: 50% !important;margin-top: -250px!important;
+  margin-left: -375px !important;width: 720px !important; height: -moz-max-content !important;
+  height: fit-content !important; background: white !important; color: #000000 !important;
+  max-height: 500px !important;padding: 2em 1em 1em 1em !important;
+  box-shadow: #000000 4px 6px 20px !important;z-index: 100; overflow-y: scroll; border-radius: 7px;}
+.order_popup > span { position:absolute; top:0; left:0; width:100%; text-align:center; height:2em;
+  font-weight:bold;line-height:22pt;margin-top: 10px; font-size: 14pt;}
+.order_popup span.choose { background:black; color:white;}
+.order_popup > div { top:2em; height:100%;  }
+.order_popup table>tbody>tr>td {height:100%; vertical-align: initial; }
+.order_popup label { display:inline-table; font-size:small; }
+
+.order_popup input[type=text], .order_popup input[type=number], .order_popup select, .order_popup textarea
+{ width: 100%;padding: 4px 14px;margin: 4px 0;display: inline-block;
+  border: 1px solid #ccc;border-radius: 4px;box-sizing: border-box;}
+.order_popup select {font-size: 12pt;}
+.order_popup input[type=submit] {width: 100%;background-color: #5a6361;color: white;padding: 14px 12px;
+  margin: 8px 7px;border: none;border-radius: 4px;cursor: pointer; }
+
+.order_popup input[type=submit]:hover {background-color: #45a049;}
+
+/*special span that refused to be above the input field*/
+.order_popup label.span_above {margin-top: 20px; margin-right: 12px;}
+.order_popup label.span_above span { position: absolute;margin-top: -18px; font-size: 11pt;}
+
+/*.order_popup input, .order_popup select { display: block; border: 1px solid;color: black; padding: 3px 9px; margin: 5px 7px; text-decoration: none; font-size: 15px; }*/
+/*input.form_button {background: white; padding: 6px 13px !important;cursor: pointer;}*/
+/*input.form_button:hover {background: black; color: white !important; border-color: white;}*/
 label.form_button {float: right}
 #label_close_button {float: right}
 
@@ -657,7 +698,9 @@ label.form_button {float: right}
 
   /*menu*/
   #bar_menu>i {font-size: 18px;}
-  #menu {position: fixed; top: 0px; z-index: 9; background: #cadfd9;}
+  #menu {position: fixed; top: 0px; z-index: 9; background: #cadfd9; -webkit-box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);}
   #menu a span {padding: 12px 7px;font-size: 14px;}
   #menu div, #menu span, #menu input {font-size: 11pt; }
   #menu #bar_items a.active { border-bottom: none; border-left: 14px solid #cadfd9; }
@@ -673,7 +716,7 @@ label.form_button {float: right}
   #page_sm span.label { padding-top:0.4em; }
   #mobile_menu {display: block}
   #mobile_menu a.jump {display: block}
-  #vyber {height: initial}
+  #vyber {height: initial; margin-top: 51px;}
 
   a.abstrakt, div.abstrakt {margin: 0.3em 0;padding: .6em 0.5em;}
   /*login*/
@@ -689,7 +732,7 @@ label.form_button {float: right}
   .masonry_container { column-count: 1;}
 
   div, span {font-size: 11pt;}
-  h1 {margin-left: 0.2em !important;}
+  h1 {margin-left: 0.2em !important; font-size: 29pt; }
   h2, h3, h4 {margin-left: 0.1em !important;}
 
   div.pquote {padding: 30px 10px;margin: 0; max-width: 65%;}
@@ -697,16 +740,22 @@ label.form_button {float: right}
   div.pquote:after {top: -3px;}
 
   div.notice_style {padding: 50px 10px 15px 10px;margin: 0;}
+  div.clanek { margin: 0.5em 0; }
+  div.text {padding: 0.4em 0.5em}
+  #web .clanek .text img { margin: 0;}
+  .clanek span.cms_form { font-size: 12pt !important; line-height: 12px; }
+  .abstrakt span.cms_form { margin-right: 0; }
+  #page {padding-top: 18px;}
 
   /*todo delete?*/#cist_dole { display:block; }
-  #web {margin-top: 80px;}
   #list {padding: 0;}
   .content {padding: 0 12px;}
   /*popup*/
   #popup {width: 80vw; margin-left: -45vw; height: 80vh; margin-top: -40vh;}
-  #order {width: 80vw; margin-left: -45vw; height: 80vh; margin-top: -40vh;}
-  #order table tr td {display: block;}
-
+  .order_popup {width: 80vw !important; margin-left: -45vw !important; height: 80vh !important; margin-top: -40vh !important;}
+  .order_popup table tr td {display: block;}
+  #user_msg {margin-left: 0;width: auto;left: 0;}
+  #user_msg div{margin-top: 2.3em}
   /* abstrakty */
   div.abstr { width:100%; }
   .abstr-fotogalerie {width:100%; }
@@ -736,12 +785,15 @@ label.form_button {float: right}
   #logo_setkani { position:fixed; top: 10px; left: 60px; width: 40px; z-index: 10; }
   #logo_ymca { position:fixed; top: 10px; left: 10px; width: 40px; z-index: 10; }
 
-  #menu {position: fixed; top: 0px; z-index: 9; background: #cadfd9;}
+  #menu {position: fixed; top: 0px; z-index: 9; background: #cadfd9; -webkit-box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);}
   #menu div, #menu span, #menu input {font-size: 9pt;}
   #menu #bar_items a.active { border-bottom: none; border-left: 14px solid #cadfd9; }
-
   #menu div#bar_items {width: 100vw;height: 100vh; height: calc(100vh - 5em); padding-bottom: 5em; left: -100vw; display: block;right: 0;position: fixed; box-shadow:none; overflow-y: scroll;}
   #menu div#bar_items span { height: -moz-max-content;height: fit-content}
+  #vyber {margin-top: 54px;}
+  #page {padding-top: 18px;}
   #page_tm input {background: #cadfd9 }
   #page_hm {position: fixed;left: 0; top: 100px;z-index: 101;}
   #page_hm a.jump {width: 100vw;}
@@ -753,8 +805,6 @@ label.form_button {float: right}
   #cist_dole { display:none; }
   /* velká tlačítka */
   #page_sm span.label { padding-top:0.4em; }
-  /* střední písmo menu */
-  #web {margin-top: 80px;}
   .masonry_container { column-count: 2;}
   #facebook_content {width: 300px; padding-top: 80px; padding-right: 40px;}
   #facebook_content:before {transform: translate(00px, -70px);}
@@ -765,8 +815,8 @@ label.form_button {float: right}
 
   /*popup*/
   #popup {width: 80vw; margin-left: -40vw; height: 80vh; margin-top: -40vh;}
-  #order {width: 80vw; margin-left: -40vw; height: 80vh; margin-top: -40vh;}
-  #order table tr td {display: block;}
+  .order_popup {width: 80vw !important; margin-left: -40vw !important; height: 80vh !important; margin-top: -40vh !important;}
+  .order_popup table tr td {display: block;}
 
   /*footer*/
   .footer hr.footer-hr {display: none}
@@ -805,8 +855,8 @@ label.form_button {float: right}
 
   /*popup*/
   #popup {width: 80%; margin-left: -40%; }
-  #order {width: 80%; margin-left: -40%; }
-  #order table tr td {display: block;}
+  .order_popup {width: 80%; margin-left: -40%; }
+  .order_popup table tr td {display: block;}
 
   /* home page na na šířku todo delete? there is a comment in the template so I will know whether this section is kept or not */
   #cist_dole { display:none; }
@@ -824,7 +874,6 @@ label.form_button {float: right}
 @media all and (min-width: 900px) {
   #info::before { content:"desktop"; }
   /* omezení šířky */
-  #web,#page_foo { /*todo*/ }
   #logo_setkani { position:absolute; margin: 0 0 0 120px !important; top: 200px; right: 68vw; width: 130px; }
   #logo_ymca { position:absolute; margin: 0 0 0 230px !important; top: 80px; right: 68vw; width: 120px; }
   /* home page na na šířku */

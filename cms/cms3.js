@@ -336,47 +336,51 @@ function _table_chng(y) {
 // den je Y-m-d prvního dne objednávky
 // vrátí hodnoty formuláře tzn. input, select jako json
 // pro create a update p.rooms=seznam pokojů pro match
-function objednavka(e,op,p) {
+function objednavka(e,op,p,self=null) {
   function verify() {
     // kontroly správného vyplnění
     let jmeno= x.form['name'].replace(' ',''),
-        spojeni= x.form['email'].replace(' ','')+x.form['telephone'].replace(' ','');
-    if ( !jmeno ) 
-      msg+= "<p>Napište prosím své <b>jméno a příjmení </b> abychom vás mohli kontaktovat</p>";
-    else if ( !spojeni )
-      msg+= "<p>Napište prosím svůj <b>telefon</b> nebo <b>email</b> abychom vás mohli kontaktovat</p>";
+        email= x.form['email'].replace(' ',''), telefon=x.form['telephone'].replace(' ','');
+    if ( !jmeno ) {
+      msg += "<p>Napište prosím své <b>jméno a příjmení </b> abychom vás mohli kontaktovat.</p>";
+    } else if (!email.match(/\S+@\S+\.\S+/)) {
+      msg += "<p>Zadaná emailová adresa '" + email + "' není korektní.</p>";
+    }
     if ( !msg ) {
       for (let fld of ['rooms1','adults','untilday']) {
         let val= x.form[fld];
         if ( val ) {
           val= val.replace(' ','');
           switch (fld) {
-          case 'rooms1':{
-            let pokoj= `(${p.rooms})`,
-                qry= new RegExp(`^\s*\\*|${pokoj}(\s*,\s*${pokoj})*\s*$`,'g');
-            if ( !val || !qry.test(val) ) {
-              msg+= "<p><b>Objednané pokoje</b> zapište číslem pokoje (jsou uvedena v záhlaví"
-                  + " tabulky spolu s počtem postelí a popisem viditelným při dotyku myši) "
-                  + " nebo více čísly oddělenými čárkou. Žádost o všechny pokoje zapište hvězdičkou. "
-                  + "<br>... např. 1 nebo 12,13 nebo *</p>"
+            case 'rooms1':{
+              let pokoj= `(${p.rooms})`,
+                  qry= new RegExp(`^\s*\\*|${pokoj}(\s*,\s*${pokoj})*\s*$`,'g');
+              if ( !val || !qry.test(val) ) {
+                msg+= "<p><b>Objednané pokoje</b> zapište číslem pokoje (jsou uvedena v záhlaví"
+                    + " tabulky spolu s počtem postelí a popisem viditelným při dotyku myši) "
+                    + " nebo více čísly oddělenými čárkou. Žádost o všechny pokoje zapište hvězdičkou. "
+                    + "<br>... např. 1 nebo 12,13 nebo *</p>"
+              }
+              break;}
+            case 'adults':{
+              if ( !val || !val.match(/^\d+$/g) ) {
+                msg+= "<p>Zadejte prosím předpokládaný počet <b>dospělých</b> osob číslem</p>";
+              }
+              break;
             }
-            break;}
-          case 'adults':{
-            if ( !val || !val.match(/^\d+$/g) ) {
-              msg+= "<p>Zadejte prosím předpokládaný počet <b>dospělých</b> osob číslem</p>";
+            case 'untilday': {
+              let fromday = Date.parse(x.form['fromday']),
+                  untilday = Date.parse(val),
+                  max_days = 31,
+                  days = (untilday - fromday) / 86400000;
+              if (!val || isNaN(days) || days < 0 || days > max_days) {
+                msg += "<p>Opravte prosím <b>datum odjezdu</b>.</p>";
+              }
+              // convert to UNIX timestamp
+              x.form['fromday'] = fromday / 1000;
+              x.form['untilday'] = untilday / 1000;
+              break;
             }
-            break;}
-          case 'untilday':
-            let u= val.split('.'),
-                f= x.form['fromday'].split('.'),
-                fromday= new Date(f[2],f[1]-1,f[0],0,0,0,0),
-                untilday= new Date(u[2],u[1]-1,u[0],0,0,0,0),
-                max_days= 31,
-                days= (untilday-fromday)/86400000;
-            if ( !val || isNaN(days) || days<0 || days>max_days ) {
-              msg+= "<p>Opravte prosím <b>datum odjezdu</b> a zapište je jako den.měsíc.rok</p>";
-            }
-            break;
           }
         }
       }
@@ -432,27 +436,27 @@ function objednavka(e,op,p) {
     alert('objednavka('+op+'/'+p+') NYI !!!');
     break; }
   }
-  if ( msg ) 
-    msg4_on("<b style='color:red'>opravte prosím následující údaje:</b>"+msg);
-  else
+  if ( msg ) msg4_on(msg, 'Špatně vyplněný formulář');
+  else {
+    jQuery(self).attr("value", "Prosím čekej...");
     ask(x,_objednavka);
+  }
 }
 function _objednavka(y) {
   if ( !y ) return;
   var tit= jQuery('#order_tit');
   switch (y.dum) {
   case 'wanted':{
-    var order= jQuery('#order'), div= jQuery('#order_div'), tit= jQuery('#order_tit');
+    var order= jQuery('#order'), div= jQuery('#order_div');
     order.css('display','block');
     div.html(y.html);
-    var n= 0, list= del= '', orders= y.orders.split(',');
-    jQuery.each(orders,function(ord) {            
+    var n= 0, list='', del= '', orders= y.orders.split(',');
+    orders.forEach(ord => {
       if ( ord!==y.order ) {
-        var p= "{orders:'"+y.orders+"',order:'"+ord+"'}";
-        ord= "<u onclick=\"objednavka(0,'wanted',"+p+")\">"+ord+"</u>";
+        ord= "<u style='cursor: pointer;' onclick=\"objednavka(0,'wanted',\{orders:'"+y.orders+"',order:'"+ord+"'\})\">"+ord+"</u>";
       }
       else {
-        ord= "<span class='choose'>"+ord+"</span>";
+        ord= "<span class='choose' style='font-size: 15pt;padding: 0 5px; cursor: default;'>"+ord+"</span>";
       }
       list+= del+ord;
       del= ', ';
@@ -470,9 +474,15 @@ function _objednavka(y) {
     ));
     break;}
   case 'create':{
-    tit.html('Objednávka '+y.order + ' byla zaslána správci Domu setkání');
-    if ( y.ok ) block_display('order',0);
-    refresh();
+    tit.html(y.msg);
+    if ( y.ok ) block_display('order', 0);
+    if ( y.hasOwnProperty('completion') ) {
+      let msg = jQuery("#order_completion");
+      msg.removeClass('nodisplay');
+      msg.html(y.completion);
+      jQuery('html, body').animate({scrollTop: (msg.offset().top - 200)}, 500);
+    }
+    //refresh();
     break;}
   case 'delete':{
     tit.html(y.ok ? 'Objednávka '+y.order + ' byla smazána' : 'Smazání se nepovedlo');
@@ -529,7 +539,7 @@ function _be_logout(y) {
 function ask(x,then,arg) {
   var xx= x;
   x.totrace= Ezer&&Ezer.App&&Ezer.App.options ? Ezer.App.options.ae_trace : 'u';
-  x.secret=  "WEBKEYNHCHEIYSERVANTAFVUOVKEYWEB";
+  x.secret= "WEBKEYNHCHEIYSERVANTAFVUOVKEYWEB";
   jQuery.ajax({url:Ezer.web.index, data:x, method: 'POST',
     success: function(y) {
       if ( typeof(y)==='string' )
