@@ -350,6 +350,7 @@ function escape_nostring($value, $esc="-") {
 # ----------------------------------------------------------------------------------------==> mesice
 # 1=zájem o pobyt, 2=závazná objednávka, 3=akce YMCA, 4=nelze pronajmout );
 function mesice($path) {  trace();
+  global $CMS;
   popup("Objednávka","","",'order');
 
   $user= $_SESSION['web']['fe_user'];
@@ -362,7 +363,7 @@ function mesice($path) {  trace();
   if ($spravce) $mesicu += 12;
 
   $xx= array();
-  $d= mktime(0, 0, 0, date("n")-3, 2, date("Y"));
+  $d= mktime(0, 0, 0, date("n") + ($CMS ? -3 : -1), 2, date("Y"));
 
   // pole pro informace z nabídek
   $wnames= array ();
