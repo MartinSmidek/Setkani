@@ -611,38 +611,17 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         $proc_kdo= function ($x,$level,$kdy='') { trace();
           global $def_pars,$href0, $kernel;
           display("kdo($x) - $href0 - $kernel");
-          $html= "<div id='vyber' class='x'><div class='content'><img id='inclusion_icon' src='cms/img/inclusion.png' alt='Změna selekce' title='Přepni pro výběr jedné kategorie' onclick='jQuery(this).toggleClass(\"exclusive\");'/>";
+          $html= "<div id='vyber' class='x'><div class='content'>";
           foreach($def_pars['komu'] as $id=>$nazev_i) {
             list($nazev,$i)= explode(':',$nazev_i);
             $alberice= $i==6 ? " style='display:none'" : '';
             $nazev= $i==6 ? '' : $nazev;
             if ( $i==6 ) continue;
             $checked= strpos($x,$id)!==false ? ' checked' : '';
-//         if ( $kdy ) {
-
-
             $on= $kernel=='ezer3.1'
-                ? " onchange='if(jQuery(\"#inclusion_icon\").hasClass(\"exclusive\")) {jQuery(this).parent().parent().children(\"label\").each(function() {jQuery(this).find(\"input\").prop( \"checked\", false);}); jQuery(this).prop( \"checked\", true);} jQuery(this).parent().toggleClass(\"checked\"); history_push(\"$href0\",\"komu\",$level,\"$kdy\");'"
+                ? " onchange='jQuery(this).parent().toggleClass(\"checked\"); history_push(\"$href0\",\"komu\",$level,\"$kdy\");'" //if(jQuery("#inclusion_icon").hasClass("exclusive")) {jQuery(this).parent().parent().children("label").each(function() {jQuery(this).find("input").prop( "checked", false);}); jQuery(this).prop( "checked", true);}
                 : " onchange='this.parentNode.toggleClass(\"checked\");history_push(\"$href0\",\"komu\",$level,\"$kdy\");'"; //exlcusion does not work here for now.. remove all ezer-version conditions?...
-            $html.= "<label class='$checked'>$nazev
-                     <input name='komu' data-value='$i' value='$id' type='checkbox'$checked$on$alberice>
-                   </label>";
-//         }
-//         else {
-//           $on= " onclick='history_push(\"$href0\",\"komu,bylo\",$level);'";
-//           $html.= "<label>$nazev<input name='komu' data-value='$i' value='$id' type='checkbox'$checked$on$alberice></label>";
-//         }
-
-//         if ( $kdy ) {
-//           $on= " onclick='history_push(\"$href0\",\"komu\",$level,\"$kdy\");'";
-//           $html.= "<input name='komu' data-value='$i' value='$id' type='checkbox'$checked$on$alberice>"
-//                 . "<label>$nazev</label>";
-//         }
-//         else {
-//           $on= " onclick='history_push(\"$href0\",\"komu,bylo\",$level);'";
-//           $html.= "<input name='komu' data-value='$i' value='$id' type='checkbox'$checked$on$alberice>"
-//                 . "<label>$nazev</label>";
-//         }
+            $html.= "<input name='komu' id='komu$id' data-value='$i' value='$id' type='checkbox'$checked$on$alberice><label for='komu$id' class='$checked'>$nazev</label>";
           }
           $html.= "</div></div>";
           return $html;
@@ -804,7 +783,7 @@ __EOD;
   
   $eb_link
   <link href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&amp;subset=latin-ext" rel="stylesheet">
-  <link rel="stylesheet" href="cms/web.css?v=4.3" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="cms/web.css?v=4.4" type="text/css" media="screen" charset="utf-8">
   <script type="text/javascript">
     var Ezer={web:{ $Ezer_web},cms:{form:{}}};
     if ( !console ) {
