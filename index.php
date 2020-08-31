@@ -51,10 +51,11 @@ $_SESSION['web']['server']= $ezer_server;
 
 $totrace= $ezer_server!=1 ? (isset($_GET['trace']) ? $_GET['trace'] : 'u') : '';  // Mu
 
-// databáze
+// databáze a přístup na chlapi.cz přes servant_ch
 $deep_root= "../files/setkani4";
 require_once("$deep_root/cms.dbs.php");
 $ezer_db= $dbs[$ezer_server];
+$chlapi_cz= $chlapi_cz[$ezer_server];
 
 ezer_connect('setkani4');
 $mysql_db_track= $tracking= '_track';

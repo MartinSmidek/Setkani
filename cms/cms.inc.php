@@ -44,6 +44,9 @@ $ezer_server=
   $deep_root= "../files/setkani4";
   require_once("$deep_root/cms.dbs.php");
   
+  // přístup na chlapi.cz přes servant_ch
+  $chlapi_cz= $chlapi_cz[$ezer_server];
+
   $path_backup= "$deep_root/sql";
   
   // cesta k utilitám MySQL/MariaDB

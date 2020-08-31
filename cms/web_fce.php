@@ -1868,12 +1868,15 @@ function datum_oddo($x1,$x2) {
   $r1= 0+substr($x1,0,4); 
   $r2= 0+substr($x2,0,4);
   $r= date('Y');
-  if ( $x1==$x2 ) {  //zacatek a konec je stejny den
+  if ( $x1==$x2 ) {  // zacatek a konec je stejny den
     $datum= "$d1. $m1" . ($r1!=$r ? ". $r1" : '');
   }
   elseif ( $r1==$r2 ) {
-    if ( $m1==$m2 ) { //zacatek a konec je stejny mesic
-      $datum= "$d1 - $d2. $m1. $r1";
+    if ( $m1==$m2 ) { // zacatek a konec je stejny mesic
+      $datum= "$d1 - $d2. $m1. ".($r1==$r ? '' : $r1);
+    }
+    elseif ( $r1==$r ) { // letošní měsíce
+      $datum= "$d1. $m1 - $d2. $m2.";
     }
     else { //ostatni pripady
       $datum= "$d1. $m1 - $d2. $m2. $r1";
@@ -1883,5 +1886,41 @@ function datum_oddo($x1,$x2) {
     $datum= "$d1. $m1. $r1 - $d2. $m2. $r2";
   }
   return $datum;
+}
+# --------------------------------------------------------------------------------- url get_contents
+function url_get_contents($url, $useragent='cURL', $headers=false, $follow_redirects=true, $debug=false) {
+  // initialise the CURL library
+  $ch = curl_init();
+  // specify the URL to be retrieved
+  curl_setopt($ch, CURLOPT_URL,$url);
+  // we want to get the contents of the URL and store it in a variable
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+  // specify the useragent: this is a required courtesy to site owners
+  curl_setopt($ch, CURLOPT_USERAGENT, $useragent);
+  // ignore SSL errors
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+  // return headers as requested
+  if ($headers==true){
+    curl_setopt($ch, CURLOPT_HEADER,1);
+  }
+  // only return headers
+  if ($headers=='headers only') {
+    curl_setopt($ch, CURLOPT_NOBODY ,1);
+  }
+  // follow redirects - note this is disabled by default in most PHP installs from 4.4.4 up
+  if ($follow_redirects==true) {
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); 
+  }
+  // if debugging, return an array with CURL's debug info and the URL contents
+  if ($debug==true) {
+    $result['contents']=curl_exec($ch);
+    $result['info']=curl_getinfo($ch);
+  }
+  // otherwise just return the contents as a variable
+  else $result=curl_exec($ch);
+  // free resources
+  curl_close($ch);
+  // send back the data
+  return $result;
 }
 ?>
