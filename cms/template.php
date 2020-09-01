@@ -1936,7 +1936,7 @@ function create_kniha($x) { //$pid,$autor,$nadpis,$obsah,$psano) { trace();
 }
 # =======================================================================================> kalendáře
 # kalenář akce je v databázi poznačen
-function kalendare($vyber, $rok, $id) { trace();
+function kalendare($vyber, $rok, $id, $chlapi_ignore=false) { trace();
   global $CMS, $news_time, $mode, $href0, $page_mref, $usergroups, $show_hidden, $show_deleted;
   // výběr podle programu - překlad na regexpr
   $groups= $usergroups ? "AND fe_groups IN ($usergroups)" : 'AND fe_groups=0';
@@ -1949,7 +1949,7 @@ function kalendare($vyber, $rok, $id) { trace();
   if ( !$news_time ) $news_time= time() - 1 * 24*60*60;
   $cr= mysql_qry("
       SELECT p.uid, p.cid, c.type,p.title,p.text,p.author,FROM_UNIXTIME(date),p.tags,
-       p.deleted,p.hidden,fromday,untilday,FROM_UNIXTIME(fromday),id_akce,
+       p.deleted,p.hidden,fromday,untilday,FROM_UNIXTIME(fromday),c.program,
        IF(c.tstamp>$news_time, IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),
          ' upd',' new'),'')
       FROM setkani4.tx_gncase AS c
@@ -1961,8 +1961,11 @@ function kalendare($vyber, $rok, $id) { trace();
   $h = "";
   $n = 0;
   while ( $cr && (
-      list($uid,$cid,$type,$title,$text,$autor,$psano,$tags,$del,$hid,$uod,$udo,$od,$ida,$upd)
+      list($uid,$cid,$type,$title,$text,$autor,$psano,$tags,$del,$hid,$uod,$udo,$od,$program,$upd)
           = mysql_fetch_row($cr)) ) {
+
+    if (($vyber == "dum" || $chlapi_ignore) && ($program == 3 || $program == "3")) continue;
+
     $n++;
     $tagc = "#k$n";
     $kdy= $ex= '';
@@ -1975,13 +1978,28 @@ function kalendare($vyber, $rok, $id) { trace();
     $abstr= $mode[1] ? 'abstr' : 'abstr-line';
     $roks= $rok ? "/$rok" : '';
     $cms_roks= $rok ? ",$rok" : '';
-    $jmp= $CMS ? "onclick=\"go_anchor(arguments[0],"
-               . "'$href0!{$vyber}$cms_roks!$uid#anchor$uid','$page_mref$roks/$uid#anchor$uid');\""
-        : "href='$page_mref$roks/$uid#anchor$uid'";
     $back= $CMS ? $href0."$vyber$tagc"
         : "$page_mref$roks";
     $img= '';
     $text= xi_shorting($text,$img);
+
+    //todo temporary solution hardcoded, can be based on program value
+    if ( /*$program == 3 ||*/ $cid == 1644) {
+      if (!strpos($vyber, "chlapi")) continue;
+      $h.= "<div class='$abstr relative' id='n$n'>
+            <div class='status_chlapi'>
+           $code 
+           <a class='abstrakt$ex' target='_blank' href='http://chlapi.cz/skupiny!brno!343'>
+             <b>$title:</b><div class='clear'></div>$img 
+               <p>$text</p>
+           </a>
+         </div></div>";
+      continue;
+    }
+
+    $jmp= $CMS ? "onclick=\"go_anchor(arguments[0],"
+        . "'$href0!{$vyber}$cms_roks!$uid#anchor$uid','$page_mref$roks/$uid#anchor$uid');\""
+        : "href='$page_mref$roks/$uid#anchor$uid'";
 
     $h.= $uid==$id ? vlakno($cid,'clanek',$back)
         : "<div class='$abstr' id='n$n'>
@@ -2291,7 +2309,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
       $ORDER= "ASC";
 
       //in case alberice future events, display calendar
-      $calendar = kalendare('alberice', 'nove', $id);
+      $calendar = kalendare('alberice', 'nove', $id, true);
       $calendar .= "<div class='content'><h2>Plánované akce</h2></div>";
     }
     else {
@@ -2371,7 +2389,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $key= -1;
     $parm= is_numeric($kdy) ? "typ=2&rok=$kdy" : "typ=1";
     $chlapi_url= "$chlapi_cz/servant_ch.php?$parm&err=3";
-                                                          trace($chlapi_url);
+   //                                                       trace($chlapi_url);
     $a_json= url_get_contents($chlapi_url,false,false); 
     if ( $a_json ) {
       $json= json_decode($a_json);
@@ -2411,7 +2429,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
         }
       }
       //$jmp= "href='$x->href' target='chlapi.cz'";
-      $jmp= " onclick=\"go_chlapi_cz('$x->href')\"";
+      $jmp= $CMS ? " onclick=\"go_chlapi_cz('$x->href')\"" : " href=\"$x->href\" target=\"_blank\"";
       $h.= "<div class='$abstr relative status_chlapi' 
              title='Po kliknutí přepnu na text na web chlapi.cz'>
            $code 
@@ -2485,7 +2503,8 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
            $code 
            <a class='abstrakt$ex{$x->upd}' $jmp>
              $prihlaska
-             <span class='akce_datum'>$x->kdy $flags</span>  <b>$x->nadpis:</b><div class='clear'></div>$img 
+             <span class='akce_datum'><i class=\"fa fa-calendar\" style='color: darkgray'></i>&nbsp;$x->kdy $flags</span>
+             <b>$x->nadpis:</b><div class='clear'></div>$img 
                <p>$x->abstract</p>
            </a>
          </div>";

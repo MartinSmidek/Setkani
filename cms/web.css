@@ -366,7 +366,7 @@ div.LabelDrop * {cursor:pointer; }
 /* výběrové podmínky */
 #vyber {width:100%; font-weight:bold; color: black; font-size: 9pt;display:inline-flex; background-color: #cadfd9;
   height: 33px; line-height: 31px; position: absolute; }
-#vyber label{  display: inline-block;background-color: rgba(255, 255, 255, .9);  color: #adadad;  border-radius: 25px;
+#vyber label{  display: inline-block;background-color: rgba(255, 255, 255, .7);  color: #adadad;  border-radius: 25px;
   margin: 0 5px;  white-space: nowrap;  -webkit-touch-callout: none;  -webkit-user-select: none;  -moz-user-select: none;
   -ms-user-select: none;  user-select: none;  -webkit-tap-highlight-color: transparent;  transition: all .2s;  padding: 0 9px;
   cursor: pointer;  font-size: 10pt;}
@@ -642,11 +642,10 @@ div.cms_form > div div button {margin-top: 5px;}
 
 button .setkani_padding {padding-top: 5px;}
 
-.order_popup {position: fixed;left: 50% !important;top: 50% !important;margin-top: -250px!important;
-  margin-left: -375px !important;width: 720px !important; height: -moz-max-content !important;
-  height: fit-content !important; background: white !important; color: #000000 !important;
-  max-height: 500px !important;padding: 2em 1em 1em 1em !important;
-  box-shadow: #000000 4px 6px 20px !important;z-index: 100; overflow-y: scroll; border-radius: 7px;}
+.order_popup {position: fixed;left: 50%;top: 50%;margin-top: -250px;
+  margin-left: -375px;width: 720px; height: fit-content; background: white; color: #000000;
+  max-height: 500px; padding: 2em 1em 1em 1em;
+  box-shadow: #000000 4px 6px 20px;z-index: 100; overflow-y: scroll; border-radius: 7px;}
 .order_popup > span { position:absolute; top:0; left:0; width:100%; text-align:center; height:2em;
   font-weight:bold;line-height:22pt;margin-top: 10px; font-size: 14pt;}
 .order_popup span.choose { background:black; color:white;}
@@ -858,7 +857,7 @@ label.form_button {float: right}
 
   /*popup*/
   #popup {width: 80%; margin-left: -40%; }
-  .order_popup {width: 80%; margin-left: -40%; }
+  .order_popup {width: 80%; margin-left: -40%; min-height: 80vh}
   .order_popup table tr td {display: block;}
 
   /* home page na na šířku todo delete? there is a comment in the template so I will know whether this section is kept or not */
