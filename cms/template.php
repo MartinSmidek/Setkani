@@ -279,13 +279,13 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       }
       if ( $ref=='hledej' ) {
         $input= "1";
-//       $search_go= "go(arguments[0],'{$href}hledej','/$mref',1,1);";
-//       $jmp= "onclick=\"go(arguments[0],'$href$ref','',$input,1);\"";
         $jmp= $CMS
             ? "onclick=\"go(arguments[0],'$href$ref','/$mref',$input,1);\""
-            : "href='/$mref/$search'";
-      }
-      else {
+            : "onclick=\"
+              let query = jQuery('input#search').val();
+              if (query && query !== '') window.location.href='/$mref/' + query;
+              else window.location.href='/';\"";
+      } else {
         $jmp= $CMS || substr($mref,0,1)=='-'
             ? "onclick=\"go(arguments[0],'$href$ref','/$mref',$input,1);\""
             : "href='/$mref'";
