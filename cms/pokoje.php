@@ -139,7 +139,7 @@ function dum_form($x) {
 //                                                         debug($x,"dum_form");
   $ord= $x->order;
   $user= $_SESSION['web']['fe_user'];
-  $spravce= $user ? access_get(1) : true; //TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! delete
+  $spravce= $user ? access_get(1) : 0;
 
   $rooms_nums = array();
   $res= mysql_qry("SELECT number FROM tx_gnalberice_room WHERE NOT deleted AND NOT hidden AND version=1");
