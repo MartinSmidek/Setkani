@@ -346,60 +346,58 @@ function objednavka(e,op,p,self=null) {
   function verify() {
     // kontroly správného vyplnění
     let jmeno= x.form['name'].replace(' ',''),
-        email= x.form['email'].replace(' ',''), telefon=x.form['telephone'].replace(' ','');
-    if ( !jmeno ) {
-      msg += "<p>Napište prosím své <b>jméno a příjmení </b> abychom vás mohli kontaktovat.</p>";
-    } else if (!email.match(/\S+@\S+\.\S+/)) {
-      msg += "<p>Zadaná emailová adresa '" + email + "' není korektní.</p>";
-    }
-    if ( !msg ) {
-      for (let fld of ['rooms1','adults','untilday']) {
-        let val= x.form[fld];
-        if ( val ) {
-          val= val.replace(' ','');
-          switch (fld) {
-            case 'rooms1':{
-              let pokoj= `(${p.rooms})`,
-                  qry= new RegExp(`^\s*\\*|${pokoj}(\s*,\s*${pokoj})*\s*$`,'g');
-              if ( !val || !qry.test(val) ) {
-                msg+= "<p><b>Objednané pokoje</b> zapište číslem pokoje (jsou uvedena v záhlaví"
-                    + " tabulky spolu s počtem postelí a popisem viditelným při dotyku myši) "
-                    + " nebo více čísly oddělenými čárkou. Žádost o všechny pokoje zapište hvězdičkou. "
-                    + "<br>... např. 1 nebo 12,13 nebo *</p>"
-              }
-              break;}
-            case 'adults':{
-              if ( !val || !val.match(/^\d+$/g) ) {
-                msg+= "<p>Zadejte prosím předpokládaný počet <b>dospělých</b> osob číslem</p>";
-              }
-              break;
-            }
-            case 'untilday': {
-              let fromday = Date.parse(x.form['fromday']),
-                  untilday = Date.parse(val),
-                  max_days = 31,
-                  days = (untilday - fromday) / 86400000;
-              if (!val || isNaN(days) || days < 0 || days > max_days) {
-                msg += "<p>Opravte prosím <b>datum odjezdu</b>.</p>";
-              }
-              // convert to UNIX timestamp
-              x.form['fromday'] = fromday / 1000;
-              x.form['untilday'] = untilday / 1000;
-              break;
-            }
+        email= x.form['email'].replace(' ','');
+    if ( !jmeno ) errors["ord_name_error"] = "Napište prosím své <b>jméno a příjmení </b> abychom vás mohli kontaktovat.";
+    if ( !email ) errors["ord_email_error"] = "Chybí emailová adresa.";
+    else if ( !email.match(/\S+@\S+\.\S+/) ) errors["ord_email_error"] = "Zadaná emailová adresa '" + email + "' není korektní.";
+    if (jQuery("#rooms_label").text().startsWith("žádné")) errors["ord_date_error"] = "Žádné volné pokoje ve zvoleném období.";
+    for (let fld of ['rooms1','adults','untilday']) {
+      let val= x.form[fld];
+      if (val == null) { continue; } //todo error? these are compulsory...
+      val= val.replace(' ','').trim();
+      switch (fld) {
+        case 'rooms1':{
+          let pokoj= `(${p.rooms})`,
+              qry= new RegExp(`^\s*\\*|${pokoj}(\s*,\s*${pokoj})*\s*$`,'g');
+          if (!val) {
+            errors["ord_rooms_error"] = "Objednejte pokoje jejich číslem (detaily jsou v záhlaví tabulky).";
+          } else if (!qry.test(val)) {
+            errors["ord_rooms_error"] = "Čísla <b>existujících</b> pokojů musí být oddělena čárkou.";
           }
+          break;}
+        case 'adults':{
+          if ( !val || val < 1 ) {
+            errors["ord_adults_error"] = "Zadejte předpokládaný počet <b>dospělých</b> osob.";
+          }
+          break;
+        }
+        case 'untilday': {
+          let fromday = Date.parse(x.form['fromday']),
+              untilday = Date.parse(val),
+              max_days = 31,
+              days = (untilday - fromday) / 86400000;
+          if (!val || isNaN(days) || days < 0 || days > max_days) {
+            errors["ord_date_error"] = "Opravte prosím <b>datum pobytu</b>.";
+          }
+          // convert to UNIX timestamp
+          x.form['fromday'] = fromday / 1000;
+          x.form['untilday'] = untilday / 1000;
+          break;
         }
       }
     }
   }
   if ( e ) e.stopPropagation();
-  var x= {cmd:'dum',dum:op}, 
+  var x= {cmd:'dum',dum:op},
       f= jQuery('#order'),
-      msg= '';
+      errors= {};
+  orderHideErrors(f);
+
   switch (op) {
   case 'wanted':{
     x.orders= p.orders;
     x.order= p.order||0;
+    jQuery('#web-shadow').css('display', 'block');
     break;}
   case 'form':{
     x.den= p.den;
@@ -408,47 +406,35 @@ function objednavka(e,op,p,self=null) {
     break;}
   case 'create':{
     x.order= 0;
-    x.form= {};
-    var elems= f.find('select,input');
-    elems.each(function() {
-      if ( this.name ) {
-        x.form[this.name]= this.value;
-      }
-    });
+    x.form= getAllInputValues(f, 'select,input');
     verify();
     break;}
   case 'delete':{
     x.order= p && p.order ? p.order : 0;
+    if (!confirm('Opravdu smazat objednávku číslo ' + x.order + '?')) return;
     break;}
   case 'update':{
     x.order= p && p.order ? p.order : 0;
-    x.form= {};
-    var elems= f.find('select,input');
-    elems.each(function() {
-      if ( this.name ) {
-        x.form[this.name]= this.value;
-      }
-    });
+    x.form= getAllInputValues(f, 'select,input');
     verify();
-    x.form= {};
-    elems= f.find('select.changed,input.changed');
-    elems.each(function() {
-      if ( this.name ) {
-        x.form[this.name]= this.value;
-      }
-    });
+    x.form= getAllInputValues(f, 'select.changed,input.changed');
     break;}
   default:{
     alert('objednavka('+op+'/'+p+') NYI !!!');
     break; }
   }
-  if ( msg ) msg4_on(msg, 'Špatně vyplněný formulář');
-  else {
-    jQuery(self).attr("value", "Prosím čekej...");
-    ask(x,_objednavka);
+
+  var counter = 0;
+  for( var key in errors ) {
+    orderShowError(key, errors[key]);
+    counter++;
+  }
+  if (counter === 0) {
+    jQuery(self).attr("value", "Prosím čekejte...");
+    ask(x,_objednavka, self);
   }
 }
-function _objednavka(y) {
+function _objednavka(y, caller) {
   if ( !y ) return;
   var tit= jQuery('#order_tit');
   switch (y.dum) {
@@ -471,7 +457,7 @@ function _objednavka(y) {
     tit.html("Čekající objednávk"+(n===1?"a ":"y: ")+list);
     break;}
   case 'form':{
-    var order= jQuery('#order'), div= jQuery('#order_div'), tit= jQuery('#order_tit');
+    var order= jQuery('#order'), div= jQuery('#order_div');
     order.css('display','block');
     div.html(y.html);
     tit.html(
@@ -480,8 +466,14 @@ function _objednavka(y) {
     ));
     break;}
   case 'create':{
-    tit.html(y.msg);
-    if ( y.ok ) block_display('order', 0);
+    if ( y.ok ) {
+      tit.html(y.msg);
+      block_display('order', 0);
+    } else {
+      msg4_on(y.msg, "Chyba v objednávce");
+      jQuery(caller).html("Přidat objednávku.");
+      return;
+    }
     if ( y.hasOwnProperty('completion') ) {
       let msg = jQuery("#order_completion");
       msg.removeClass('nodisplay');
@@ -489,7 +481,7 @@ function _objednavka(y) {
       jQuery('html, body').animate({scrollTop: (msg.offset().top - 200)}, 500);
     }
     //refresh();
-    break;}
+    return;}
   case 'delete':{
     tit.html(y.ok ? 'Objednávka '+y.order + ' byla smazána' : 'Smazání se nepovedlo');
     if ( y.ok ) block_display('order',0);
@@ -502,6 +494,28 @@ function _objednavka(y) {
     break;}
   }
   if ( y.msg ) alert(y.msg);
+}
+function getAllInputValues(rootElem, selector) {
+  var result = {};
+  rootElem.find(selector).each(function() {
+    if ( this.name ) {
+      if (this.name === 'obj_cely_dum') return;
+      result[this.name]= this.value;
+    }
+  });
+  return result;
+}
+function orderShowError(errElemId, msg) {
+  let element = jQuery("#" + errElemId);
+  element.removeClass("nodisplay");
+  element.html(msg);
+  element.addClass("block");
+}
+function orderHideErrors(parentElement) {
+  parentElement.find(".order_error_msg").each(function () {
+    jQuery(this).addClass("nodisplay");
+    jQuery(this).removeClass("block");
+  });
 }
 // ===========================================================================================> FOTO
 // --------------------------------------------------------------------------------------- foto show

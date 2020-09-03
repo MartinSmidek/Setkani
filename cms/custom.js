@@ -112,41 +112,56 @@ function getRoomsForTimespan(isFromDay, self) {
     let fromday = Date.parse(isFromDay ? self.value : jQuery("#fromday_input").val()) / 1000,
         untilday = Date.parse(isFromDay ? jQuery("#untilday_input").val() : self.value) / 1000;
 
+    //always save last value to potentially restore from other JS functions (not changing time span)
+    let roomsTitle = jQuery('#rooms_label');
+    roomsTitle.attr("content", roomsTitle.innerHTML);
+
     if (fromday <= untilday) {
-        ask({cmd:'dum', dum:'get_days', fromday:fromday, untilday: untilday}, _getRoomsForTimespan);
+        ask({cmd:'dum', dum:'check_rooms', fromday:fromday, untilday: untilday}, _getRoomsForTimespan);
     } else {
-        jQuery('#rooms_label').html("pokoje: máte zvolený záporný časový interval");
+        disableDumCheckbox(jQuery("#obj_cely_dum_check"));
+        unsetRoomsAllBooked("pokoje: máte zvolený záporný časový interval");
     }
 }
 function _getRoomsForTimespan(ret) {
-    ret = ret.days_data;
-    var rooms = {};
-    for(var key in ret){ //just fill all the rooms with zeroes
-        if (parseInt(key) < 100) continue;
-        for(var room in ret[key].pokoje) rooms[room] = 0;
-        break;
-    }
+    ret = ret.free_rooms;
 
-    var days = 0;
-    for(var key in ret){
-        let day_stamp = parseInt(key);
-        if (day_stamp < 100) continue;
-        let day = ret[key];
-        for(var room in day.pokoje) {
-            let pokoj = day.pokoje[room];
-            if (!pokoj.pset) {
-                rooms[room]++;
-            }
-        }
-        days++;
+    let dumCheckBox = jQuery("#obj_cely_dum_check");
+    if (ret["all_free"]) {
+        enableDumCheckbox(dumCheckBox);
+        if (!dumCheckBox.prop("checked")) unsetRoomsAllBooked(ret["content"]);
+    } else {
+        disableDumCheckbox(dumCheckBox);
+        unsetRoomsAllBooked(ret["content"]);
     }
-    var content = '';
-    for (var key in rooms) {
-        if (rooms[key] === days) content += key + ", ";
+}
+function setRoomsAllBooked() {
+    jQuery("#rooms_label").html("pokoje jsou objednány");
+    let input = jQuery("#input_rooms_label");
+    input.attr("disabled", true);
+    input.attr("value", "*");
+    input.addClass("changed");
+}
+function unsetRoomsAllBooked(pokojeTitleText, eraseRooms=false) {
+    jQuery("#rooms_label").html(pokojeTitleText);
+    let input = jQuery("#input_rooms_label");
+    input.attr("disabled", false);
+    if (eraseRooms || input.attr("value") === "*") {
+        input.attr("value", "");
+        input.removeClass("changed");
     }
-    if (!content) content = "žádné volné pokoje";
-    else content = "volné pokoje: " + content;
-    jQuery("#rooms_label").html(content);
+}
+function getLastRoomsTitle() {
+    return jQuery("#rooms_label").attr("content");
+}
+function disableDumCheckbox(inputField) {
+    inputField.attr("disabled", true);
+    inputField.prop("checked", false);
+    jQuery("#obj_cely_dum_text").html("zájem o celý<br> dům (nelze)");
+}
+function enableDumCheckbox(inputField) {
+    inputField.removeAttr("disabled");
+    jQuery("#obj_cely_dum_text").html("zájem o celý<br> dům");
 }
 function pokoj_ikona(state) {
     switch (state) {

@@ -310,7 +310,7 @@ function go_anchor(e,href,mref,input,nojump) {
 // ----------------------------------------------------------------------------------------- refresh
 // požádá předá CMS o obnovu stránky
 function refresh() {
-  Ezer.run.$.part.p._call(0,'refresh')
+  Ezer.run.$.part.p._call(0,'refresh');
   return 1;
 }
 // ------------------------------------------------------------------------------------------- vyber

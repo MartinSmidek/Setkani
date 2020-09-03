@@ -11,8 +11,6 @@ function dum_server($x) {
   $CMS= count($_SESSION['cms']);
   global $trace, $totrace;
   $totrace= $x->totrace;
-  $pokoje= select1("GROUP_CONCAT(number ORDER BY number SEPARATOR ',')",'tx_gnalberice_room',
-                   "NOT deleted AND NOT hidden AND version=1");
 //                                                         debug($x,"dum_server");
 //                                                         display("dum_server({op:{$x->dum},...})");
   $y= $x;
@@ -21,7 +19,6 @@ function dum_server($x) {
 
   case 'wanted': // orders:uid,uid,...
 //                                                         display(". orders:{$x->orders}");
-    $flds= $vals= $del= "";
     if ( !$x->order ) list($x->order)= explode(',',$x->orders);
     dum_form($x);
     break;
@@ -30,45 +27,25 @@ function dum_server($x) {
     $now= time();
     $flds= 'crdate,tstamp';
     $vals= "$now,$now";
-    // uprav default
+
     if ( !$x->form->untilday )  $x->form->untilday= $x->form->fromday;
     // v x.form jsou předána všechna pole
     foreach($x->form as $fld=>$val) {
       if ($fld === 'uid') continue;
-      $val= mysql_real_escape_string($val);
-      if (trim($val)==='') {
-        continue;
-      }
-//      if ( in_array($fld,array('fromday','untilday')) ) {
-//        list($d,$m,$r)= explode('-',$val);
-//        $val= mktime(0, 0, 0, $m, $d, $r);
-//      }
+      $val= trim(mysql_real_escape_string($val));
+      if ($val=='') continue;
       if ( $fld=='rooms1' && $val=='*' ) {
-        $val= $pokoje;
+        $val= select1("GROUP_CONCAT(number ORDER BY number SEPARATOR ',')",'tx_gnalberice_room',
+            "NOT deleted AND NOT hidden AND version=1");
       }
       $flds.= ",$fld";
       $vals.= ",'$val'";
     }
-
-    //TODO why necessary?
-    $flds.= ",rooms";
-    $vals.= ",''";
-    $flds.= ",prog_cely";
-    $vals.= ",'0'";
-    $flds.= ",prog_polo";
-    $vals.= ",'0'";
-
-    $flds.= ",firstname";
-    $vals.= ",''";
-    $flds.= ",org";
-    $vals.= ",''";
-    $flds.= ",skoleni";
-    $vals.= ",'0'";
-
     $y->ok= query("INSERT INTO tx_gnalberice_order ($flds) VALUES ($vals)");
 //                                                         display("insert=$y->ok");
     $y->order= mysql_insert_id();
     if (!$y->ok) {
+      if ($y->error) $y->error = ''; //delete, the _objednavky() is not called otherwise
       $y->msg = "Objednávku se nepodařilo dokončit.";
       break;
     }
@@ -108,13 +85,10 @@ function dum_server($x) {
     // v x.form jsou předána změněná pole
     if ( $x->form ) {
       foreach($x->form as $fld=>$val) {
-        $val= mysql_real_escape_string($val);
-//        if ( in_array($fld,array('fromday','untilday')) ) {
-//          list($d,$m,$r)= explode('-',$val);
-//          $val= mktime(0, 0, 0, $m, $d, $r);
-//        }
+        $val= trim(mysql_real_escape_string($val));
         if ( $fld=='rooms1' && $val=='*' ) {
-          $val= $pokoje;
+          $val= select1("GROUP_CONCAT(number ORDER BY number SEPARATOR ',')",'tx_gnalberice_room',
+              "NOT deleted AND NOT hidden AND version=1");
         }
         $flds.= "$del$fld='$val'";
         $del= ', ';
@@ -134,6 +108,10 @@ function dum_server($x) {
 
   case 'get_days':
     $y->days_data = get_days_data($x->fromday, $x->untilday);
+    break;
+
+  case 'check_rooms':
+    $y->free_rooms = get_free_rooms($x->fromday, $x->untilday);
     break;
 
   case 'get_room':
@@ -161,18 +139,34 @@ function dum_form($x) {
 //                                                         debug($x,"dum_form");
   $ord= $x->order;
   $user= $_SESSION['web']['fe_user'];
-  $spravce= $user ? access_get(1) : 0;
-  $pokoje= select1("GROUP_CONCAT(number ORDER BY number SEPARATOR '|')",'tx_gnalberice_room',
-                   "NOT deleted AND NOT hidden AND version=1");
-  $dum_data_open= 0;
-  $show_first_two = true;
-  if ( $ord ) {                                                             // !!! pak jen správce
-    $dum_data_open= 0; //$spravce;
+  $spravce= $user ? access_get(1) : true; //TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! delete
+
+  $rooms_nums = array();
+  $res= mysql_qry("SELECT number FROM tx_gnalberice_room WHERE NOT deleted AND NOT hidden AND version=1");
+  while($row = mysql_fetch_assoc($res)) $rooms_nums[]= $row["number"];
+  $pokoje = implode("|", $rooms_nums);
+
+  $dum_data_open = 0;
+  $pokoje_title = "";
+  $all_house_checkbox_enabled = -1;
+  $is_new = $ord == 0;
+  $checkbox_checked = true;
+  if ( $ord > 0 ) {  // existující objednávka !!! pak jen správce
     $dum_data= select("*","setkani4.tx_gnalberice_order","uid=$ord");
     $dum_data->fromday= date("Y-m-d",$dum_data->fromday);
     $dum_data->untilday= date("Y-m-d",$dum_data->untilday);
-  }
-  elseif ( $ord==0 ) {
+    $pokoje_title =  "objednané pokoje";
+    if ($spravce) {
+      $all_house_checkbox_enabled = 1;
+    }
+    //!!! valid code, because 0 -> found asterisk and !0 == true --> use if (value == false)
+    if (strpos($dum_data->rooms1, "*") === false) { //no asterisk, check all numbers
+      $booked = explode(",", $dum_data->rooms1);
+      foreach ($rooms_nums as $_key => $value) {
+        $checkbox_checked = $checkbox_checked && in_array($value, $booked);
+      }
+    }
+  } elseif ( $is_new ) {
     $dum_data_open= 1;
     $dum_data= (object)array();
     $dum_data->fromday= $x->den;
@@ -180,44 +174,47 @@ function dum_form($x) {
     list($r,$m,$d)= explode('-',$x->den);
     $dum_data->untilday= date("Y-m-d",mktime(0, 0, 0, $m, $d+2, $r));
     $dum_data->adults= 2;
+
+    $pokoje_data_array = get_free_rooms(strtotime($dum_data->fromday), strtotime($dum_data->untilday));
+    $pokoje_title = $pokoje_data_array["content"];
+    if ($pokoje_data_array["all_free"]) $all_house_checkbox_enabled = 1;
+    $checkbox_checked = false;
     if ( $user ) {
       list($dum_data->name,$dum_data->telephone,$dum_data->email,
            $dum_data->address,$dum_data->zip,$dum_data->city)
         = select("CONCAT(firstname,' ',name),telephone,email,address,zip,city","fe_users","uid=$user");
-    } else {
-      $show_first_two = !$ord;
     }
   }
-  $y->html= "<table><tr><td style='padding-right: 12px; max-width: 775px;'>";
-  if ($show_first_two) {
-    $y->html .= f_input("objednávka","uid",3,0)."&nbsp;&nbsp;&nbsp;"
-        . f_select("stav objednávky","state", "1:zájem o pobyt,2:závazná objednávka,3:akce YMCA,4:nelze pronajmout",$ord, 'max-width: 200px')."<br>";
-  }
-  $y->html .= f_input("poznámka k objednávce","note",35)."<br>"
-  . f_date("příjezd",            "fromday",       8, 1, 'getRoomsForTimespan(true, this);', "fromday_input")
-  . f_date("odjezd",             "untilday",      8, 1, 'getRoomsForTimespan(false, this);', "untilday_input")
-  . f_input(get_free_rooms(strtotime($dum_data->fromday), strtotime($dum_data->untilday)),"rooms1",40,1, 'text', '', "objednejte pokoje jejich čísly oddělenými čárkou", "rooms_label")."<br>"
+
+  $y->html= "<table><tr><td class='order_left_td'>"
+  . f_input("objednávka číslo","uid",2,0)."&nbsp;&nbsp;"
+  . f_select("stav objednávky","state", "1:zájem o pobyt,2:závazná objednávka,3:akce YMCA,4:nelze pronajmout",$ord, 'max-width: 190px') . "<br>"
+  . f_date("příjezd",            "fromday",       8, 1, 'getRoomsForTimespan(true, this);', "fromday_input")."&nbsp;&nbsp;"
+  . f_date("odjezd",             "untilday",      8, 1, 'getRoomsForTimespan(false, this);', "untilday_input") . "<br>" . f_error_msg("ord_date_error")
+  . f_celydum_checkbox($all_house_checkbox_enabled, $checkbox_checked)
+  . f_select("typ stravy","board","1:penze,2:polopenze,3:bez stravy", 1, 'max-width: 170px') . "<br>"
+  . f_input($pokoje_title,"rooms1",40,1, 'text', '', "objednejte pokoje jejich čísly oddělenými čárkou", "rooms_label")."<br>" . f_error_msg("ord_rooms_error")
   . f_input("dospělých",          "adults",        3, 1, 'number', 'max-width: 80px')
   . f_input("děti 10-15",         "kids_10_15",    3, 1, 'number', 'max-width: 80px')
   . f_input("děti 3-9",           "kids_3_9",      3, 1, 'number', 'max-width: 80px')
-  . f_input("děti do 3 let",      "kids_3",        3, 1, 'number', 'max-width: 80px')."<br>"
-  . f_select("typ stravy","board","1:penze,2:polopenze,3:bez stravy", 1, 'max-width: 200px')
+  . f_input("děti do 3 let",      "kids_3",        3, 1, 'number', 'max-width: 80px')."<br>" . f_error_msg("ord_adults_error")
+  . f_input("poznámka k objednávce","note",35)."<br>"
   . "<!-- TODO uncomment once implemented <h4>Cena dle ceníku: <span id='order_final'>zatím nefunkční.</span></h4>--></td><td>"
-  . f_input("jméno a příjmení",   "name",         22)
+  . f_input("jméno a příjmení",   "name",         18) . "<br>" . f_error_msg("ord_name_error")
   . ( $dum_data_open || $spravce ? (
-      f_input("telefon",          "telephone",    14,1)."<br>"
-    . f_input("email",            "email",        30,1)."<br>"
-    . f_input("ulice",            "address",      30,1)."<br>"
-    . f_input("psč",              "zip",          10,1)
-    . f_input("obec",             "city",         16,1)."<br><br>"
+      f_input("telefon",          "telephone",    10)."<br>" . f_error_msg("ord_phone_error")
+    . f_input("email",            "email",        25)."<br>" . f_error_msg("ord_email_error")
+    . f_input("ulice",            "address",      25)."<br>"
+    . f_input("psč",              "zip",          10)
+    . f_input("obec",             "city",         16)."<br><br>"
   ) : '<br><br>(Osobní údaje jsou přístupné pouze pro správce Domu setkání)')
-  . ( $ord && $spravce ? (
-        f_button("Opravit","block_enable('order',1,'uid')") . f_button_sep()
-      . f_button("Uložit opravu","objednavka(0,'update',{order:'$ord',rooms:'$pokoje'});",0,'order_save') . f_button_sep()
+  . ( !$is_new && $spravce ? (
+        f_button("Opravit","block_enable('order',1,'uid'); jQuery('#order_save').attr('hidden', false); jQuery(this).attr('hidden', true);") . f_button_sep()
+      . f_button("Uložit","objednavka(0,'update',{order:'$ord',rooms:'$pokoje'});",0,'order_save') . f_button_sep()
       . f_button("Smazat","objednavka(0,'delete',{order:'$ord'});") . f_button_sep()
       . f_button("Zpět","block_display('order',0);", 0, '')
       ) : (
-      $ord ? (
+      !$is_new ? (
         "<br>".f_button("Zavřít","block_display('order',0);",1)
       ) : (
           f_button("Přidat objednávku","objednavka(0,'create',{rooms:'$pokoje'},this);") . f_button_sep()
@@ -232,9 +229,10 @@ function f_input($label,$name,$size,$enabled=1,$type='text',$css='',$hint='', $l
   $onchange=  $kernel=='ezer3.1' 
       ? "onchange='jQuery(this).addClass(\"changed\");'"
       : "onchange='this.addClass(\"changed\");'";
+  $inputid = $labelid ? "id='input_$labelid'" : "";
   $labelid = $labelid ? "id='$labelid'" : "";
-  $html= " <label style='$css'><span $labelid style='font-size: 10pt'>$label</span><input name='$name' type='$type' placeholder='$hint' size='$size' 
-    $disabled $onchange value='{$dum_data->$name}'></label>";
+  $html= " <label style='$css'><span $labelid content='$label' style='font-size: 10pt'>$label</span>
+    <input $inputid name='$name' type='$type' placeholder='$hint' size='$size' $disabled $onchange value='{$dum_data->$name}'></label>";
   return $html;
 }
 function f_date($label,$name,$size,$enabled,$js,$id) {
@@ -243,8 +241,20 @@ function f_date($label,$name,$size,$enabled,$js,$id) {
   $onchange=  $kernel=='ezer3.1'
       ? "onchange='jQuery(this).addClass(\"changed\");$js'"
       : "onchange='this.addClass(\"changed\");$js'";
-  $html= " <label>$label<input id='$id' name='$name' type='date' size='$size' $disabled $onchange 
+  $html= " <label id='label_$id'>$label<input id='$id' name='$name' type='date' size='$size' $disabled $onchange 
     value='{$dum_data->$name}'></label>";
+  return $html;
+}
+function f_celydum_checkbox($enabled=1,$checked=false) {
+  //!! this is tied to jquery functionality in custom.js and "pokoje" input field - think twice before modifying
+  global $dum_data_open, $kernel;
+  $attrs = $enabled==-1 ? 'disabled' : (!$enabled || !$dum_data_open ? 'disabled' : '');
+  if ($checked) $attrs .= " checked ";
+  $onchange=  $kernel=='ezer3.1'
+      ? "onchange='if(jQuery(this).prop( \"checked\" )) {setRoomsAllBooked();} else {unsetRoomsAllBooked(getLastRoomsTitle(), true); }'"
+      : ""; //not implemented as kernel will probably never fall down to older version
+  $html= " <label style='margin: 8px 77px 0 0;'><input name='obj_cely_dum' id='obj_cely_dum_check' type='checkbox' $attrs $onchange>
+     <span style='font-size: 10pt; display: inline-block' id='obj_cely_dum_text'>zájem o celý<br> dům</span></label>";
   return $html;
 }
 function f_select($label,$name,$options,$enabled=1,$css='') { //trace();
@@ -268,6 +278,9 @@ function f_button($label,$js,$even=0,$id_and_hide='') {
 }
 function f_button_sep() {
   return "<label class='form_button'>&nbsp;</label>";
+}
+function f_error_msg($id) {
+  return "<span id='$id' class='nodisplay order_error_msg'></span>";
 }
 function new_order_mail_from_form($form) {
   return "<p>Dobrý den $form->name, <br>
@@ -325,7 +338,7 @@ function strava($num) {
   }
   return '';
 }
-function get_free_rooms($from, $until) { //also implemented in javascript in custom.js (todo maybe call as ajax directly this function and remove the JS version)
+function get_free_rooms($from, $until) {
   $data = get_days_data($from, $until);
   $rooms = array();
   foreach ($data as $tstamp => $days_data) {
@@ -343,12 +356,16 @@ function get_free_rooms($from, $until) { //also implemented in javascript in cus
     $days++;
   }
   $content = '';
+  $pokoju = 0;
   foreach ($rooms as $room => $count) {
-    if ($count == $days) $content .= "$room, ";
+    if ($count == $days) {
+      $content .= "$room, ";
+      $pokoju++;
+    }
   }
   if ($content == '') $content = "žádné volné pokoje";
   else $content = "volné pokoje: $content";
-  return $content;
+  return array( "content" => $content, "all_free" => $pokoju==$data["1"]);
 }
 function escape_nostring($value, $esc="-") {
   if (!$value) return $esc;
