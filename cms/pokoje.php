@@ -50,8 +50,6 @@ function dum_server($x) {
       break;
     }
     $email = trim($x->form->email);
-    break; //todo delete
-
     $forward_to = "dum@setkani.org";
     if (!$email || $email === '' || !strpos($email, "@")) {
       mail_send($forward_to, $forward_to, "Objednávka pobytu v Domě Setkání", new_order_mail_from_form($x->form));
