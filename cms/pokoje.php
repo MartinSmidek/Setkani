@@ -49,6 +49,8 @@ function dum_server($x) {
       $y->msg = "Objednávku se nepodařilo dokončit.";
       break;
     }
+
+    break;
     $email = trim($x->form->email);
     $forward_to = "dum@setkani.org";
     $snd_copy = "ivana.zivnustkova@seznam.cz";
@@ -120,7 +122,7 @@ function dum_server($x) {
   case 'get_price':
     require_once("duplicate.php");
     $y->price = ds_order_price_for($x->data->days, $x->data->adults, $x->data->kids_10_15,
-            $x->data->kids_3_9, $x->data->kids_3, $x->data->board, $x->data->rooms1, $x->freeRooms);
+            $x->data->kids_3_9, $x->data->kids_3, $x->data->board, $x->data->rooms1, $x->freeRooms, $x->inclOrder);
     break;
 
   default:
@@ -356,7 +358,7 @@ function strava($num) {
 }
 function get_free_rooms($from, $until) {
   $data = get_days_data($from, $until);
-  $rooms = array();
+  $rooms = $rooms_n_orders = array();
   foreach ($data as $tstamp => $days_data) {
     if ($tstamp < 100) continue;
     foreach ($days_data->pokoje as $room => $room_data) $rooms[$room] = 0;
@@ -367,11 +369,14 @@ function get_free_rooms($from, $until) {
   foreach ($data as $tstamp => $days_data) {
     if ($tstamp < 100) continue;
     foreach ($days_data->pokoje as $room => $room_data) {
-      if (!$room_data->pset) $rooms[$room]++;
+      if (!$room_data->pset) {
+        $rooms[$room]++;
+        if ($room_data->p) $rooms_n_orders[$room]++;
+      }
     }
     $days++;
   }
-  $content = array();
+  $content = $and_orders = array();
   $pokoju = 0;
   foreach ($rooms as $room => $count) {
     if ($count == $days) {
@@ -379,7 +384,11 @@ function get_free_rooms($from, $until) {
       $pokoju++;
     }
   }
-  return array( "content" => $content, "all_free" => $pokoju==$data["1"]);
+
+  foreach ($rooms_n_orders as $room => $count) {
+    if ($count) $and_orders[]= $room;
+  }
+  return array("content" => $content, "all_free" => $pokoju==$data["1"], "incl_orders" => $and_orders);
 }
 function escape_nostring($value, $esc="-") {
   if (!$value) return $esc;
@@ -549,22 +558,18 @@ function get_days_data($from, $until) {
       FROM tx_gnalberice_order
       WHERE NOT deleted AND NOT hidden AND untilday>=$from AND $until>=fromday ORDER BY fromday");
   while ( $cr && (list($state,$kolik,$obj,$fromday,$untilday,$name,$note)= mysql_fetch_row($cr)) ) {
-    if ( $state > 1 ) { //jen závazné objednávky
-      for ( $dd= $fromday; $dd<=$untilday; $dd= mktime(0,0,0,date("m",$dd),date("d",$dd)+1,date("Y",$dd)) ) {
-        $dmy= date('d.m.y',$dd);
-        $wnotes[$dmy].= $note ? (($wnotes[$dmy] ? " + " : "") . $note ) : "";
-        $rooms= $kolik;
-        $rooms= $rooms=='*' ? $rooms_all : explode(',',$rooms);
-        foreach ($rooms as $n) {
-          $dmyn= "$dmy/$n";
-          $wnames[$dmyn]= ($wnames[$dmy] ? " + " : "") . ($name ? $name : 'note');
-          $wuids[$dmyn]= $obj;
-          $wstates[$dmyn]= $state;
-        }
+    for ( $dd= $fromday; $dd<=$untilday; $dd= mktime(0,0,0,date("m",$dd),date("d",$dd)+1,date("Y",$dd)) ) {
+      $dmy= date('d.m.y',$dd);
+      $wnotes[$dmy].= $note ? (($wnotes[$dmy] ? " + " : "") . $note ) : "";
+      $rooms= $kolik;
+      $rooms= $rooms=='*' ? $rooms_all : explode(',',$rooms);
+      foreach ($rooms as $n) {
+        $dmyn= "$dmy/$n";
+        $wnames[$dmyn]= ($wnames[$dmy] ? " + " : "") . ($name ? $name : 'note');
+        $wuids[$dmyn]= $obj;
+        $wstates[$dmyn]= $state;
       }
-    } else {
-      // projdeme nezávazné objednávky
-      for ( $dd = $fromday; $dd<=$untilday; $dd= mktime(0,0,0,date("m",$dd),date("d",$dd)+1,date("Y",$dd)) ) {
+      if ($state < 2) {
         $dmy= date('d.m.y',$dd);
         $worders[$dmy].= ($worders[$dmy] ? " + " : "") . $name;
         $wuidss[$dmy].= ($wuidss[$dmy]?',':'') . $obj;
@@ -581,11 +586,14 @@ function get_days_data($from, $until) {
       $dmyn= "$dmy/$n";
       $p= $wnames[$dmyn];
       if ( $p ) {
-        $pset = true;
         $u = $wuids[$dmyn];
         $s = $wstates[$dmyn];
-        //if ( $s != 4 )
-        $obsazenych++;
+        if ($s < 2) {
+          $pset = false;
+        } else {
+          $pset = true;
+          $obsazenych++;
+        }
       } else {
         $pset = false;
       }

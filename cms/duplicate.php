@@ -49,9 +49,10 @@ function ds_cenik($rok) {  #trace('','win1250');
 
 
  // NEW
-function ds_order_price_for($days, $adults, $kids15_10, $kids9_3, $kids3_0, $board, $rooms, $free_rooms) {
+function ds_order_price_for($days, $adults, $kids15_10, $kids9_3, $kids3_0, $board, $rooms, $free_rooms, $incl_order) {
     global $ds_cena;
     $free_rooms = (array)$free_rooms;
+    $incl_order = (array)$incl_order;
     $platba = $polozky = (object)array();
     $platba->error = '';
     $platba->celk = '-';
@@ -106,6 +107,7 @@ function ds_order_price_for($days, $adults, $kids15_10, $kids9_3, $kids3_0, $boa
     //beds
     $older_ppl = $kids9_3 + $kids15_10 + $adults;
     $places = $left_places = 0;
+    $order_colisions = array();
     foreach ($ordered_rooms as $r) {
         $r = trim($r);
         if (!$r) {
@@ -120,6 +122,7 @@ function ds_order_price_for($days, $adults, $kids15_10, $kids9_3, $kids3_0, $boa
             $platba->error = "Pokoj $r není volný.";
             return $platba;
         }
+        if (in_array($r, $incl_order)) $order_colisions[]= $r;
         $places += $rooms_data->room_{$r}["beds"];
         $type = "noc_L";
         if ($r >= 14 && $r <= 17) $type = "noc_S";
@@ -147,6 +150,11 @@ function ds_order_price_for($days, $adults, $kids15_10, $kids9_3, $kids3_0, $boa
     if ($older_ppl > 0) $platba->error = "Ve zvolených pokojích nezbylo míst pro $older_ppl hostů.";
     else if ($left_places / $places > 0.5) $platba->error = "Více než polovina postelí (z $places) není obsazená.";
     else ds_platba_hosta(date("Y"), $polozky, $platba);
+
+    if ($order_colisions && count($order_colisions) > 0) {
+        $platba->info = "Pozor: existuje nezávazná objednávka na pokoje č. "
+            . implode(", ", $order_colisions) . "<br>$platba->info";
+    }
 
     return $platba;
 }

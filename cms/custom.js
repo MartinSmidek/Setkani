@@ -1,5 +1,6 @@
 let SCROLL_LIMIT_AMOUNT = 400;
 var FREE_ROOMS = null;
+var FREE_ROOMS_INCL_ORDERS = null;
 // ---------------------------------------------------------------------------- header image gallery
 function swapImages() {
     if (jQuery(window).width() > 640) { //do not run on mobiles
@@ -129,6 +130,7 @@ function getRoomsForTimespanImpl(fromday, untilday) {
 }
 function _getRoomsForTimespan(ret) {
     FREE_ROOMS = ret.free_rooms["content"];
+    FREE_ROOMS_INCL_ORDERS = ret.free_rooms["incl_orders"];
 
     let text = (FREE_ROOMS.length < 1) ? "žádné volné pokoje" : "volné pokoje: " + FREE_ROOMS.join(", ");
 
@@ -216,8 +218,8 @@ function runOrderCounter() {
     else if (data["adults"] < 1) setPrice("nelze objednat pobyt bez dospělé osoby", "", false);
     else if (jQuery("#rooms_label").text().startsWith("žádné")) setPrice("nejsou volné pokoje", "", false);
     else if (!data["rooms1"]) setPrice("musíte vybrat pokoje", "", false);
-    else ask({cmd:'dum', dum:'get_price', data:data, freeRooms:FREE_ROOMS},
-            function (res) {setPrice(res.price.celk, res.price.error); if (res.price.celk !== '-') jQuery("#info_price").html(res.price.info); });
+    else ask({cmd:'dum', dum:'get_price', data:data, freeRooms:FREE_ROOMS, inclOrder:FREE_ROOMS_INCL_ORDERS},
+            function (res) {setPrice(res.price.celk, res.price.error); jQuery("#info_price").html(res.price.info); });
 }
 function setPrice(text, warning, isPrice = true) {
     jQuery("#error_price").html(warning);
@@ -233,6 +235,7 @@ jQuery(window).resize(function () {
         noMobileAdjustMenu(jQuery("#menu"), jQuery(window).scrollTop());
     } else {
         jQuery('#web').css("padding-top", "30px");
+        mobileAdjustMenu(jQuery("#menu"), jQuery(window).scrollTop());
     }
 });
 
@@ -254,12 +257,14 @@ jQuery(window).bind('scroll', function () {
     if (win.width() > 640) {
         noMobileAdjustMenu(menu, scrollAmount);
     } else { //mobile
-        let opacity = Math.round((255 * Math.min(SCROLL_LIMIT_AMOUNT, scrollAmount)) / SCROLL_LIMIT_AMOUNT);
-        opacity = Math.max(60, opacity);
-        menu.css("background", "#cadfd9" + opacity.toString(16));
+        mobileAdjustMenu(menu, scrollAmount);
     }
 });
-
+function mobileAdjustMenu(menu, scrollAmount) {
+    let opacity = Math.round((255 * Math.min(SCROLL_LIMIT_AMOUNT, scrollAmount)) / SCROLL_LIMIT_AMOUNT);
+    opacity = Math.max(60, opacity);
+    menu.css("background", "#cadfd9" + opacity.toString(16));
+}
 function noMobileAdjustMenu(menu, scrollAmount) {
     if (scrollAmount > SCROLL_LIMIT_AMOUNT) {
         menu.addClass('fixed');
@@ -268,5 +273,6 @@ function noMobileAdjustMenu(menu, scrollAmount) {
         jQuery('#web').css("padding-top", "0" /*same value as header bar*/);
         menu.removeClass('fixed');
     }
+    menu.css("background", "#ffffff");
     jQuery("#gallery_shadow").css("opacity", (scrollAmount) / SCROLL_LIMIT_AMOUNT);
 }
