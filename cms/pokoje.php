@@ -45,21 +45,20 @@ function dum_server($x) {
 //                                                         display("insert=$y->ok");
     $y->order= mysql_insert_id();
     if (!$y->ok) {
-      if ($y->error) $y->error = ''; //delete, the _objednavky() is not called otherwise
+      if ($y->error) $y->error = ''; //delete, function _objednavky() is not called otherwise
       $y->msg = "Objednávku se nepodařilo dokončit.";
       break;
     }
-    $email = $x->form->email;
+    $email = trim($x->form->email);
+    break; //todo delete
+
     $forward_to = "dum@setkani.org";
     if (!$email || $email === '' || !strpos($email, "@")) {
-      //todo uncomment once ready
-      //mail_send($forward_to, $forward_to, "Objednávka pobytu v Domě Setkání", new_order_mail_from_form($x->form));
+      mail_send($forward_to, $forward_to, "Objednávka pobytu v Domě Setkání", new_order_mail_from_form($x->form));
       $y->completion = "Objednávka neobsahuje emailovou adresu. Objednávka <b>byla úspěšně podána</b>, ale nedojde vám potvrzovací email. Údaje se objeví v kalendáři po aktualizaci této stránky.";
     } else {
-      //todo uncomment once ready
-        //mail_send_cc($forward_to, $email, "Objednávka pobytu v Domě Setkání", new_order_mail_from_form($x->form), $forward_to, "Dům Setkání");
-        //$y->completion = "Objednávka byla úspěšně zaslána. Na email vám brzy přijde její shrnutí. Údaje se objeví v kalendáři po aktualizaci této stránky.";
-        $y->completion = "Objednávka byla úspěšně zaslána. Údaje se objeví v kalendáři po aktualizaci této stránky.";
+      mail_send_cc($forward_to, $email, "Objednávka pobytu v Domě Setkání", new_order_mail_from_form($x->form), $forward_to, "Dům Setkání");
+      $y->completion = "Objednávka byla úspěšně zaslána. Na email vám brzy přijde její shrnutí. Údaje se objeví v kalendáři po aktualizaci této stránky.";
     }
     break;
 
@@ -120,7 +119,8 @@ function dum_server($x) {
 
   case 'get_price':
     require_once("duplicate.php");
-    $y->price = ds_platba_hosta(date('Y', $y->untilday/*todo untilday of order*/), $y->polozky/*todo polozky*/, $y->platba/*todo platba*/);
+    $y->price = ds_order_price_for($x->data->days, $x->data->adults, $x->data->kids_10_15,
+            $x->data->kids_3_9, $x->data->kids_3, $x->data->board, $x->data->rooms1, $x->freeRooms);
     break;
 
   default:
@@ -147,14 +147,18 @@ function dum_form($x) {
   $pokoje = implode("|", $rooms_nums);
 
   $dum_data_open = 0;
-  $pokoje_title = "";
   $all_house_checkbox_enabled = -1;
-  $is_new = $ord == 0;
+  $is_new = $ord == 0 || !$ord;
   $checkbox_checked = true;
   if ( $ord > 0 ) {  // existující objednávka !!! pak jen správce
     $dum_data= select("*","setkani4.tx_gnalberice_order","uid=$ord");
+    if (!$dum_data || !count($dum_data)) {
+      $y->html = "<h4>Objednávka číslo $ord neexistuje.</h4>" .f_button("Zavřít","block_display('order',0);",1);
+      return;
+    }
     $dum_data->fromday= date("Y-m-d",$dum_data->fromday);
     $dum_data->untilday= date("Y-m-d",$dum_data->untilday);
+    $dum_data->new = false;
     $pokoje_title =  "objednané pokoje";
     if ($spravce) {
       $all_house_checkbox_enabled = 1;
@@ -169,6 +173,7 @@ function dum_form($x) {
   } elseif ( $is_new ) {
     $dum_data_open= 1;
     $dum_data= (object)array();
+    $dum_data->new = true;
     $dum_data->fromday= $x->den;
     // upravíme default: odjezd=příjezd+2, adults=2
     list($r,$m,$d)= explode('-',$x->den);
@@ -176,7 +181,8 @@ function dum_form($x) {
     $dum_data->adults= 2;
 
     $pokoje_data_array = get_free_rooms(strtotime($dum_data->fromday), strtotime($dum_data->untilday));
-    $pokoje_title = $pokoje_data_array["content"];
+    $pokoje_title = count($pokoje_data_array["content"]) > 0 ?
+        ("volné pokoje: " . implode(", ", $pokoje_data_array["content"])) : "žádné volné pokoje";
     if ($pokoje_data_array["all_free"]) $all_house_checkbox_enabled = 1;
     $checkbox_checked = false;
     if ( $user ) {
@@ -184,22 +190,27 @@ function dum_form($x) {
            $dum_data->address,$dum_data->zip,$dum_data->city)
         = select("CONCAT(firstname,' ',name),telephone,email,address,zip,city","fe_users","uid=$user");
     }
+  } else {
+    $y->html = "<h4>Číslo $ord není korektním číslem objednávky.</h4>" .f_button("Zavřít","block_display('order',0);",1);
+    return;
   }
 
-  $y->html= "<table><tr><td class='order_left_td'>"
+  $y->html= "<table style='margin: 0 auto;'><tr><td class='order_left_td'>"
   . f_input("objednávka číslo","uid",2,0)."&nbsp;&nbsp;"
-  . f_select("stav objednávky","state", "1:zájem o pobyt,2:závazná objednávka,3:akce YMCA,4:nelze pronajmout",$ord, 'max-width: 190px') . "<br>"
+  . f_select("stav objednávky","state", "1:zájem o pobyt,2:závazná objednávka,5:zájem o dům,3:akce YMCA,4:nelze pronajmout",$ord, 'max-width: 190px') . "<br>"
   . f_date("příjezd",            "fromday",       8, 1, 'getRoomsForTimespan(true, this);', "fromday_input")."&nbsp;&nbsp;"
   . f_date("odjezd",             "untilday",      8, 1, 'getRoomsForTimespan(false, this);', "untilday_input") . "<br>" . f_error_msg("ord_date_error")
   . f_celydum_checkbox($all_house_checkbox_enabled, $checkbox_checked)
   . f_select("typ stravy","board","1:penze,2:polopenze,3:bez stravy", 1, 'max-width: 170px') . "<br>"
   . f_input($pokoje_title,"rooms1",40,1, 'text', '', "objednejte pokoje jejich čísly oddělenými čárkou", "rooms_label")."<br>" . f_error_msg("ord_rooms_error")
-  . f_input("dospělých",          "adults",        3, 1, 'number', 'max-width: 80px')
-  . f_input("děti 10-15",         "kids_10_15",    3, 1, 'number', 'max-width: 80px')
-  . f_input("děti 3-9",           "kids_3_9",      3, 1, 'number', 'max-width: 80px')
-  . f_input("děti do 3 let",      "kids_3",        3, 1, 'number', 'max-width: 80px')."<br>" . f_error_msg("ord_adults_error")
+  . f_input("dospělých",          "adults",        3, 1, 'number', 'max-width: 80px', '', '', " min='0'")
+  . f_input("děti 10-15",         "kids_10_15",    3, 1, 'number', 'max-width: 80px', '', '', " min='0'")
+  . f_input("děti 3-9",           "kids_3_9",      3, 1, 'number', 'max-width: 80px', '', '', " min='0'")
+  . f_input("děti do 3 let",      "kids_3",        3, 1, 'number', 'max-width: 80px', '', '', " min='0'")."<br>" . f_error_msg("ord_adults_error")
   . f_input("poznámka k objednávce","note",35)."<br>"
-  . "<!-- TODO uncomment once implemented <h4>Cena dle ceníku: <span id='order_final'>zatím nefunkční.</span></h4>--></td><td>"
+  . ($is_new ? "<h4 id='approx_price' style='margin-bottom: 0;' title='Dolní odhad ceny pobytu, reálná cena může být vyšší.'>Orientační cena: <span id='order_final'><span style='color: gray'>musíte vybrat pokoje</span></span></h4>
+          <div id='error_price'></div><div id='info_price' style='font-size: 10pt;'></div></td><td class='order_right_td'>"
+          : "</td><td class='order_right_td'>")
   . f_input("jméno a příjmení",   "name",         18) . "<br>" . f_error_msg("ord_name_error")
   . ( $dum_data_open || $spravce ? (
       f_input("telefon",          "telephone",    10)."<br>" . f_error_msg("ord_phone_error")
@@ -223,21 +234,23 @@ function dum_form($x) {
     ))
   . "</td></tr></table>";
 }
-function f_input($label,$name,$size,$enabled=1,$type='text',$css='',$hint='', $labelid='') { //trace();
+function f_input($label,$name,$size,$enabled=1,$type='text',$css='',$hint='', $labelid='', $attrs='') { //trace();
   global $dum_data, $dum_data_open, $kernel;
   $disabled= $enabled==-1 ? 'disabled' : (!$enabled || !$dum_data_open ? 'disabled' : ' ');
+  $price_calc = $dum_data->new ? " runOrderCounter();" : "";
   $onchange=  $kernel=='ezer3.1' 
-      ? "onchange='jQuery(this).addClass(\"changed\");'"
-      : "onchange='this.addClass(\"changed\");'";
+      ? "onchange='jQuery(this).addClass(\"changed\");$price_calc'"
+      : "onchange='this.addClass(\"changed\");$price_calc'";
   $inputid = $labelid ? "id='input_$labelid'" : "";
   $labelid = $labelid ? "id='$labelid'" : "";
   $html= " <label style='$css'><span $labelid content='$label' style='font-size: 10pt'>$label</span>
-    <input $inputid name='$name' type='$type' placeholder='$hint' size='$size' $disabled $onchange value='{$dum_data->$name}'></label>";
+    <input $inputid name='$name' type='$type' placeholder='$hint' size='$size' $disabled $onchange $attrs value='{$dum_data->$name}'></label>";
   return $html;
 }
 function f_date($label,$name,$size,$enabled,$js,$id) {
   global $dum_data, $dum_data_open, $kernel;
   $disabled= $enabled==-1 ? 'disabled' : (!$enabled || !$dum_data_open ? 'disabled' : ' ');
+  //price calculation run as a part of getAvailableRooms (js variable content)
   $onchange=  $kernel=='ezer3.1'
       ? "onchange='jQuery(this).addClass(\"changed\");$js'"
       : "onchange='this.addClass(\"changed\");$js'";
@@ -249,12 +262,13 @@ function f_celydum_checkbox($enabled=1,$checked=false) {
   //!! this is tied to jquery functionality in custom.js and "pokoje" input field - think twice before modifying
   global $dum_data_open, $kernel;
   $attrs = $enabled==-1 ? 'disabled' : (!$enabled || !$dum_data_open ? 'disabled' : '');
+  $not_allowed = (!$checked && $attrs) ? " (nelze)" : "";
   if ($checked) $attrs .= " checked ";
   $onchange=  $kernel=='ezer3.1'
-      ? "onchange='if(jQuery(this).prop( \"checked\" )) {setRoomsAllBooked();} else {unsetRoomsAllBooked(getLastRoomsTitle(), true); }'"
+      ? "onchange='if(jQuery(this).prop( \"checked\" )) {setRoomsAllBooked(); jQuery(\"#approx_price\").addClass(\"nodisplay\");} else {unsetRoomsAllBooked(getLastRoomsTitle(), true); jQuery(\"#approx_price\").removeClass(\"nodisplay\");}'"
       : ""; //not implemented as kernel will probably never fall down to older version
   $html= " <label style='margin: 8px 77px 0 0;'><input name='obj_cely_dum' id='obj_cely_dum_check' type='checkbox' $attrs $onchange>
-     <span style='font-size: 10pt; display: inline-block' id='obj_cely_dum_text'>zájem o celý<br> dům</span></label>";
+     <span style='font-size: 10pt; display: inline-block' id='obj_cely_dum_text'>zájem o celý<br> dům$not_allowed</span></label>";
   return $html;
 }
 function f_select($label,$name,$options,$enabled=1,$css='') { //trace();
@@ -266,9 +280,10 @@ function f_select($label,$name,$options,$enabled=1,$css='') { //trace();
     $opt.= "<option value='$num' $selected>$id</option>";
   }
   $disabled= !$enabled || !$dum_data_open ? 'disabled' : ' ';
+  $price_calc = $dum_data->new ? " runOrderCounter();" : "";
   $onchange=  $kernel=='ezer3.1' 
-      ? "onchange='jQuery(this).addClass(\"changed\");'"
-      : "onchange='this.addClass(\"changed\");'";
+      ? "onchange='jQuery(this).addClass(\"changed\");$price_calc'"
+      : "onchange='this.addClass(\"changed\");$price_calc'";
   return " <label style='$css'>$label<select name='$name' type='input' $disabled $onchange>$opt</select></label>";
 }
 function f_button($label,$js,$even=0,$id_and_hide='') {
@@ -284,8 +299,9 @@ function f_error_msg($id) {
 }
 function new_order_mail_from_form($form) {
   return "<p>Dobrý den $form->name, <br>
-            děkujeme za objednávku pobytu v Domě Setkání. Zasíláme shrnutí Vaší objednávky, potvrzovací email a zálohovou fakturu obdržíte během týdne.</p>" .
-      form_to_mail_string($form) .
+            děkujeme za objednávku pobytu v Domě Setkání. Zasíláme shrnutí Vaší objednávky.</p>
+            <p>Pokud si přejete zaplatit předem (bankovní převod), napište nám a podrobnosti vyřešíme přes email. V opačném případě se platby řeší přímo na místě se správcem.</p>"
+            . form_to_mail_string($form) .
           "<br><p>Těšíme se na Vás!</p>Dům Setkání YMCA";
 }
 function form_to_mail_string($form) {
@@ -355,16 +371,14 @@ function get_free_rooms($from, $until) {
     }
     $days++;
   }
-  $content = '';
+  $content = array();
   $pokoju = 0;
   foreach ($rooms as $room => $count) {
     if ($count == $days) {
-      $content .= "$room, ";
+      $content[]= $room;
       $pokoju++;
     }
   }
-  if ($content == '') $content = "žádné volné pokoje";
-  else $content = "volné pokoje: $content";
   return array( "content" => $content, "all_free" => $pokoju==$data["1"]);
 }
 function escape_nostring($value, $esc="-") {
@@ -444,15 +458,15 @@ function mesice($path) {  trace();
         $dmyn= "$dmy/$n";
         $p= $wnames[$dmyn];
         if ( $p ) {
-          $s= $wstates[$dmyn];
-          //if ( $s != 4 ) we want to include blocked rooms
+          //$s= $wstates[$dmyn];
+          //if ( $s != 4 ) we want to include also blocked rooms
           $obsazenych++;
         }
       }
       // kalendář na úvodku
       $day = date('j',$dd);
       $styl= $obsazenych ? ($obsazenych==$pokoju_celkem ? "obsazeno" : "konflikt") : "volno";
-      $calendar .= "<td class='odd clickable $styl' content='$dd' onclick=\"getDaysData(this, '$y-$m', '$y')\">$day</td>";
+      $calendar .= "<td class='month_day odd clickable $styl' content='$dd' onclick=\"getDaysData(this, '$y-$m', '$y')\">$day</td>";
       $currentDay++;
       if ($currentDay > 7) {
         $calendar .= "</tr><tr>";
@@ -608,21 +622,24 @@ function get_days_data($from, $until) {
 
 # ---------------------------------------------------------------------------------- pokoj_ikona
 # vrátí ikonu symbolizující
-# 4>=$state>=0  obsazenost pokoje
+# 4>=$state>=0  obsazenost pokoje (1 - zájem, 0 - volné)
+# nově: 5 - zájem o dům
+
+# not in DB:
 # $state=-1     vyvolání žádosti
 # $state=-2     poslanou poptávku
-# $state=-3     not in DB, used as "unable to order icon"
+# $state=-3     used as "unable to order icon"
 function pokoj_ikona($state) {
   switch ($state) {
-    case  '-3': $i= "<i class='fa fa-times'></i>"; break;
-    case '-2': $i= "<i class='fa fa-envelope-o'></i>"; break;
-    case '-1': $i= "<i class='fa fa-pencil-square-o'></i>"; break;
-    case  '1': $i= "<i class='fa fa-$ico'></i>"; break;
-    case  '2': $i= "<i class='fa fa-user'></i>"; break;
-    case  '3': $i= "<i class='fa fa-futbol-o'></i>"; break;
-    case  '4': $i= "<i class='fa fa-times-circle'></i>"; break;
+    case  '-3': return "<i class='fa fa-times'></i>";
+    case '-2': return "<i class='fa fa-envelope-o'></i>";
+    case '-1': return "<i class='fa fa-pencil-square-o'></i>";
+    case  '1': return ""; //zájem o pobyt
+    case  '2': return "<i class='fa fa-user'></i>";
+    case  '3': return "<i class='fa fa-futbol-o'></i>";
+    case  '4': return "<i class='fa fa-times-circle'></i>";
+    case  '5': return "<i class='fa fa-home'></i>";
   }
-  return $i;
 }
 function ikona_objednat_legenda($custom_class = '') {
   $h = "<div class='legend $custom_class' style='width: fit-content; padding: 13px; margin: 10px'>";
@@ -633,7 +650,7 @@ function ikona_objednat_legenda($custom_class = '') {
 }
 function ikona_objednano_legenda($custom_class = '') {
   $h = "<div class='legend $custom_class' style='width: fit-content; padding: 13px; margin: 10px'>";
-  //$h .= "<div class='icons_legend'>" . pokoj_ikona(1) . "&nbsp;Zájem o pobyt</div>";  //todo invalid icon, equals to "zájem"
+  $h .= "<div class='icons_legend'>" . pokoj_ikona(5) . "&nbsp;Zájem o celý dům</div>";
   $h .= "<div class='icons_legend'>" . pokoj_ikona(2) . "&nbsp;Závazná objednávka</div>";
   $h .= "<div class='icons_legend'>" . pokoj_ikona(3) . "&nbsp;Probíhá akce YMCA</div>";
   $h .= "<div class='icons_legend'>" . pokoj_ikona(4) . "&nbsp;Nelze pronajmout</div>";
@@ -652,7 +669,8 @@ function order_tutorial($pokoje) {
   $objednat_hint = ikona_objednat_legenda('float-left');
   $objednano_hint = ikona_objednano_legenda('float-right');
   $barvy_hint =  barvy_legenda("float-left");
-  $result = "<p>Na akce YMCA se přihlašujete dle instrukcí v článku dané akce, neobjednáváte si pobyt v domě samostatně. </p>
+  $result = "<div class='commentary_div'>
+    Na akce YMCA se přihlašujete dle instrukcí v článku dané akce, neobjednáváte si pobyt v domě samostatně.
     <p>Pro zobrazení detailů či podání objednávky <b>klikněte na dny v kalendáři</b>: zobrazí se vám údaje všech dnů mezi těmito dny.
     Detaily ukazují jaké pokoje jsou v jakém dni objednány, či umožňují vlastní objednání. Čísla pokojů jsou klikatelná a ukazují
     mapku a umístění pokoje.</p>
@@ -665,7 +683,7 @@ function order_tutorial($pokoje) {
     <div id='objednavky_hint' class='nodisplay'>
     <h3>Ukázka:</h3>
     <div style='overflow-x: auto'> 
-        <table id='dum' class='dum'><tbody>
+        <table class='dum'><tbody>
             <tr class='header1'><td class='bold' colspan='3'>umístění</td>
                 <td class='bold' style='border-right: 1px solid' colspan='2'>příz.</td>
                 <td class='bold' style='border-right: 1px solid' colspan='3'>1.patro</td>
@@ -715,14 +733,15 @@ function order_tutorial($pokoje) {
     Vedle data dne se zobrazují ikony <b>Žádost o pobyt podána</b>, pokud
     existuje nezávazná žádost na pobyt toho dne, <b>Požádat o pobyt</b> pokud lze na daný den pobyt objednat, a nebo <b>Nelze objednat</b>. Například, v ukázce zjevně někdo podal objednávku na den 12.12., ale stále lze podávat další.
      $objednano_hint
-    <br>Každý pokoj má svoji ikonu podle stavu objednávky. Pokud pokoj není závazně objednán, je pole prázdné. Na ikony lze kliknout a zobrazit tak informace k objednávce na daný pokoj. Například, v ukázce jsou pokoje 1, 2, 11, 12 zarezervovány, nelze objednat pokoje 13-16, ale 17+ ano.
+    <br><br>Každý pokoj má svoji ikonu podle stavu objednávky. Pokud pokoj není závazně objednán, je pole prázdné. Na ikony lze kliknout a zobrazit tak informace k objednávce na daný pokoj. Například, v ukázce jsou pokoje 1, 2, 11, 12 zarezervovány, nelze objednat pokoje 13-16, ale 17+ ano. Navíc je tento den součástí jedné nebo více žádostí o pobyt (ikona obálky).
+    <br>Žádost o všechny pokoje, tedy celý dům, je brána jako žádost o pobyt, nově ale při schválení <i>může být zaznamenána</i> jako <b>Zájem o dům</b>. Takto poznačená objednávka <b>je závazná</b>, slouží jako předčasná blokace domu pro skupiny zájemců, u kterých často nejsou ještě známi všichni účastníci.
     <br>$barvy_hint
-    Jednotlivé dny se barevně liší - víkendy jsou vyznačeny modře a stav dne vyjádřen stylem semaforu - zelená: úplně volný, červená: úplně obsazený. V ukázce je dům částečně obsazen.</p>
+    <br>Jednotlivé dny se barevně liší - víkendy jsou vyznačeny modře a stav dne vyjádřen stylem semaforu - zelená: úplně volný, červená: úplně obsazený. V ukázce je dům částečně obsazen.</p>
     <p>Objednávací formulář obsahuje kalkulačku ceny <b>která ovšem nemusí být konečná.</b> Záleží pak na konkrétní domluvě se správcem (například když část zákazníků přijede později).
     Nezávazná žádost o objednávku musí být schválena správcem - pak se objednávka stává závaznou a dané pokoje jsou obsazeny ikonou, která po kliknutí zobrazí informace k objednávce.</p>
     </div>
     <hr class='dark'>";
-  return $result;
+  return $result . "</div>";
 }
 function order_message() {
   return "<div id='order_completion' class='nodisplay notice_style notice_order notice_info'></div>";

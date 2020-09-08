@@ -241,7 +241,6 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 # ---------------------------------------------------------------- . dekódování $path
 //                                                         debug($path,"před menu");
   $web_title= 'YMCA Setkání';
-  $web_akce= '';   // 'akce' pokud je výběr rodiny,chlapi,...
   $page_mref= '';  // reference stránky pro abstrakty a návraty z článků - global
   $dnu= isset($_COOKIE['web_show_changes']) ? $_COOKIE['web_show_changes'] : 1;
   $news_time= time() - $dnu*24*60*60;
@@ -452,6 +451,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       case 'knihy': # ------------------------------------------------ . knihy
         # seznam autorů
         $body.= "<div class='content'><h1>$web_title</h1></div>";
+        $body.= "<div class='content'><h1>$web_title</h1></div>";
         $id= array_shift($path);
         list($id)= explode('#',$id);
         $body.= knihy($ids,$id);
@@ -471,8 +471,9 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 
       case 'clanek': # ------------------------------------------------ . clanek
         # článek zadaný názvem nebo uid
-        $x= clanek($ids);
+        $x= clanek($ids); //todo does not exist
         if ( $CMS ) {
+          //todo no edit???
 //       $menu= "oncontextmenu=\"
 //         Ezer.fce.contextmenu([
 //           ['editovat',function(el){ opravit('clanek','$ids'); }],          staré argumenty
@@ -567,15 +568,14 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         if ( $ids=='prehled' ) {
           $body.= "<div class='content'><br><br><h1>YMCA Setkání - naše akce</h1><br>";
 
-          $body.= "Prohlédněte si seznam akcí které nabízíme, nebo těch které již proběhly.
+          $body.= "<div class='commentary_div'> Prohlédněte si seznam akcí které nabízíme, nebo těch které již proběhly.
                 Pokud je k dispozici i kalendář, pak je zobrazen vepředu přede všemi akcemi.
                 Akce lze třídit podle toho, komu jsou určeny - akce pro rodiny, manžele, chlapy,
                 ženy či mládež. Akce pořádané v Domě Setkání v Krkonošských Albeřicích jsou také
                 dostupné v menu 'Dům Setkání > Akce v Domě' nebo 'Dům Setkání > Prožili jsme'.
                 Některé fotografie z akcí naleznete ve fotogalerii, více je pak dostupné na dalších
                 webech z odkazů ve fotogalerii.
-                
-                <br><br></div>";
+                </div></div>";
           
           $body.= akce_prehled($vyber_rok,$rok,$id);
         }
@@ -583,10 +583,10 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
                                                  debug($path,"path= $id,...");
           $body .= "<div class='content'><h1>Archiv akcí v domě</h1><br>";
 
-          $body.= "Prohlédněte si seznam akcí které proběhly v Domě Setkání. Některé fotografie z akcí 
+          $body.= "<div class='commentary_div'> Prohlédněte si seznam akcí které proběhly v Domě Setkání. Některé fotografie z akcí 
                 naleznete ve fotogalerii, více je pak dostupné na dalších
                 webech z odkazů ve fotogalerii.
-                <br><br></div>";
+                </div></div>";
           $rok= $id?:date('Y');
           $id= array_shift($path);
           list($page_mref,$roks)= explode('/',$page_mref);
@@ -783,7 +783,7 @@ __EOD;
   
   $eb_link
   <link href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&amp;subset=latin-ext" rel="stylesheet">
-  <link rel="stylesheet" href="cms/web.css?v=4.4" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="cms/web.css?v=4.5" type="text/css" media="screen" charset="utf-8">
   <script type="text/javascript">
     var Ezer={web:{ $Ezer_web},cms:{form:{}}};
     if ( !console ) {
@@ -830,7 +830,8 @@ __EOD;
            $submenu
        </div>
        $mainmenu2
-       <a href='$href0#footer_contacts' class='jump'><span>Kontakty</span></a>
+       <a onclick='jQuery(\"html, body\").animate({scrollTop: (jQuery(\"#footer_contacts\").offset().top - 100)}, 500);'
+       class='jump'><span>Kontakty</span></a>
     </div>
       <span onclick=\"bar_menu(arguments[0],'new1');\"><img src='cms/img/new.png'> změny za den</span>
       <span onclick=\"bar_menu(arguments[0],'new7');\"><img src='cms/img/new.png'> změny za týden</span>
@@ -969,7 +970,8 @@ $head
         </div>
         <div id='page_hm' class='x mobile_nodisplay'>
           $mainmenu1 $mainmenu2
-           <a href='$href0#footer_contacts' class='jump'><span>Kontakty</span></a>
+           <a onclick='jQuery("html, body").animate({scrollTop: (jQuery("#footer_contacts").offset().top - 100)}, 500);'
+           class='jump'><span>Kontakty</span></a>
         </div>
       </div>
       <div class='clear'></div>
@@ -1144,14 +1146,14 @@ __EOJ;
 __EOJ;
   $eb_link= <<<__EOJ
     $framework    
-    <script src="cms/cms{$k3}.js?v=4.0" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/cms{$k3}.js?v=4.1" type="text/javascript" charset="utf-8"></script>
     <script src="cms/cms{$k3}_fe.js?v=4.0" type="text/javascript" charset="utf-8"></script>
     <script src="cms/modernizr-custom.js?v=4.0" type="text/javascript" charset="utf-8"></script>
     $fotorama
     <link rel="stylesheet" href="./$kernel/client/licensed/font-awesome/css/font-awesome.min.css" type="text/css" media="screen" charset="utf-8">
     <link rel="stylesheet" href="$cms_root/client/ezer_cms3.css" type="text/css" media="screen" charset="utf-8">
     <script src="$cms_root/client/ezer_cms3.js" type="text/javascript" charset="utf-8"></script>
-    <script src="cms/custom.js?v=4.1" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/custom.js?v=4.2" type="text/javascript" charset="utf-8"></script>
 __EOJ;
 //     <link rel="stylesheet" href="cms/gallery/baguetteBox.min.css">
 //     <script src="cms/gallery/baguetteBox.min.js" async>
@@ -1232,7 +1234,6 @@ function hide_part($uid,$hide,$on) {
 # nageneruje fotky do záhlaví
 # zatím samostantná tabulka, neví kde má brát fotky
 function gallery() {
-  trace();
   $directory = "fileadmin/index";
   $images = glob("$directory/*.{jpg,png,bmp}", GLOB_BRACE);
 
@@ -1246,7 +1247,9 @@ function gallery() {
   for ($i = 1; $i < $numOfImages; $i++) {
     $result .= "<img alt='YMCA setkání' src='$images[$i]' style='display:none'>";
   }
-  return $result . "</div><div id='titler' class='mobile_nodisplay'></div><div id='gallery_shadow' class='mobile_nodisplay'></div>";
+  return $result .
+      "</div><div id='titler' class='mobile_nodisplay'></div><div id='gallery_shadow' class='mobile_nodisplay'></div>
+        <div id='header_mobile_image' class='pc_nodisplay' style='background-image: url(\"{$images[0]}\");'><div id='header_mobile_image_shadow'></div></div>";
 }
 
 function facebook() {
@@ -1508,7 +1511,7 @@ function home() { trace();
     $counter++;
   }
   //add new events first
-  $telo = ($akce) ? "<H2>Pozvánky na akce</H2>" . $akce . "<br><br>" . $telo : $telo;
+  $telo = ($akce) ? "<h2 class='mobile_text_shadow'>Pozvánky na akce</h2>" . $akce . "<br><br>" . $telo : $telo;
   $telo .= timeline();
   if (!$CMS) {$telo.= "</div>" .  facebook() . "<div class='content'>";}
 
@@ -1984,7 +1987,7 @@ function kalendare($vyber, $rok, $id, $chlapi_ignore=false) { trace();
     $text= xi_shorting($text,$img);
 
     //todo temporary solution hardcoded, can be based on program value
-    if ( /*$program == 3 ||*/ $cid == 1644) {
+    if ( $program == 3 || $cid == 1644) {
       if (!strpos($vyber, "chlapi")) continue;
       $h.= "<div class='$abstr relative' id='n$n'>
             <div class='status_chlapi'>
@@ -2402,9 +2405,11 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
         $key--;
       }
     }
+    // seřadíme podle začátku akce
+    uasort($xx, $ORDER == "DESC" ?
+        function ($a,$b) { return ($a->from <= $b->from ? 1 : -1); } :
+        function ($a,$b) { return ($a->from > $b->from ? 1 : -1); });
   }
-  // seřadíme podle začátku akce
-  uasort($xx,function ($a,$b) { return ($a->from > $b->from ? 1 : -1); });
   $found= count($xx)." akcí" . ($spec ? " ($spec)" : '');
 //                                                         debug($xx);
   // případné doplnění helpu na začátek
@@ -2646,12 +2651,13 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
               ['obnovit článek',function(el){ zrusit('$typ','$uid',0); }],
               ['-odstranit embeded img',function(el){ opravit('img','$uid','$cid'); }]
             ],arguments[0],'clanek$uid');return false;\"";
-      $title = $h1 ? "<h1>$x->nadpis</h1>" : "<h2>$x->nadpis</h2>";
+      $titleh1 = $h1 ? "<h1>$x->nadpis</h1>" : "";
+      $titleh2 = $h1 ? "" : "<h2>$x->nadpis</h2>";
       $h.= "<div id='list' class='x relative' $event><span class='anchor' id='anchor$uid'></span>
-            $code
+           $titleh1 $code
            <div id='clanek$uid' class='clanek x$x->upd'$menu$style>
             <div class='text'>
-              $title$podpis
+              $titleh2$podpis
               $obsah
             </div>
           </div></div>";
@@ -2682,13 +2688,14 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
         $nazev_akce= trim(select('nazev','akce',"id_duakce=$x->ida",'ezer_db2'));
         $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA",'akce',$x->ida,$nazev_akce);
       }
-      $title = $h1 ? "<h1>$x->nadpis</h1>" : "<h2>$x->nadpis</h2>";
+      $titleh1 = $h1 ? "<h1>$x->nadpis</h1>" : "";
+      $titleh2 = $h1 ? "" : "<h2>$x->nadpis</h2>";
       $h.= "<div class='x relative' $event><span class='anchor' id='anchor$uid'></span>
-            $code
+            $titleh1 $code
             <div id='clanek$uid' class='akce_prehled clanek x$x->upd'$menu$style>
               $prihlaska
               <div class='text $x->status'>
-                $title$podpis
+                $titleh2 $podpis
                 $obsah
               </div>
            </div></div>";

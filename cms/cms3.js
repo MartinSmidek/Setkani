@@ -380,8 +380,8 @@ function objednavka(e,op,p,self=null) {
             errors["ord_date_error"] = "Opravte prosím <b>datum pobytu</b>.";
           }
           // convert to UNIX timestamp
-          x.form['fromday'] = fromday / 1000;
-          x.form['untilday'] = untilday / 1000;
+          x.form['fromday'] = Math.abs(fromday / 1000);
+          x.form['untilday'] = Math.abs(untilday / 1000);
           break;
         }
       }
@@ -467,11 +467,10 @@ function _objednavka(y, caller) {
     break;}
   case 'create':{
     if ( y.ok ) {
-      tit.html(y.msg);
       block_display('order', 0);
     } else {
       msg4_on(y.msg, "Chyba v objednávce");
-      jQuery(caller).html("Přidat objednávku.");
+      jQuery(caller).attr("value", "Přidat objednávku.");
       return;
     }
     if ( y.hasOwnProperty('completion') ) {
@@ -480,7 +479,6 @@ function _objednavka(y, caller) {
       msg.html(y.completion);
       jQuery('html, body').animate({scrollTop: (msg.offset().top - 200)}, 500);
     }
-    //refresh();
     return;}
   case 'delete':{
     tit.html(y.ok ? 'Objednávka '+y.order + ' byla smazána' : 'Smazání se nepovedlo');

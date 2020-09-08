@@ -1,15 +1,16 @@
-
-
+let SCROLL_LIMIT_AMOUNT = 400;
+var FREE_ROOMS = null;
 // ---------------------------------------------------------------------------- header image gallery
 function swapImages() {
-    var active = jQuery("#header_gallery .act");
-    var next = (jQuery("#header_gallery .act").next().length > 0) ? jQuery("#header_gallery .act").next()
-        : jQuery("#header_gallery img:first");
-    next.css('display', '');
-    active.fadeOut(1500, function () {
-        next.addClass("act");
-        active.removeClass("act");
-    });
+    if (jQuery(window).width() > 640) { //do not run on mobiles
+        let active = jQuery("#header_gallery .act");
+        var next = (active.next().length > 0) ? active.next() : jQuery("#header_gallery img:first");
+        next.css('display', '');
+        active.fadeOut(1500, function () {
+            next.addClass("act");
+            active.removeClass("act");
+        });
+    }
 }
 
 function adjustGallery() {
@@ -38,7 +39,7 @@ function getDaysData(self, ym, y) {
         to = Math.max(from, current);
     });
     if (from <= to) {
-        jQuery('#objednavky-content-' + y).html("Načítám...");
+        jQuery('#objednavky-content-' + y).html("<b>Načítám...</b>");
         ask({cmd:'dum', dum:'get_days', fromday:from, untilday: to, year:y}, _getDaysData);
     } else {
         jQuery('#objednavky-content-' + y).addClass("nodisplay");
@@ -66,19 +67,19 @@ function _getDaysData(ret) {
         let free= weekend===0 || weekend===6 ? "_weekend" : "";
         content += "<tr><td class='datum"+free+odd_css+"'>"+datum+"</td>";
         if ( day.obsazenych===pokoju || day_stamp < current_tstamp ) {
-            content += "<td class='"+styl+odd_css+"'>"+pokoj_ikona(-3)+"</td>";
+            content += "<td class='order_section "+styl+odd_css+"'>"+pokoj_ikona(-3)+"</td>";
         } else {
             let den = date.getFullYear() + "-" + String(date.getMonth()+1).padStart(2, '0') + "-" +
                 String(date.getDate()).padStart(2, '0');
-            content += "<td class='sent "+styl+odd_css+"' title='chci objednat pobyt'";
+            content += "<td class='order_section sent "+styl+odd_css+"' title='chci objednat pobyt'";
             content += "onclick=\"objednavka(arguments[0],'form',{den:'"+den+"'});return false;\" >";
             content += pokoj_ikona(-1) + "</td>";
         }
 
         if (day.ico2===0) {
-            content += "<td class='"+styl+odd_css+"'></td>";
+            content += "<td class='order_section "+styl+odd_css+"'></td>";
         } else {
-            content += "<td title='objednávka pobytu pro "+day.who+"' class='sent "+styl+odd_css+"'";
+            content += "<td title='objednávka pobytu pro "+day.who+"' class='order_section sent "+styl+odd_css+"'";
             content += "onclick=\"objednavka(arguments[0],'wanted',{orders:'"+day.order+"'});\" >";
             content += pokoj_ikona(-2) + "</td>";
         }
@@ -88,8 +89,10 @@ function _getDaysData(ret) {
             if (pokoj.pset) {
                 if (pokoj.s > 1) {
                     content += "<td class='obsazen " + odd_css + "' style='border-right: 1px solid' title='"+pokoj.p+"'";
-                    content += "onclick=\"objednavka(arguments[0],'form',{order:" + pokoj.u + "});return false;\" >";
+                    if (pokoj.s == 5) content += " rowspan='17'";
+                    content += " onclick=\"objednavka(arguments[0],'form',{order:" + pokoj.u + "});return false;\" >";
                     content += pokoj_ikona(parseInt(pokoj.s)) + "</td>";
+                    if (pokoj.s == 5) break; //all rooms same request
                 } else content += "<td class='nic " + odd_css + "' style='border-right: 1px solid'></td>";
             } else content += "<td class='nic " + odd_css + "' style='border-right: 1px solid'>&nbsp;</td>";
         }
@@ -109,31 +112,35 @@ function _getDaysData(ret) {
     }
 }
 function getRoomsForTimespan(isFromDay, self) {
-    let fromday = Date.parse(isFromDay ? self.value : jQuery("#fromday_input").val()) / 1000,
-        untilday = Date.parse(isFromDay ? jQuery("#untilday_input").val() : self.value) / 1000;
-
+    if (isFromDay) getRoomsForTimespanImpl(Date.parse(self.value) / 1000, Date.parse(jQuery("#untilday_input").val()) / 1000);
+    else getRoomsForTimespanImpl(Date.parse(jQuery("#fromday_input").val()) / 1000, Date.parse(self.value) / 1000);
+}
+function getRoomsForTimespanImpl(fromday, untilday) {
     //always save last value to potentially restore from other JS functions (not changing time span)
     let roomsTitle = jQuery('#rooms_label');
     roomsTitle.attr("content", roomsTitle.innerHTML);
 
-    if (fromday <= untilday) {
+    if (untilday - fromday > 70000) { //at least one day
         ask({cmd:'dum', dum:'check_rooms', fromday:fromday, untilday: untilday}, _getRoomsForTimespan);
     } else {
         disableDumCheckbox(jQuery("#obj_cely_dum_check"));
-        unsetRoomsAllBooked("pokoje: máte zvolený záporný časový interval");
+        unsetRoomsAllBooked("pokoje: pobyt musí být alespoň na jednu noc");
     }
 }
 function _getRoomsForTimespan(ret) {
-    ret = ret.free_rooms;
+    FREE_ROOMS = ret.free_rooms["content"];
+
+    let text = (FREE_ROOMS.length < 1) ? "žádné volné pokoje" : "volné pokoje: " + FREE_ROOMS.join(", ");
 
     let dumCheckBox = jQuery("#obj_cely_dum_check");
-    if (ret["all_free"]) {
+    if (ret.free_rooms["all_free"]) {
         enableDumCheckbox(dumCheckBox);
-        if (!dumCheckBox.prop("checked")) unsetRoomsAllBooked(ret["content"]);
+        if (!dumCheckBox.prop("checked")) unsetRoomsAllBooked(text);
     } else {
         disableDumCheckbox(dumCheckBox);
-        unsetRoomsAllBooked(ret["content"]);
+        unsetRoomsAllBooked(text);
     }
+    runOrderCounter();
 }
 function setRoomsAllBooked() {
     jQuery("#rooms_label").html("pokoje jsou objednány");
@@ -168,10 +175,11 @@ function pokoj_ikona(state) {
         case -3: return "<i class='fa fa-times'></i>";
         case -2: return "<i class='fa fa-envelope-o'></i>";
         case -1: return "<i class='fa fa-pencil-square-o'></i>";
-        case 1: return "<i class='fa fa'></i>";
+        case 1: return "";
         case 2: return "<i class='fa fa-user'></i>";
         case 3: return "<i class='fa fa-futbol-o'></i>";
         case 4: return "<i class='fa fa-times-circle'></i>";
+        case 5: return "<i class='fa fa-home'></i>";
     }
     return '';
 }
@@ -191,9 +199,41 @@ function _popupRoomView(res) {
     jQuery('#popup_div').html(res.room_data);
 }
 
+function runOrderCounter() {
+    if (FREE_ROOMS == null) {
+        //get first free rooms, then calculate the price (called in ..Impl)
+        getRoomsForTimespanImpl( Date.parse(jQuery("#fromday_input").val()) / 1000,
+            Date.parse( jQuery("#untilday_input").val()) / 1000);
+        return;
+    }
+
+    var data = getAllInputValues(jQuery("#order"), 'select,input');
+    let fromday = Date.parse(data['fromday']),
+        untilday = Date.parse(data['untilday']);
+    data["days"] = (untilday - fromday) / 86400000;
+
+    if (data["days"] < 1) setPrice("pobyt musí být alespoň na jednu noc",  "", false);
+    else if (data["adults"] < 1) setPrice("nelze objednat pobyt bez dospělé osoby", "", false);
+    else if (jQuery("#rooms_label").text().startsWith("žádné")) setPrice("nejsou volné pokoje", "", false);
+    else if (!data["rooms1"]) setPrice("musíte vybrat pokoje", "", false);
+    else ask({cmd:'dum', dum:'get_price', data:data, freeRooms:FREE_ROOMS},
+            function (res) {setPrice(res.price.celk, res.price.error); if (res.price.celk !== '-') jQuery("#info_price").html(res.price.info);});
+}
+function setPrice(text, warning, isPrice = true) {
+    jQuery("#error_price").html(warning);
+    if (!isPrice) jQuery("#order_final").html("<span style='color:gray'>"+text+"</span>");
+    else jQuery("#order_final").html("&nbsp;"+text+",- Kč");
+}
+
+
 // ========================================================================================> RUNNING
 jQuery(window).resize(function () {
     adjustGallery();
+    if (jQuery(window).width() > 640) {
+        noMobileAdjustMenu(jQuery("#menu"), jQuery(window).scrollTop());
+    } else {
+        jQuery('#web').css("padding-top", "30px");
+    }
 });
 
 
@@ -203,23 +243,30 @@ jQuery(window).on("load", function() {
 });
 
 jQuery(document).ready(function () {
-    adjustGallery();
+    adjustGallery(); //once again, images now loaded and might be not centered properly
 });
 
 jQuery(window).bind('scroll', function () {
-    var amount = 400;
-    jQuery("#gallery_shadow").css("opacity", (jQuery(window).scrollTop()) / amount);
-    if (jQuery(window).scrollTop() > amount) {
-        jQuery('#menu').addClass('fixed');
-        jQuery('#web').css("padding-top", jQuery('#menu').height());
-        //jQuery('#logo_ymca').addClass('fixed');
-        //jQuery("#logo_ymca.fixed").css("top", "8px");
-    } else {
-        //jQuery("#logo_ymca").css("width", (17600 - (37 * jQuery(window).scrollTop())) / 80);
-        //jQuery("#logo_ymca").css("left", (2250 - jQuery(window).scrollTop()) / 150 + "vw");
-        //jQuery("#logo_ymca").css("top", (8000 + (61 * jQuery(window).scrollTop())) / 80 + "px");
-        jQuery('#web').css("padding-top", "0" /*same value as header bar*/);
-        jQuery('#menu').removeClass('fixed');
-        //jQuery('#logo_ymca').removeClass('fixed');
+    let menu = jQuery('#menu'),
+        win = jQuery(window),
+        scrollAmount = win.scrollTop();
+
+    if (win.width() > 640) {
+        noMobileAdjustMenu(menu, scrollAmount);
+    } else { //mobile
+        let opacity = Math.round((255 * Math.min(SCROLL_LIMIT_AMOUNT, scrollAmount)) / SCROLL_LIMIT_AMOUNT);
+        opacity = Math.max(60, opacity);
+        menu.css("background", "#cadfd9" + opacity.toString(16));
     }
 });
+
+function noMobileAdjustMenu(menu, scrollAmount) {
+    if (scrollAmount > SCROLL_LIMIT_AMOUNT) {
+        menu.addClass('fixed');
+        jQuery('#web').css("padding-top", menu.height());
+    } else {
+        jQuery('#web').css("padding-top", "0" /*same value as header bar*/);
+        menu.removeClass('fixed');
+    }
+    jQuery("#gallery_shadow").css("opacity", (scrollAmount) / SCROLL_LIMIT_AMOUNT);
+}

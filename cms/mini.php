@@ -1136,7 +1136,7 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
     query("INSERT INTO _touch (day,time,module,menu,msg)
         VALUES (CURDATE(),CURTIME(),'$x->web','me_login','neznámý email:$x->mail')",'setkani');
     $y->state = 'err';
-    $y->txt = "adresu '$x->mail' jsi IMHO nepoužil v poslední přihlášce na akci";
+    $y->txt = "adresa '$x->mail' nebyla nepoužita v poslední přihlášce na akci";
     goto end;
   }
   // kontrola oprávněnosti přístupu
@@ -1145,7 +1145,7 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
     case 'mrop':
       if ( !$iniciace ) {
         $y->state = 'err';
-        $y->txt = "adresu '$x->mail' jsi IMHO nepoužil v přihlášce na iniciaci";
+        $y->txt = "adresa '$x->mail' nebyla nepoužita v přihlášce na iniciaci";
         goto end;
       }
       break;

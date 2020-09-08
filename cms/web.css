@@ -166,6 +166,7 @@ h3 {margin-top: 30px; font-size:15pt; }
 .status_cancelled:before {content: url('img/cancelled.png'); position: absolute; right: 0; top: 3px}
 .status_full:before {content: url('img/full.png'); position: absolute; right: 0; top: 3px}
 .status_chlapi:before {content: url('img/maly_kriz.png'); position: absolute; right: 0; top: 3px}
+.commentary_div {margin-bottom: 40px;}
 ul#timeline li .status_full:before {transform:scale(0.8); right:-103px; top: -22px; }
 
 .hr-text {line-height: 1em;position: relative;outline: 0;border: 0;color: black;text-align: center;height: 1.5em;opacity: .5;}
@@ -212,16 +213,16 @@ textarea {resize: vertical;}
 /* ------------------------------------------------------------------- online přihlášky */
 
 
-div.clanek span.cms_form:hover {
-  background-color: #65a4c3 !important; color: white !important; }
+span.cms_form:hover {
+  background-color: #28688d !important; color: white !important; }
 
 span.cms_form {
-  float:right; font-size:10pt !important; display: inline-block; border: 3px solid  #65a4c3;
+  float:right; font-size:10pt !important; display: inline-block; border: 3px solid #28688d;
   padding: 0.2em 0.4em; font-weight: bold; text-decoration: none;
-  margin-top: -5px; margin-right: -10px; color: #65a4c3; text-align: center; line-height: 11px; }
+  margin-top: -5px; margin-right: -10px; color: #28688d; text-align: center; line-height: 11px; }
 
 .clanek span.cms_form {font-size:15pt !important; margin-top: 15px; margin-right: 15px; line-height: 18px; cursor: pointer; padding-top: 6px; }
-.abstrakt span.cms_form {font-size:10pt !important; margin-top: -5px; margin-right: -10px; line-height: 11px; padding-top: 4px; }
+.abstrakt span.cms_form {font-size:10pt !important; margin-top: -5px; margin-right: -4px; line-height: 11px; padding-top: 4px; }
 /* ----------------------------------------------------------------------------- popup */
 #popup { position: fixed;
   left: 50%; top: 50%; margin-top: -250px;margin-left: -375px;width: 720px;height: fit-content; height: -moz-max-content;
@@ -274,16 +275,16 @@ div.box_input { padding:2em 0 1em; }
   position: fixed;
   left: 50vw;
   top: 50vh;
-  width: 50vw;
-  margin-left: -30vw;
+  margin-left: -200px;
   margin-top: -10vh;
   line-height: 22pt;
-  max-width: 350px;
+  width: 350px;
   padding: 1em 2em;
   opacity: 1;
   background: white;
-  box-shadow: black 4px 6px 20px;
+  box-shadow: #9e9c9c 0px 0px 20px;
   z-index: 101;
+  border-radius: 12px;
 }
 #user_msg span {
   position:absolute; top:0.8em; left:0em; width:100%; text-align:center; height: 2em;
@@ -306,6 +307,10 @@ div.box_input { padding:2em 0 1em; }
 #header_gallery img { z-index: 1; position:absolute; width: 100%; overflow: hidden; }
 #header_gallery img.act{ z-index:3; }
 
+/*mobile version - one image only*/
+
+#header_mobile_image { position: absolute;width: 100vw;height: 450px; background-position: center;background-size: cover; z-index: 0;}
+#header_mobile_image_shadow {width: 100%; height: 100%;background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgb(242 242 242));}
 /* --------------------------------------------------------------------------- menu */
 /*animations*/
 @-webkit-keyframes select-menu{ from {background-color: white;} to {background-color: #cadfd9;}  }
@@ -324,7 +329,7 @@ div.box_input { padding:2em 0 1em; }
 #menu div#bar_items span:hover   { background-color:#cadfd9; }
 #menu div#bar_items img { margin:0; }
 
-.jump { display:inline-block; font-weight:bold; text-decoration:none;}
+.jump { display:inline-block; font-weight:bold; text-decoration:none;cursor: pointer;}
 div.LabelDrop * {cursor:pointer; }
 #menu a span, #menu span span { vertical-align: middle; height: inherit; padding: 22px 15px; }
 #menu a { height: 100%; color: black; }
@@ -335,11 +340,10 @@ div.LabelDrop * {cursor:pointer; }
 /* top menu */
 #page_tm { float: right; text-align:right; padding-right:.4em; height: 4.5em; line-height: 4.5em; }
 #page_tm input {width:10em; border: none; padding: 6px 10px; outline: none; font-size: 13pt; font-weight: 300;
-  display: inline-block; margin-top: 13px; margin-right: 12px;}
+  display: inline-block; margin-top: 13px; margin-right: 12px; background: inherit}
 #page_tm a.jump { vertical-align: top; }
 #page_tm a:hover { box-sizing: border-box; background-color: #cadfd9; -webkit-animation-name: select-menu;
   -webkit-animation-duration: 0.5s; animation-name: select-menu; animation-duration: 0.5s; animation-timing-function: ease-in-out; }
-#page_tm a:hover span { /*todo*/ }
 .search_icon {transform: translate(10px, 5px);}
 
 
@@ -435,7 +439,7 @@ span.akce_datum {background: white; border-radius: 5px; float: left;}
 @keyframes text-show{ from {opacity: 0} to {opacity: 1}}
 
 /*notices*/
-.abstrakt.notif_event {width: fit-content; vertical-align:top; background-color: #f2f2f2; display: inline-block; max-width: 340px; padding: 0.6em 0.8em; margin: 0.8em 0.3em}
+.abstrakt.notif_event {width: fit-content; vertical-align:top; background-color: #f2f2f25c; display: inline-block; max-width: 340px; padding: 0.6em 0.8em; margin: 0.8em 0.3em}
 
 /*masonry layout*/
 .masonry_container {column-count: 3;column-gap: 1em;}
@@ -597,43 +601,45 @@ span.mesic { background-color:#B48933; color:#EFFBDA; font-weight: bold; }
 
 /* tabulka */
 table.dum  { border-collapse: collapse; empty-cells: hide; width: 100%;min-width: 900px; }
-table.dum td { border: 1px solid navy; min-width:1.2em; text-align: center; }
+table.dum td { min-width:1.2em; text-align: center; }
 table.dum, table.dum tr, table.dum td {border: none}
 
-#dum td {padding: initial;}
+table.dum td {padding: initial; padding-top: 2px;}
 .months-row {overflow-x: scroll;display: flex;}
-#dum td.room:hover { background-color:white; color:black; border: 1px solid; box-sizing: border-box }
-#dum td.obsazen:hover, #dum td.sent:hover { background-color:black !important; color:white; }
-#dum td.room { background-color: black;  font-weight: bold; color: white; cursor: pointer; }
-#dum td.pozn { text-align: left; border-left: 2px solid; padding-left: 3px;}
-#dum td.pozn.odd { background-color: #ffffff;}
-#dum td.pozn_weekend { background-color: #acbfd8; text-align: left; border-left: 2px solid; padding-left: 3px;}
-#dum td.pozn_weekend.odd {background-color: #c5dcf8;}
-#dum td.datum { text-align:right; width:3.2em; padding-right: 4px}
-#dum td.datum.odd {background-color: #ffffff;   text-align:right; width:3em; }
-#dum td.datum_weekend { background-color: #acbfd8;  text-align:right; width:3em; padding-right: 4px; }
-#dum td.datum_weekend.odd {background-color: #c5dcf8;}
-#dum img { margin:-2px; }
+table.dum td.room:hover { background-color:white; color:black; border: 1px solid; box-sizing: border-box }
+table.dum td.obsazen:hover, table.dum td.sent:hover { background-color:black !important; color:white; }
+table.dum td.room { background-color: black;  font-weight: bold; color: white; cursor: pointer; }
+table.dum td.pozn { text-align: left; border-left: 2px solid; padding-left: 3px;}
+table.dum td.pozn.odd { background-color: #ffffff;}
+table.dum td.pozn_weekend { background-color: #acbfd8; text-align: left; border-left: 2px solid; padding-left: 3px;}
+table.dum td.pozn_weekend.odd {background-color: #c5dcf8;}
+table.dum td.datum { text-align:right; width:3.2em; padding-right: 4px}
+table.dum td.datum.odd {background-color: #ffffff; }
+table.dum td.datum_weekend { background-color: #acbfd8; width:3.2em; text-align:right; padding-right: 4px; }
+table.dum td.datum_weekend.odd {background-color: #c5dcf8;}
+table.dum img { margin:-2px; }
 
 .ordersSelectedDay {-moz-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4); -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);}
 
-#dum tr.header1 {border-bottom: 3px solid; border-top: 3px solid}
-#dum tr.header1.odd {}
-#dum tr.header2 {border-bottom: 1px solid; border-top: 1px solid}
-#dum tr.header2.odd {}
+table.dum tr.header1 {border-bottom: 3px solid; border-top: 3px solid}
+table.dum tr.header1.odd {}
+table.dum tr.header2 {border-bottom: 1px solid; border-top: 1px solid}
+table.dum tr.header2.odd {}
 
-#dum .datum_plno, .obsazeno { background-color: #b47671; width:2em; }
-#dum .datum_prazdno, .volno { background-color: #8cb082; width:2em; }
-#dum .datum_poloplno, .konflikt { background-color: #e1d52f; width:2em; }
-#dum .datum_plno.odd, .obsazeno.odd { background-color: #da9088; width:2em; }
-#dum .datum_prazdno.odd, .volno.odd { background-color: #a9d49d; width:2em; }
-#dum .datum_poloplno.odd, .konflikt.odd { background-color: #ece680; width:2em; }
-#dum td.sent { cursor:pointer; }
-#dum td.nic { width:1.4em;}
-#dum td.nic.odd {background-color: #ffffff; }
-#dum td.obsazen { width:1.4em;}
-#dum td.obsazen.odd {background-color: #ffffff; }
+table.dum .order_section {width: 2em;}
+table.dum .datum_plno, .obsazeno { background-color: #b47671; }
+table.dum .datum_prazdno, .volno { background-color: #8cb082; }
+table.dum .datum_poloplno, .konflikt { background-color: #e1d52f; }
+table.dum .datum_plno.odd, .obsazeno.odd { background-color: #da9088; }
+table.dum .datum_prazdno.odd, .volno.odd { background-color: #a9d49d; }
+table.dum .datum_poloplno.odd, .konflikt.odd { background-color: #ece680; }
+table.dum td.sent { cursor:pointer; }
+table.dum td.nic { width:1.4em;}
+table.dum td.nic.odd {background-color: #ffffff; }
+table.dum td.obsazen { width:1.4em;}
+table.dum td.obsazen.odd {background-color: #ffffff; }
+td.month_day {max-width: 18px; text-align: right; }
 
 /*overriding cms_form class styles from ezer/client*/
 div.cms_form > div {padding: initial !important;}
@@ -692,6 +698,8 @@ label.form_button {float: right}
 /* abstrakty */
 .no-mediaqueries div.abstr { margin-right:.5em; }
 
+.no-mediaqueries .mobile_nodisplay {display: none;}
+
 /* ========================================================================== responsive design */
 
 /* -------------------------------------------------------------------------- MV mobil na výšku */
@@ -701,11 +709,10 @@ label.form_button {float: right}
   #logo_setkani { position:fixed; top: 10px; left: 50px; width: 30px; z-index: 10; }
   #logo_ymca { position:fixed; top: 10px; left: 10px; width: 30px; z-index: 10; }
 
+  #web {padding-top: 30px;}
   /*menu*/
   #bar_menu>i {font-size: 18px;}
-  #menu {position: fixed; top: 0px; z-index: 9; background: #cadfd9; -webkit-box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
-    box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);}
+  #menu {position: fixed; top: 0px; z-index: 9; background: none;}
   #menu a span {padding: 12px 7px;font-size: 14px;}
   #menu div, #menu span, #menu input {font-size: 11pt; }
   #menu #bar_items a.active { border-bottom: none; border-left: 14px solid #cadfd9; }
@@ -713,7 +720,7 @@ label.form_button {float: right}
   #menu div#bar_items {width: 100vw;height: 100vh; height: calc(100vh - 9em); padding-bottom: 9em; left: -100vw; box-shadow:none; display: block;right: 0;position: fixed; overflow-y: scroll;}
   #menu div#bar_items span { height: -moz-max-content; height: fit-content}
   #page_tm {height: 3.5em; line-height: 3.5em; width: 100%}
-  #page_tm input {background: #cadfd9; width: 3em; margin-top: 5px;}
+  #page_tm input { width: 3em; margin-top: 5px;}
   #page_hm {position: fixed;left: 0; top: 100px;z-index: 101;}
   #page_hm a.jump {width: 100vw; }
   #page_tm a:hover { -webkit-animation-name: none;animation-name: none; }
@@ -721,7 +728,7 @@ label.form_button {float: right}
   #page_sm span.label { padding-top:0.4em; }
   #mobile_menu {display: block}
   #mobile_menu a.jump {display: block}
-  #vyber {height: initial; margin-top: 51px;}
+  #vyber {height: initial; margin-top: 51px; background: none;}
 
   a.abstrakt, div.abstrakt {margin: 0.3em 0;padding: .6em 0.5em;}
   /*login*/
@@ -759,7 +766,8 @@ label.form_button {float: right}
   #popup {width: 80vw; margin-left: -45vw; height: 80vh; margin-top: -40vh;}
   .order_popup {width: 80vw !important; margin-left: -45vw !important; height: 80vh !important; margin-top: -40vh !important;}
   .order_popup table tr td {display: block;}
-  #user_msg {margin-left: 0;width: auto;left: 0;}
+  .order_right_td {margin-top: 25px;}
+  #user_msg { width: 73vw;margin-left: 0;left: 5vw;}
   #user_msg div{margin-top: 2.3em}
   /* abstrakty */
   div.abstr { width:100%; }
@@ -772,7 +780,11 @@ label.form_button {float: right}
   .footer #footer-right-part {width: fit-content; display: block; }
   .footer p.image-align-center {width: auto;}
   .footer #footer-right-part a {vertical-align: middle;}
+
+
   .mobile_nodisplay {display: none !important;}
+  h1, .mobile_text_shadow {text-shadow: #ffffff 1px 0 16px;}
+  .commentary_div {background-color: #f2f2f2aa; padding: 10px 20px;}
 }
 
 /* -------------------------------------------------------------------------- MŠ mobil na šířku */
@@ -780,26 +792,19 @@ label.form_button {float: right}
 @media all and (min-width: 30em) and (max-width: 640px) {
   #info::before { content:"mobil lanscape"; }
   #web h1#ymca_setkani { font-size: 11pt; }
-/*
-  #logo_setkani { position:absolute; margin-left:0em; top:0em; width:6em; }
-  #logo_ymca { position:absolute; margin: 0 0 0 6em !important; top:.3em; width:2.8em; }
-
-
-*/
 
   #logo_setkani { position:fixed; top: 10px; left: 60px; width: 40px; z-index: 10; }
   #logo_ymca { position:fixed; top: 10px; left: 10px; width: 40px; z-index: 10; }
+  #web {padding-top: 30px;}
 
-  #menu {position: fixed; top: 0px; z-index: 9; background: #cadfd9; -webkit-box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
-    box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);}
+  #menu {position: fixed; top: 0px; z-index: 9; background: none;}
   #menu div, #menu span, #menu input {font-size: 9pt;}
   #menu #bar_items a.active { border-bottom: none; border-left: 14px solid #cadfd9; }
   #menu div#bar_items {width: 100vw;height: 100vh; height: calc(100vh - 5em); padding-bottom: 5em; left: -100vw; display: block;right: 0;position: fixed; box-shadow:none; overflow-y: scroll;}
   #menu div#bar_items span { height: -moz-max-content;height: fit-content}
-  #vyber {margin-top: 54px;}
+  #vyber {margin-top: 54px; background: none;}
   #page {padding-top: 18px;}
-  #page_tm input {background: #cadfd9 }
+  #page_tm a:hover { -webkit-animation-name: none;animation-name: none; }
   #page_hm {position: fixed;left: 0; top: 100px;z-index: 101;}
   #page_hm a.jump {width: 100vw;}
   #page_sm {height: auto; line-height: initial}
@@ -820,8 +825,9 @@ label.form_button {float: right}
 
   /*popup*/
   #popup {width: 80vw; margin-left: -40vw; height: 80vh; margin-top: -40vh;}
-  .order_popup {width: 80vw !important; margin-left: -40vw !important; height: 80vh !important; margin-top: -40vh !important;}
+  .order_popup {width: 80vw !important; margin-left: -43vw !important; height: 80vh !important; margin-top: -42vh !important;}
   .order_popup table tr td {display: block;}
+  .order_right_td {margin-top: 25px;}
 
   /*footer*/
   .footer hr.footer-hr {display: none}
@@ -834,7 +840,11 @@ label.form_button {float: right}
   div.abstr { width:100%; }
   div.abstr a.abstrakt{height: 8.8em}
   .abstr-fotogalerie {width:46%; padding: 0 1% }
+
+
   .mobile_nodisplay {display: none !important;}
+  h1, .mobile_text_shadow {text-shadow: #ffffff 1px 0 16px;}
+  .commentary_div {background-color: #f2f2f2aa; padding: 10px 20px;}
 }
 
 /* -------------------------------------------------------------------------- T tablet */
@@ -860,8 +870,9 @@ label.form_button {float: right}
 
   /*popup*/
   #popup {width: 80%; margin-left: -40%; }
-  .order_popup {width: 80%; margin-left: -40%; min-height: 80vh}
+  .order_popup {width: 80%; margin-left: -40%; height: 80vh; top: 20px;margin-top: 0;}
   .order_popup table tr td {display: block;}
+  .order_right_td {margin-top: 25px;}
 
   /* home page na na šířku todo delete? there is a comment in the template so I will know whether this section is kept or not */
   #cist_dole { display:none; }
@@ -874,6 +885,7 @@ label.form_button {float: right}
   .abstr-fotogalerie {width:30%; padding: 0 0.5% }
 
   #order #order_div .order_left_td {width: 390px;}
+  .pc_nodisplay {display: none;}
 }
 
 /* -------------------------------------------------------------------------- PC velká obrazovka */
@@ -894,6 +906,8 @@ label.form_button {float: right}
   .footer #footer-left-part {width: 75%;}
 
   #order #order_div .order_left_td {width: 390px;}
+  .pc_nodisplay {display: none;}
+
 }
 
 @media all and (min-width: 1400px) {
