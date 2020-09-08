@@ -89,10 +89,10 @@ function _getDaysData(ret) {
             if (pokoj.pset) {
                 if (pokoj.s > 1) {
                     content += "<td class='obsazen " + odd_css + "' style='border-right: 1px solid' title='"+pokoj.p+"'";
-                    if (pokoj.s == 5) content += " rowspan='17'";
+                    //if (pokoj.s == 5) content += " rowspan='17'";
                     content += " onclick=\"objednavka(arguments[0],'form',{order:" + pokoj.u + "});return false;\" >";
                     content += pokoj_ikona(parseInt(pokoj.s)) + "</td>";
-                    if (pokoj.s == 5) break; //all rooms same request
+                    //if (pokoj.s == 5) break; //all rooms same request
                 } else content += "<td class='nic " + odd_css + "' style='border-right: 1px solid'></td>";
             } else content += "<td class='nic " + odd_css + "' style='border-right: 1px solid'>&nbsp;</td>";
         }
@@ -179,7 +179,7 @@ function pokoj_ikona(state) {
         case 2: return "<i class='fa fa-user'></i>";
         case 3: return "<i class='fa fa-futbol-o'></i>";
         case 4: return "<i class='fa fa-times-circle'></i>";
-        case 5: return "<i class='fa fa-home'></i>";
+ //       case 5: return "<i class='fa fa-home'></i>";
     }
     return '';
 }
@@ -217,7 +217,7 @@ function runOrderCounter() {
     else if (jQuery("#rooms_label").text().startsWith("žádné")) setPrice("nejsou volné pokoje", "", false);
     else if (!data["rooms1"]) setPrice("musíte vybrat pokoje", "", false);
     else ask({cmd:'dum', dum:'get_price', data:data, freeRooms:FREE_ROOMS},
-            function (res) {setPrice(res.price.celk, res.price.error); if (res.price.celk !== '-') jQuery("#info_price").html(res.price.info); console.log(res.price);});
+            function (res) {setPrice(res.price.celk, res.price.error); if (res.price.celk !== '-') jQuery("#info_price").html(res.price.info); });
 }
 function setPrice(text, warning, isPrice = true) {
     jQuery("#error_price").html(warning);

@@ -197,7 +197,7 @@ function dum_form($x) {
 
   $y->html= "<table style='margin: 0 auto;'><tr><td class='order_left_td'>"
   . f_input("objednávka číslo","uid",2,0)."&nbsp;&nbsp;"
-  . f_select("stav objednávky","state", "1:zájem o pobyt,2:závazná objednávka,5:zájem o dům,3:akce YMCA,4:nelze pronajmout",$ord, 'max-width: 190px') . "<br>"
+  . f_select("stav objednávky","state", "1:zájem o pobyt,2:závazná objednávka,3:akce YMCA,4:nelze pronajmout",$ord, 'max-width: 190px') . "<br>"
   . f_date("příjezd",            "fromday",       8, 1, 'getRoomsForTimespan(true, this);', "fromday_input")."&nbsp;&nbsp;"
   . f_date("odjezd",             "untilday",      8, 1, 'getRoomsForTimespan(false, this);', "untilday_input") . "<br>" . f_error_msg("ord_date_error")
   . f_celydum_checkbox($all_house_checkbox_enabled, $checkbox_checked)
@@ -623,7 +623,6 @@ function get_days_data($from, $until) {
 # ---------------------------------------------------------------------------------- pokoj_ikona
 # vrátí ikonu symbolizující
 # 4>=$state>=0  obsazenost pokoje (1 - zájem, 0 - volné)
-# nově: 5 - zájem o dům
 
 # not in DB:
 # $state=-1     vyvolání žádosti
@@ -638,7 +637,8 @@ function pokoj_ikona($state) {
     case  '2': return "<i class='fa fa-user'></i>";
     case  '3': return "<i class='fa fa-futbol-o'></i>";
     case  '4': return "<i class='fa fa-times-circle'></i>";
-    case  '5': return "<i class='fa fa-home'></i>";
+    //case  '5': return "<i class='fa fa-home'></i>";
+    default: return "";
   }
 }
 function ikona_objednat_legenda($custom_class = '') {
@@ -650,7 +650,7 @@ function ikona_objednat_legenda($custom_class = '') {
 }
 function ikona_objednano_legenda($custom_class = '') {
   $h = "<div class='legend $custom_class' style='width: fit-content; padding: 13px; margin: 10px'>";
-  $h .= "<div class='icons_legend'>" . pokoj_ikona(5) . "&nbsp;Zájem o celý dům</div>";
+  //$h .= "<div class='icons_legend'>" . pokoj_ikona(5) . "&nbsp;Zájem o celý dům</div>";
   $h .= "<div class='icons_legend'>" . pokoj_ikona(2) . "&nbsp;Závazná objednávka</div>";
   $h .= "<div class='icons_legend'>" . pokoj_ikona(3) . "&nbsp;Probíhá akce YMCA</div>";
   $h .= "<div class='icons_legend'>" . pokoj_ikona(4) . "&nbsp;Nelze pronajmout</div>";
