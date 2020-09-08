@@ -217,7 +217,7 @@ function runOrderCounter() {
     else if (jQuery("#rooms_label").text().startsWith("žádné")) setPrice("nejsou volné pokoje", "", false);
     else if (!data["rooms1"]) setPrice("musíte vybrat pokoje", "", false);
     else ask({cmd:'dum', dum:'get_price', data:data, freeRooms:FREE_ROOMS},
-            function (res) {setPrice(res.price.celk, res.price.error); if (res.price.celk !== '-') jQuery("#info_price").html(res.price.info);});
+            function (res) {setPrice(res.price.celk, res.price.error); if (res.price.celk !== '-') jQuery("#info_price").html(res.price.info); console.log(res.price);});
 }
 function setPrice(text, warning, isPrice = true) {
     jQuery("#error_price").html(warning);

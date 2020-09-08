@@ -78,7 +78,7 @@ function ds_order_price_for($days, $adults, $kids15_10, $kids9_3, $kids3_0, $boa
     $polozky->ubyt_S = 0; //training, not used
     $polozky->noc_Z = 0; //animal, we don't know this
     $polozky->pobyt_P = 0; //toddler beds, we don't know this
-    $platba->info = "Odhad nezahrnuje: program, domácí mazlíčci, slevy a speciální okolnosti (různé časy odjezdů).";
+    $platba->info = "Odhad nezahrnuje: program, domácí mazlíčci, slevy, speciální okolnosti (různé časy odjezdů) ...";
 
     $polozky->noc_A = 0;
     $polozky->noc_B = $kids3_0;
@@ -97,10 +97,10 @@ function ds_order_price_for($days, $adults, $kids15_10, $kids9_3, $kids3_0, $boa
     //board
     if ($board == 1) { //penze
         $polozky->strava_CC = $adults + $kids15_10;
-        $polozky->strava_CD = $kids9_3 + $kids3_0;
+        $polozky->strava_CD = $kids9_3;
     } else if ($board == 2) { //polopenze
         $polozky->strava_PC = $adults + $kids15_10;
-        $polozky->strava_PD = $kids9_3 + $kids3_0;
+        $polozky->strava_PD = $kids9_3;
     }
 
     //beds
