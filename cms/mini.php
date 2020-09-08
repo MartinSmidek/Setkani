@@ -778,12 +778,12 @@ function emailIsValid($email,&$reason) {
 # ASK
 # odešle mail
 # k posílání přes GMail viz http://phpmailer.worxware.com/?pg=examplebgmail
-function mail_send_cc($reply_to,$address,$subject,$body, $cc, $cc_name) {
+function mail_send_cc($reply_to,$address,$subject,$body, $cc, $cc_name, $cc2='', $cc2_name='') {
   return mail_send($reply_to,$address,$subject,$body, $gmail_name="YMCA Setkání",$gmail_user="unknown",
-      $gmail_pass="unknown", $cc, $cc_name);
+      $gmail_pass="unknown", $cc, $cc_name, $cc2, $cc2_name);
 }
 function mail_send($reply_to,$address,$subject,$body,
-    $gmail_name="YMCA Setkání",$gmail_user="unknown",$gmail_pass="unknown", $cc='', $cc_name='') {
+    $gmail_name="YMCA Setkání",$gmail_user="unknown",$gmail_pass="unknown", $cc='', $cc_name='', $cc2='', $cc2_name='') {
 
   global $api_gmail_user, $api_gmail_pass;
   if ($gmail_user==='unknown') $gmail_user = $api_gmail_user;
@@ -826,6 +826,7 @@ function mail_send($reply_to,$address,$subject,$body,
   $mail->ClearCCs();
   $mail->AddAddress($address);
   if ($cc != '') $mail->AddCC($cc, $cc_name);
+  if ($cc2 != '') $mail->AddCC($cc2, $cc2_name);
 
   if ( $TEST ) {
     $ret->msg= "TESTOVÁNÍ - vlastní mail.send je vypnuto";
