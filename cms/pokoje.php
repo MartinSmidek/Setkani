@@ -49,8 +49,6 @@ function dum_server($x) {
       $y->msg = "Objednávku se nepodařilo dokončit.";
       break;
     }
-
-    break;
     $email = trim($x->form->email);
     $forward_to = "dum@setkani.org";
     $snd_copy = "ivana.zivnustkova@seznam.cz";
