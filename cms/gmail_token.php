@@ -4,6 +4,7 @@
 
 // css in web.css
 // url '/gmail_autentizace' in .htaccess
+session_start();
 
 echo "<html lang=\"cs-CZ\">
 <head>
@@ -35,8 +36,9 @@ echo "<html lang=\"cs-CZ\">
    </style> 
 </head><body>";
 
-$be_user= isset($_SESSION['cms']['user_id']) ? $_SESSION['cms']['user_id'] : 0;
-if (!$be_user) {
+$be_user= isset($_SESSION['cms']['user_id']) ? $_SESSION['cms']['USER'] : 0;
+$be_allowed = ($be_user) ? in_array('m', explode(" ", $be_user->skills)): false;
+if (!$be_allowed) {
     displayToUser('Nepovolený přístup.', "Pro autentizaci emailové adresy musíte být přihlášen jako redaktor.",
         'ZAVŘÍT', "top.close();", 0);
 } else {
@@ -51,14 +53,9 @@ if (!$be_user) {
     $tokenPathPrefix = '../../files/setkani4/token_'; //path and token file prefix, email address will be appended
     $tokenPathSuffix = '.json';
     $email = $_SESSION["gmail_api_refresh_token"];
-
-    displayToUser('Povolený přístup.',
-        "",
-        'ZAVŘÍT', "top.close();", 0);
-    exit;
-
+    
     // FIRE
-    require_once '../ezer3.1/server/licensed/gmail_api/autoload.php';
+    require_once '../ezer3.1/server/licensed/google_api/vendor/autoload.php';
 
     $client = new Google_Client();
     $client->setAuthConfig($credentials_path);
