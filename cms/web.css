@@ -378,23 +378,6 @@ div.LabelDrop * {cursor:pointer; }
 #menu a.admin_active { background-color:#6470A7 !important;}
 #menu a.admin:hover span { color:navy !important; }
 
-/* gmail api */
-.lds-dual-ring {display: inline-block;width: auto;height: 120px;position: relative;}
-.lds-dual-ring:after {content: ' ';display: block;width: 64px;height: 64px;margin: 8px;border-radius: 50%;border: 6px solid;
-  border-color: #c76b6b transparent #ca4c4c transparent;animation: lds-dual-ring 1.2s linear infinite;}
-@keyframes lds-dual-ring {
-  0% {transform: rotate(0deg);}
-  100% {transform: rotate(360deg);}
-}
-.lds_fullwidth {width: 100%; text-align:center;}
-.lds_container {width: 60%;height: fit-content;border-radius: 25px;padding: 30px 20px;position: absolute;
-  left: 0;right: 0;top: 0;bottom: 0;border: 1px solid #bbb;margin: auto;max-width: 100%;
-  max-height: 100%;overflow: auto;}
-.lds_button {background-color: #fd6969;border: none;color: white;padding: 15px 32px;text-align: center;
-  text-decoration: none;display: inline-block;font-size: 16px;}
-.lds_code {max-width: 650px;margin: 0 auto;background: #c7c7c7;padding: 10px;overflow: auto;}
-#counterText {width: 100px;text-align: center;font-size: 17pt;line-height: 89px;position: absolute;color: #ca4c4c;left: -4px;}
-
 /* ------------------------------------------------------------------------------ obsah */
 
 /* odkazy */

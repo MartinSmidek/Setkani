@@ -1,14 +1,43 @@
-<?php
+<?php  //THIS FILE IS DISPLAYED OUTSIDE WEBPAGE SCOPE
 //USAGE: 1) SETUP ADDRESS: $_SESSION["gmail_api_refresh_token"] = ADDRESS;
 //USAGE: 2) OPEN THIS SCRIPT (using script!): window.open("www.setkani.org/gmail_autentizace");
 
 // css in web.css
 // url '/gmail_autentizace' in .htaccess
 
+echo "<html lang=\"cs-CZ\">
+<head>
+  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" >
+  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=9\" >
+  <meta name=\"viewport\" content=\"width=device-width,user-scalable=yes,initial-scale=1\" >
+  <title>YMCA: Gmail Token Autentizace</title>
+  <link rel=\"shortcut icon\" href=\"img/web_dsm.png\" >
+ 
+  <link href=\"https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&amp;subset=latin-ext\" rel=\"stylesheet\">
+  <style>
+     html { height:100%; width:100%; }
+     body { font-family: 'Open Sans', sans-serif; overflow-x:hidden; margin: 0; min-height: 100%; width: 100vw; background: #f2f2f2; font-size:10pt; }
+    .lds-dual-ring {display: inline-block;width: auto;height: 120px;position: relative;}
+    .lds-dual-ring:after {content: ' ';display: block;width: 64px;height: 64px;margin: 8px;border-radius: 50%;border: 6px solid;
+      border-color: #c76b6b transparent #ca4c4c transparent;animation: lds-dual-ring 1.2s linear infinite;}
+    @keyframes lds-dual-ring {
+      0% {transform: rotate(0deg);}
+      100% {transform: rotate(360deg);}
+    }
+    .lds_fullwidth {width: 100%; text-align:center;}
+    .lds_container {width: 60%;height: fit-content;border-radius: 25px;padding: 30px 20px;position: absolute;
+      left: 0;right: 0;top: 0;bottom: 0;border: 1px solid #bbb;margin: auto;max-width: 100%;
+      max-height: 100%;overflow: auto;}
+    .lds_button {background-color: #fd6969;border: none;color: white;padding: 15px 32px;text-align: center;
+      text-decoration: none;display: inline-block;font-size: 16px;}
+    .lds_code {max-width: 650px;margin: 0 auto;background: #c7c7c7;padding: 10px;overflow: auto;}
+    #counterText {width: 100px;text-align: center;font-size: 17pt;line-height: 89px;position: absolute;color: #ca4c4c;left: -4px;}
+   </style> 
+</head><body>";
+
 $be_user= isset($_SESSION['cms']['user_id']) ? $_SESSION['cms']['user_id'] : 0;
 if (!$be_user) {
-    displayToUser('Nepovolený přístup.',
-        "Pro autentizaci emailové adresy musíte být přihlášen jako redaktor.",
+    displayToUser('Nepovolený přístup.', "Pro autentizaci emailové adresy musíte být přihlášen jako redaktor.",
         'ZAVŘÍT', "top.close();", 0);
 } else {
     // SETUP
@@ -28,9 +57,8 @@ if (!$be_user) {
         'ZAVŘÍT', "top.close();", 0);
     exit;
 
-
     // FIRE
-    require_once 'wp-content/external/vendor/autoload.php';
+    require_once '../ezer3.1/server/licensed/gmail_api/autoload.php';
 
     $client = new Google_Client();
     $client->setAuthConfig($credentials_path);
@@ -99,7 +127,7 @@ if (!$be_user) {
          </script>";
     }
 }
-
+echo "</body></html>";
 
 function displayToUser($title, $msg, $button_text, $button_js, $loader) {
     echo "<div class='lds_container'>";
