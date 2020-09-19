@@ -14,7 +14,7 @@ if (!$be_user) {
     // SETUP
     $delay = 5; //seconds to redirect
     $allowed_mails = array("objednavky-domu@setkani.org", "dum@setkani.org");
-    $credentials_path = 'wp-content/external/credentials.json';
+    $credentials_path = '../../files/setkani4/credentials.json';
     $required_privileges = array(
         "https://www.googleapis.com/auth/gmail.settings.basic", //to view email metadata
         "https://www.googleapis.com/auth/gmail.send" //to send emails
@@ -22,6 +22,12 @@ if (!$be_user) {
     $tokenPathPrefix = '../../files/setkani4/token_'; //path and token file prefix, email address will be appended
     $tokenPathSuffix = '.json';
     $email = $_SESSION["gmail_api_refresh_token"];
+
+    displayToUser('Povolený přístup.',
+        "",
+        'ZAVŘÍT', "top.close();", 0);
+    exit;
+
 
     // FIRE
     require_once 'wp-content/external/vendor/autoload.php';

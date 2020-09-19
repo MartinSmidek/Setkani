@@ -50,7 +50,7 @@ function gmail_token_go($par) {
   return "Okno pro verifikaci bylo otevřeno.
  <script type='text/javascript'>
  (function openGmailTab() {
-    window.open('www.setkani.org/gmail_autentizace');
+    window.open('/gmail_autentizace');
  })();
  </script>";
 }
