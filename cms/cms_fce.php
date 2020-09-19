@@ -42,6 +42,20 @@ function record_unlock ($pid,$unlock_all=false) {
   }
   return 1;
 }
+/** ======================================================================================> GMAIL */
+# -------------------------------------------------------------------------------------- gmail_token_go
+# ASK - vrátí obsah souboru
+function gmail_token_go($par) {
+  $_SESSION["gmail_api_refresh_token"] = $par->mail;
+  return "Okno pro verifikaci bylo otevřeno.
+ <script type='text/javascript'>
+ (function openGmailTab() {
+    window.open('www.setkani.org/gmail_autentizace');
+ })();
+ </script>";
+}
+
+
 /** ======================================================================================> DATABASE */
 # -------------------------------------------------------------------------------------- db get_file
 # ASK - vrátí obsah souboru

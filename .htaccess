@@ -26,8 +26,12 @@ RewriteRule ^.*$                                https://www.setkani.org/mladez
 # adresy <soubor>.php
 RewriteRule ^((index|servant|ses).php.*|)$      $1                                          [QSA,L]
 
+# gmail autentizace - získání tokenu
+RewriteRule ^gmail_autentizace/?$               cms/gmail_token.php                             [L]
+
 # staré linky       nedát se zmást - i když je to znak komentáře, funguje
 RewriteRule ^kontakty/?$                        /#page_footer_info                         [R,NE,L]
+# RewriteRule ^kontakty$                          index.php?page=kontakty                         [L]
 
 # archivy
 RewriteRule ^archiv/?$                          archiv/index.htm                                [L]
@@ -38,9 +42,6 @@ RewriteRule ^archiv2/(.+)$                      archiv2/$1                      
 # home
 RewriteRule ^(home|)$                           index.php?page=home                             [L]
 RewriteRule ^(home|)/(\d+)$                     index.php?page=home!$2                          [L]
-
-# kontakty
-RewriteRule ^kontakty$                          index.php?page=kontakty                         [L]
 
 # hledej
 RewriteRule ^hledej$                            index.php?page=hledej                           [L]

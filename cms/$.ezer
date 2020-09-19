@@ -933,6 +933,14 @@ panel ADMIN [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu
         info.fill(conc(i.owner.title,' - ',i.title),ask('git_make',i.par));
       }
     }
+    menu { title:'Gmail',type:'group',skill:'m'
+      item { title:'Mail: objednavky-domu'  par:°{mail:'objednavky-domu@setkani.org'}}
+      item { title:'Mail: dum'        par:°{mail:'dum@setkani.org'}}
+      proc onclick (i) {
+       clear;
+       info.fill(conc(i.owner.title,' - ',i.title),ask('gmail_token_go',i.par));
+      }
+    }
     menu str { title:'Struktura databáze',type:'group',skill:'m'
       item img {title:'[fa-object-group] Popis struktury dat'
         proc onclick (i) { 
