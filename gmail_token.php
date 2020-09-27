@@ -12,7 +12,7 @@ echo "<html lang=\"cs-CZ\">
   <meta http-equiv=\"X-UA-Compatible\" content=\"IE=9\" >
   <meta name=\"viewport\" content=\"width=device-width,user-scalable=yes,initial-scale=1\" >
   <title>YMCA: Gmail Token Autentizace</title>
-  <link rel=\"shortcut icon\" href=\"img/web_dsm.png\" >
+  <link rel=\"shortcut icon\" href=\"cms/img/web_dsm.png\" >
  
   <link href=\"https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&amp;subset=latin-ext\" rel=\"stylesheet\">
   <style>
@@ -45,17 +45,17 @@ if (!$be_allowed) {
     // SETUP
     $delay = 5; //seconds to redirect
     $allowed_mails = array("objednavky-domu@setkani.org", "dum@setkani.org");
-    $credentials_path = '../../files/setkani4/credentials.json';
+    $credentials_path = '../files/setkani4/credentials.json';
     $required_privileges = array(
         "https://www.googleapis.com/auth/gmail.settings.basic", //to view email metadata
         "https://www.googleapis.com/auth/gmail.send" //to send emails
     );
-    $tokenPathPrefix = '../../files/setkani4/token_'; //path and token file prefix, email address will be appended
+    $tokenPathPrefix = '../files/setkani4/token_'; //path and token file prefix, email address will be appended
     $tokenPathSuffix = '.json';
     $email = $_SESSION["gmail_api_refresh_token"];
-    
+
     // FIRE
-    require_once '../ezer3.1/server/licensed/google_api/vendor/autoload.php';
+    require_once 'ezer3.1/server/licensed/google_api/vendor/autoload.php';
 
     $client = new Google_Client();
     $client->setAuthConfig($credentials_path);
@@ -101,15 +101,15 @@ if (!$be_allowed) {
             exit;
         }
 
-        displayToUser('Budete přesměrováni na Google.',
-            "Přihlašte se jako uživatel <b>$email</b> a povolte aplikaci <i>Answer</i> práva k odesílání emailů.",
-            'ZAVŘÍT', 'top.close();', $delay);
-
         // Get the token - redirect to the same page !! HTTP or HTTPS must be correctly set
         $client->setLoginHint($email);
         $redirect_uri = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
         $client->setRedirectUri($redirect_uri);
         $auth_url = $client->createAuthUrl();
+
+        displayToUser('Budete přesměrováni na Google.',
+            "Přihlašte se jako uživatel <b>$email</b> a povolte aplikaci <i>Answer</i> práva k odesílání emailů.",
+            'ZAVŘÍT', 'top.close();', $delay);
 
         echo "<script type='text/javascript'>
          var counter = $delay;

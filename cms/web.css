@@ -341,15 +341,16 @@ div.LabelDrop * {cursor:pointer; }
 #page_hm a:hover span { /*todo*/ }
 
 
-
 /* sub menu */
 #page_sm {width:100%; display:inline-flex; background-color: #cadfd9; height: 3em; line-height: 4em}
-#page_sm .jump { color:#67827a; line-height: 3em;padding: initial;vertical-align: text-bottom; }
+#page_sm .jump { color:#67827a; line-height: 3em;padding: initial;vertical-align: text-bottom; height: 3em;}
 #page_sm a.jump { background-color: #cadfd9; }
 #page_sm span.jump { color:#F5CF85;  }
 #page_sm a.active { background-color: #67827a; border-color:#67827a;color:white; }
 #page_sm a:hover { background-color: #67827a; color:white; }
 #page_sm a:hover span { /*todo*/ }
+#page_sm div.hm_submenu_active {z-index: 9}
+#page_sm div.hm_submenu_hidden {visibility: hidden; z-index: 10}
 
 /* výběrové podmínky */
 #vyber {width:100%; font-weight:bold; color: black; font-size: 9pt;display:inline-flex; background-color: #cadfd9;
@@ -632,10 +633,10 @@ div.cms_form > div div button {margin-top: 5px;}
 
 button .setkani_padding {padding-top: 5px;}
 
-.order_popup {position: fixed;left: 50%;top: 50%;margin-top: -250px;
-  margin-left: -375px;width: 720px; height: fit-content; background: white; color: #000000;
-  max-height: 500px; padding: 2em 1em 1em 1em;
-  box-shadow: #000000 4px 6px 20px;z-index: 100; overflow-y: scroll; border-radius: 7px;}
+.order_popup {position: fixed;left: 50% !important;top: 50% !important;margin-top: -250px !important;
+  margin-left: -375px !important;width: 720px !important; height: fit-content !important; background: white !important;
+  color: #000000  !important;max-height: 500px; padding: 2em 1em 1em 1em;
+  box-shadow: #000000 4px 6px 20px !important;z-index: 100; overflow-y: scroll; border-radius: 7px !important;}
 .order_popup > span { position:absolute; top:0; left:0; width:100%; text-align:center; height:2em;
   font-weight:bold;line-height:22pt;margin-top: 10px; font-size: 14pt;}
 .order_popup span.choose { background:black; color:white;}
