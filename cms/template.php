@@ -1436,12 +1436,13 @@ function home() { trace();
   if ( !$news_time ) $news_time= time() - 1 * 24*60*60;
   $cr= mysql_qry("
     SELECT p.pid, p.uid, p.cid, c.mid, m.ref, m.mref, c.type, p.homepage, p.title, p.text, p.abstract,
-      c.fromday, c.untilday, c.program, p.id_akce, tags,
+      c.fromday, c.untilday, c.program, p.id_akce, a.web_prihlasky, p.status, tags,
       IF(c.tstamp>$news_time,IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),' upd',' new'),''),
       IF(LEFT(FROM_UNIXTIME(untilday),10)>=LEFT(NOW(),10),'nove',YEAR(FROM_UNIXTIME(fromday)))
     FROM setkani4.tx_gncase AS c
     JOIN setkani4.tx_gncase_part AS p ON p.cid=c.uid
     LEFT JOIN setkani4.tx_gnmenu AS m USING (mid)
+    LEFT OUTER JOIN ezer_db2.akce AS a ON a.id_duakce=p.id_akce
     WHERE (tags='A' OR tags='D') AND !c.deleted AND !c.hidden $p_show
       AND (p.pid=100 OR (p.homepage>0 AND p.homepage NOT IN (5)))
       AND fe_groups IN ($usergroups)
@@ -1457,7 +1458,7 @@ function home() { trace();
 
   $num_of_present_articles = 0;
   while ($cr && (list($page,$uid,$cid,$mid,$ref,$mref,$type,$home,$title,$text,
-          $abstract,$uod,$udo,$program,$ida,$tags,$upd,$rok)= mysql_fetch_row($cr))) {
+          $abstract,$uod,$udo,$program,$ida,$prihlaska,$status,$tags,$upd,$rok)= mysql_fetch_row($cr))) {
     $kdy= '';
     $text= web_text($text);
 
@@ -1470,8 +1471,8 @@ function home() { trace();
     if ( $type==2 ) {
       $kdy= "<span class='post_date'>". datum_cesky($uod,$udo) . "</span> ";
     }
-    $xx[$cid]= (object)array('uid'=>$uid,'type'=>$type,'page'=>$page,'mid'=>$mid,'ref'=>$ref,'mref'=>$mref,'ida'=>$ida,
-        'nadpis'=>$title,'abstract'=>$abstract, 'text'=>$text,'home'=>$home,'program'=>$program,'kdy'=>$kdy,'tags'=>$tags,'upd'=>$upd, 'rok'=>$rok);
+    $xx[$cid]= (object)array('uid'=>$uid,'type'=>$type,'page'=>$page,'mid'=>$mid,'ref'=>$ref,'mref'=>$mref,'ida'=>$ida,'prihlaska'=>$status==1 ? null : $prihlaska,
+        'status'=>status_class($status),'nadpis'=>$title,'abstract'=>$abstract, 'text'=>$text,'home'=>$home,'program'=>$program,'kdy'=>$kdy,'tags'=>$tags,'upd'=>$upd, 'rok'=>$rok);
   }
   $telo= $akce= $aktual= $cist= '';
 
@@ -1487,11 +1488,11 @@ function home() { trace();
       $telo = vlakno($cid,'clanek','home',false);
     }
     elseif ( ($x->home==2 || $x->home==6) && $x->tags == 'A' ) { // ----------------------- abstrakt na home | nahoru
-      $prihlaska= $x->ida ? cms_form_ref("ONLINE PŘIHLÁŠKA") : '';
+      $prihlaska= $x->prihlaska ? cms_form_ref("ONLINE PŘIHLÁŠKA") : '';
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
       $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
       $akce.= "$code
-           <div class='abstrakt notif_event x$x->upd' $jmp>
+           <div class='abstrakt notif_event x$x->upd $x->status' $jmp>
              $prihlaska 
              $x->text
              <div class='clear'></div>
@@ -2334,12 +2335,14 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
   $p_show= ($show_hidden ?  '' : " AND !p.hidden").($show_deleted ? '' : " AND !p.deleted");
   $groups= $usergroups ? "AND fe_groups IN ($usergroups)" : 'AND fe_groups=0';
   $qry= "
-    SELECT p.uid, c.uid, fe_groups, tags, p.title, text, p.abstract,p.deleted,p.hidden,fromday,untilday,id_akce,status,
+    SELECT p.uid, c.uid, fe_groups, tags, p.title, text, p.abstract, p.deleted, p.hidden, fromday, untilday,
+           id_akce, status, a.web_prihlasky,
       IF(c.tstamp>$news_time, IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),' upd',' new'),'')
       -- DATEDIFF(FROM_UNIXTIME(untilday),FROM_UNIXTIME(fromday))+1 AS _dnu,
       -- FROM_UNIXTIME(fromday) AS _od, FROM_UNIXTIME(untilday) AS _do
-    FROM setkani4.tx_gncase AS c
-    JOIN setkani4.tx_gncase_part AS p ON p.cid=c.uid
+    FROM (setkani4.tx_gncase AS c
+    JOIN setkani4.tx_gncase_part AS p ON p.cid=c.uid)
+    LEFT OUTER JOIN ezer_db2.akce AS a ON a.id_duakce=p.id_akce
     -- JOIN setkani.pages AS g ON c.pid=g.uid
     WHERE !c.deleted AND !c.hidden $p_show
       $groups
@@ -2349,7 +2352,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     -- LIMIT 6,2
   ";
   $cr= mysql_qry($qry);
-  while ( $cr && (list($p_uid,$cid,$fe_group,$tags,$title,$text,$abstract,$del,$hid,$uod,$udo,$ida,$status,$upd)=
+  while ( $cr && (list($p_uid,$cid,$fe_group,$tags,$title,$text,$abstract,$del,$hid,$uod,$udo,$ida,$prihlaska,$status,$upd)=
           mysql_fetch_row($cr)) ) {
     if ( $ida && !in_array($kdy,array('nove','bude','bude_alberice')) )
       $ida= 0;
@@ -2375,7 +2378,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
           }
         }
         $xx[$cid]= (object)array('ident'=>$p_uid,'kdy'=>$akdy, 'rok'=>date("Y", $uod), 'nadpis'=>$title,
-            'abstract'=> $text,'upd'=>$upd,'ida'=>$ida,'status'=>status_class($status),'from'=>$uod);
+            'abstract'=> $text,'upd'=>$upd,'ida'=>$ida,'prihlaska'=>$status==1 ? null : $prihlaska,'status'=>status_class($status),'from'=>$uod);
         if ( $fe_group ) {
           $spec++;
           $xx_tags[$cid].= '6';
@@ -2484,7 +2487,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $code= cid_pid($cid,$x->ident);
 //     $back= $foto ? "#foto$cid" : '';
 
-    $prihlaska= $x->ida ? cms_form_ref("ONLINE PŘIHLÁŠKA") : '';
+    $prihlaska= $x->ida && $x->prihlaska ? cms_form_ref("ONLINE PŘIHLÁŠKA") : '';
 //    $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA");
 
     if ($typ=='foto') {
@@ -2594,16 +2597,17 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
   $groups= $usergroups ? "AND fe_groups IN ($usergroups)" : 'AND fe_groups=0';
   $cr= mysql_qry("
     SELECT p.uid,fe_groups,c.type,p.title,p.text,p.author,FROM_UNIXTIME(date),p.tags,
-      p.deleted,p.hidden,fromday,untilday,FROM_UNIXTIME(fromday),id_akce,status,
+      p.deleted,p.hidden,fromday,untilday,FROM_UNIXTIME(fromday),id_akce,a.web_prihlasky,status,
       IF(c.tstamp>$news_time, IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),' upd',' new'),'')
     FROM setkani4.tx_gncase AS c
     JOIN setkani4.tx_gncase_part AS p ON c.uid=p.cid
+    LEFT OUTER JOIN ezer_db2.akce AS a ON a.id_duakce=p.id_akce
     -- JOIN setkani.pages AS g ON c.pid=g.uid
     WHERE cid='$cid' $p_show $groups
     ORDER BY tags,date
   ");
   while ( $cr && (
-      list($uid,$fe_group,$type,$title,$text,$autor,$psano,$tags,$del,$hid,$uod,$udo,$od,$ida,$status,$upd)
+      list($uid,$fe_group,$type,$title,$text,$autor,$psano,$tags,$del,$hid,$uod,$udo,$od,$ida,$prihlaska,$status,$upd)
           = mysql_fetch_row($cr)) ) {
     $kdy= $ex= '';
     $ex.= $del ? 'd' : '';
@@ -2618,7 +2622,8 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
     if ( $tags=='A' || $tags=='K' ) $uid_a= $uid;
     if ( ($tags=='A' || $tags=='K') && $fe_group ) $spec++;
     $xx[]= (object)array('uid'=>$uid,'nadpis'=>$title,'obsah'=>$text,'tags'=>$tags,'ex'=>$ex,
-        'kdy'=>$kdy,'od'=>$od,'autor'=>$autor,'psano'=>sql_date1($psano),'ida'=>$ida,'status'=>status_class($status),'upd'=>$upd);
+        'kdy'=>$kdy,'od'=>$od,'autor'=>$autor,'psano'=>sql_date1($psano),'ida'=>$ida,'prihlaska'=>$status==1 ? null : $prihlaska,
+        'status'=>status_class($status),'upd'=>$upd);
   }
 //                                                         debug($x,"vlákno=$cid");
   $found= count($xx)." článků" . ($spec ? " ($spec)" : '');
@@ -2684,7 +2689,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
       }
       $prihlaska= '';
 //      if ( $x->ida && isset($_SESSION['web']['try']) && $_SESSION['web']['try']=='prihlasky') {
-      if ( $x->ida ) {
+      if ( $x->ida && $x->prihaska) {
         $nazev_akce= trim(select('nazev','akce',"id_duakce=$x->ida",'ezer_db2'));
         $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA",'akce',$x->ida,$nazev_akce);
       }
