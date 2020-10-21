@@ -93,6 +93,8 @@ function dum_server($x) {
         $del= ', ';
       }
       $y->ok= query("UPDATE tx_gnalberice_order SET $flds WHERE uid=$order");
+      
+      
 //                                                         display("update=$y->ok");
     }
     else {

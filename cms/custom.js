@@ -147,16 +147,16 @@ function _getRoomsForTimespan(ret) {
 function setRoomsAllBooked() {
     jQuery("#rooms_label").html("pokoje jsou objednány");
     let input = jQuery("#input_rooms_label");
-    input.attr("disabled", true);
-    input.attr("value", "*");
+    input.attr("readonly", true);
+    input.val("*");
     input.addClass("changed");
 }
 function unsetRoomsAllBooked(pokojeTitleText, eraseRooms=false) {
     jQuery("#rooms_label").html(pokojeTitleText);
     let input = jQuery("#input_rooms_label");
-    input.attr("disabled", false);
+    input.attr("readonly", false);
     if (eraseRooms || input.attr("value") === "*") {
-        input.attr("value", "");
+        input.val("");
         input.removeClass("changed");
     }
 }
