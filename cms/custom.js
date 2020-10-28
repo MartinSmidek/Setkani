@@ -1,4 +1,4 @@
-let SCROLL_LIMIT_AMOUNT = 400;
+let SCROLL_LIMIT_AMOUNT = 300;
 var FREE_ROOMS = null;
 var FREE_ROOMS_INCL_ORDERS = null;
 // ---------------------------------------------------------------------------- header image gallery
@@ -262,8 +262,8 @@ jQuery(window).bind('scroll', function () {
 });
 function mobileAdjustMenu(menu, scrollAmount) {
     let opacity = Math.round((255 * Math.min(SCROLL_LIMIT_AMOUNT, scrollAmount)) / SCROLL_LIMIT_AMOUNT);
-    opacity = Math.max(60, opacity);
-    menu.css("background", "#cadfd9" + opacity.toString(16));
+    opacity = Math.max(80, opacity);
+    menu.css("background", "#ffffff" + opacity.toString(16));
 }
 function noMobileAdjustMenu(menu, scrollAmount) {
     if (scrollAmount > SCROLL_LIMIT_AMOUNT) {

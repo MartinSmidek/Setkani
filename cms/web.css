@@ -28,7 +28,8 @@ div.LabelDrop { outline: 3px solid #cadfd9; background-color:#cadfd9; }
 /* podle https://chrisbracco.com/css-sticky-footer-effect/ ??? */
 
 html { height:100%; width:100%; }
-body { /*overflow-y:auto;*/ font-family: 'Open Sans', sans-serif; overflow-x:hidden; margin: 0; min-height: 100%; width: 100vw; background: #f2f2f2; font-size:10pt; overflow: overlay; }
+body { /*overflow-y:auto;*/ font-family: 'Open Sans', sans-serif; overflow-x:hidden; margin: 0; min-height: 100%; width: 100vw; font-size:10pt; overflow: overlay; }
+/* background: #f2f2f2; */
 
 /*Container stretches to the webpage width, used for main page layout*/
 .container { width: 100vw; position: relative; padding-bottom: 30px; }
@@ -142,9 +143,14 @@ div.notice_info {background-color: #d7f192; }
 div.notice_info:before {content: 'Zajímavost:';position: absolute;left: 20px; top: 10px; color: #618011; font-weight: bold;}
 div.notice_order:before {content: 'Objednávka'}
 
-h1 {margin-top: 60px; font-size:32pt; margin-left: 1.2em; font-weight: 250; }
-h2 {margin-top: 40px; font-size:20pt; margin-left: 1.2em; font-weight: 300; }
-h3 {margin-top: 30px; font-size:15pt; }
+h1 {margin-top: 60px; font-size:29pt; margin-left: 1.2em; font-weight: 200; }
+h2 {margin-top: 40px; font-size:20pt; margin-left: 0.8em; font-weight: 300; }
+h3 {margin-top: 30px; font-size:17pt; margin-left: 0.1em; font-weight: 300}
+h4 {margin-left: 0.1em; }
+
+div, span {font-size: 11pt;}
+.abstrakt h2 { font-size: 14pt;margin: 0 0 0 10px;}
+.abstrakt h3, .abstrakt h4 {font-weight: 600;}
 
 .clear { clear:both; }
 .center { position: relative; display: block; margin: 0 auto; }
@@ -280,12 +286,12 @@ div.box_input { padding:2em 0 1em; }
 
 /* ----------------------------------------------------------------- images gallery */
 
-#titler {position: absolute; top: 0; width: 640px; height: 400px;
+#titler {position: absolute; top: 0; width: 470px; height: 300px;
     background-image: url(/cms/img/cover.png); background-size: cover; right: 55vw; }
-#titler:before  {content:''; width: 30vw; height: 400px; position: absolute; top: 0; left: -30vw; background: #cadfd9;}
+#titler:before  {content:''; width: 30vw; height: 300px; position: absolute; top: 0; left: -30vw; background: #cadfd9;}
 #header_gallery {
-  position:relative; width: 80vw; margin-left: 20vw; height: 400px; overflow: hidden; z-index: -1;background: #cadfd9; }
-#gallery_shadow { position:absolute; top:0%; left:0%; width: 100vw; height: 400px;
+  position:relative; width: 80vw; margin-left: 20vw; height: 300px; overflow: hidden; z-index: -1;background: #cadfd9; }
+#gallery_shadow { position:absolute; top:0%; left:0%; width: 100vw; height: 300px;
   opacity: 0; box-shadow: black 0 0 0 100vw inset; }
 #header_gallery img { z-index: 1; position:absolute; width: 100%; overflow: hidden; }
 #header_gallery img.act{ z-index:3; }
@@ -293,7 +299,7 @@ div.box_input { padding:2em 0 1em; }
 /*mobile version - one image only*/
 
 #header_mobile_image { position: absolute;width: 100vw;height: 450px; background-position: center;background-size: cover; z-index: 0; filter: blur(0.7px);}
-#header_mobile_image_shadow {width: 100%; height: 100%;background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgb(242 242 242));}
+#header_mobile_image_shadow {width: 100%; height: 100%;background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgb(255 255 255));}
 /* --------------------------------------------------------------------------- menu */
 /*animations*/
 @-webkit-keyframes select-menu{ from {background-color: white;} to {background-color: #cadfd9;}  }
@@ -302,7 +308,7 @@ div.box_input { padding:2em 0 1em; }
 #mobile_menu {display: none}
 #mobile_submenu {background: #f0f5f4;padding-left: 20px;}
 
-#menu { line-height: 0; width: 100vw; background-color: white; padding-bottom: 0; }
+#menu { line-height: 0; width: 100vw; background-color: white; padding-bottom: 0; box-shadow: 0 1px 2px 0 #e1e5ea;}
 #menu.fixed { position: fixed; top: 0px; z-index: 9;}
 #menu div#bar_items { cursor: pointer;
   display:none; line-height: 1.5em; background: #fff; position: relative; cursor:default;
@@ -314,8 +320,8 @@ div.box_input { padding:2em 0 1em; }
 
 .jump { display:inline-block; font-weight:bold; text-decoration:none;cursor: pointer;}
 div.LabelDrop * {cursor:pointer; }
-#menu a span, #menu span span { vertical-align: middle; height: inherit; padding: 22px 15px; }
-#menu a { height: 100%; color: black; }
+#menu a span, #menu span span { vertical-align: middle; height: inherit; }
+#menu a { height: 100%; color: black; text-transform: uppercase;font-weight: 600; }
 #menu a.active { box-sizing: border-box;border-bottom: 7px solid #cadfd9; }
 #menu a:hover { /*todo*/ }
 #menu a:hover span { /*todo*/ }
@@ -328,6 +334,8 @@ div.LabelDrop * {cursor:pointer; }
 #page_tm a:hover { box-sizing: border-box; background-color: #cadfd9; -webkit-animation-name: select-menu;
   -webkit-animation-duration: 0.5s; animation-name: select-menu; animation-duration: 0.5s; animation-timing-function: ease-in-out; }
 .search_icon {transform: translate(10px, 5px);}
+#page_tm a span {padding: 22px 10px;}
+
 
 
 #page_tm #bar_menu { float:right; font-size:1.5em !important;
@@ -339,6 +347,7 @@ div.LabelDrop * {cursor:pointer; }
 #page_hm a:hover { box-sizing: border-box; background-color: #cadfd9; -webkit-animation-name: select-menu;
   -webkit-animation-duration: 0.5s; animation-name: select-menu; animation-duration: 0.5s; animation-timing-function: ease-in-out; }
 #page_hm a:hover span { /*todo*/ }
+#page_hm a span {padding: 22px 10px;}
 
 
 /* sub menu */
@@ -351,6 +360,7 @@ div.LabelDrop * {cursor:pointer; }
 #page_sm a:hover span { /*todo*/ }
 #page_sm div.hm_submenu_active {z-index: 9}
 #page_sm div.hm_submenu_hidden {visibility: hidden; z-index: 10}
+#page_sm a span {padding: 10px 10px;}
 
 /* výběrové podmínky */
 #vyber {width:100%; font-weight:bold; color: black; font-size: 9pt;display:inline-flex; background-color: #cadfd9;
@@ -423,7 +433,10 @@ span.akce_datum {background: white; border-radius: 5px; float: left;}
 @keyframes text-show{ from {opacity: 0} to {opacity: 1}}
 
 /*notices*/
-.abstrakt.notif_event {width: fit-content; vertical-align:top; background-color: #f2f2f25c; display: inline-block; max-width: 340px; padding: 0.6em 0.8em; margin: 0.8em 0.3em}
+.notif_event_container h2 { margin: 5px 0 3px 13px;font-size: 14pt;font-weight: 400;}
+.notif_event_container {  margin: 5px 25px;  background: #fafafa60; border: 1px solid #dcdcdc;}
+.abstrakt.notif_event {width: fit-content; vertical-align:top; background: transparent; display: inline-block;
+  padding: 0.6em 2.5em; box-shadow: none; font-size: 11pt;}
 
 /*masonry layout*/
 .masonry_container {column-count: 3;column-gap: 1em;}
@@ -593,11 +606,11 @@ table.dum td {padding: initial; padding-top: 2px;}
 table.dum td.room:hover { background-color:white; color:black; border: 1px solid; box-sizing: border-box }
 table.dum td.obsazen:hover, table.dum td.sent:hover { background-color:black !important; color:white; }
 table.dum td.room { background-color: black;  font-weight: bold; color: white; cursor: pointer; }
-table.dum td.pozn { text-align: left; border-left: 2px solid; padding-left: 3px;}
+table.dum td.pozn { text-align: left; border-left: 2px solid; padding-left: 3px; background: #f1f1f1}
 table.dum td.pozn.odd { background-color: #ffffff;}
 table.dum td.pozn_weekend { background-color: #acbfd8; text-align: left; border-left: 2px solid; padding-left: 3px;}
 table.dum td.pozn_weekend.odd {background-color: #c5dcf8;}
-table.dum td.datum { text-align:right; width:3.2em; padding-right: 4px}
+table.dum td.datum { text-align:right; width:3.2em; padding-right: 4px; background: #f1f1f1}
 table.dum td.datum.odd {background-color: #ffffff; }
 table.dum td.datum_weekend { background-color: #acbfd8; width:3.2em; text-align:right; padding-right: 4px; }
 table.dum td.datum_weekend.odd {background-color: #c5dcf8;}
@@ -619,9 +632,9 @@ table.dum .datum_plno.odd, .obsazeno.odd { background-color: #da9088; }
 table.dum .datum_prazdno.odd, .volno.odd { background-color: #a9d49d; }
 table.dum .datum_poloplno.odd, .konflikt.odd { background-color: #ece680; }
 table.dum td.sent { cursor:pointer; }
-table.dum td.nic { width:1.4em;}
+table.dum td.nic { width:1.4em; background: #f1f1f1}
 table.dum td.nic.odd {background-color: #ffffff; }
-table.dum td.obsazen { width:1.4em;}
+table.dum td.obsazen { width:1.4em; background: #f1f1f1}
 table.dum td.obsazen.odd {background-color: #ffffff; }
 td.month_day {max-width: 18px; text-align: right; }
 
@@ -691,16 +704,16 @@ label.form_button {float: right}
 
 @media all and (max-width:30em) {
   #info::before { content:"mobil portrait"; }
-  #logo_setkani { position:fixed; top: 10px; left: 50px; width: 30px; z-index: 10; }
-  #logo_ymca { position:fixed; top: 10px; left: 10px; width: 30px; z-index: 10; }
+  #logo_setkani { position:fixed; top: 13px; left: 50px; width: 30px; z-index: 10; filter: drop-shadow(0px 0px 0px rgba(0,0,0,1)); }
+  #logo_ymca { position:fixed; top: 13px; left: 10px; width: 30px; z-index: 10; }
 
   #web {padding-top: 30px;}
   /*menu*/
   #bar_menu>i {font-size: 18px;}
-  #menu {position: fixed; top: 0px; z-index: 9; background: none;}
-  #menu a span {padding: 12px 7px;font-size: 14px;}
+  #menu {position: fixed; top: 0px; z-index: 9; background: #ffffff3d;}
+  #menu a span {padding: 12px 7px;font-size: 13px; vertical-align: super;}
   #menu div, #menu span, #menu input {font-size: 11pt; }
-  #menu #bar_items a.active { border-bottom: none; border-left: 14px solid #cadfd9; }
+  #menu #bar_items a.active { border-bottom: none; border-left: 13px solid #cadfd9; }
 
   #menu div#bar_items {width: 100vw;height: 100vh; height: calc(100vh - 9em); padding-bottom: 9em; left: -100vw; box-shadow:none; display: block;right: 0;position: fixed; overflow-y: scroll;}
   #menu div#bar_items span { height: -moz-max-content; height: fit-content}
@@ -716,6 +729,9 @@ label.form_button {float: right}
   #vyber {height: initial; margin-top: 51px; background: none;}
 
   a.abstrakt, div.abstrakt {margin: 0.3em 0;padding: .6em 0.5em;}
+  .notif_event_container {  margin: 5px 12px; }
+  .abstrakt.notif_event {padding: 0.6em 0.8em;}
+
   /*login*/
   div#user_login, div#user_mail {  padding:1em 2em; }
   div#user_login input, div#user_mail input { width:12.5em; }
@@ -727,10 +743,6 @@ label.form_button {float: right}
 
   #facebook_content:before {transform: translate(00px, -70px);}
   .masonry_container { column-count: 1;}
-
-  div, span {font-size: 11pt;}
-  h1 {margin-left: 0.2em !important; font-size: 29pt; }
-  h2, h3, h4 {margin-left: 0.1em !important;}
 
   div.pquote {padding: 30px 10px;margin: 0; max-width: 65%;}
   div.pquote:before {bottom: -27px;}
@@ -778,11 +790,11 @@ label.form_button {float: right}
   #info::before { content:"mobil lanscape"; }
   #web h1#ymca_setkani { font-size: 11pt; }
 
-  #logo_setkani { position:fixed; top: 10px; left: 60px; width: 40px; z-index: 10; }
+  #logo_setkani { position:fixed; top: 10px; left: 58px; width: 40px; z-index: 10; filter: drop-shadow(0px 0px 2px rgba(0,0,0,1)); }
   #logo_ymca { position:fixed; top: 10px; left: 10px; width: 40px; z-index: 10; }
   #web {padding-top: 30px;}
 
-  #menu {position: fixed; top: 0px; z-index: 9; background: none;}
+  #menu {position: fixed; top: 0px; z-index: 9; background: #ffffff3d; }
   #menu div, #menu span, #menu input {font-size: 9pt;}
   #menu #bar_items a.active { border-bottom: none; border-left: 14px solid #cadfd9; }
   #menu div#bar_items {width: 100vw;height: 100vh; height: calc(100vh - 5em); padding-bottom: 5em; left: -100vw; display: block;right: 0;position: fixed; box-shadow:none; overflow-y: scroll;}
@@ -822,6 +834,8 @@ label.form_button {float: right}
   .footer #footer-right-part a {vertical-align: middle;}
 
   /* abstrakty */
+  .notif_event_container {  margin: 5px 12px; }
+  .abstrakt.notif_event {padding: 0.6em 0.8em;}
   div.abstr { width:100%; }
   div.abstr a.abstrakt{height: 8.8em}
   .abstr-fotogalerie {width:46%; padding: 0 1% }
@@ -836,9 +850,9 @@ label.form_button {float: right}
 
 @media all and (min-width:641px) and (max-width:900px) {
   #info::before { content:"tablet"; }
-  #titler {right: 38vw}
-  #logo_setkani { position:absolute; margin: 0 0 0 120px !important; top: 200px; right: 68vw; width: 130px; }
-  #logo_ymca { position:absolute; margin: 0 0 0 230px !important; top: 80px; right: 68vw; width: 120px; }
+  #titler {right: 50vw}
+  #logo_setkani { position:absolute; margin: 0 0 0 120px !important; top: 160px; right: 72vw; width: 110px; }
+  #logo_ymca { position:absolute; margin: 0 0 0 230px !important; top: 60px; right: 72vw; width: 100px; }
   .iframe_outer {padding-top: 40%;}
   /*homepage changes*/
   #facebook_content {width: 632px; padding-top: 80px; padding-left: 15px;}
@@ -878,8 +892,8 @@ label.form_button {float: right}
 @media all and (min-width: 900px) {
   #info::before { content:"desktop"; }
   /* omezení šířky */
-  #logo_setkani { position:absolute; margin: 0 0 0 120px !important; top: 200px; right: 68vw; width: 130px; }
-  #logo_ymca { position:absolute; margin: 0 0 0 230px !important; top: 80px; right: 68vw; width: 120px; }
+  #logo_setkani { position:absolute; margin: 0 0 0 120px !important; top: 160px; right: 72vw; width: 110px; }
+  #logo_ymca { position:absolute; margin: 0 0 0 230px !important; top: 60px; right: 72vw; width: 100px; }
   /* home page na na šířku */
   #cist_dole { display:none; }
   /* velká tlačítka */

@@ -14,7 +14,7 @@ echo "<html lang=\"cs-CZ\">
   <title>YMCA: Gmail Token Autentizace</title>
   <link rel=\"shortcut icon\" href=\"cms/img/web_dsm.png\" >
  
-  <link href=\"https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&amp;subset=latin-ext\" rel=\"stylesheet\">
+  <link rel=\"stylesheet\" href=\"//fonts.googleapis.com/css?family=Open+Sans%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C700%2C700i%2C800%2C800i&amp;ver=0.3.5\" type=\"text/css\" media=\"all\">
   <style>
      html { height:100%; width:100%; }
      body { font-family: 'Open Sans', sans-serif; overflow-x:hidden; margin: 0; min-height: 100%; width: 100vw; background: #f2f2f2; font-size:10pt; }

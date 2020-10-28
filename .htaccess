@@ -48,6 +48,8 @@ RewriteRule ^hledej$                            index.php?page=hledej           
 RewriteRule ^hledej/([^\/]+)$                   index.php?page=hledej!!$1                       [L]
 RewriteRule ^hledej/([^\/]+)/(.*)$              index.php?page=hledej!$2!$1                     [L]
 
+RewriteRule ^clanek/(.+)$                       index.php?page=clanek!$1                        [L]
+
 # akce
 RewriteRule ^akce$              index.php?page=akce!rodiny,manzele,chlapi,zeny,mladez           [L]
 RewriteRule ^akce/nove$         index.php?page=akce!rodiny,manzele,chlapi,zeny,mladez,nove      [L]

@@ -1,4 +1,7 @@
 ﻿<?php
+
+include "cms_onclick.php";
+
 # --------------------------------------------------------------------------------------==> def menu 
 function def_menu($from_table=false) { trace();
   global $def_block;
@@ -62,8 +65,8 @@ function def_menu($from_table=false) { trace();
         'odkazy'      => 'sm:31:0.8:doporuceni       :clanek,320:Doporu&shy;čujeme:::            mclanky;-clanky=223,9:            Doporučujeme s podobnou tématikou',
       # speciální stránky
         'home'        => "tm:32:0.9:home             ::<i class='fa fa-home'></i> Domů:::        home:                             Akce pro rodiny, muže i ženy pořádané YMCA Setkání",
-        'hledej'    =>   'tm:34:     :hledej         ::<i class="fa fa-search"></i>:::           search:                           Hledej'
-      #'clanek'      => 'hm:35:   :-                ::-:::                                      vlakno:                           Vybraný článek',
+        'hledej'    =>   'tm:34:     :hledej         ::<i class="fa fa-search"></i>:::           search:                           Hledej',
+        'clanek'      => ':99:   :-                ::-:::                                        single:                           ',
     );
 //    $def_mid= array();  // vznikne transformací i => mref
 //    $def_mref= array(); // vznikne transformací mref => id
@@ -421,6 +424,8 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         //once active, put the rest of the menu into second variable
         $do_menu2 = true;
       }
+    } else if ($path[0]==$ref) {       //unknown type of submenu --> just load the requested elements
+      $elems= $elems1;
     }
   }
 //                                                         display("page=$page, elems=$elems, mid=$mid, ok=$page_ok");
@@ -536,6 +541,15 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         $body.= akce('foto',$ids,$id);
         break;
 
+      case 'single':
+        $id= mysql_real_escape_string(array_shift($path));
+        if (is_numeric($id)) {
+          $qry = mysql_qry("SELECT cid FROM setkani4.tx_gncase_part WHERE uid=$id LIMIT 1");
+          while ($qry && (list($cid) = mysql_fetch_array($qry))) {
+            $body .= vlakno($cid, 'clanek', '', true);
+            break 2;
+          }
+        }  //else let search handle it :)
       case 'search': # ------------------------------------------------ . search
         # seznam nalezených abstraktů článků nebo akcí
         # může následovat ident jednoho z článků (vznikne kliknutím na abstrakt)
@@ -578,8 +592,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
                 </div></div>";
           
           $body.= akce_prehled($vyber_rok,$rok,$id);
-        }
-        elseif ( $ids=='aprehled' ) { // proběhlé akce v Domě setkání
+        } elseif ( $ids=='aprehled' ) { // proběhlé akce v Domě setkání
                                                  debug($path,"path= $id,...");
           $body .= "<div class='content'><h1>Archiv akcí v domě</h1><br>";
 
@@ -591,8 +604,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
           $id= array_shift($path);
           list($page_mref,$roks)= explode('/',$page_mref);
           $body.= akce_prehled('dum',$rok,$id);
-        }
-        else {
+        } else {
           $kdy= $ids=='bude' ? $ids : '';
           $body.= akce($vyber,$ids,$id);
         }
@@ -782,8 +794,8 @@ __EOD;
   <link rel="shortcut icon" href="$icon" >
   
   $eb_link
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&amp;subset=latin-ext" rel="stylesheet">
-  <link rel="stylesheet" href="cms/web.css?v=4.51" type="text/css" media="screen" charset="utf-8">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C700%2C700i%2C800%2C800i&amp;ver=0.3.5" type="text/css" media="all">
+<link rel="stylesheet" href="cms/web.css?v=4.52" type="text/css" media="screen" charset="utf-8">
   <script type="text/javascript">
     var Ezer={web:{ $Ezer_web},cms:{form:{}}};
     if ( !console ) {
@@ -1153,7 +1165,7 @@ __EOJ;
     <link rel="stylesheet" href="./$kernel/client/licensed/font-awesome/css/font-awesome.min.css" type="text/css" media="screen" charset="utf-8">
     <link rel="stylesheet" href="$cms_root/client/ezer_cms3.css" type="text/css" media="screen" charset="utf-8">
     <script src="$cms_root/client/ezer_cms3.js" type="text/javascript" charset="utf-8"></script>
-    <script src="cms/custom.js?v=4.2" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/custom.js?v=4.21" type="text/javascript" charset="utf-8"></script>
 __EOJ;
 //     <link rel="stylesheet" href="cms/gallery/baguetteBox.min.css">
 //     <script src="cms/gallery/baguetteBox.min.js" async>
@@ -1459,6 +1471,8 @@ function home() { trace();
   $num_of_present_articles = 0;
   while ($cr && (list($page,$uid,$cid,$mid,$ref,$mref,$type,$home,$title,$text,
           $abstract,$uod,$udo,$program,$ida,$prihlaska,$status,$tags,$upd,$rok)= mysql_fetch_row($cr))) {
+    //if ($status==1) continue; //zruseno
+
     $kdy= '';
     $text= web_text($text);
 
@@ -1512,7 +1526,7 @@ function home() { trace();
     $counter++;
   }
   //add new events first
-  $telo = ($akce) ? "<h2 class='mobile_text_shadow'>Pozvánky na akce</h2>" . $akce . "<br><br>" . $telo : $telo;
+  $telo = ($akce) ? "<div class='notif_event_container'><h2 class='mobile_text_shadow'>POZVÁNKY NA AKCE</h2>" . $akce . "</div>" . $telo : $telo;
   $telo .= timeline();
   if (!$CMS) {$telo.= "</div>" .  facebook() . "<div class='content'>";}
 
