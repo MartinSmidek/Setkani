@@ -553,6 +553,9 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       case 'search': # ------------------------------------------------ . search
         # seznam nalezených abstraktů článků nebo akcí
         # může následovat ident jednoho z článků (vznikne kliknutím na abstrakt)
+        if (!$CMS) {
+          $body .= facebook_dependency();
+        }
         $body.= "<div class='content'><h1>Výsledky hledání &nbsp;<b>$search</b></h1></div>";
         $id= array_shift($path);
         list($id)= explode('#',$id);
@@ -1263,15 +1266,14 @@ function gallery() {
       "</div><div id='titler' class='mobile_nodisplay'></div><div id='gallery_shadow' class='mobile_nodisplay'></div>
         <div id='header_mobile_image' class='pc_nodisplay' style='background-image: url(\"{$images[0]}\");'><div id='header_mobile_image_shadow'></div></div>";
 }
-
+function facebook_dependency() {
+  return "<div id=\"fb-root\"></div>
+        <script async defer crossorigin=\"anonymous\" src=\"https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v5.0\"></script>";
+}
 function facebook() {
   return <<<__EOD
     <div class='full_width facebook'>
       <div class='content centered_infull' id='facebook_content'>
-        <div id="fb-root"></div>
-        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v5.0"></script>
-        <div id="fb-root"></div>
-        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v5.0"></script>
         <div class="fb-page" data-href="https://www.facebook.com/dum.setkani.org/" data-tabs="timeline" data-width="300px" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="false">
           <blockquote cite="https://www.facebook.com/dum.setkani.org/" class="fb-xfbml-parse-ignore">
             <a href="https://www.facebook.com/dum.setkani.org/">Dům setkání Albeřice, YMCA</a>
@@ -1488,7 +1490,9 @@ function home() { trace();
     $xx[$cid]= (object)array('uid'=>$uid,'type'=>$type,'page'=>$page,'mid'=>$mid,'ref'=>$ref,'mref'=>$mref,'ida'=>$ida,'prihlaska'=>$status==1 ? null : $prihlaska,
         'status'=>status_class($status),'nadpis'=>$title,'abstract'=>$abstract, 'text'=>$text,'home'=>$home,'program'=>$program,'kdy'=>$kdy,'tags'=>$tags,'upd'=>$upd, 'rok'=>$rok);
   }
-  $telo= $akce= $aktual= $cist= '';
+  $telo= $CMS ? "" : facebook_dependency();
+
+  $akce= $aktual= $cist= '';
 
   // články obsahují odkazy, takže nemůže být použito zanoření do <a>..</a>
   $counter = 0;
