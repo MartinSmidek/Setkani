@@ -1274,11 +1274,12 @@ function facebook() {
   return <<<__EOD
     <div class='full_width facebook'>
       <div class='content centered_infull' id='facebook_content'>
-        <div class="fb-page" data-href="https://www.facebook.com/dum.setkani.org/" data-tabs="timeline" data-width="300px" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="false">
-          <blockquote cite="https://www.facebook.com/dum.setkani.org/" class="fb-xfbml-parse-ignore">
-            <a href="https://www.facebook.com/dum.setkani.org/">Dům setkání Albeřice, YMCA</a>
-          </blockquote>
-        </div><div class="fb-page" data-href="https://www.facebook.com/manzelska.setkani.org/" data-tabs="timeline" data-width="300px" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="false">
+        <div class="fb-page" data-href="https://www.facebook.com/dum.setkani.org" data-tabs="timeline" data-width="" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
+            <blockquote cite="https://www.facebook.com/dum.setkani.org" class="fb-xfbml-parse-ignore">
+                <a href="https://www.facebook.com/dum.setkani.org">Dům setkání Albeřice, YMCA</a>
+            </blockquote>
+        </div>
+        <div class="fb-page" data-href="https://www.facebook.com/manzelska.setkani.org/" data-tabs="timeline" data-width="300px" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="false">
           <blockquote cite="https://www.facebook.com/manzelska.setkani.org/" class="fb-xfbml-parse-ignore">
             <a href="https://www.facebook.com/manzelska.setkani.org/">Manželská Setkání YMCA</a>
           </blockquote>
@@ -1503,7 +1504,7 @@ function home() { trace();
     $code= cid_pid($cid,$x->uid);
     //todo ugly, consider "main page" category
     if ( $x->page==100 && $x->tags == 'A' ) { // ---------------------------------------- hlavní strana - úvodní článek & timeline
-      $telo = vlakno($cid,'clanek','home',false);
+      $telo .= vlakno($cid,'clanek','home',false);
     }
     elseif ( ($x->home==2 || $x->home==6) && $x->tags == 'A' ) { // ----------------------- abstrakt na home | nahoru
       $prihlaska= $x->prihlaska ? cms_form_ref("ONLINE PŘIHLÁŠKA") : '';
