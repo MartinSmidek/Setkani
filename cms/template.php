@@ -2621,7 +2621,6 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
     FROM setkani4.tx_gncase AS c
     JOIN setkani4.tx_gncase_part AS p ON c.uid=p.cid
     LEFT OUTER JOIN ezer_db2.akce AS a ON a.id_duakce=p.id_akce
-    -- JOIN setkani.pages AS g ON c.pid=g.uid
     WHERE cid='$cid' $p_show $groups
     ORDER BY tags,date
   ");
@@ -2708,7 +2707,10 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
       }
       $prihlaska= '';
 //      if ( $x->ida && isset($_SESSION['web']['try']) && $_SESSION['web']['try']=='prihlasky') {
-      if ( $x->ida && $x->prihaska) {
+      //TODO FOR SOME REASON USING DIRECT ACCESS IN THE CONDITION DID NOT WORK!!!
+      $a = $x->ida;
+      $b = $x->prihlaska;
+      if ( $a && $b) {
         $nazev_akce= trim(select('nazev','akce',"id_duakce=$x->ida",'ezer_db2'));
         $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA",'akce',$x->ida,$nazev_akce);
       }
