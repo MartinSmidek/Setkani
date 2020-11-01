@@ -44,7 +44,7 @@ if (!$be_allowed) {
         'ZAVŘÍT', "top.close();", 0);
 } else {
     // SETUP
-    $allowed_mails = array("objednavky-domu@setkani.org", "dum@setkani.org");
+    $allowed_mails = array("objednavky-domu@setkani.org", "dum@setkani.org", "answer@setkani.org", "www.chlapi.cz@gmail.com");
     $credentials_path = $_SERVER['DOCUMENT_ROOT'].'../files/setkani4/credential.json';
     $required_privileges = array(
         //"https://www.googleapis.com/auth/gmail.settings.basic", //to view email metadata
@@ -54,12 +54,11 @@ if (!$be_allowed) {
     );
     $tokenPathPrefix = $_SERVER['DOCUMENT_ROOT'].'../files/setkani4/token_'; //path and token file prefix, email address will be appended
     $tokenPathSuffix = '.json';
-    $gmail_api_library = $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
     $delay = 5; //seconds to redirect
     $email = $_SESSION["gmail_api_refresh_token"];
 
     // FIRE
-    require_once $gmail_api_library;
+    require_once $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
     $client = new Google_Client();
     $client->setAuthConfig($credentials_path);
     $client->setPrompt("consent");
