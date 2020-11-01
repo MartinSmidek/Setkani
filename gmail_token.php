@@ -60,8 +60,9 @@ if (!$be_allowed) {
 
     // FIRE
     require_once $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
-
+    echo "<br>" . $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
     $client = new Google_Client();
+    var_dump($client);
     $client->setAuthConfig($credentials_path);
     $client->setPrompt("consent");
     $client->setScopes($required_privileges);
