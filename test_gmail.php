@@ -6,6 +6,7 @@ function sendMail($email) {
     $tokenPathPrefix = '../files/setkani4/token_'; //path and token file prefix, email address will be appended
     $tokenPathSuffix = '.json';
     $filePath = $tokenPathPrefix . $email . $tokenPathSuffix;
+    echo $filePath . "<br>";
     if (!is_file($filePath) || !is_readable($filePath)) {
         //todo error
         echo "FILE NOT FOUND";
