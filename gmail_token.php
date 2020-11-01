@@ -45,7 +45,7 @@ if (!$be_allowed) {
     // SETUP
     $delay = 5; //seconds to redirect
     $allowed_mails = array("objednavky-domu@setkani.org", "dum@setkani.org");
-    $credentials_path = $_SERVER['DOCUMENT_ROOT']. '/files/setkani4/credential.json';
+    $credentials_path = '../files/setkani4/credential.json';
     $required_privileges = array(
         //"https://www.googleapis.com/auth/gmail.settings.basic", //to view email metadata
         //"https://www.googleapis.com/auth/gmail.send" //to send emails
@@ -59,7 +59,7 @@ if (!$be_allowed) {
     require_once $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
     echo "CLIENT";
     $client = new Google_Client();
-    if (is_dir($_SERVER['DOCUMENT_ROOT']. '/files/setkani4/')) echo "DIREXISTS,";
+    if (is_dir('../files/setkani4/')) echo "DIREXISTS,";
     if (file_exists($credentials_path)) echo "EXISTS,";
     if (is_readable($credentials_path)) echo "READABLE";
 
