@@ -57,8 +57,11 @@ if (!$be_allowed) {
 
     // FIRE
     require_once $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
+    echo "CLIENT";
     $client = new Google_Client();
-    echo is_readable($credentials_path);
+    if (is_dir($_SERVER['DOCUMENT_ROOT']. '/files/setkani4/')) echo "DIREXISTS,";
+    if (file_exists($credentials_path)) echo "EXISTS,";
+    if (is_readable($credentials_path)) echo "READABLE";
 
     $client->setAuthConfig($credentials_path);
     echo "IS.<br>";
