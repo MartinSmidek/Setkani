@@ -15,6 +15,7 @@ function dum_server($x) {
 //                                                         display("dum_server({op:{$x->dum},...})");
   $y= $x;
   $order= $x->order;
+  if (!is_numeric($order)) $order = "";
   switch ($x->dum) {
 
   case 'wanted': // orders:uid,uid,...
@@ -90,6 +91,9 @@ function dum_server($x) {
   case 'update':
     $flds= $vals= $del= "";
     // v x.form jsou předána změněná pole
+    $state = select1("SELECT state FROM tx_gnalberice_order WHERE uid=$order");
+    $new_state= "";
+
     if ( $x->form ) {
       foreach($x->form as $fld=>$val) {
         $val= trim(mysql_real_escape_string($val));
@@ -97,12 +101,23 @@ function dum_server($x) {
           $val= select1("GROUP_CONCAT(number ORDER BY number SEPARATOR ',')",'tx_gnalberice_room',
               "NOT deleted AND NOT hidden AND version=1");
         }
+        if ($fld=='state') {
+          $new_state = $val;
+        }
         $flds.= "$del$fld='$val'";
         $del= ', ';
       }
       $y->ok= query("UPDATE tx_gnalberice_order SET $flds WHERE uid=$order");
-      
-      
+      $new_state = is_numeric($new_state) ? (int)$new_state : 0;
+      $state = is_numeric($state) ? (int)$state : 0;
+
+      if ($new_state > 1 && $state != $new_state) {
+        $recipient = "ivana.zivnustkova@seznam.cz";
+        send_mail("dum@setkani.org", $recipient, "Změna stavu objednávky",
+            "Změna stavu: objednávka byla ze stavu '" . pokoj_state($state) . "' změněna na stav '" .
+            pokoj_state($new_state) . "'.<br><br>" . new_order_mail_from_form($x->form),
+            "Objednávky Domu Setkání", "objednavky-domu@setkani.org");
+      }
 //                                                         display("update=$y->ok");
     }
     else {
@@ -143,6 +158,17 @@ end:
     $y->trace= $trace;
 //                                         $y->trace.= "\ntotrace={$x->totrace}";
 }
+
+//pro ivku změna stavu objednávky state --> mail
+function pokoj_state($state) {
+  switch ($state) {
+    case 2: return "Soukromá objednávka.";
+    case 3: return "Akce YMCA.";
+    case 4: return "Zablokování domu /nelze objednat/";
+    default: return "";
+  }
+}
+
 function dum_form($x) {
   global $y,$dum_data,$dum_data_open;
 //  global $trace, $totrace;
