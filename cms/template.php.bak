@@ -191,6 +191,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 // goto decode_path;
   $last= count($path)-1;
   list($id,$tag)= explode('#',$path[$last].'#');
+// $tag= $tag ? "#$tag" : '#vlakno';
   $url= '';
   if ( is_numeric($id) && ($path[0]=='plan_akci' || $path[0]=='archiv_akci') ) {
 //                                                         display("part=$part");
@@ -250,10 +251,6 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 //                                                         display("search/c=$search");
   $search_go= "go(arguments[0],'{$href}hledej','/hledej',1,1);";
 
-  //use cookies do diferentiate between show operational modes, instead of url
-  if (!isset($_COOKIE['akce']) || strlen($_COOKIE['akce']) < 3) {
-    setcookie('akce', 'rodiny,manzele,chlapi,zeny,mladez');
-  }
   $do_menu2 = false; //whether the menu should be placed into _1 or _2 variable
   foreach ($def_block as $ref=>$def) {
     list($typ_bloku,$mid1,$site,$mref,$context,$nazev,$next,$default1,$elems1,$title1)= explode(':',$def);
@@ -304,11 +301,9 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       list($typ,$ids)= explode('=',$elem.'=');
       # upřesnění cesty pro akce - z cookie nebo defaultu
       if ( $ref=='akce' ) {
-        //$cookie1= isset($_COOKIE[$ref]) && $_COOKIE[$ref] ? '!'.urldecode($_COOKIE[$ref]) : '';
-        //$cont= $cookie1 ?: $default1;
-        $cont= 'akce';
-        //$mref= str_replace('!','',$cont);
-        $mref = $cont;
+        $cookie1= isset($_COOKIE[$ref]) && $_COOKIE[$ref] ? '!'.urldecode($_COOKIE[$ref]) : '';
+        $cont= $cookie1 ?: $default1;
+        $mref= str_replace('!','',$cont);
 //                                                 display("Cookie[$ref]=$cookie1 ... $default1 ... $cont");
       }
       if ( $CMS || substr($mref,0,1)=='-' ) {
@@ -630,7 +625,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         # ----------------------------------------------- . výběr komu
         $proc_kdo= function ($x,$level,$kdy='') { trace();
           global $def_pars,$href0, $kernel;
-          //display("kdo($x) - $href0 - $kernel");
+          display("kdo($x) - $href0 - $kernel");
           $html= "<div id='vyber' class='x'><div class='content'>";
           foreach($def_pars['komu'] as $id=>$nazev_i) {
             list($nazev,$i)= explode(':',$nazev_i);
@@ -638,7 +633,9 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
             $nazev= $i==6 ? '' : $nazev;
             if ( $i==6 ) continue;
             $checked= strpos($x,$id)!==false ? ' checked' : '';
-            $on= " onchange='proc_kdo(\"$href0\",\"$kdy\");'"; //if(jQuery("#inclusion_icon").hasClass("exclusive")) {jQuery(this).parent().parent().children("label").each(function() {jQuery(this).find("input").prop( "checked", false);}); jQuery(this).prop( "checked", true);}
+            $on= $kernel=='ezer3.1'
+                ? " onchange='jQuery(this).parent().toggleClass(\"checked\"); history_push(\"$href0\",\"komu\",$level,\"$kdy\");'" //if(jQuery("#inclusion_icon").hasClass("exclusive")) {jQuery(this).parent().parent().children("label").each(function() {jQuery(this).find("input").prop( "checked", false);}); jQuery(this).prop( "checked", true);}
+                : " onchange='this.parentNode.toggleClass(\"checked\");history_push(\"$href0\",\"komu\",$level,\"$kdy\");'"; //exlcusion does not work here for now.. remove all ezer-version conditions?...
             $html.= "<input name='komu' id='komu$id' data-value='$i' value='$id' type='checkbox'$checked$on$alberice><label for='komu$id' class='$checked'>$nazev</label>";
           }
           $html.= "</div></div>";
@@ -661,38 +658,41 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         switch ($ids) {
 
           case 'plan':  # ----------------------------------------------- . proc plan = komu
-            //todo this is not probably called anymore
-            //$vyber= array_shift($path);
-            array_shift($path); //get rid of "komu_kdo" from path
-            $vyber= $_COOKIE['akce'];
+            $vyber= array_shift($path);
             $submenu_komu.= $proc_kdo($vyber,1);
             break;
 
           case 'plan_rok':  # ------------------------------------------- . proc plan = komu
-            //$vyber= array_shift($path);
-            $old_url_data = array_shift($path); //get rid of "komu_kdo" from path
-            $vyber= $vyber_rok =$_COOKIE['akce'];
-            $vyb = explode(',',$old_url_data);
+            $vyber= array_shift($path);
+            $vyb= explode(',',$vyber);
             $rok= '';
-            foreach ($vyb  as $i=>$x) {
+            foreach ( $vyb as $i=>$x) {
               if ( is_numeric($x) || $x=='nove' ) {
                 $rok= $x;
                 unset($vyb[$i]);
               }
             }
-            //$vyber_rok= implode(',',$vyb);
-
-            //display("plan_rok:$vyber_rok+$rok");
-            $submenu_komu.= $proc_kdo($vyber,1,$rok);
+            $vyber_rok= implode(',',$vyb);
+            display("plan_rok:$vyber_rok+$rok");
+            $submenu_komu.= $proc_kdo($vyber_rok,1,$rok);
             break;
 
           case 'aplan':  # ---------------------------------------------- . proc aplan = alberice,bude
             $body .= "<div class='content'><h1>Plánované akce v domě</h1></div>";
-            //$vyber= "alberice,".array_shift($path);
-            $vyber= "alberice,".$_COOKIE['akce'];
-
+            $vyber= "alberice,".array_shift($path);
 //       $submenu_komu.= $proc_kdo($vyber,2);
             break;
+
+//     case 'zpet':  # ----------------------------------------------- . proc zpet = komu,bylo
+//       $vyber= array_shift($path);
+//       $submenu_komu.= $proc_kdo($vyber,1);
+//       $submenu_komu.= $proc_kdy($vyber,1);
+//       break;
+
+//     case 'azpet':  # ---------------------------------------------- . proc azpet = alberice,bylo
+//       $vyber= "alberice,".array_shift($path);
+//       $submenu_komu.= $proc_kdy($vyber,2);
+//       break;
 
           case 'objednavky': # ------------------------------------------ . proc objednávky
             $body.= "<div id='clanek' class='x' onclick='history_back();'>
@@ -1662,11 +1662,11 @@ function clanky($pids,$uid=0,$mid=0,$chlapi='',$back='') { trace();
 //                                                       display("články {$x->ident} ? $uid");
     $flags= '';
     $flags.= strpos($x->flags,'D')!==false
-        ? " <i class='fa fa-exchange tooltip'><span class='tooltip-text'>datum akce</span></i> " : '';
+        ? " <i class='fa fa-exchange'></i> " : '';
     $flags.= strpos($x->flags,'F')!==false
-        ? " <i class='fa fa-camera-retro tooltip'><span class='tooltip-text'>fotogalerie</span></i> " : '';
+        ? " <i class='fa fa-camera-retro'></i> " : '';
     $flags.= strpos($xx[$cid]->tags,'6')!==false
-        ? " <i class='fa fa-key tooltip' style='color:red'><span class='tooltip-text'>soukromý článek</span></i> " : '';
+        ? " <i class='fa fa-key' style='color:red'></i> " : '';
     $ex= strpos($xx[$cid]->tags,'d')!==false ? ' abstrakt_deleted' : (
     strpos($xx[$cid]->tags,'h')!==false ? ' abstrakt_hidden' : '');
     $code= cid_pid($cid,$x->ident);
@@ -2058,8 +2058,6 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
   $hledej= trim($hledej);
   $xx_tags= $xx_foto= $xx_img= array();
   $h= "";
-  $rkomu= array();
-
   if ( $vyber=='foto' ) {
     $typ= 'foto';
     $vyber= '';
@@ -2211,7 +2209,7 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
     // bez výběru
     $h.= "<br><div class='kniha_bg'>";
     $h.= "<div class='kniha_br'><b>Zvolte prosím skupinu účastníků (rodiny, manželé, ...)
-            pomocí zaškrtávacích políček pod hlavním menu.</b></div>";
+            pomocí zaškrtávacích políček nad tímto textem</b></div>";
     $h.= "</div>";
   }
   $h.= "</div>";
@@ -2234,7 +2232,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
   $typ= 'akce';
   $hledej= trim($hledej);
   $calendar="";
-  $xx= $xx_tags= $xx_foto=$rkomu= $xx_img= array();
+  $xx= $xx_tags= $xx_foto= $xx_img= array();
   if ( !$news_time ) $news_time= time() - 1 * 24*60*60;
   if ( $vyber=='foto' ) {
     $typ= 'foto';
@@ -2296,6 +2294,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
   }
   else {
     // překlad $komu na regexpr
+    $rkomu= array();
     foreach(explode(',',$vyber) as $kdo) {
       $ki= $def_pars['komu'][$kdo];
       if ( $ki ) {
@@ -2452,8 +2451,8 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
       if ( $x->flags ) {
         foreach (str_split($x->flags) as $f) {
           $flags.= 
-              $f=='T' ? " <i class='fa fa-table tooltip'><span class='tooltip-text'>přihlašovací tabulka</span></i> " : (
-              $f=='F' ? " <i class='fa fa-camera-retro tooltip'><span class='tooltip-text'>fotogalerie</span></i> " : '');
+              $f=='T' ? " <i class='fa fa-table'></i>" : (
+              $f=='F' ? " <i class='fa fa-camera-retro'></i>" : '');
         }
       }
       //$jmp= "href='$x->href' target='chlapi.cz'";
@@ -2478,7 +2477,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
           ($typ=='foto' ?
               "style='background-image:url($http{$xx_foto[$cid]})'"
               : "<div class='mini' style='background-image:url($http{$xx_foto[$cid]})'></div>") : '';
-      $flags.= "<i class='fa fa-camera-retro tooltip'><span class='tooltip-text'>fotogalerie</span></i>";
+      $flags.= "<i class='fa fa-camera-retro'></i>";
     }
     $flags.= strpos($xx_tags[$cid],'6')!==false
         ? " <i class='fa fa-key' style='color:red'></i> " : '';
@@ -2486,7 +2485,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
         ? " <i class='fa fa-exchange'></i> " : '';
     if ( $typ=='foto' && !$flags ) continue;
     if ( strpos($xx_tags[$cid],'T')!==false ) {
-      $flags.= " <i class='fa fa-table tooltip'><span class='tooltip-text'>přihlašovací tabulka</span></i> ";
+      $flags.= " <i class='fa fa-table'></i> ";
     }
     if ( $backref ) {
       $jmp= str_replace('*', "$rok,$x->ident", $backref);
@@ -2531,7 +2530,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
            $code 
            <a class='abstrakt$ex{$x->upd}' $jmp>
              $prihlaska
-             <span class='akce_datum'><i class=\"fa fa-calendar tooltip\" style='color: darkgray'><span class='tooltip-text'>datum akce</span></i>&nbsp;$x->kdy $flags</span>
+             <span class='akce_datum'><i class=\"fa fa-calendar\" style='color: darkgray'></i>&nbsp;$x->kdy $flags</span>
              <b>$x->nadpis:</b><div class='clear'></div>$img 
                <p>$x->abstract</p>
            </a>
@@ -2655,8 +2654,8 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
     $uid= $x->uid;
     $obsah= $x->obsah;
     $podpis= "<div class='podpis'>";
-    $podpis.= ($x->kdy) ? "<i class='fa fa-calendar-alt tooltip'><span class='tooltip-text'>datum akce</span></i>&nbsp;$x->kdy&emsp;" : '';
-    $podpis.= "<i class='fa fa-user tooltip'><span class='tooltip-text'>autor</span></i>&nbsp;$x->autor,&nbsp;$x->psano</div>";
+    $podpis.= ($x->kdy) ? "<i class='fa fa-calendar-alt'></i>&nbsp;$x->kdy&emsp;" : '';
+    $podpis.= "<i class='fa fa-user'></i>&nbsp;$x->autor,&nbsp;$x->psano</div>";
     $menu= '';
     $event= '';
     $code= cid_pid($cid,$uid);
@@ -2676,7 +2675,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
               ['-odstranit embeded img',function(el){ opravit('img','$uid','$cid'); }]
             ],arguments[0],'clanek$uid');return false;\"";
       $titleh1 = $h1 ? "<h1>$x->nadpis</h1>" : "";
-      $titleh2 = $h1 ? "" : "<h2 class='vlakno-title'>$x->nadpis</h2>";
+      $titleh2 = $h1 ? "" : "<h2>$x->nadpis</h2>";
       $h.= "<div id='list' class='x relative' $event><span class='anchor' id='anchor$uid'></span>
            $titleh1 $code
            <div id='clanek$uid' class='clanek x$x->upd'$menu$style>
@@ -2716,7 +2715,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
         $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA",'akce',$x->ida,$nazev_akce);
       }
       $titleh1 = $h1 ? "<h1>$x->nadpis</h1>" : "";
-      $titleh2 = $h1 ? "" : "<h2 class='vlakno-title'>$x->nadpis</h2>";
+      $titleh2 = $h1 ? "" : "<h2>$x->nadpis</h2>";
       $h.= "<div class='x relative' $event><span class='anchor' id='anchor$uid'></span>
             $titleh1 $code
             <div id='clanek$uid' class='akce_prehled clanek x$x->upd'$menu$style>
@@ -2737,7 +2736,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
           ? "onclick=\"go_anchor(arguments[0],'$data->page','$data->direct_url');\""
           : "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
       $h .= "<div class='abstr_line relative'><span class='anchor' id='anchor$uid'></span>
-         <h2 class='vlakno-title'>$x->nadpis</h2>
+         <h2>$x->nadpis</h2>
          $code
          <div class='abstrakt_foto$ex' $jmp>
             <span class='datum'>$x->kdy</span> $img $abstract 
@@ -2745,7 +2744,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
     }
     elseif ( $x->tags=='F' ) {
       $galery= show_fotky2($uid,$obsah,"$back_href!$uid_a#vlakno");
-      $podpis= "<div class='podpis'><i class='fa fa-user tooltip'><span class='tooltip-text'>autor</span></i>&nbsp;$x->autor, $x->psano</div>";
+      $podpis= "<div class='podpis'><i class='fa fa-user'></i>&nbsp;$x->autor, $x->psano</div>";
       $note= $CMS ? "<span style='float:right;color:red;font-style:italic;'>
             ... v režimu editace stránky je fotogalerie zobrazena zjednodušeně</span>" : '';
       if ( $CMS ) {
@@ -2782,7 +2781,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
            <div id='clanek$uid' class='relative clanek x$x->upd'$menu$style><span class='anchor' id='anchor$uid'></span>
             $code
             <div class='text $x->status'>
-              <h2 class='vlakno-title'>$x->nadpis</h2>$podpis
+              <h2>$x->nadpis</h2>$podpis
                  $obsah
             </div>
           </div></div>";
@@ -2832,7 +2831,7 @@ function knihy($ids,$cpid0=0,$mid=0,$backref='') { trace();
     $n= $tags=='C' ? "$autor: $title" : "$title";
     $key = '';
     if ( $tags=='C' && $fe_group )
-      $key = " <i class='fa fa-key tooltip' style='color:red'><span class='tooltip-text'>soukromý článek</span></i> ";
+      $key = " <i class='fa fa-key' style='color:red'></i> ";
     $xx[$cid][]= (object)array('pid'=>"$pid",'nadpis'=>$n.$key,'nadpis_plain'=>$n,'text'=>$text,
         'tags'=>$tags,'kapitola'=>$kapitola,'type'=>$type);
   }

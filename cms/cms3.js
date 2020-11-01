@@ -213,6 +213,7 @@ function history_push2(href) {
   history.pushState({},'',href);
 }
 // ------------------------------------------------------------------------------------ history push
+//todo probably delete
 function history_push(href,checks,level,kdy) {
   var ref='', named;
   checks.split(',').forEach(function(check) {
@@ -241,6 +242,30 @@ function history_push(href,checks,level,kdy) {
 function history_back() {
   history.back();
 }
+
+function proc_kdo(href, kdy) {
+  jQuery(this).parent().toggleClass("checked");
+  let named= jQuery('input[name^="komu"]');
+  var ref='';
+  named.each(function() {
+    if ( this.checked )
+      ref+= (ref?',':'')+this.value;
+  });
+  if (ref === '') {
+    ref = 'rodiny,manzele,chlapi,zeny,mladez';
+  }
+
+  let date = new Date();
+  date.setTime(date.getTime() + 365 * 24 * 60 * 60 * 1000);
+  document.cookie = 'akce=' + ref + ';expires=' + date.toGMTString(); + '; path=/';
+
+  if ( Ezer.version===undefined ) {
+    window.location= '/akce';
+  } else {
+    go(0,href+'!akce'+(kdy?','+kdy:''),'/'+ref);
+  }
+}
+
 // ============================================================================================> MSG
 // ------------------------------------------------------------------------------------ go chlapi_cz
 // zobrazí upozornění a přepne na stránku na webu chlapi.cz

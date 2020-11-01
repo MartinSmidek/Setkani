@@ -127,6 +127,24 @@ h1, #web h2,h3 { -webkit-column-break-inside: avoid; -moz-column-break-inside: a
 #web img {margin:.5em;height:auto !important;max-width:100%;}
 #web .abstr img {margin: 0 5px 0 0}
 
+/*H tags management*/
+#vlakno h2.vlakno-title {
+  margin-top: 30px;
+  margin-bottom: 8px;
+  font-size: 28pt;
+  margin-left: 0.8em;
+}
+#vlakno h2 {
+  margin-top: 0;
+  font-size: 17pt;
+  margin-left: 0.5em;
+}
+#vlakno h3 {
+  margin-top: 0;
+  font-size: 16pt;
+  margin-left: 0.5em;
+}
+
 hr {height: 3px;border: none; background: #f2f2f2;}
 div.pquote hr, div.notice_style hr {height: 0;}
 .akce_prehled hr {background: #ccd2d9;}
@@ -403,7 +421,7 @@ a.abstrakt, div.abstrakt { background-color:white; margin:.3em; cursor:pointer; 
   -moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06); box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.06); overflow: hidden; }
 a.new { background-image: url(img/new.png); background-repeat:no-repeat; background-position: top right; }
 a.upd { background-image: url(img/upd.png); background-repeat:no-repeat; background-position: top right; }
-div.abstr a.abstrakt { height:11.2em; overflow:hidden; }
+div.abstr a.abstrakt { height:11.2em; overflow:hidden; box-sizing: border-box;border-bottom: 11px solid white; }
 .abstrakt h3 {margin: 0; font-size: 16px}
 .abstr p {font-size: 11pt; margin-top: 2px; margin-top: 2px;white-space: pre-wrap;
   overflow-wrap: break-word;}
@@ -533,6 +551,30 @@ div.kniha_timeline_text_open_front {margin-left: 15.5%; padding: 12px 12px 22px 
 div.kniha_timeline_text_open_back {margin-left: 15.5%; padding: 0px 22px 12px 54px; color: black;font-weight: bold; margin-top: 16px;}
 span.kniha_timeline_date_open {width: 60px;height: 60px;background: #f2f2f2;color: black;position: absolute;transform: translate(-85px, -29px);
   border-radius: 50px;border: 2px solid black;text-align: center;line-height: 60px;}
+
+
+/*tooltip */
+.tooltip {
+  position: relative;
+}
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: fit-content;
+  background-color: #f3f3f3;
+  color: #2b2b2b;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid #e8e8e8;
+  padding: 5px 5px;
+  position: absolute;
+  z-index: 999;
+  margin-left: 5px;
+  margin-top: 8px;
+  font-family: 'Open Sans', sans-serif;
+}
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+}
 
 /* fotogalerie */
 div.fotorama__wrap {margin: 0 auto;}/*dirty but necessary - styling foreign element*/
@@ -748,6 +790,20 @@ label.form_button {float: right}
   div.pquote:before {bottom: -27px;}
   div.pquote:after {top: -3px;}
 
+  /*H tags management*/
+  #vlakno h2.vlakno-title {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-size: 17pt;
+    margin-left: 0.8em;
+  }
+  #vlakno h2 {
+    font-size: 14pt;
+  }
+  #vlakno h3 {
+    font-size: 13pt;
+  }
+
   div.notice_style {padding: 50px 10px 15px 10px;margin: 0;}
   div.clanek { margin: 0.5em 0; }
   div.text {padding: 0.4em 0.5em}
@@ -819,6 +875,19 @@ label.form_button {float: right}
   #list {padding: 0;}
   .iframe_outer {padding-top: 56%;}
   .iframe_inner {left: 0;}
+
+  /*H tags management*/
+  #vlakno h2.vlakno-title {
+    margin-top: 22px;
+    font-size: 22pt;
+    margin-left: 0.8em;
+  }
+  #vlakno h2 {
+    font-size: 15pt;
+  }
+  #vlakno h3 {
+    font-size: 14pt;
+  }
 
   /*popup*/
   #popup {width: 80vw; margin-left: -40vw; height: 80vh; margin-top: -40vh;}
