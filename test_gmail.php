@@ -9,10 +9,11 @@ function sendMail($email) {
     if (!is_file($filePath) || !is_readable($filePath)) {
         //todo error
     }
-
+    echo "1<br>";
     require_once $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
 
     $client = new Google_Client();
+    echo "2<br>";
     $credentials_path = '../files/setkani4/credential.json';
     $client->setAuthConfig($credentials_path);
     $client->setPrompt("consent");
@@ -21,18 +22,22 @@ function sendMail($email) {
         //"https://www.googleapis.com/auth/gmail.send" //to send emails
         "https://mail.google.com/" //global privilege
     );
+    echo "3<br>";
     $client->setScopes($required_privileges);
     $client->setAccessType('offline');
     $client->setIncludeGrantedScopes(true);
+    echo "4<br>";
     $accessToken = json_decode(file_get_contents($filePath), true);
     $client->setAccessToken($accessToken);
-
+    echo "5<br>";
     $message = new Google_Service_Gmail_Message();
+    echo "6<br>";
     mail_send($message, 'zlatydeny@seznam.cz', "zlatydeny@seznam.cz", "Nový mail",
         "Funguje to MAILER",$email,"piratskypokoj29");
-
+    echo "7<br>";
     $service = new Google_Service_Gmail($client);
     try {
+        echo "8<br>";
         return $service->users_messages->send('me', $message);
     } catch (Exception $e) {
         //todo error - use $e->getMessage();
@@ -58,7 +63,7 @@ function mail_send($gmail_service, $reply_to,$address,$subject,$body, $gmail_nam
 //   $subject= "test";
 //   $body= "TEST";
     $TEST= 0;
-    $ezer_path_serv= "ezer3.1/server";
+    $ezer_path_serv= $_SERVER['DOCUMENT_ROOT']."/ezer3.1/server";
     $phpmailer_path= "$ezer_path_serv/licensed/phpmailer";
     require_once("$phpmailer_path/class.phpmailer.php");
     require_once("$phpmailer_path/class.smtp.php");
@@ -66,13 +71,14 @@ function mail_send($gmail_service, $reply_to,$address,$subject,$body, $gmail_nam
     // nastavení phpMail
     $mail= new PHPMailer(true);
     $mail->SetLanguage('cs',"$phpmailer_path/language/");
-    $mail->IsSMTP();
-    $mail->SMTPAuth = true; // enable SMTP authentication
-    $mail->SMTPSecure= "ssl"; // sets the prefix to the server
-    $mail->Host= "smtp.gmail.com"; // sets GMAIL as the SMTP server
-    $mail->Port= 465; // set the SMTP port for the GMAIL server
-    $mail->Username= $gmail_user;
-    $mail->Password= $gmail_pass;
+    //$mail->IsSMTP();
+   // $mail->SMTPAuth = true; // enable SMTP authentication
+    // $mail->SMTPSecure= "ssl"; // sets the prefix to the server
+   // $mail->Host= "smtp.gmail.com"; // sets GMAIL as the SMTP server
+   // $mail->Port= 465; // set the SMTP port for the GMAIL server
+  //  $mail->Username= $gmail_user;
+   // $mail->Password= $gmail_pass;
+
     $mail->CharSet= "UTF-8";
     $mail->IsHTML(true);
     // zpětné adresy
