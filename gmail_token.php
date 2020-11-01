@@ -51,28 +51,18 @@ if (!$be_allowed) {
         //"https://www.googleapis.com/auth/gmail.send" //to send emails
         "https://mail.google.com/" //global privilege
     );
-    $tokenPathPrefix = $_SERVER['DOCUMENT_ROOT']. '/files/setkani4/token_'; //path and token file prefix, email address will be appended
+    $tokenPathPrefix = '../files/setkani4/token_'; //path and token file prefix, email address will be appended
     $tokenPathSuffix = '.json';
     $email = $_SESSION["gmail_api_refresh_token"];
 
     // FIRE
     require_once $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
-    echo "CLIENT";
     $client = new Google_Client();
-    if (is_dir('../files/setkani4/')) echo "DIREXISTS,";
-    if (file_exists($credentials_path)) echo "EXISTS,";
-    if (is_readable($credentials_path)) echo "READABLE";
-
     $client->setAuthConfig($credentials_path);
-    echo "IS.<br>";
     $client->setPrompt("consent");
     $client->setScopes($required_privileges);
-    echo "SCOPES.<br>";
-
     $client->setAccessType('offline');
     $client->setIncludeGrantedScopes(true);
-
-    echo "SETUP";
 
     // Get new token - see redirect below
     if (isset($_GET['code'])) {
@@ -110,16 +100,11 @@ if (!$be_allowed) {
                 'ZAVŘÍT', 'top.close();', 0);
             exit;
         }
-
-        echo "ABOUT TO SEND";
-
         // Get the token - redirect to the same page !! HTTP or HTTPS must be correctly set
         $client->setLoginHint($email);
         $redirect_uri = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
         $client->setRedirectUri($redirect_uri);
         $auth_url = $client->createAuthUrl();
-
-        echo "$auth_url";
 
         displayToUser('Budete přesměrováni na Google.',
             "Přihlašte se jako uživatel <b>$email</b> a povolte aplikaci <i>Answer</i> práva k odesílání emailů.",
