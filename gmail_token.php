@@ -51,9 +51,12 @@ if (!$be_allowed) {
         //"https://www.googleapis.com/auth/gmail.send" //to send emails
         "https://mail.google.com/" //global privilege
     );
-    $tokenPathPrefix = '../files/setkani4/token_'; //path and token file prefix, email address will be appended
+    $tokenPathPrefix = $_SERVER['DOCUMENT_ROOT']. '/files/setkani4/token_'; //path and token file prefix, email address will be appended
     $tokenPathSuffix = '.json';
     $email = $_SESSION["gmail_api_refresh_token"];
+
+    echo "PREPARE<br>";
+    print_r($email);
 
     // FIRE
     require_once $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
@@ -64,6 +67,8 @@ if (!$be_allowed) {
     $client->setScopes($required_privileges);
     $client->setAccessType('offline');
     $client->setIncludeGrantedScopes(true);
+
+    echo "SETUP";
 
     // Get new token - see redirect below
     if (isset($_GET['code'])) {
@@ -102,11 +107,15 @@ if (!$be_allowed) {
             exit;
         }
 
+        echo "ABOUT TO SEND";
+
         // Get the token - redirect to the same page !! HTTP or HTTPS must be correctly set
         $client->setLoginHint($email);
         $redirect_uri = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
         $client->setRedirectUri($redirect_uri);
         $auth_url = $client->createAuthUrl();
+
+        echo "$auth_url";
 
         displayToUser('Budete přesměrováni na Google.',
             "Přihlašte se jako uživatel <b>$email</b> a povolte aplikaci <i>Answer</i> práva k odesílání emailů.",
