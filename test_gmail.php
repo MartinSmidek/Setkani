@@ -1,6 +1,6 @@
 <?php
 
-sendMail("objednavky-domu@setkani.cz");
+sendMail("objednavky-domu@setkani.org");
 
 function sendMail($email) {
     $tokenPathPrefix = '../files/setkani4/token_'; //path and token file prefix, email address will be appended
@@ -10,8 +10,6 @@ function sendMail($email) {
     if (!is_file($filePath) || !is_readable($filePath)) {
         //todo error
         echo "FILE NOT FOUND";
-        $files = scandir('../files/setkani4');
-        print_r($files);
     }
     echo "1<br>";
     require_once $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
