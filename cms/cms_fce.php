@@ -47,12 +47,52 @@ function record_unlock ($pid,$unlock_all=false) {
 # ASK - vrátí obsah souboru
 function gmail_token_go($par) {
   $_SESSION["gmail_api_refresh_token"] = $par->mail;
-  return "Okno pro verifikaci bylo otevřeno.
- <script type='text/javascript'>
- (function openGmailTab() {
-    window.open('/gmail_autentizace');
- })();
- </script>";
+  $message = "";
+  //TODO DUPLICATE CODE
+  $credentials_path = $_SERVER['DOCUMENT_ROOT'].'/../files/setkani4/credential.json';
+  $required_privileges = array(
+    //"https://www.googleapis.com/auth/gmail.settings.basic", //to view email metadata
+    //"https://www.googleapis.com/auth/gmail.send" //to send emails
+    // OR
+      "https://mail.google.com/" //global privilege
+  );
+  $tokenPathPrefix = $_SERVER['DOCUMENT_ROOT'].'/../files/setkani4/token_';
+  $tokenPathSuffix = '.json';
+  $gmail_api_library = $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
+
+  $filePath = $tokenPathPrefix . $par->mail . $tokenPathSuffix;
+  if (!is_file($filePath) || !is_readable($filePath)) {
+    $message = "Tento email ještě nebyl autentizován pomocí OAuth 2.0. Posílání mailů jím není možné.";
+  } else {
+    try {
+      require_once $gmail_api_library;
+
+      $client = new Google_Client();
+      $client->setAuthConfig($credentials_path);
+      $client->setPrompt("consent");
+      $client->setScopes($required_privileges);
+      $client->setAccessType('offline');
+      $client->setIncludeGrantedScopes(true);
+
+      //access token
+      $accessToken = json_decode(file_get_contents($filePath), true);
+      $client->setAccessToken($accessToken);
+      //refresh token automatically if necessary
+      if ($client->isAccessTokenExpired()) {
+        $refreshToken = $client->getRefreshToken();
+        if ($refreshToken) {
+          $client->fetchAccessTokenWithRefreshToken($refreshToken);
+        } else {
+          $message = "Token <b>EXPIROVAL</b>. Je nutné jej obnovit.";
+        }
+      }
+    } catch (Exception $e) {
+      $message = "Něco se pokazilo. Je možné, že nelze posílat emaily: " . $e->getMessage();
+    }
+  }
+  if ($message == "") $message = "Email je aktivní.";
+
+  return "$message <br> <button onclick='window.open(\"/gmail_autentizace\",\"_blank\",\"resizable=yes\")'>Autentizovat</button>";
 }
 
 
