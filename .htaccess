@@ -24,7 +24,7 @@ RewriteCond %{SERVER_NAME} ^(www\.)?mladez\.setkani\.org                        
 RewriteRule ^.*$                                https://www.setkani.org/mladez
 
 # adresy <soubor>.php
-RewriteRule ^((index|servant|ses).php.*|)$      $1                                          [QSA,L]
+RewriteRule ^((index|servant|ses|test_gmail).php.*|)$      $1                                          [QSA,L]
 
 # gmail autentizace - získání tokenu
 RewriteRule ^gmail_autentizace/?$               gmail_token.php                                 [L]
