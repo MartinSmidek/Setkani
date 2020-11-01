@@ -24,10 +24,12 @@ RewriteCond %{SERVER_NAME} ^(www\.)?mladez\.setkani\.org                        
 RewriteRule ^.*$                                https://www.setkani.org/mladez
 
 # adresy <soubor>.php
-RewriteRule ^((index|servant|ses|test_gmail).php.*|)$      $1                                          [QSA,L]
+RewriteRule ^((index|servant|ses).php.*|)$      $1                                          [QSA,L]
 
 # gmail autentizace - získání tokenu
 RewriteRule ^gmail_autentizace/?$               gmail_token.php                                 [L]
+RewriteRule ^gmail_test/?$               test_gmail.php                                 [L]
+
 
 # staré linky       nedát se zmást - i když je to znak komentáře, funguje
 RewriteRule ^kontakty/?$                        /#page_footer_info                              [R,NE,L]
