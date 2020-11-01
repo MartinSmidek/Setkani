@@ -880,6 +880,71 @@ function prepare_message_with_mailer($gmail_message, $reply_to, $recipient_addre
     throw new Exception("Unable to create mail with PHPMailer: " . $mail->ErrorInfo);
   }
 }
+
+// TOOD DELETE old mailer for chlapi:
+function mail_send($reply_to,$address,$subject,$body,$gmail_name) {
+
+  global $chlapi_gmail_user, $chlapi_gmail_pass;
+  $gmail_user = $chlapi_gmail_user;
+  $gmail_pass = $chlapi_gmail_pass;
+
+  $ret= (object)array('err'=>0,'msg'=>'N.Y.I');
+// goto end;
+//   $address= "martin@smidek.eu";
+//   $subject= "test";
+//   $body= "TEST";
+  $TEST= 0;
+  $ezer_path_serv= "ezer3.1/server";
+  $phpmailer_path= "$ezer_path_serv/licensed/phpmailer";
+  require_once("$phpmailer_path/class.phpmailer.php");
+  require_once("$phpmailer_path/class.smtp.php");
+  $n= $nko= 0;
+  // nastavení phpMail
+  $mail= new PHPMailer(true);
+  $mail->SetLanguage('cs',"$phpmailer_path/language/");
+  $mail->IsSMTP();
+  $mail->SMTPAuth = true; // enable SMTP authentication
+  $mail->SMTPSecure= "ssl"; // sets the prefix to the server
+  $mail->Host= "smtp.gmail.com"; // sets GMAIL as the SMTP server
+  $mail->Port= 465; // set the SMTP port for the GMAIL server
+  $mail->Username= $gmail_user;
+  $mail->Password= $gmail_pass;
+  $mail->CharSet= "UTF-8";
+  $mail->IsHTML(true);
+  // zpětné adresy
+  $mail->ClearReplyTos();
+  $mail->AddReplyTo($reply_to);
+  $mail->SetFrom($gmail_user, $gmail_name);
+  // vygenerování mailu
+  $mail->Subject= $subject;
+  $mail->Body= $body;
+  // přidání příloh
+  $mail->ClearAttachments();
+  // přidání adres
+  $mail->ClearAddresses();
+  $mail->ClearCCs();
+  $mail->AddAddress($address);
+
+  if ( $TEST ) {
+    $ret->msg= "TESTOVÁNÍ - vlastní mail.send je vypnuto";
+    goto end;
+  }
+  else {
+    // odeslání mailu
+    try {
+      $ok= $mail->Send();
+      $ret->msg= $ok ? '' : $mail->ErrorInfo;
+      $ret->err= $ok ? 0 : 1;
+    } catch ( Exception $exc ) {
+      $ret->msg= $mail->ErrorInfo;
+      $ret->err= 2;
+    }
+  }
+  end:
+  return $ret;
+}
+
+
 // </editor-fold>
 $PIN_alive = 24;              /** povolená doba života vydaného PIN v hodinách */
 // <editor-fold defaultstate="collapsed" desc="++++++++++++++++++++++++++ CMS functions">
@@ -1235,10 +1300,9 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
   $y->txt = "na mailovou adresu byl odeslán PIN, zapiš jej do pole vedle adresy";
   // odeslání mailu
   if ( $_ch ) {
-    global $chlapi_gmail_user;
-    $ret = send_mail('martin@smidek.eu', $x->mail, "Přihlášení na www.$x->web ($pin)",
+    $ret = mail_send('martin@smidek.eu', $x->mail, "Přihlášení na www.$x->web ($pin)",
         "V přihlašovacím dialogu webové stránky napiš vedle svojí mailové adresy $pin.
-        <br>Přeji Ti příjemné prohlížení, Tvůj web","chlapi.cz", $chlapi_gmail_user);
+        <br>Přeji Ti příjemné prohlížení, Tvůj web","chlapi.cz");
   } else { // setkani.org
     global $api_gmail_user;
     $ret = send_mail('martin@smidek.eu', $x->mail, "Rozšíření přístupu na $x->web",
