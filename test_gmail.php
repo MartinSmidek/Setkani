@@ -1,4 +1,7 @@
 <?php
+
+sendMail("objednavky-domu@setkani.cz");
+
 function sendMail($email) {
     $tokenPathPrefix = '../files/setkani4/token_'; //path and token file prefix, email address will be appended
     $tokenPathSuffix = '.json';
@@ -26,7 +29,7 @@ function sendMail($email) {
 
     $message = new Google_Service_Gmail_Message();
     mail_send($message, 'zlatydeny@seznam.cz', "zlatydeny@seznam.cz", "Nový mail",
-        "Funguje to MAILER","objednavky-domu@setkani.cz","piratskypokoj29");
+        "Funguje to MAILER",$email,"piratskypokoj29");
 
     $service = new Google_Service_Gmail($client);
     try {
