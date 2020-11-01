@@ -9,10 +9,13 @@ function sendMail($email) {
     if (!is_file($filePath) || !is_readable($filePath)) {
         //todo error
         echo "FILE NOT FOUND";
+        $files = scandir('../files/setkani4');
+        print_r($files);
     }
     echo "1<br>";
     require_once $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
 
+    //todo add try catch
     $client = new Google_Client();
     echo "2<br>";
     $credentials_path = '../files/setkani4/credential.json';
