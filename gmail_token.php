@@ -46,14 +46,14 @@ if (!$be_allowed) {
     // SETUP
     try {
         $allowed_mails = array("objednavky-domu@setkani.org", "dum@setkani.org", "answer@setkani.org", "www.chlapi.cz@gmail.com");
-        $credentials_path = $_SERVER['DOCUMENT_ROOT'].'../files/setkani4/credential.json';
+        $credentials_path = $_SERVER['DOCUMENT_ROOT'].'/../files/setkani4/credential.json';
         $required_privileges = array(
             //"https://www.googleapis.com/auth/gmail.settings.basic", //to view email metadata
             //"https://www.googleapis.com/auth/gmail.send" //to send emails
             // OR
             "https://mail.google.com/" //global privilege
         );
-        $tokenPathPrefix = $_SERVER['DOCUMENT_ROOT'].'../files/setkani4/token_'; //path and token file prefix, email address will be appended
+        $tokenPathPrefix = $_SERVER['DOCUMENT_ROOT'].'/../files/setkani4/token_'; //path and token file prefix, email address will be appended
         $tokenPathSuffix = '.json';
         $delay = 5; //seconds to redirect
         $email = $_SESSION["gmail_api_refresh_token"];
@@ -126,10 +126,10 @@ if (!$be_allowed) {
             }
         }
     } catch (Exception $ex) {
-        echo $ex;
+        echo "Něco se pokazilo. Napiš prosím na horakj7@gmail.com a přidej následující obsah:<br><br>";
+        echo "<pre>$ex</pre>";
     }
 }
-echo file_get_contents("php://stderr");
 echo "</body></html>";
 
 function displayToUser($title, $msg, $button_text, $button_js, $loader) {

@@ -792,14 +792,14 @@ function emailIsValid($email,&$reason) {
 function send_mail($reply_to, $recipient_address, $subject, $body, $gmail_sender_name, $gmail_sender_mail,
                    $cc='', $cc_name='', $cc2='', $cc2_name='') {
   //GMAIL API CONSTANTS
-  $credentials_path = $_SERVER['DOCUMENT_ROOT'].'../files/setkani4/credential.json';
+  $credentials_path = $_SERVER['DOCUMENT_ROOT'].'/../files/setkani4/credential.json';
   $required_privileges = array(
     //"https://www.googleapis.com/auth/gmail.settings.basic", //to view email metadata
     //"https://www.googleapis.com/auth/gmail.send" //to send emails
     // OR
       "https://mail.google.com/" //global privilege
   );
-  $tokenPathPrefix = $_SERVER['DOCUMENT_ROOT'].'../files/setkani4/token_';
+  $tokenPathPrefix = $_SERVER['DOCUMENT_ROOT'].'/../files/setkani4/token_';
   $tokenPathSuffix = '.json';
   $gmail_api_library = $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
 
