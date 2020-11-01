@@ -883,7 +883,6 @@ function prepare_message_with_mailer($gmail_message, $reply_to, $recipient_addre
 
 // TOOD DELETE old mailer for chlapi:
 function mail_send($reply_to,$address,$subject,$body,$gmail_name) {
-
   global $chlapi_gmail_user, $chlapi_gmail_pass;
   $gmail_user = $chlapi_gmail_user;
   $gmail_pass = $chlapi_gmail_pass;
@@ -1303,17 +1302,23 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
     $ret = mail_send('martin@smidek.eu', $x->mail, "Přihlášení na www.$x->web ($pin)",
         "V přihlašovacím dialogu webové stránky napiš vedle svojí mailové adresy $pin.
         <br>Přeji Ti příjemné prohlížení, Tvůj web","chlapi.cz");
+    if ( $ret->err ) {
+      $y->state = 'err';
+      $y->txt = "Lituji, mail s PINem se nepovedlo odeslat ($ret->err)";
+      goto end;
+    }
   } else { // setkani.org
     global $api_gmail_user;
     $ret = send_mail('martin@smidek.eu', $x->mail, "Rozšíření přístupu na $x->web",
         "V přihlašovacím dialogu webové stránky napiš vedle svojí mailové adresy $pin.
         <br>Přeji Ti příjemné prohlížení, Tvůj web", "YMCA Setkání", $api_gmail_user);
+    if ( $ret != null ) {
+      $y->state = 'err';
+      $y->txt = "Lituji, mail s PINem se nepovedlo odeslat ($ret)";
+      goto end;
+    }
   }
-  if ( $ret != null ) {
-    $y->state = 'err';
-    $y->txt = "Lituji, mail s PINem se nepovedlo odeslat ($ret)";
-    goto end;
-  }
+
   $y->state = 'wait'; // čekáme na zadání PINu z mailu
   $y->cond = 1;
   $y->user = $ido;
