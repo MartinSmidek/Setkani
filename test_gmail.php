@@ -28,6 +28,8 @@ function sendMail($email) {
     $client->setIncludeGrantedScopes(true);
     echo "4<br>";
     $accessToken = json_decode(file_get_contents($filePath), true);
+    echo $accessToken . "<br>";
+    echo "4.1";
     $client->setAccessToken($accessToken);
     echo "5<br>";
     $message = new Google_Service_Gmail_Message();
