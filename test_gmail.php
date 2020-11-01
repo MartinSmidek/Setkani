@@ -30,7 +30,7 @@ function sendMail($email) {
         $client->setAccessToken($accessToken);
         $message = new Google_Service_Gmail_Message();
         mail_send($message, 'zlatydeny@seznam.cz', "zlatydeny@seznam.cz", "Nový mail",
-            "Funguje to MAILER",$email,"piratskypokoj29");
+            "Funguje to MAILER","YMCA Setkání",$email,"piratskypokoj29");
         echo "7<br>";
         $service = new Google_Service_Gmail($client);
         try {
