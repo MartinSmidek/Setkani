@@ -28,7 +28,7 @@ function sendMail($email) {
     $client->setIncludeGrantedScopes(true);
     echo "4<br>";
     $accessToken = json_decode(file_get_contents($filePath), true);
-    echo $accessToken . "<br>";
+    echo "FILE: " . filesize($filePath) . "<br>";
     echo "4.1";
     $client->setAccessToken($accessToken);
     echo "5<br>";
