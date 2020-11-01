@@ -55,17 +55,17 @@ if (!$be_allowed) {
     $tokenPathSuffix = '.json';
     $email = $_SESSION["gmail_api_refresh_token"];
 
-    echo "PREPARE<br>";
-    print_r($email);
-
     // FIRE
     require_once $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
-    echo "<br>" . $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
     $client = new Google_Client();
-    var_dump($client);
+    echo is_readable($credentials_path);
+
     $client->setAuthConfig($credentials_path);
+    echo "IS.<br>";
     $client->setPrompt("consent");
     $client->setScopes($required_privileges);
+    echo "SCOPES.<br>";
+
     $client->setAccessType('offline');
     $client->setIncludeGrantedScopes(true);
 
