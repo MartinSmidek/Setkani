@@ -8,6 +8,7 @@ function sendMail($email) {
     $filePath = $tokenPathPrefix . $email . $tokenPathSuffix;
     if (!is_file($filePath) || !is_readable($filePath)) {
         //todo error
+        echo "FILE NOT FOUND";
     }
     echo "1<br>";
     require_once $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
