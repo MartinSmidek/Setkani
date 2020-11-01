@@ -6,46 +6,41 @@ function sendMail($email) {
     $tokenPathPrefix = '../files/setkani4/token_'; //path and token file prefix, email address will be appended
     $tokenPathSuffix = '.json';
     $filePath = $tokenPathPrefix . $email . $tokenPathSuffix;
-    echo $filePath . "<br>";
     if (!is_file($filePath) || !is_readable($filePath)) {
         //todo error
         echo "FILE NOT FOUND";
     }
-    echo "1<br>";
     require_once $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
 
     //todo add try catch
-    $client = new Google_Client();
-    echo "2<br>";
-    $credentials_path = '../files/setkani4/credential.json';
-    $client->setAuthConfig($credentials_path);
-    $client->setPrompt("consent");
-    $required_privileges = array(
-        //"https://www.googleapis.com/auth/gmail.settings.basic", //to view email metadata
-        //"https://www.googleapis.com/auth/gmail.send" //to send emails
-        "https://mail.google.com/" //global privilege
-    );
-    echo "3<br>";
-    $client->setScopes($required_privileges);
-    $client->setAccessType('offline');
-    $client->setIncludeGrantedScopes(true);
-    echo "4<br>";
-    $accessToken = json_decode(file_get_contents($filePath), true);
-    echo "FILE: " . filesize($filePath) . "<br>";
-    echo "4.1";
-    $client->setAccessToken($accessToken);
-    echo "5<br>";
-    $message = new Google_Service_Gmail_Message();
-    echo "6<br>";
-    mail_send($message, 'zlatydeny@seznam.cz', "zlatydeny@seznam.cz", "Nový mail",
-        "Funguje to MAILER",$email,"piratskypokoj29");
-    echo "7<br>";
-    $service = new Google_Service_Gmail($client);
     try {
-        echo "8<br>";
-        return $service->users_messages->send('me', $message);
+        $client = new Google_Client();
+        $credentials_path = '../files/setkani4/credential.json';
+        $client->setAuthConfig($credentials_path);
+        $client->setPrompt("consent");
+        $required_privileges = array(
+            //"https://www.googleapis.com/auth/gmail.settings.basic", //to view email metadata
+            //"https://www.googleapis.com/auth/gmail.send" //to send emails
+            "https://mail.google.com/" //global privilege
+        );
+        $client->setScopes($required_privileges);
+        $client->setAccessType('offline');
+        $client->setIncludeGrantedScopes(true);
+        $accessToken = json_decode(file_get_contents($filePath), true);
+        $client->setAccessToken($accessToken);
+        $message = new Google_Service_Gmail_Message();
+        mail_send($message, 'zlatydeny@seznam.cz', "zlatydeny@seznam.cz", "Nový mail",
+            "Funguje to MAILER",$email,"piratskypokoj29");
+        echo "7<br>";
+        $service = new Google_Service_Gmail($client);
+        try {
+            echo "8<br>";
+            return $service->users_messages->send('me', $message);
+        } catch (Exception $e) {
+            //todo error - use $e->getMessage();
+        }
     } catch (Exception $e) {
-        //todo error - use $e->getMessage();
+        echo  $e;
     }
     return null;
 }
@@ -117,14 +112,15 @@ function mail_send($gmail_service, $reply_to,$address,$subject,$body, $gmail_nam
             $data = str_replace(array('+','/','='),array('-','_',''),$data); // url safe
             $gmail_service->setRaw($data);
 
-            $ret->msg= $ok ? '' : $mail->ErrorInfo;
-            $ret->err= $ok ? 0 : 1;
+//            $ret->msg= $ok ? '' : $mail->ErrorInfo;
+//            $ret->err= $ok ? 0 : 1;
         } catch ( Exception $exc ) {
-            $ret->msg= $mail->ErrorInfo;
-            $ret->err= 2;
+//            $ret->msg= $mail->ErrorInfo;
+//            $ret->err= 2;
         }
     }
     end:
-    return $ret;
+    //return $ret;
+    return true;
 }
 
