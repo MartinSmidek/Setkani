@@ -54,12 +54,20 @@ function dum_server($x) {
     $snd_copy = "ivana.zivnustkova@seznam.cz";
     $snd_copy_name = "Živnůstkovi";
     if (!$email || $email === '' || !strpos($email, "@")) {
-      mail_send_cc($forward_to, $forward_to, "Objednávka pobytu v Domě Setkání", new_order_mail_from_form($x->form), $snd_copy, $snd_copy_name);
+      $err = send_mail($forward_to, $forward_to, "Objednávka pobytu v Domě Setkání", new_order_mail_from_form($x->form),
+          "Objednávky Domu Setkání", "objednavky-domu@setkani.org", $snd_copy, $snd_copy_name);
       $y->completion = "Objednávka neobsahuje emailovou adresu. Objednávka <b>byla úspěšně podána</b>, ale nedojde vám potvrzovací email. Údaje se objeví v kalendáři po aktualizaci této stránky.";
     } else {
-      mail_send_cc($forward_to, $email, "Objednávka pobytu v Domě Setkání", new_order_mail_from_form($x->form), $forward_to, "Dům Setkání", $snd_copy, $snd_copy_name);
+      $err = send_mail($forward_to, $email, "Objednávka pobytu v Domě Setkání", new_order_mail_from_form($x->form),
+          "Objednávky Domu Setkání", "objednavky-domu@setkani.org", "Správce Domu", $forward_to, $snd_copy, $snd_copy_name);
       $y->completion = "Objednávka byla úspěšně zaslána. Na email vám brzy přijde její shrnutí. Údaje se objeví v kalendáři po aktualizaci této stránky.";
     }
+    if ($err != null) {
+      $y->ok = false;
+      $y->msg = $err;
+      $y->completion = "";
+    }
+
     break;
 
   case 'delete':

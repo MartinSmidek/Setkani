@@ -935,7 +935,9 @@ panel ADMIN [0,0,600,465] { title:'Aktivita CMS', type:'popup', css:'dialog_menu
     }
     menu { title:'Gmail',type:'group',skill:'m'
       item { title:'Mail: objednavky-domu'  par:°{mail:'objednavky-domu@setkani.org'}}
-      item { title:'Mail: dum'        par:°{mail:'dum@setkani.org'}}
+      item { title:'Mail: dum'             par:°{mail:'dum@setkani.org'}}
+      item { title:'Mail: answer'          par:°{mail:'answer@setkani.org'}}
+      item { title:'Mail: www.chlapi.cz'   par:°{mail:'www.chlapi.cz@gmail.com'}}
       proc onclick (i) {
        clear;
        info.fill(conc(i.owner.title,' - ',i.title),ask('gmail_token_go',i.par));

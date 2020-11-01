@@ -139,6 +139,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
   ezer_connect('setkani4');
   $href0= $href;
   $clear= "<br style='clear:both'>";
+
   /** ==============================================> MENU */
 
 # blok = typ_bloku : ref : název : next : elem* : title -- popis stránky, pokud typ=menu je popsáno dál
