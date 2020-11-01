@@ -1,9 +1,10 @@
 <?php  //THIS FILE IS DISPLAYED OUTSIDE WEBPAGE SCOPE
 //USAGE: 1) SETUP ADDRESS: $_SESSION["gmail_api_refresh_token"] = ADDRESS;
-//USAGE: 2) OPEN THIS SCRIPT (using script!): window.open("www.setkani.org/gmail_autentizace");
+//       2) OPEN THIS SCRIPT (using script!): window.open("www.setkani.org/gmail_autentizace");
 
 // css in web.css
 // url '/gmail_autentizace' in .htaccess
+
 session_start();
 
 echo "<html lang=\"cs-CZ\">
@@ -43,20 +44,12 @@ if (!$be_allowed) {
         'ZAVŘÍT', "top.close();", 0);
 } else {
     // SETUP
+    require_once "gmail_constants.php";
     $delay = 5; //seconds to redirect
-    $allowed_mails = array("objednavky-domu@setkani.org", "dum@setkani.org");
-    $credentials_path = '../files/setkani4/credential.json';
-    $required_privileges = array(
-        //"https://www.googleapis.com/auth/gmail.settings.basic", //to view email metadata
-        //"https://www.googleapis.com/auth/gmail.send" //to send emails
-        "https://mail.google.com/" //global privilege
-    );
-    $tokenPathPrefix = '../files/setkani4/token_'; //path and token file prefix, email address will be appended
-    $tokenPathSuffix = '.json';
     $email = $_SESSION["gmail_api_refresh_token"];
 
     // FIRE
-    require_once $_SERVER['DOCUMENT_ROOT'].'/ezer3.1/server/licensed/google_api/vendor/autoload.php';
+    require_once $gmail_api_library;
     $client = new Google_Client();
     $client->setAuthConfig($credentials_path);
     $client->setPrompt("consent");
