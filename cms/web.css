@@ -129,6 +129,11 @@ h1, #web h2,h3 { -webkit-column-break-inside: avoid; -moz-column-break-inside: a
 
 /*H tags management*/
 #vlakno h2.vlakno-title {
+  margin-top: 22px;
+  font-size: 22pt;
+  margin-left: 0.8em;
+}
+#vlakno h2.vlakno-titler {
   margin-top: 30px;
   margin-bottom: 8px;
   font-size: 28pt;
@@ -793,6 +798,12 @@ label.form_button {float: right}
   /*H tags management*/
   #vlakno h2.vlakno-title {
     margin-top: 15px;
+    font-size: 17pt;
+    margin-left: 0.8em;
+    margin-bottom: 5px;
+  }
+  #vlakno h2.vlakno-titler {
+    margin-top: 15px;
     margin-bottom: 5px;
     font-size: 17pt;
     margin-left: 0.8em;
@@ -878,6 +889,12 @@ label.form_button {float: right}
 
   /*H tags management*/
   #vlakno h2.vlakno-title {
+    margin-top: 22px;
+    font-size: 20pt;
+    margin-left: 0.8em;
+  }
+
+  #vlakno h2.vlakno-titler {
     margin-top: 22px;
     font-size: 22pt;
     margin-left: 0.8em;

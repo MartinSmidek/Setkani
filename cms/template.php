@@ -504,7 +504,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       case 'vlakno': # ---------------------------------------------==> . vlakno
         # vlákno zadané cid
         if ( !$ids && count($path) ) $ids= array_shift($path);
-        $body.= vlakno($ids,'clanek','',true);
+        $body.= vlakno($ids,'clanek','',true, true);
         break;
 
       case 'clanky': # ------------------------------------------------ . clanky
@@ -689,9 +689,10 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
           case 'aplan':  # ---------------------------------------------- . proc aplan = alberice,bude
             $body .= "<div class='content'><h1>Plánované akce v domě</h1></div>";
             //$vyber= "alberice,".array_shift($path);
-            $vyber= "alberice,".$_COOKIE['akce'];
-
-//       $submenu_komu.= $proc_kdo($vyber,2);
+            //$vyber= "alberice,".$_COOKIE['akce'];
+            //ignore selection from cookies
+            array_shift($path);
+            $vyber = "rodiny,manzele,chlapi,zeny,mladez,alberice";
             break;
 
           case 'objednavky': # ------------------------------------------ . proc objednávky
@@ -798,7 +799,7 @@ __EOD;
   
   $eb_link
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C700%2C700i%2C800%2C800i&amp;ver=0.3.5" type="text/css" media="all">
-<link rel="stylesheet" href="cms/web.css?v=4.52" type="text/css" media="screen" charset="utf-8">
+<link rel="stylesheet" href="cms/web.css?v=4.53" type="text/css" media="screen" charset="utf-8">
   <script type="text/javascript">
     var Ezer={web:{ $Ezer_web},cms:{form:{}}};
     if ( !console ) {
@@ -851,8 +852,8 @@ __EOD;
       <span onclick=\"bar_menu(arguments[0],'new1');\"><img src='cms/img/new.png'> změny za den</span>
       <span onclick=\"bar_menu(arguments[0],'new7');\"><img src='cms/img/new.png'> změny za týden</span>
       <span onclick=\"bar_menu(arguments[0],'new30');\"><img src='cms/img/new.png'> změny za měsíc</span>
-      <span onclick=\"bar_menu(arguments[0],'grid');\" class='separator'><i class='fa fa-th'></i> akce jako mřížka</span>
-      <span onclick=\"bar_menu(arguments[0],'rows');\"><i class='fa fa-bars'></i> akce jako řádky</span>
+      <span onclick=\"bar_menu(arguments[0],'grid');\" class='separator mobile_nodisplay'><i class='fa fa-th'></i> akce jako mřížka</span>
+      <span onclick=\"bar_menu(arguments[0],'rows');\" class='mobile_nodisplay'><i class='fa fa-bars'></i> akce jako řádky</span>
       $loginout
     </div>
   </span>";
@@ -1161,7 +1162,7 @@ __EOJ;
 __EOJ;
   $eb_link= <<<__EOJ
     $framework    
-    <script src="cms/cms{$k3}.js?v=4.2" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/cms{$k3}.js?v=4.3" type="text/javascript" charset="utf-8"></script>
     <script src="cms/cms{$k3}_fe.js?v=4.0" type="text/javascript" charset="utf-8"></script>
     <script src="cms/modernizr-custom.js?v=4.0" type="text/javascript" charset="utf-8"></script>
     $fotorama
@@ -1707,7 +1708,7 @@ function clanky($pids,$uid=0,$mid=0,$chlapi='',$back='') { trace();
             : "<div class='pdf'>".knihy(0,"$cid,$uid",0,$back)."</div>"
         ) : (
         $x->ident==$uid
-            ? vlakno($cid,'clanek','')
+            ? vlakno($cid,'clanek','', false, true)
             : "<div class='$abstr x'$menu>
              $code
              <a id='abstr$ident' class='abstrakt $ex x $x->upd' $jmp>
@@ -2024,7 +2025,7 @@ function kalendare($vyber, $rok, $id, $chlapi_ignore=false) { trace();
         . "'$href0!{$vyber}$cms_roks!$uid#anchor$uid','$page_mref$roks/$uid#anchor$uid');\""
         : "href='$page_mref$roks/$uid#anchor$uid'";
 
-    $h.= $uid==$id ? vlakno($cid,'clanek',$back)
+    $h.= $uid==$id ? vlakno($cid,'clanek',$back, false, true)
         : "<div class='$abstr' id='n$n'>
            $code 
            <a class='abstrakt$ex{$upd}' $jmp>
@@ -2516,7 +2517,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
         $h .= "<h2>$rok_ted</h2>";
       }
       $h.= $x->ident==$id
-          ? vlakno($cid,$typ,$back)
+          ? vlakno($cid,$typ,$back, false, true)
           : "<a class='abstr-fotogalerie' id='n$n' $jmp>
                $code 
                <div class='fbg'></div>
@@ -2526,7 +2527,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
          </a>";
     } else {
       $h.= $x->ident==$id
-          ? vlakno($cid,$typ,$back)
+          ? vlakno($cid,$typ,$back, false, true)
           : "<div class='$abstr $x->status' id='n$n'>
            $code 
            <a class='abstrakt$ex{$x->upd}' $jmp>
@@ -2604,13 +2605,15 @@ function status_class($status) {
 # typ=akce|clanek|foto
 #   pro typ=foto se zobrazí tag=A jako abstrakt
 # back=1 přidá návrat při kliknutí
-function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
+# $h2titler - zobrazí h2 stylem h1
+function vlakno($cid,$typ='',$back_href='', $h1 = false, $h2titler = false) { trace();
   global $CMS, $href0;
   global $usergroups, $found; // skupiny, počet nalezených článků
   global $show_deleted, $show_hidden, $news_time;
   if ( !$news_time ) $news_time= time() - 1 * 24*60*60;
   $dnes= date('Y-m-d');
   $xx= array();
+  $h2titler = $h2titler ? ' class="vlakno-titler"' : ' class="vlakno-title"';
   $uid_a= 0;    // uid A-záznamu
   $spec= 0;     // vlákna s chráněným přístupem
   $p_show= ($show_hidden ?  '' : " AND !p.hidden").($show_deleted ? '' : " AND !p.deleted");
@@ -2676,7 +2679,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
               ['-odstranit embeded img',function(el){ opravit('img','$uid','$cid'); }]
             ],arguments[0],'clanek$uid');return false;\"";
       $titleh1 = $h1 ? "<h1>$x->nadpis</h1>" : "";
-      $titleh2 = $h1 ? "" : "<h2 class='vlakno-title'>$x->nadpis</h2>";
+      $titleh2 = $h1 ? "" : "<h2$h2titler>$x->nadpis</h2>";
       $h.= "<div id='list' class='x relative' $event><span class='anchor' id='anchor$uid'></span>
            $titleh1 $code
            <div id='clanek$uid' class='clanek x$x->upd'$menu$style>
@@ -2716,7 +2719,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
         $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA",'akce',$x->ida,$nazev_akce);
       }
       $titleh1 = $h1 ? "<h1>$x->nadpis</h1>" : "";
-      $titleh2 = $h1 ? "" : "<h2 class='vlakno-title'>$x->nadpis</h2>";
+      $titleh2 = $h1 ? "" : "<h2$h2titler>$x->nadpis</h2>";
       $h.= "<div class='x relative' $event><span class='anchor' id='anchor$uid'></span>
             $titleh1 $code
             <div id='clanek$uid' class='akce_prehled clanek x$x->upd'$menu$style>
@@ -2737,7 +2740,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
           ? "onclick=\"go_anchor(arguments[0],'$data->page','$data->direct_url');\""
           : "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
       $h .= "<div class='abstr_line relative'><span class='anchor' id='anchor$uid'></span>
-         <h2 class='vlakno-title'>$x->nadpis</h2>
+         <h2$h2titler>$x->nadpis</h2>
          $code
          <div class='abstrakt_foto$ex' $jmp>
             <span class='datum'>$x->kdy</span> $img $abstract 
@@ -2782,7 +2785,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false) { trace();
            <div id='clanek$uid' class='relative clanek x$x->upd'$menu$style><span class='anchor' id='anchor$uid'></span>
             $code
             <div class='text $x->status'>
-              <h2 class='vlakno-title'>$x->nadpis</h2>$podpis
+              <h2$h2titler>$x->nadpis</h2>$podpis
                  $obsah
             </div>
           </div></div>";
