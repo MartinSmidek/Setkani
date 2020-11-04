@@ -399,12 +399,16 @@ function objednavka(e,op,p,self=null) {
         case 'untilday': {
           let fromday = Date.parse(x.form['fromday']),
               untilday = Date.parse(val),
-              max_days = 31,
+              max_days = 22,
               days = (untilday - fromday) / 86400000;
-          if (!val || isNaN(days) || days < 0 || days > max_days) {
+          if (!val || isNaN(days)) {
             errors["ord_date_error"] = "Opravte prosím <b>datum pobytu</b>.";
+          } else if (days < 0 || days > max_days) {
+            errors["ord_date_error"] = "Délka pobytu musí být mezi jedním dnem a 21 dny.";
           }
           // convert to UNIX timestamp
+          // x.form['fromday-str'] = x.form['fromday'];
+          // x.form['untilday-str'] = x.form['untilday'];
           x.form['fromday'] = Math.abs(fromday / 1000);
           x.form['untilday'] = Math.abs(untilday / 1000);
           break;
@@ -412,6 +416,14 @@ function objednavka(e,op,p,self=null) {
       }
     }
   }
+  //todo perform date parsing on the server side?
+  function convertDate() {
+    // x.form['fromday-str'] = x.form['fromday'];
+    // x.form['untilday-str'] = x.form['untilday'];
+    if (x.form.hasOwnProperty("fromday")) x.form['fromday'] = Math.abs(Date.parse(x.form['fromday']) / 1000);
+    if (x.form.hasOwnProperty("untilday")) x.form['untilday'] = Math.abs(Date.parse(x.form['untilday']) / 1000);
+  }
+
   if ( e ) e.stopPropagation();
   var x= {cmd:'dum',dum:op},
       f= jQuery('#order'),
@@ -443,6 +455,7 @@ function objednavka(e,op,p,self=null) {
     x.form= getAllInputValues(f, 'select,input');
     verify();
     x.form= getAllInputValues(f, 'select.changed,input.changed');
+    convertDate();
     break;}
   default:{
     alert('objednavka('+op+'/'+p+') NYI !!!');
@@ -493,7 +506,6 @@ function _objednavka(y, caller) {
   case 'create':{
     if ( y.ok ) {
       block_display('order', 0);
-      msg4_on(y.msg, "Objednávka byla dokončena, ale...");
     } else {
       msg4_on(y.msg, "Chyba v objednávce");
       jQuery(caller).attr("value", "Přidat objednávku.");
@@ -589,6 +601,7 @@ function ask(x,then,arg) {
       if ( typeof(y)==='string' )
         error("Došlo k chybě 1 v komunikaci se serverem - '"+xx.cmd+"'");
       else {
+        console.log(y);
         if ( y.error )
           Ezer.error(y.error,'C');
         if ( y.trace && Ezer.trace )

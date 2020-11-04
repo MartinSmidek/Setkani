@@ -52,7 +52,6 @@ function _getDaysData(ret) {
 
 
     var content = "<div style='overflow-x: scroll;width: 100%;'><table id='dum' class=dum>" + ret['0'];
-    console.log(ret);
     let pokoju = parseInt(ret['1']);
     let current_tstamp = Math.floor(Date.now() / 1000);
     var odd_count = 0;
@@ -125,6 +124,9 @@ const parseDate = dateString => {
 };
 
 function getRoomsForTimespan(uid, isFromDay, self) {
+    if (jQuery("#obj_cely_dum_check").prop("checked")) {
+        return;
+    }
     if (isFromDay) getRoomsForTimespanImpl(uid, Date.parse(self.value) / 1000, Date.parse(jQuery("#untilday_input").val()) / 1000);
     else getRoomsForTimespanImpl(uid, Date.parse(jQuery("#fromday_input").val()) / 1000, Date.parse(self.value) / 1000);
 }
@@ -138,6 +140,7 @@ function getRoomsForTimespanImpl(uid, fromday, untilday) {
     } else {
         disableDumCheckbox(jQuery("#obj_cely_dum_check"));
         unsetRoomsAllBooked("pokoje: pobyt musí být alespoň na jednu noc");
+        setPrice("pobyt musí být alespoň na jednu noc",  "", false);
     }
 }
 function _getRoomsForTimespan(ret) {
@@ -162,6 +165,9 @@ function setRoomsAllBooked() {
     input.attr("readonly", true);
     input.val("*");
     input.addClass("changed");
+    jQuery("#approx_price").addClass("nodisplay");
+    jQuery("#error_price").addClass("nodisplay");
+    jQuery("#info_price").addClass("nodisplay");
 }
 function unsetRoomsAllBooked(pokojeTitleText, eraseRooms=false) {
     jQuery("#rooms_label").html(pokojeTitleText);
@@ -171,6 +177,9 @@ function unsetRoomsAllBooked(pokojeTitleText, eraseRooms=false) {
         input.val("");
         input.removeClass("changed");
     }
+    jQuery("#approx_price").removeClass("nodisplay");
+    jQuery("#error_price").removeClass("nodisplay");
+    jQuery("#info_price").removeClass("nodisplay");
 }
 function getLastRoomsTitle() {
     return jQuery("#rooms_label").attr("content");
@@ -214,9 +223,13 @@ function _popupRoomView(res) {
 }
 
 function runOrderCounter() {
+    if (jQuery("#obj_cely_dum_check").prop("checked")) {
+        return;
+    }
     if (FREE_ROOMS == null) {
         //get first free rooms, then calculate the price (called in ..Impl)
-        getRoomsForTimespanImpl( Date.parse(jQuery("#fromday_input").val()) / 1000,
+        //uid 0 - this is called on creation only - UID not set
+        getRoomsForTimespanImpl( 0, Date.parse(jQuery("#fromday_input").val()) / 1000,
             Date.parse( jQuery("#untilday_input").val()) / 1000);
         return;
     }
@@ -224,8 +237,7 @@ function runOrderCounter() {
     var data = getAllInputValues(jQuery("#order"), 'select,input');
     let fromday = Date.parse(data['fromday']),
         untilday = Date.parse(data['untilday']);
-    data["days"] = (untilday - fromday) / 86400000;
-
+        data["days"] = (untilday - fromday) / 86400000;
     if (data["days"] < 1) setPrice("pobyt musí být alespoň na jednu noc",  "", false);
     else if (data["adults"] < 1) setPrice("nelze objednat pobyt bez dospělé osoby", "", false);
     else if (jQuery("#rooms_label").text().startsWith("žádné")) setPrice("nejsou volné pokoje", "", false);

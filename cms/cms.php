@@ -15,10 +15,10 @@
   $app_name=  "setkani.org";
   $app_root=  'cms';
   $app_js=    array(
-      "/cms/cms{$k3}.js",
+      "/cms/cms{$k3}.js?v=4.4",
       "/cms/cms{$k3}_be.js",
       "/cms/modernizr-custom.js",
-      "/cms/custom.js",
+      "/cms/custom.js?v=4.22",
       $k3 ? false : "/cms/fotorama/jquery-1.12.4.min.js",
       $k3 ? false : "<script type='text/javascript'>jQuery.noConflict();</script>",
       "/cms/fotorama/fotorama.js");

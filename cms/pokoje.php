@@ -61,12 +61,11 @@ function dum_server($x) {
     } else {
       $err = send_mail($forward_to, $email, "Objednávka pobytu v Domě Setkání", new_order_mail_from_form($x->form),
           "Objednávky Domu Setkání", "objednavky-domu@setkani.org", $forward_to, "Správce Domu", $snd_copy, $snd_copy_name);
-      $y->completion = "Objednávka byla úspěšně zaslána. Na email vám brzy přijde její shrnutí. Údaje se objeví v kalendáři po aktualizaci této stránky.";
+      $y->completion = "Objednávka byla úspěšně zaslána. Na email vám brzy přijde její shrnutí. Údaje se v kalendáři objeví po aktualizaci této stránky.";
     }
     if ($err != null) {
-      //$y->ok = false; it was OK
-      $y->msg = $err;
-      $y->completion = "";
+      $y->completion = "Objednávka byla dokončena. Nedojde vám však potvrzovací email. " . $err
+          . " Údaje se v kalendáři objeví po aktualizaci stránky.";
     }
 
     break;
@@ -230,15 +229,15 @@ function dum_form($x) {
     $y->html = "<h4>Číslo $ord není korektním číslem objednávky.</h4>" .f_button("Zavřít","block_display('order',0);",1);
     return;
   }
-
+  $uid = isset($dum_data->uid) && is_numeric($dum_data->uid) ? (int)$dum_data->uid : 0;
   $y->html= "<table style='margin: 0 auto;'><tr><td class='order_left_td'>"
   . f_input("objednávka číslo","uid",2,0)."&nbsp;&nbsp;"
   . f_select("stav objednávky","state", "1:zájem o pobyt,2:závazná objednávka,3:akce YMCA,4:nelze pronajmout",$ord, 'max-width: 190px') . "<br>"
-  . f_date("příjezd",            "fromday",       8, 1, 'getRoomsForTimespan('.$dum_data->uid.', true, this);', "fromday_input")."&nbsp;&nbsp;"
-  . f_date("odjezd",             "untilday",      8, 1, 'getRoomsForTimespan('.$dum_data->uid.', false, this);', "untilday_input") . "<br>" . f_error_msg("ord_date_error")
+  . f_date("příjezd",            "fromday",       8, 1, 'getRoomsForTimespan('.$uid.', true, this);', "fromday_input")."&nbsp;&nbsp;"
+  . f_date("odjezd",             "untilday",      8, 1, 'getRoomsForTimespan('.$uid.', false, this);', "untilday_input") . "<br>" . f_error_msg("ord_date_error")
   . f_celydum_checkbox($all_house_checkbox_enabled, $checkbox_checked)
   . f_select("typ stravy","board","1:penze,2:polopenze,3:bez stravy", 1, 'max-width: 170px') . "<br>"
-  . f_input($pokoje_title,"rooms1",40,1, 'text', '', "objednejte pokoje jejich čísly oddělenými čárkou", "rooms_label")."<br>" . f_error_msg("ord_rooms_error")
+  . f_input($pokoje_title,"rooms1",40,1, 'text', '', "objednejte pokoje jejich čísly oddělenými čárkou", "rooms_label", ($checkbox_checked ? " readonly " : ""))."<br>" . f_error_msg("ord_rooms_error")
   . f_input("dospělých",          "adults",        3, 1, 'number', 'max-width: 80px', '', '', " min='0'")
   . f_input("děti 10-15",         "kids_10_15",    3, 1, 'number', 'max-width: 80px', '', '', " min='0'")
   . f_input("děti 3-9",           "kids_3_9",      3, 1, 'number', 'max-width: 80px', '', '', " min='0'")
@@ -274,7 +273,7 @@ function f_input($label,$name,$size,$enabled=1,$type='text',$css='',$hint='', $l
   global $dum_data, $dum_data_open, $kernel;
   $disabled= $enabled==-1 ? 'disabled' : (!$enabled || !$dum_data_open ? 'disabled' : ' ');
   $price_calc = $dum_data->new ? " runOrderCounter();" : "";
-  $onchange=  $kernel=='ezer3.1' 
+  $onchange=  $kernel=='ezer3.1'
       ? "onchange='jQuery(this).addClass(\"changed\");$price_calc'"
       : "onchange='this.addClass(\"changed\");$price_calc'";
   $inputid = $labelid ? "id='input_$labelid'" : "";
@@ -301,7 +300,7 @@ function f_celydum_checkbox($enabled=1,$checked=false) {
   $not_allowed = (!$checked && $attrs) ? " (nelze)" : "";
   if ($checked) $attrs .= " checked ";
   $onchange=  $kernel=='ezer3.1'
-      ? "onchange='if(jQuery(this).prop( \"checked\" )) {setRoomsAllBooked(); jQuery(\"#approx_price\").addClass(\"nodisplay\");} else {unsetRoomsAllBooked(getLastRoomsTitle(), true); jQuery(\"#approx_price\").removeClass(\"nodisplay\");}'"
+      ? "onchange='if(jQuery(this).prop( \"checked\" )) {setRoomsAllBooked();} else {unsetRoomsAllBooked(getLastRoomsTitle(), true);}'"
       : ""; //not implemented as kernel will probably never fall down to older version
   $html= " <label style='margin: 8px 77px 0 0;'><input name='obj_cely_dum' id='obj_cely_dum_check' type='checkbox' $attrs $onchange>
      <span style='font-size: 10pt; display: inline-block' id='obj_cely_dum_text'>zájem o celý<br> dům$not_allowed</span></label>";
@@ -435,7 +434,7 @@ function mesice($path) {  trace();
   popup("Objednávka","","",'order');
 
   $user= $_SESSION['web']['fe_user'];
-  $spravce= $user ? access_get(1) : 0;
+  $spravce= isset($_SESSION['web']['fe_user']) && $user ? access_get(1) : 0;
   $month= array( 1=> "leden", "únor", "březen", "duben", "květen", "červen",
     "červenec", "srpen", "září", "říjen", "listopad", "prosinec");
 
@@ -596,19 +595,20 @@ function get_days_data($uid, $from, $until) {
   while ( $cr && (list($state,$kolik,$obj,$fromday,$untilday,$name,$note)= mysql_fetch_row($cr)) ) {
     for ( $dd= $fromday; $dd<=$untilday; $dd= mktime(0,0,0,date("m",$dd),date("d",$dd)+1,date("Y",$dd)) ) {
       $dmy= date('d.m.y',$dd);
-      $wnotes[$dmy].= $note ? (($wnotes[$dmy] ? " + " : "") . $note ) : "";
-      $rooms= $kolik;
-      $rooms= $rooms=='*' ? $rooms_all : explode(',',$rooms);
-      foreach ($rooms as $n) {
-        $dmyn= "$dmy/$n";
-        $wnames[$dmyn]= ($wnames[$dmy] ? " + " : "") . ($name ? $name : 'note');
-        $wuids[$dmyn]= $obj;
-        $wstates[$dmyn]= $state;
-      }
       if ($state < 2) {
         $dmy= date('d.m.y',$dd);
         $worders[$dmy].= ($worders[$dmy] ? " + " : "") . $name;
         $wuidss[$dmy].= ($wuidss[$dmy]?',':'') . $obj;
+      } else {
+        $wnotes[$dmy].= $note ? (($wnotes[$dmy] ? " + " : "") . $note ) : "";
+        $rooms= $kolik;
+        $rooms= $rooms=='*' ? $rooms_all : explode(',',$rooms);
+        foreach ($rooms as $n) {
+          $dmyn= "$dmy/$n";
+          $wnames[$dmyn]= ($wnames[$dmy] ? " + " : "") . ($name ? $name : 'note');
+          $wuids[$dmyn]= $obj;
+          $wstates[$dmyn]= $state;
+        }
       }
     }
   }

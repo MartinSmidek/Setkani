@@ -1163,14 +1163,14 @@ __EOJ;
 __EOJ;
   $eb_link= <<<__EOJ
     $framework    
-    <script src="cms/cms{$k3}.js?v=4.3" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/cms{$k3}.js?v=4.4" type="text/javascript" charset="utf-8"></script>
     <script src="cms/cms{$k3}_fe.js?v=4.0" type="text/javascript" charset="utf-8"></script>
     <script src="cms/modernizr-custom.js?v=4.0" type="text/javascript" charset="utf-8"></script>
     $fotorama
     <link rel="stylesheet" href="./$kernel/client/licensed/font-awesome/css/font-awesome.min.css" type="text/css" media="screen" charset="utf-8">
     <link rel="stylesheet" href="$cms_root/client/ezer_cms3.css" type="text/css" media="screen" charset="utf-8">
     <script src="$cms_root/client/ezer_cms3.js" type="text/javascript" charset="utf-8"></script>
-    <script src="cms/custom.js?v=4.21" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/custom.js?v=4.22" type="text/javascript" charset="utf-8"></script>
 __EOJ;
 //     <link rel="stylesheet" href="cms/gallery/baguetteBox.min.css">
 //     <script src="cms/gallery/baguetteBox.min.js" async>

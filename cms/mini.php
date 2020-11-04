@@ -805,7 +805,7 @@ function send_mail($reply_to, $recipient_address, $subject, $body, $gmail_sender
 
   $filePath = $tokenPathPrefix . $gmail_sender_mail . $tokenPathSuffix;
   if (!is_file($filePath) || !is_readable($filePath)) {
-    return "Objednávka je platná, ale nedojde vám potvrzovací email - nebylo možné jej odeslat. Za potíže se omlouváme.";
+    return "Email nebylo možné odeslat. Za potíže se omlouváme.";
   }
 
   try {
@@ -827,7 +827,7 @@ function send_mail($reply_to, $recipient_address, $subject, $body, $gmail_sender
       if ($refreshToken) {
         $client->fetchAccessTokenWithRefreshToken($refreshToken);
       } else {
-        return "Objednávka je platná, ale nedojde vám potvrzovací email - nebylo možné jej odeslat. Děkujeme za pochopení.";
+        return "Email nebylo možné jej odeslat. Prosíme, kontaktujte administrátora a ohlaste mu nefunkční email. Děkujeme za pochopení.";
       }
     }
 
@@ -841,11 +841,11 @@ function send_mail($reply_to, $recipient_address, $subject, $body, $gmail_sender
       return null;
     } catch (Exception $e) {
       file_put_contents("email-logs.txt", $e, FILE_APPEND);
-      return "Objednávka je platná, ale nedojde vám potvrzovací email - něco se pokazilo. Děkujeme za pochopení.";
+      return "Něco se pokazilo. Děkujeme za pochopení.";
     }
   } catch (Exception $e) {
     file_put_contents("email-logs.txt", $e, FILE_APPEND);
-    return "Objednávka je platná, ale nedojde vám potvrzovací email - něco se pokazilo. Děkujeme za pochopení.";
+    return "Něco se pokazilo. Děkujeme za pochopení.";
   }
 }
 
