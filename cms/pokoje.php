@@ -60,11 +60,11 @@ function dum_server($x) {
       $y->completion = "Objednávka neobsahuje emailovou adresu. Objednávka <b>byla úspěšně podána</b>, ale nedojde vám potvrzovací email. Údaje se objeví v kalendáři po aktualizaci této stránky.";
     } else {
       $err = send_mail($forward_to, $email, "Objednávka pobytu v Domě Setkání", new_order_mail_from_form($x->form),
-          "Objednávky Domu Setkání", "objednavky-domu@setkani.org", "Správce Domu", $forward_to, $snd_copy, $snd_copy_name);
+          "Objednávky Domu Setkání", "objednavky-domu@setkani.org", $forward_to, "Správce Domu", $snd_copy, $snd_copy_name);
       $y->completion = "Objednávka byla úspěšně zaslána. Na email vám brzy přijde její shrnutí. Údaje se objeví v kalendáři po aktualizaci této stránky.";
     }
     if ($err != null) {
-      $y->ok = false;
+      //$y->ok = false; it was OK
       $y->msg = $err;
       $y->completion = "";
     }
@@ -131,11 +131,11 @@ function dum_server($x) {
     break;
 
   case 'get_days':
-    $y->days_data = get_days_data($x->fromday, $x->untilday);
+    $y->days_data = get_days_data($x->uid, $x->fromday, $x->untilday);
     break;
 
   case 'check_rooms':
-    $y->free_rooms = get_free_rooms($x->fromday, $x->untilday);
+    $y->free_rooms = get_free_rooms($x->uid, $x->fromday, $x->untilday);
     break;
 
   case 'get_room':
@@ -216,7 +216,7 @@ function dum_form($x) {
     $dum_data->untilday= date("Y-m-d",mktime(0, 0, 0, $m, $d+2, $r));
     $dum_data->adults= 2;
 
-    $pokoje_data_array = get_free_rooms(strtotime($dum_data->fromday), strtotime($dum_data->untilday));
+    $pokoje_data_array = get_free_rooms($dum_data->uid, strtotime($dum_data->fromday), strtotime($dum_data->untilday));
     $pokoje_title = count($pokoje_data_array["content"]) > 0 ?
         ("volné pokoje: " . implode(", ", $pokoje_data_array["content"])) : "žádné volné pokoje";
     if ($pokoje_data_array["all_free"]) $all_house_checkbox_enabled = 1;
@@ -234,8 +234,8 @@ function dum_form($x) {
   $y->html= "<table style='margin: 0 auto;'><tr><td class='order_left_td'>"
   . f_input("objednávka číslo","uid",2,0)."&nbsp;&nbsp;"
   . f_select("stav objednávky","state", "1:zájem o pobyt,2:závazná objednávka,3:akce YMCA,4:nelze pronajmout",$ord, 'max-width: 190px') . "<br>"
-  . f_date("příjezd",            "fromday",       8, 1, 'getRoomsForTimespan(true, this);', "fromday_input")."&nbsp;&nbsp;"
-  . f_date("odjezd",             "untilday",      8, 1, 'getRoomsForTimespan(false, this);', "untilday_input") . "<br>" . f_error_msg("ord_date_error")
+  . f_date("příjezd",            "fromday",       8, 1, 'getRoomsForTimespan('.$dum_data->uid.', true, this);', "fromday_input")."&nbsp;&nbsp;"
+  . f_date("odjezd",             "untilday",      8, 1, 'getRoomsForTimespan('.$dum_data->uid.', false, this);', "untilday_input") . "<br>" . f_error_msg("ord_date_error")
   . f_celydum_checkbox($all_house_checkbox_enabled, $checkbox_checked)
   . f_select("typ stravy","board","1:penze,2:polopenze,3:bez stravy", 1, 'max-width: 170px') . "<br>"
   . f_input($pokoje_title,"rooms1",40,1, 'text', '', "objednejte pokoje jejich čísly oddělenými čárkou", "rooms_label")."<br>" . f_error_msg("ord_rooms_error")
@@ -390,8 +390,8 @@ function strava($num) {
   }
   return '';
 }
-function get_free_rooms($from, $until) {
-  $data = get_days_data($from, $until);
+function get_free_rooms($uid, $from, $until) {
+  $data = get_days_data($uid, $from, $until);
   $rooms = $rooms_n_orders = array();
   foreach ($data as $tstamp => $days_data) {
     if ($tstamp < 100) continue;
@@ -569,7 +569,7 @@ function get_room($number) {
   }
   return "Nepodařilo se najít pokoj  číslo $number.";
 }
-function get_days_data($from, $until) {
+function get_days_data($uid, $from, $until) {
   $wnames= array ();
   $wuids= array ();     // obsazenost
   $wuidss= array ();   // nevyřízené objednávky
@@ -586,11 +586,13 @@ function get_days_data($from, $until) {
     $rooms_all[]= $row['number'];
   }
   $pokoju_celkem = count($pokoje);
+  $uid = isset($uid) && is_numeric($uid) ? (int)$uid : 0;
+  $cond = $uid <= 0 ? "" : " AND uid<>$uid ";
 
   $cr= mysql_qry("
       SELECT state,rooms1,uid,fromday,untilday,name,note
       FROM tx_gnalberice_order
-      WHERE NOT deleted AND NOT hidden AND untilday>=$from AND $until>=fromday ORDER BY fromday");
+      WHERE NOT deleted AND NOT hidden AND untilday>=$from AND $until>=fromday $cond ORDER BY fromday");
   while ( $cr && (list($state,$kolik,$obj,$fromday,$untilday,$name,$note)= mysql_fetch_row($cr)) ) {
     for ( $dd= $fromday; $dd<=$untilday; $dd= mktime(0,0,0,date("m",$dd),date("d",$dd)+1,date("Y",$dd)) ) {
       $dmy= date('d.m.y',$dd);
@@ -654,7 +656,7 @@ function get_days_data($from, $until) {
       $note= x_shorting($note,50) . ' ...';
     }
     $ret["$dd"]= (object)array("pokoje"=>$pokoje_day, "obsazenych"=>$obsazenych, "who"=>$title, "note"=>$note,
-        "ico1"=>$goal1, "ico2"=>$goal2, "order"=>$ord);
+        "ico1"=>$goal1, "ico2"=>$goal2, "order"=>$ord, "date"=>date('c', $dd));
   }
   //key is timestamp - use low numbers as data
   $ret['0'] = bookingsTableHtml($pokoje);

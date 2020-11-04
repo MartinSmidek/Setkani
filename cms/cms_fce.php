@@ -92,7 +92,7 @@ function gmail_token_go($par) {
   }
   if ($message == "") $message = "Email je aktivní.";
 
-  return "$message <br> <button onclick='window.open(\"/gmail_autentizace\",\"_blank\",\"resizable=yes\")'>Autentizovat</button>";
+  return "$message <br><br> <button onclick='window.open(\"/gmail_autentizace\",\"_blank\",\"resizable=yes\")'>Autentizovat</button>";
 }
 
 

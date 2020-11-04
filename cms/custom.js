@@ -49,6 +49,8 @@ function getDaysData(self, ym, y) {
 function _getDaysData(ret) {
     let y = ret.year;
     ret = ret.days_data;
+
+
     var content = "<div style='overflow-x: scroll;width: 100%;'><table id='dum' class=dum>" + ret['0'];
     console.log(ret);
     let pokoju = parseInt(ret['1']);
@@ -61,7 +63,8 @@ function _getDaysData(ret) {
         let day = ret[key];
         let styl= day.obsazenych ? (day.obsazenych===pokoju ? "datum_plno" : "datum_poloplno") : "datum_prazdno";
         let odd_css = odd_count % 2 === 0 ? ' odd' : ' ';
-        let date = new Date(day_stamp * 1000);
+        let date = parseDate(day.date);
+        //console.log(date);
 
         let datum = date.getDate() + ". " + (date.getMonth()+1) + ".";
         let weekend= date.getDay();
@@ -112,17 +115,26 @@ function _getDaysData(ret) {
         jQuery('html, body').animate({scrollTop: (element.offset().top - 180)}, 500);
     }
 }
-function getRoomsForTimespan(isFromDay, self) {
-    if (isFromDay) getRoomsForTimespanImpl(Date.parse(self.value) / 1000, Date.parse(jQuery("#untilday_input").val()) / 1000);
-    else getRoomsForTimespanImpl(Date.parse(jQuery("#fromday_input").val()) / 1000, Date.parse(self.value) / 1000);
+
+const parseDate = dateString => {
+    const b = dateString.split(/\D+/);
+    const offsetMult = dateString.indexOf('+') !== -1 ? -1 : 1;
+    const hrOffset = offsetMult * (+b[7] || 0);
+    const minOffset = offsetMult * (+b[8] || 0);
+    return new Date(Date.UTC(+b[0], +b[1] - 1, +b[2], +b[3] + hrOffset, +b[4] + minOffset, +b[5], +b[6] || 0));
+};
+
+function getRoomsForTimespan(uid, isFromDay, self) {
+    if (isFromDay) getRoomsForTimespanImpl(uid, Date.parse(self.value) / 1000, Date.parse(jQuery("#untilday_input").val()) / 1000);
+    else getRoomsForTimespanImpl(uid, Date.parse(jQuery("#fromday_input").val()) / 1000, Date.parse(self.value) / 1000);
 }
-function getRoomsForTimespanImpl(fromday, untilday) {
+function getRoomsForTimespanImpl(uid, fromday, untilday) {
     //always save last value to potentially restore from other JS functions (not changing time span)
     let roomsTitle = jQuery('#rooms_label');
     roomsTitle.attr("content", roomsTitle.innerHTML);
 
     if (untilday - fromday > 70000) { //at least one day
-        ask({cmd:'dum', dum:'check_rooms', fromday:fromday, untilday: untilday}, _getRoomsForTimespan);
+        ask({cmd:'dum', dum:'check_rooms', uid:uid, fromday:fromday, untilday: untilday}, _getRoomsForTimespan);
     } else {
         disableDumCheckbox(jQuery("#obj_cely_dum_check"));
         unsetRoomsAllBooked("pokoje: pobyt musí být alespoň na jednu noc");

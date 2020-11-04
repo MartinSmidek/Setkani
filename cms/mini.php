@@ -805,7 +805,7 @@ function send_mail($reply_to, $recipient_address, $subject, $body, $gmail_sender
 
   $filePath = $tokenPathPrefix . $gmail_sender_mail . $tokenPathSuffix;
   if (!is_file($filePath) || !is_readable($filePath)) {
-    return "This email address was not authenticated to with OAuth2: " . $gmail_sender_mail;
+    return "Objednávka je platná, ale nedojde vám potvrzovací email - nebylo možné jej odeslat. Za potíže se omlouváme.";
   }
 
   try {
@@ -827,7 +827,7 @@ function send_mail($reply_to, $recipient_address, $subject, $body, $gmail_sender
       if ($refreshToken) {
         $client->fetchAccessTokenWithRefreshToken($refreshToken);
       } else {
-        return "Unable to obtain refresh token. New token must be requested using gmail_token.php";
+        return "Objednávka je platná, ale nedojde vám potvrzovací email - nebylo možné jej odeslat. Děkujeme za pochopení.";
       }
     }
 
@@ -840,10 +840,12 @@ function send_mail($reply_to, $recipient_address, $subject, $body, $gmail_sender
       $service->users_messages->send('me', $message);
       return null;
     } catch (Exception $e) {
-      return "Unable to send created email.";
+      file_put_contents("email-logs.txt", $e, FILE_APPEND);
+      return "Objednávka je platná, ale nedojde vám potvrzovací email - něco se pokazilo. Děkujeme za pochopení.";
     }
   } catch (Exception $e) {
-    return $e->getMessage();
+    file_put_contents("email-logs.txt", $e, FILE_APPEND);
+    return "Objednávka je platná, ale nedojde vám potvrzovací email - něco se pokazilo. Děkujeme za pochopení.";
   }
 }
 

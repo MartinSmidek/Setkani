@@ -493,6 +493,7 @@ function _objednavka(y, caller) {
   case 'create':{
     if ( y.ok ) {
       block_display('order', 0);
+      msg4_on(y.msg, "Objednávka byla dokončena, ale...");
     } else {
       msg4_on(y.msg, "Chyba v objednávce");
       jQuery(caller).attr("value", "Přidat objednávku.");
