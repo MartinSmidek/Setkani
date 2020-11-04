@@ -601,7 +601,6 @@ function ask(x,then,arg) {
       if ( typeof(y)==='string' )
         error("Došlo k chybě 1 v komunikaci se serverem - '"+xx.cmd+"'");
       else {
-        console.log(y);
         if ( y.error )
           Ezer.error(y.error,'C');
         if ( y.trace && Ezer.trace )
