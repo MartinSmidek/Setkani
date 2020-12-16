@@ -24,7 +24,7 @@ class Article {
         $spec= 0;     // vlákna s chráněným přístupem
         $p_show= ($show_hidden ?  '' : " AND !p.hidden").($show_deleted ? '' : " AND !p.deleted");
         $groups= $usergroups ? "AND fe_groups IN ($usergroups)" : 'AND fe_groups=0';
-        $cr= mysql_qry("
+        $cr= pdo_qry("
     SELECT p.uid,fe_groups,c.type,p.title,p.text,p.author,FROM_UNIXTIME(date),p.tags,
       p.deleted,p.hidden,fromday,untilday,FROM_UNIXTIME(fromday),id_akce,a.web_prihlasky,status,
       IF(c.tstamp>$news_time, IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),' upd',' new'),'')
@@ -37,7 +37,7 @@ class Article {
   ");
         while ( $cr && (
             list($uid,$fe_group,$type,$title,$text,$autor,$psano,$tags,$del,$hid,$uod,$udo,$od,$ida,$prihlaska,$status,$upd)
-                = mysql_fetch_row($cr)) ) {
+                = pdo_fetch_row($cr)) ) {
             $kdy= $ex= '';
             $ex.= $del ? 'd' : '';
             $ex.= $hid ? 'h' : '';

@@ -33,7 +33,7 @@ function dum_server($x) {
     // v x.form jsou předána všechna pole
     foreach($x->form as $fld=>$val) {
       if ($fld === 'uid') continue;
-      $val= trim(mysql_real_escape_string($val));
+      $val= trim(pdo_real_escape_string($val));
       if ($val=='') continue;
       if ( $fld=='rooms1' && $val=='*' ) {
         $val= select1("GROUP_CONCAT(number ORDER BY number SEPARATOR ',')",'tx_gnalberice_room',
@@ -44,7 +44,7 @@ function dum_server($x) {
     }
     $y->ok= query("INSERT INTO tx_gnalberice_order ($flds) VALUES ($vals)");
 //                                                         display("insert=$y->ok");
-    $y->order= mysql_insert_id();
+    $y->order= pdo_insert_id();
     if (!$y->ok) {
       if ($y->error) $y->error = ''; //delete, function _objednavky() is not called otherwise
       $y->msg = "Objednávku se nepodařilo dokončit.";
@@ -95,7 +95,7 @@ function dum_server($x) {
 
     if ( $x->form ) {
       foreach($x->form as $fld=>$val) {
-        $val= trim(mysql_real_escape_string($val));
+        $val= trim(pdo_real_escape_string($val));
         if ( $fld=='rooms1' && $val=='*' ) {
           $val= select1("GROUP_CONCAT(number ORDER BY number SEPARATOR ',')",'tx_gnalberice_room',
               "NOT deleted AND NOT hidden AND version=1");
@@ -177,8 +177,8 @@ function dum_form($x) {
   $spravce= $user ? access_get(1) : 0;
 
   $rooms_nums = array();
-  $res= mysql_qry("SELECT number FROM tx_gnalberice_room WHERE NOT deleted AND NOT hidden AND version=1");
-  while($row = mysql_fetch_assoc($res)) $rooms_nums[]= $row["number"];
+  $res= pdo_qry("SELECT number FROM tx_gnalberice_room WHERE NOT deleted AND NOT hidden AND version=1");
+  while($row = pdo_fetch_assoc($res)) $rooms_nums[]= $row["number"];
   $pokoje = implode("|", $rooms_nums);
 
   $dum_data_open = 0;
@@ -450,10 +450,10 @@ function mesice($path) {  trace();
   $wstates= array ();
 
   //pokoje
-  $res= mysql_qry("SELECT * FROM tx_gnalberice_room WHERE NOT deleted AND NOT hidden AND version=1 ORDER BY number");
+  $res= pdo_qry("SELECT * FROM tx_gnalberice_room WHERE NOT deleted AND NOT hidden AND version=1 ORDER BY number");
   $pokoje=array();
   $rooms_all= array();
-  while($row = mysql_fetch_assoc($res))   {
+  while($row = pdo_fetch_assoc($res))   {
     $pokoje[]= $row;
     $rooms_all[]= $row['number'];
   }
@@ -467,10 +467,10 @@ function mesice($path) {  trace();
     //$objednavky= array();
     // zjisti obsazenost a jaké jsou v daném měsíci objednávky
     $xx["$y-$m"]= (object)array('from'=>$from,'until'=>$until,'obj'=>'');
-    $cr= mysql_qry("SELECT state,rooms1,fromday,untilday,name
+    $cr= pdo_qry("SELECT state,rooms1,fromday,untilday,name
       FROM tx_gnalberice_order
       WHERE NOT deleted AND NOT hidden AND fromday<=$until AND untilday>=$from ORDER BY fromday");
-    while ( $cr && (list($state,$kolik,$fromday,$untilday,$name)= mysql_fetch_row($cr)) ) {
+    while ( $cr && (list($state,$kolik,$fromday,$untilday,$name)= pdo_fetch_row($cr)) ) {
       if ( $state > 1 ) { //jen závazné objednávky
         for ( $dd= $fromday; $dd<=$untilday; $dd= mktime(0,0,0,date("m",$dd),date("d",$dd)+1,date("Y",$dd)) ) {
           $dmy= date('d.m.y',$dd);
@@ -557,10 +557,10 @@ function mesice($path) {  trace();
 # called by ajax to give a data for certain time span
 function get_room($number) {
   if (!is_numeric($number)) return null;
-  $res= mysql_qry("SELECT * FROM tx_gnalberice_room WHERE number=$number AND NOT deleted AND NOT hidden AND version=1 LIMIT 1");
+  $res= pdo_qry("SELECT * FROM tx_gnalberice_room WHERE number=$number AND NOT deleted AND NOT hidden AND version=1 LIMIT 1");
   $pokoje=array();
   $rooms_all= array();
-  while($row = mysql_fetch_assoc($res))   {
+  while($row = pdo_fetch_assoc($res))   {
     $pokoje[]= $row;
     $rooms_all[]= $row['number'];
     $etage= $row['etage']+254;
@@ -577,10 +577,10 @@ function get_days_data($uid, $from, $until) {
   $worders= array ();
 
   //pokoje
-  $res= mysql_qry("SELECT * FROM tx_gnalberice_room WHERE NOT deleted AND NOT hidden AND version=1 ORDER BY number");
+  $res= pdo_qry("SELECT * FROM tx_gnalberice_room WHERE NOT deleted AND NOT hidden AND version=1 ORDER BY number");
   $pokoje=array();
   $rooms_all= array();
-  while($row = mysql_fetch_assoc($res))   {
+  while($row = pdo_fetch_assoc($res))   {
     $pokoje[]= $row;
     $rooms_all[]= $row['number'];
   }
@@ -588,11 +588,11 @@ function get_days_data($uid, $from, $until) {
   $uid = isset($uid) && is_numeric($uid) ? (int)$uid : 0;
   $cond = $uid <= 0 ? "" : " AND uid<>$uid ";
 
-  $cr= mysql_qry("
+  $cr= pdo_qry("
       SELECT state,rooms1,uid,fromday,untilday,name,note
       FROM tx_gnalberice_order
       WHERE NOT deleted AND NOT hidden AND untilday>=$from AND $until>=fromday $cond ORDER BY fromday");
-  while ( $cr && (list($state,$kolik,$obj,$fromday,$untilday,$name,$note)= mysql_fetch_row($cr)) ) {
+  while ( $cr && (list($state,$kolik,$obj,$fromday,$untilday,$name,$note)= pdo_fetch_row($cr)) ) {
     for ( $dd= $fromday; $dd<=$untilday; $dd= mktime(0,0,0,date("m",$dd),date("d",$dd)+1,date("Y",$dd)) ) {
       $dmy= date('d.m.y',$dd);
       if ($state < 2) {

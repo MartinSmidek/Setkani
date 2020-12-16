@@ -190,10 +190,10 @@ function db_transform($par) {
 # ASK - drop all tables from db setkani4
 function db_drop_tables_but($db,$but_tables='') {
   $but= explode(',',$but_tables); 
-  $cr= mysql_qry("
+  $cr= pdo_qry("
     SELECT table_name FROM information_schema.columns WHERE table_schema='$db' GROUP BY table_name
   ");
-  while ( $cr && (list($table)= mysql_fetch_row($cr)) ) {
+  while ( $cr && (list($table)= pdo_fetch_row($cr)) ) {
     if ( !in_array($table,$but)) {
       query("DROP TABLE $db.`$table`");
     }
@@ -222,13 +222,13 @@ function admin_report($par) { trace();
   $html= "";
   switch ($par->cmd) {
   case 'me_login':
-    $cr= mysql_qry("
+    $cr= pdo_qry("
       SELECT day,time,msg
       FROM setkani._touch
       WHERE module='chlapi.onlin' AND menu='me_login'
       ORDER BY day DESC, time desc
     ");
-    while ( $cr && (list($day,$time,$msg)= mysql_fetch_row($cr)) ) {
+    while ( $cr && (list($day,$time,$msg)= pdo_fetch_row($cr)) ) {
       $html.= "$day $time $msg<br>";
     }
     break;
@@ -301,7 +301,7 @@ function admin_web($typ,$uid=0) { trace();
     foreach ($def_block as $ref=>$def) {
       $def= explode(':',$def);
       $def= array_map(trim,$def);
-      $def= array_map(mysql_real_escape_string,$def);
+      $def= array_map(pdo_real_escape_string,$def);
       list($typ_bloku,$mid,$site,$mref,$context,$nazev,$next,$default,$elems,$title)= $def;
       $mref= str_replace($letos,'Y',$mref);
       if ( $typ_bloku=='sm' ) continue;
@@ -316,7 +316,7 @@ function admin_web($typ,$uid=0) { trace();
           $def2= $def_block[$ref2];
           $def= explode(':',$def2);
           $def= array_map(trim,$def);
-          $def= array_map(mysql_real_escape_string,$def);
+          $def= array_map(pdo_real_escape_string,$def);
           list($typ_bloku,$mid2,$site,$mref,$context,$nazev,$next,$default,$elems,$title)= $def;
           $mids.= "$delm$mid2"; $delm= ',';
           $mref= str_replace($letos,'Y',$mref);
@@ -366,14 +366,14 @@ function admin_web($typ,$uid=0) { trace();
     break;
 
 //  case 'web_reconstr_1': // ---------------------------------------------- definice fe_groups
-//    $cr= mysql_qry("
+//    $cr= pdo_qry("
 //      SELECT g.uid,c.uid,g.fe_group,c.fe_groups
 //      FROM tx_gncase AS c
 //      JOIN pages AS g ON g.uid=c.pid
 //      WHERE g.fe_group>0 AND !g.hidden AND !g.deleted AND g.fe_group!=c.fe_groups
 //      ORDER BY g.uid
 //    ");
-//    while ( $cr && (list($pid,$cid,$fe_group,$fe_groups)= mysql_fetch_row($cr)) ) {
+//    while ( $cr && (list($pid,$cid,$fe_group,$fe_groups)= pdo_fetch_row($cr)) ) {
 //      $h.= "$pid,$cid,$fe_group,$fe_groups<br>";
 //      query("UPDATE tx_gncase SET fe_groups=$fe_group WHERE uid=$cid");
 //    }
@@ -574,7 +574,7 @@ function admin_web($typ,$uid=0) { trace();
     $p_show= ($show_hidden ?  '' : " AND !p.hidden").($show_deleted ? '' : " AND !p.deleted");
     global $userid;
     $spec_user= $userid ? "IF(ids_osoba,FIND_IN_SET($userid,ids_osoba),1)" : "!ids_osoba";
-    $cr= mysql_qry("
+    $cr= pdo_qry("
       SELECT p.uid, c.uid, fe_groups, tags, p.title, text, p.deleted, p.hidden, FROM_UNIXTIME(p.tstamp)
       FROM setkani4.tx_gncase AS c
       JOIN setkani4.tx_gncase_part AS p ON p.cid=c.uid
@@ -585,7 +585,7 @@ function admin_web($typ,$uid=0) { trace();
       ORDER BY p.tstamp DESC
     ");
     while ( $cr && (
-      list($p_uid,$cid,$fe_group,$tags,$title,$text,$del,$hid,$chng)= mysql_fetch_row($cr)) ) {
+      list($p_uid,$cid,$fe_group,$tags,$title,$text,$del,$hid,$chng)= pdo_fetch_row($cr)) ) {
       $tags.= $del ? 'd' : '';
       $tags.= $hid ? 'h' : '';
       $text= web_text($text);
@@ -737,7 +737,7 @@ function cms_report($par) { debug($par,'log_report');
   case 'obsah':    // -------------------------------------- obsah
     $dnu= $par->days;
     $html.= "<dl>";
-    $cr= mysql_qry("
+    $cr= pdo_qry("
       SELECT fe_user,LEFT(MAX(datetime),16),
         GROUP_CONCAT(DISTINCT LEFT(action,1) ORDER BY action) AS _jak,
         uid_menu,uid_case,uid_part,CONCAT(firstname,' ',name),COUNT(*) AS _krat,message
@@ -748,7 +748,7 @@ function cms_report($par) { debug($par,'log_report');
       ORDER BY datetime DESC
     ");
     while ( $cr && (list($kdo,$kdy,$_jak,$mid,$cid,$pid,$username,$krat,$path)
-        = mysql_fetch_row($cr)) ) {
+        = pdo_fetch_row($cr)) ) {
       $jak= '';
       foreach (explode(',',$_jak) as $j) {
         $jak.= $j=='U' ? ' úprava' : (
@@ -845,9 +845,9 @@ function cms_table_load($cid) {
   $stamp= select("timestamp","gnucast","datum='$den' AND skupina='maximum'");
   if ( !$stamp ) { $err= "tabulka pro den=$den v gnucast neexistuje"; goto end; }
   // přečtení tabulky jako gnucast.datum=den
-  $tr= mysql_qry("
+  $tr= pdo_qry("
     SELECT COUNT(*),skupina,MAX(poradi) FROM gnucast WHERE datum='$den' GROUP BY skupina");
-  while ( $tr && (list($pocet,$nazev,$maxim)= mysql_fetch_row($tr)) ) {
+  while ( $tr && (list($pocet,$nazev,$maxim)= pdo_fetch_row($tr)) ) {
     if ( $nazev!='maximum' ) {
       $ret->rows[]= (object)array('nazev'=>$nazev,'maxim'=>$maxim,'pocet'=>$pocet-1);
     }
@@ -871,9 +871,9 @@ function cms_table_change($cid,$rows) {
   $stamp= select("timestamp","gnucast","datum='$den' AND skupina='maximum'");
   if ( !$stamp ) { $err= "tabulka pro den=$den v gnucast neexistuje"; goto end; }
   // přečtení tabulky jako gnucast.datum=den
-  $tr= mysql_qry("
+  $tr= pdo_qry("
     SELECT skupina,MAX(poradi) FROM gnucast WHERE timestamp=$stamp GROUP BY skupina");
-  while ( $tr && (list($nazev,$maxim)= mysql_fetch_row($tr)) ) {
+  while ( $tr && (list($nazev,$maxim)= pdo_fetch_row($tr)) ) {
     $max[$nazev]= $maxim;
   }
   // úprava změněných maxim a názvů dat tabulky v gnucast, přidání či ubrání řádků
@@ -923,7 +923,7 @@ function cms_table_create($cid,$rows) {
   $stamp= time();
   query("INSERT INTO setkani4.tx_gncase_part (cid,tags,author,date,tstamp)
     VALUES ($cid,'T','$autor',UNIX_TIMESTAMP(),$stamp)");
-  $pid= mysql_insert_id();
+  $pid= pdo_insert_id();
   // vytvoření tabulky jako gnucast.datum=den
   query("INSERT INTO gnucast(cid,datum,skupina,timestamp) VALUES ($cid,'$den','maximum',$stamp)");
   foreach ($rows as $row) {

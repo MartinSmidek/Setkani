@@ -56,9 +56,9 @@ function menu_tree($wid) {
         )
       )
     );    
-  $mn= mysql_qry("SELECT * FROM tx_gnmenu WHERE wid=$wid ORDER BY typ,mid_top,mid",
+  $mn= pdo_qry("SELECT * FROM tx_gnmenu WHERE wid=$wid ORDER BY typ,mid_top,mid",
       0,0,0,'setkani');
-  while ( $mn && ($m= mysql_fetch_object($mn)) ) {
+  while ( $mn && ($m= pdo_fetch_object($mn)) ) {
     $mid= $m->mid;
     $mid_top= $m->mid_top;
     $typ= $m->typ;
@@ -197,7 +197,7 @@ function barva_programu_z_cisla($pro_koho) {
 # seřadí články na stránce podle abecedy
 function seradit($ids,$typ) {
   $sorting= 0;
-  $rc= mysql_qry(
+  $rc= pdo_qry(
     $typ=='knihy' ? "
       SELECT c.uid
       FROM setkani4.tx_gncase AS c
@@ -211,7 +211,7 @@ function seradit($ids,$typ) {
       WHERE !c.deleted AND !c.hidden AND c.pid IN ($ids)
       ORDER BY p.title DESC" : ''
   ));
-  while ( $rc && (list($uid)= mysql_fetch_row($rc)) ) {
+  while ( $rc && (list($uid)= pdo_fetch_row($rc)) ) {
     $sorting++;
     query("UPDATE setkani4.tx_gncase SET sorting=$sorting WHERE uid=$uid");
   }
@@ -278,7 +278,7 @@ function ip_watch(&$my_ip,$log=0) {
     $browser= $_SERVER['HTTP_USER_AGENT'];
     $qry= "INSERT _touch (day,time,user,module,menu,msg)
            VALUES ('$day','$time','','error','ip?','|$my_ip||$browser')";
-    $res= mysql_query($qry);
+    $res= pdo_query($qry);
   }
   return $ip_ok;
 }
@@ -561,8 +561,8 @@ end:
 # uid určuje složku
 function corr_fotky($uid) { trace();
   global $ezer_path_root;
-  $tr= mysql_qry("SELECT uid,text FROM tx_gncase_part WHERE cid=$uid AND tags='F'");
-  while ( $tr && (list($uid,$text)= mysql_fetch_row($tr)) ) {
+  $tr= pdo_qry("SELECT uid,text FROM tx_gncase_part WHERE cid=$uid AND tags='F'");
+  while ( $tr && (list($uid,$text)= pdo_fetch_row($tr)) ) {
     $path= "$ezer_path_root/fileadmin/photo/$uid";
     $msg= "<br>$uid: $path ";
     if ( file_exists($path) ) {
@@ -727,19 +727,19 @@ function note_fotky($uid,$foto0,$note) {
 # přidání fotek - pokud je definováno x.kapitola pak pod příslušné part - jinak na konec
 function create_fotky($x) {
   $cid= $x->cid;
-  $autor= mysql_real_escape_string($x->autor);
-  $nadpis= mysql_real_escape_string($x->nadpis);
+  $autor= pdo_real_escape_string($x->autor);
+  $nadpis= pdo_real_escape_string($x->nadpis);
   $kapitola= $x->kapitola;
   query("INSERT INTO setkani4.tx_gncase_part (cid,kapitola,tags,author,title,text,date,tstamp)
          VALUES ($cid,'$kapitola','F','$autor','$nadpis','',UNIX_TIMESTAMP(),UNIX_TIMESTAMP())");
-  $uid= mysql_insert_id();
+  $uid= pdo_insert_id();
   return $uid;
 }
 # ----------------------------------------------------------------------------------==> . save fotky
 function save_fotky($x,$perm) {
   $uid= $x->uid;
-  $autor= mysql_real_escape_string($x->autor);
-  $nadpis= mysql_real_escape_string($x->nadpis);
+  $autor= pdo_real_escape_string($x->autor);
+  $nadpis= pdo_real_escape_string($x->nadpis);
   $psano= sql_date1($x->psano,1);
   $text= select('text',"setkani4.tx_gncase_part","uid='$uid'");
   // přeskládání textu podle order
@@ -1057,9 +1057,9 @@ function tabulka($cid,$day) { trace();
   global $CMS, $href0, $clear, $fe_user, $fe_host;
   $skup= $tab= array();  // tab: [skup][poradi] poradi=0 => max, poradi>0 => jméno
   $maximum= 0;
-  $tr= mysql_qry("SELECT skupina,jmeno,poradi FROM setkani4.gnucast
+  $tr= pdo_qry("SELECT skupina,jmeno,poradi FROM setkani4.gnucast
     WHERE datum='$day' ORDER BY skupina,poradi,gnucast");
-  while ( $tr && (list($skupina,$jmeno,$poradi)= mysql_fetch_row($tr)) ) {
+  while ( $tr && (list($skupina,$jmeno,$poradi)= pdo_fetch_row($tr)) ) {
     if ( $skupina=='maximum' )    { $maximum= max($maximum,$poradi); continue; }
     if ( !isset($tab[$skupina]) ) { $skup[]= $skupina; $tab[$skupina]= array(0); }
     if ( $jmeno=='max' )          { $tab[$skupina][0]= $poradi; $maximum= max($maximum,$poradi); continue; }
@@ -1274,8 +1274,8 @@ function mapa2_psc($psc,$obec,$psc_as_id=0) {
     $p= trim($p);
     if ( preg_match('/\d\d\d\d\d/',$p) ) {
       $qs= "SELECT psc,lat,lng FROM psc_axy WHERE psc='$p'";
-      $rs= mysql_qry($qs);
-      if ( $rs && ($s= mysql_fetch_object($rs)) ) {
+      $rs= pdo_qry($qs);
+      if ( $rs && ($s= pdo_fetch_object($rs)) ) {
         $n++;
         $o= isset($obec[$p]) ? $obec[$p] : $p;
         $title= str_replace(',','',"$o:$tit");
@@ -1552,13 +1552,13 @@ function server($x) {  trace();
     $totrace= 'M';
     ezer_connect('setkani4');
     $y->abstrakt= array();
-    $cr= mysql_qry("
+    $cr= pdo_qry("
       SELECT p.title, text
       FROM tx_gncase AS c
       JOIN tx_gncase_part AS p ON p.cid=c.uid
       WHERE !c.deleted AND !c.hidden AND c.uid IN ({$x->ids})
       ORDER BY c.sorting DESC,c.uid DESC");
-    while ( $cr && (list($title,$text)= mysql_fetch_row($cr)) ) {
+    while ( $cr && (list($title,$text)= pdo_fetch_row($cr)) ) {
       $text= x_shorting($text);
       // překlad na globální odkazy
       $text= preg_replace("/(src|href)=(['\"])fileadmin/","$1=$2$fileadmin",$text);
@@ -1608,13 +1608,13 @@ function server($x) {  trace();
     $y->akce= array();
                                                   display("servant:kalendar");
     ezer_connect('ezer_db2');
-    $tr= mysql_qry("
+    $tr= pdo_qry("
       SELECT access,nazev,misto,datum_od,datum_do,web_anotace,web_url,web_obsazeno
       FROM ezer_db2.akce
       WHERE web_kalendar=1 AND datum_od>NOW()
       ORDER BY datum_od
     ");
-    while ($tr && list($org,$nazev,$misto,$od,$do,$anotace,$url,$obsazeno)= mysql_fetch_row($tr)) {
+    while ($tr && list($org,$nazev,$misto,$od,$do,$anotace,$url,$obsazeno)= pdo_fetch_row($tr)) {
       $oddo= datum_oddo($od,$do);
       $akce= array('od'=>$od, 'org'=>$org, 'nazev'=>$nazev, 'misto'=>$misto, 'url'=>$url, 
           'oddo'=>$oddo, 'anotace'=>$anotace, 'obsazeno'=>$obsazeno);
@@ -1631,14 +1631,14 @@ function server($x) {  trace();
     error_reporting(E_ALL ^ E_NOTICE);
     $roky= '';
     ezer_connect('setkani4');
-    $tr= mysql_qry("
+    $tr= pdo_qry("
       SELECT GROUP_CONCAT(DISTINCT YEAR(FROM_UNIXTIME(c.untilday)) ORDER BY c.untilday)
       FROM setkani4.tx_gncase AS c
       JOIN setkani4.tx_gncase_part AS p ON p.cid=c.uid
       -- JOIN setkani.pages AS g ON c.pid=g.uid
       WHERE !c.deleted AND !c.hidden AND fe_groups=6
     ");
-    list($roky)= mysql_fetch_row($tr);
+    list($roky)= pdo_fetch_row($tr);
     $y->ip= ip_get();
     $y->roky= $roky;
     $y->trace= $trace;

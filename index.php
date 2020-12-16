@@ -29,10 +29,11 @@ if ( !count($_POST) && isset($_SESSION['cms']['user_id']) && $_SESSION['cms']['u
 // -------------------- nový web
 
 $FREE= 0; // ponechává lokální odkazy na obrázky
-$kernel= "ezer".(isset($_GET['ezer'])?$_GET['ezer']: '3.1'); 
+$kernel= "ezer3.1"; 
 
 if ( $kernel=='ezer3.1' ) {
   require_once("$kernel/mysql.inc.php"); // nastavení const EZER_PDO_PORT=1;
+//  require_once("$kernel/pdo.inc.php"); // nastavení const EZER_PDO_PORT=2;
   require_once("$kernel/server/ezer_pdo.php");
 }
 
@@ -41,7 +42,7 @@ require_once("cms/web_fce.php");
 require_once("cms/mini.php");
 
 // on-line přihlášky
-$cms_root= $kernel=='ezer2.2' ? 'ezer3' : 'ezer3.1';
+$cms_root= 'ezer3.1';
 require_once("cms/cms.par.php");
 require_once("$cms_root/server/ezer_cms3.php");
 

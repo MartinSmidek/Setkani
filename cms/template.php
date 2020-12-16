@@ -8,13 +8,13 @@ function def_menu($from_table=false) { trace();
   $letos= date('Y');
   if ( $from_table ) {
     $def_block= array();
-    $mn= mysql_qry("
+    $mn= pdo_qry("
       SELECT mid,ref,typ,site,mref,event,nazev,next,val,elem,title 
       FROM tx_gnmenu WHERE wid=1 ORDER BY mid
     ");
     while ($mn && (
         list($mid,$ref,$typ,$site,$mref,$event,$nazev,$next,$val,$elems,$title)
-            = mysql_fetch_array($mn))) {
+            = pdo_fetch_array($mn))) {
       list($ref1,$ref2)= explode('!',$ref);
       $ref= $ref2 ? $ref2 : $ref1;
       $def_block[$ref]= "$typ:$mid:$site:$mref:$event:$nazev:$next:$val:$elems:$title";
@@ -208,7 +208,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       if ( $i!=6 ) $_komu[$i]= $ii;
     }
     $test= $path[$last-1]=='case' ? "c.uid=$id" : "p.uid=$id";
-    $rr= mysql_qry("
+    $rr= pdo_qry("
     SELECT cid, p.uid, LEFT(FROM_UNIXTIME(fromday),10) AS _od, program,
       CASE WHEN LEFT(FROM_UNIXTIME(untilday),10)>=LEFT(NOW(),10) THEN 'bude' $when
       ELSE '' END
@@ -216,7 +216,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
     JOIN setkani4.tx_gncase AS c ON p.cid=c.uid
     WHERE $test
   ");
-    list($cid,$pid,$od,$kdo,$kdy)= mysql_fetch_row($rr);
+    list($cid,$pid,$od,$kdo,$kdy)= pdo_fetch_row($rr);
     $komu= $del= '';
     if ( $kdo ) {
       foreach (explode(',',$kdo) as $p) {
@@ -548,10 +548,10 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         break;
 
       case 'single':
-        $id= mysql_real_escape_string(array_shift($path));
+        $id= pdo_real_escape_string(array_shift($path));
         if (is_numeric($id)) {
-          $qry = mysql_qry("SELECT cid FROM setkani4.tx_gncase_part WHERE uid=$id LIMIT 1");
-          while ($qry && (list($cid) = mysql_fetch_array($qry))) {
+          $qry = pdo_qry("SELECT cid FROM setkani4.tx_gncase_part WHERE uid=$id LIMIT 1");
+          while ($qry && (list($cid) = pdo_fetch_array($qry))) {
             $body .= vlakno($cid, 'clanek', '', true);
             break 2;
           }
@@ -1316,9 +1316,9 @@ function timeline()
           AND tags='A'
         ORDER BY fromday, untilday
       ";
-  $cr = mysql_qry($qry);
+  $cr = pdo_qry($qry);
   $max_date = 0;
-  while ($cr && (list($p_uid, $cid, $title, $text, $uod, $udo, $program, $ida, $status) = mysql_fetch_row($cr))) {
+  while ($cr && (list($p_uid, $cid, $title, $text, $uod, $udo, $program, $ida, $status) = pdo_fetch_row($cr))) {
     $text = x_shorting($text);
     $max_date = max($max_date, $udo);
     $xx[$cid] = (object)array('ident' => $p_uid, 'od' => $uod, 'do' => $udo, 'nadpis' => $title,
@@ -1401,7 +1401,7 @@ function footer() {
   trace();
   $contacts = '';
   $organizations = '';
-  $query = mysql_qry("
+  $query = pdo_qry("
     SELECT title, text, part
     FROM setkani4.footer
     ORDER BY part, sorting DESC
@@ -1414,7 +1414,7 @@ function footer() {
           ],arguments[0],'page_footer_info');return false;\""
       : '';
   
-  while ( $query && (list($title, $text, $part) = mysql_fetch_row($query)) ) {
+  while ( $query && (list($title, $text, $part) = pdo_fetch_row($query)) ) {
     $text= preg_replace("/{(.*)}/","<i class='fa fa-$1'></i>",$text);
     if ($part == 'C') {
       $contacts .= "<div class='tile'><h3>$title</h3>$text</div>";
@@ -1451,7 +1451,7 @@ function home() { trace();
   $xx= array();
   $p_show= ($show_hidden ?  '' : " AND !p.hidden").($show_deleted ? '' : " AND !p.deleted");
   if ( !$news_time ) $news_time= time() - 1 * 24*60*60;
-  $cr= mysql_qry("
+  $cr= pdo_qry("
     SELECT p.pid, p.uid, p.cid, c.mid, m.ref, m.mref, c.type, p.homepage, p.title, p.text, p.abstract,
       c.fromday, c.untilday, c.program, p.id_akce, a.web_prihlasky, p.status, tags,
       IF(c.tstamp>$news_time,IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),' upd',' new'),''),
@@ -1475,7 +1475,7 @@ function home() { trace();
 
   $num_of_present_articles = 0;
   while ($cr && (list($page,$uid,$cid,$mid,$ref,$mref,$type,$home,$title,$text,
-          $abstract,$uod,$udo,$program,$ida,$prihlaska,$status,$tags,$upd,$rok)= mysql_fetch_row($cr))) {
+          $abstract,$uod,$udo,$program,$ida,$prihlaska,$status,$tags,$upd,$rok)= pdo_fetch_row($cr))) {
     //if ($status==1) continue; //zruseno
 
     $kdy= '';
@@ -1639,9 +1639,9 @@ function clanky($pids,$uid=0,$mid=0,$chlapi='',$back='') { trace();
       AND $spec_user 
     GROUP BY c.uid    
     ORDER BY $ORDER";
-  $cr= mysql_qry($cq);
+  $cr= pdo_qry($cq);
   while ( $cr && (list($p_uid,$cid,$fe_group,$tags,$type,$title,$text,$abstr,$del,$hid,$upd,$ds,$fs)
-          = mysql_fetch_row($cr)) ) {
+          = pdo_fetch_row($cr)) ) {
     $tags= $del ? 'd' : '';
     $tags.= $hid ? 'h' : '';
     $flags= ($ds ? 'D' : '').($fs ? 'F' : '');
@@ -1763,12 +1763,12 @@ function save_clanek($x,$uid,$ref='') { trace(); //debug($x,"save_clanek");
   foreach ($x as $elem=>$val) {
     switch ($elem) {
       // změny podstatné pro klienty
-      case 'autor':       $part[]= "author='".mysql_real_escape_string($val)."'"; break;
-      case 'nadpis':      $part[]= "title='".mysql_real_escape_string($val)."'"; break;
-      case 'obsah':       $part[]= "text='".mysql_real_escape_string($val)."'"; break;
+      case 'autor':       $part[]= "author='".pdo_real_escape_string($val)."'"; break;
+      case 'nadpis':      $part[]= "title='".pdo_real_escape_string($val)."'"; break;
+      case 'obsah':       $part[]= "text='".pdo_real_escape_string($val)."'"; break;
       case 'abstract':    //check whether abstract filled in (database had abstract fields with '&nbsp;' content only)
         if (strlen($val) < 20) $part[]= "$elem=''";
-        else  $part[]= "$elem='".mysql_real_escape_string($val)."'";
+        else  $part[]= "$elem='".pdo_real_escape_string($val)."'";
         break;
       case 'id_akce':     $part[]= "id_akce='$val'"; break;
       case 'od':          $case[]= "fromday=UNIX_TIMESTAMP('".sql_date1($val,1)."')"; break;
@@ -1833,10 +1833,10 @@ function create_clanek($x,$ref) { //$pid,$autor,$nadpis,$obsah,$psano) { trace()
   $mid= $x->mid;
   $type=$x->ctype;
   $cruser_id= $x->cruser_id;
-  $autor= mysql_real_escape_string($x->autor);
-  $nadpis= mysql_real_escape_string(web_text($x->nadpis));
-  $obsah= mysql_real_escape_string(web_text($x->obsah));
-  $abstract= mysql_real_escape_string(web_text($x->abstract));
+  $autor= pdo_real_escape_string($x->autor);
+  $nadpis= pdo_real_escape_string(web_text($x->nadpis));
+  $obsah= pdo_real_escape_string(web_text($x->obsah));
+  $abstract= pdo_real_escape_string(web_text($x->abstract));
   $f_od= $f_do= $v_od= $v_do= '';
   $od= $do= 0;
   if ( $x->od ) {
@@ -1857,11 +1857,11 @@ function create_clanek($x,$ref) { //$pid,$autor,$nadpis,$obsah,$psano) { trace()
   query("INSERT INTO setkani4.tx_gncase (pid,mid,crdate$f_od$f_do,program,cruser_id,type,sorting,fe_groups)
          VALUES($pid,$mid,UNIX_TIMESTAMP('$psano')$v_od$v_do,
            '$program','$cruser_id','$type','$sorting','$pro')");
-  $cid= mysql_insert_id();
+  $cid= pdo_insert_id();
   query("INSERT INTO setkani4.tx_gncase_part (pid,cid,tags,author,title,text,abstract,kapitola,date,
       tstamp,cruser_id) VALUES ($pid,$cid,'A','$autor','$nadpis','$obsah','$abstract','$kapitola',
       UNIX_TIMESTAMP('$psano'),UNIX_TIMESTAMP(),$cruser_id)");
-  $uid= mysql_insert_id();
+  $uid= pdo_insert_id();
   // zápis o vložení
   $date= date('YmdHis',time());
   $ref.= "!$uid#anchor$uid";
@@ -1880,7 +1880,7 @@ function add_part($cid,$tags='D') {
   list($pid,$mid,$cruser_id)= select("pid,mid,cruser_id","setkani4.tx_gncase","uid=$cid");
   query("INSERT INTO setkani4.tx_gncase_part (pid,cid,tags,date,tstamp,cruser_id,kapitola) "
       . "VALUES ($pid,$cid,'$tags',UNIX_TIMESTAMP(),UNIX_TIMESTAMP(),$cruser_id,$kapitola)");
-  $uid= mysql_insert_id();
+  $uid= pdo_insert_id();
   // zápis o vložení
   $date= date('YmdHis',time());
   query("INSERT INTO gn_log (datetime,fe_user,action,uid_page,uid_menu,uid_case,uid_part) VALUES
@@ -1896,10 +1896,10 @@ function create_prezentace($x) { //$pid,$autor,$nadpis,$obsah,$psano) { trace();
   $mid= $x->mid;
   $type=$x->ctype;
   $cruser_id= $x->cruser_id;
-  $autor= mysql_real_escape_string($x->autor);
-  $nadpis= mysql_real_escape_string(web_text($x->nadpis));
-  $obsah= mysql_real_escape_string(web_text($x->fname));
-  $abstract= mysql_real_escape_string(web_text($x->obsah));
+  $autor= pdo_real_escape_string($x->autor);
+  $nadpis= pdo_real_escape_string(web_text($x->nadpis));
+  $obsah= pdo_real_escape_string(web_text($x->fname));
+  $abstract= pdo_real_escape_string(web_text($x->obsah));
   $psano= sql_date1($x->psano,1);
   $program= implode(',',(array)$x->program);
   $sorting= $x->sorting;
@@ -1907,11 +1907,11 @@ function create_prezentace($x) { //$pid,$autor,$nadpis,$obsah,$psano) { trace();
            type,sorting,fe_groups)
          VALUES($pid,$mid,UNIX_TIMESTAMP('$psano'),'$program','$cruser_id',
           '$type','$sorting','$pro')");
-  $cid= mysql_insert_id();
+  $cid= pdo_insert_id();
   query("INSERT INTO setkani4.tx_gncase_part (pid,cid,tags,author,title,text,abstract,date,tstamp,
       cruser_id) VALUES ($pid,$cid,'C','$autor','$nadpis','$obsah','$abstract',
       UNIX_TIMESTAMP('$psano'),UNIX_TIMESTAMP(),$cruser_id)");
-  $uid= mysql_insert_id();
+  $uid= pdo_insert_id();
   // zápis o vložení
   $date= date('YmdHis',time());
   query("INSERT INTO gn_log (datetime,fe_user,action,uid_page,uid_menu,uid_case,uid_part) VALUES
@@ -1934,10 +1934,10 @@ function create_kniha($x) { //$pid,$autor,$nadpis,$obsah,$psano) { trace();
   $mid= $x->mid;
   $type=$x->ctype;
   $cruser_id= $x->cruser_id;
-  $autor= mysql_real_escape_string($x->autor);
-  $nadpis= mysql_real_escape_string(web_text($x->nadpis));
-  $obsah= mysql_real_escape_string(web_text($x->obsah));
-  $abstract= mysql_real_escape_string(web_text($x->abstract));
+  $autor= pdo_real_escape_string($x->autor);
+  $nadpis= pdo_real_escape_string(web_text($x->nadpis));
+  $obsah= pdo_real_escape_string(web_text($x->obsah));
+  $abstract= pdo_real_escape_string(web_text($x->abstract));
   $od= sql_date1($x->od,1);
   $do= sql_date1($x->do ?: $x->od,1);
   $psano= sql_date1($x->psano,1);
@@ -1948,11 +1948,11 @@ function create_kniha($x) { //$pid,$autor,$nadpis,$obsah,$psano) { trace();
            type,sorting,fe_groups)
          VALUES($pid,$mid,UNIX_TIMESTAMP('$psano'),UNIX_TIMESTAMP('$od'),UNIX_TIMESTAMP('$do'),
            '$program','$cruser_id','$type','$sorting','$pro')");
-  $cid= mysql_insert_id();
+  $cid= pdo_insert_id();
   query("INSERT INTO setkani4.tx_gncase_part (pid,cid,tags,author,title,text,abstract,date,tstamp,
       cruser_id) VALUES ($pid,$cid,'C','$autor','$nadpis','$obsah','$abstract',
       UNIX_TIMESTAMP('$psano'),UNIX_TIMESTAMP(),$cruser_id)");
-  $uid= mysql_insert_id();
+  $uid= pdo_insert_id();
   // zápis o vložení
   $date= date('YmdHis',time());
   query("INSERT INTO gn_log (datetime,fe_user,action,uid_page,uid_menu,uid_case,uid_part) VALUES
@@ -1972,7 +1972,7 @@ function kalendare($vyber, $rok, $id, $chlapi_ignore=false) { trace();
       ? " LEFT(FROM_UNIXTIME(untilday),10)>=LEFT(NOW(),10)"
       : " (YEAR(FROM_UNIXTIME(fromday))=$rok OR YEAR(FROM_UNIXTIME(untilday))=$rok)";
   if ( !$news_time ) $news_time= time() - 1 * 24*60*60;
-  $cr= mysql_qry("
+  $cr= pdo_qry("
       SELECT p.uid, p.cid, c.type,p.title,p.text,p.author,FROM_UNIXTIME(date),p.tags,
        p.deleted,p.hidden,fromday,untilday,FROM_UNIXTIME(fromday),c.program,
        IF(c.tstamp>$news_time, IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),
@@ -1987,7 +1987,7 @@ function kalendare($vyber, $rok, $id, $chlapi_ignore=false) { trace();
   $n = 0;
   while ( $cr && (
       list($uid,$cid,$type,$title,$text,$autor,$psano,$tags,$del,$hid,$uod,$udo,$od,$program,$upd)
-          = mysql_fetch_row($cr)) ) {
+          = pdo_fetch_row($cr)) ) {
 
     if (($vyber == "dum" || $chlapi_ignore) && ($program == 3 || $program == "3")) continue;
 
@@ -2114,7 +2114,7 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
   $groups= $usergroups ? "AND fe_groups IN ($usergroups)" : 'AND fe_groups=0';
   if ( $vyber ) {
     // výběr roků podle cílové skupiny
-    $cr= mysql_qry("
+    $cr= pdo_qry("
       SELECT
         IF(LEFT(FROM_UNIXTIME(untilday),10)>=LEFT(NOW(),10),'nove',YEAR(FROM_UNIXTIME(fromday))) AS _rok,
         SUM(IF(tags='A',1,0)),
@@ -2126,7 +2126,7 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
       GROUP BY _rok
       ORDER BY _rok DESC  ");
     $counter = 1;
-    while ( $cr && (list($rok,$pocet,$upd)= mysql_fetch_row($cr)) ) {
+    while ( $cr && (list($rok,$pocet,$upd)= pdo_fetch_row($cr)) ) {
       $mark= $rok=='nove' ? 'nove' : "rok$rok";
       $novych+= $rok=='nove' ? $pocet : 0;
       $rok_display = $rok=='nove' ? '+' : $rok;
@@ -2373,9 +2373,9 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     ORDER BY fromday $ORDER
     -- LIMIT 6,2
   ";
-  $cr= mysql_qry($qry);
+  $cr= pdo_qry($qry);
   while ( $cr && (list($p_uid,$cid,$fe_group,$tags,$title,$text,$abstract,$del,$hid,$uod,$udo,$ida,$status,$prihlaska,$upd)=
-          mysql_fetch_row($cr)) ) {
+          pdo_fetch_row($cr)) ) {
     if ( $ida && !in_array($kdy,array('nove','bude','bude_alberice')) )
       $ida= 0;
     $xx_tags[$cid].= $del ? 'd' : '';
@@ -2619,7 +2619,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false, $h2titler = false) { tr
   $spec= 0;     // vlákna s chráněným přístupem
   $p_show= ($show_hidden ?  '' : " AND !p.hidden").($show_deleted ? '' : " AND !p.deleted");
   $groups= $usergroups ? "AND fe_groups IN ($usergroups)" : 'AND fe_groups=0';
-  $cr= mysql_qry("
+  $cr= pdo_qry("
     SELECT p.uid,fe_groups,c.type,p.title,p.text,p.author,FROM_UNIXTIME(date),p.tags,
       p.deleted,p.hidden,fromday,untilday,FROM_UNIXTIME(fromday),id_akce,a.web_prihlasky,status,
       IF(c.tstamp>$news_time, IF(TO_DAYS(FROM_UNIXTIME(c.tstamp))>TO_DAYS(FROM_UNIXTIME(c.crdate)),' upd',' new'),'')
@@ -2631,7 +2631,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false, $h2titler = false) { tr
   ");
   while ( $cr && (
       list($uid,$fe_group,$type,$title,$text,$autor,$psano,$tags,$del,$hid,$uod,$udo,$od,$ida,$prihlaska,$status,$upd)
-          = mysql_fetch_row($cr)) ) {
+          = pdo_fetch_row($cr)) ) {
     $kdy= $ex= '';
     $ex.= $del ? 'd' : '';
     $ex.= $hid ? 'h' : '';
@@ -2816,7 +2816,7 @@ function knihy($ids,$cpid0=0,$mid=0,$backref='') { trace();
   $AND= $mid ? "AND c.mid=$mid " : " AND c.uid=$cid0 ";
   $AND2= $usergroups ? "AND fe_groups IN ($usergroups)" : 'AND fe_groups=0';
   $xx= array();
-  $cr= mysql_qry("
+  $cr= pdo_qry("
     SELECT p.uid, c.uid, fe_groups, tags, author, p.title, text, kapitola, type
     FROM setkani4.tx_gncase AS c
     JOIN setkani4.tx_gncase_part AS p ON p.cid=c.uid
@@ -2825,7 +2825,7 @@ function knihy($ids,$cpid0=0,$mid=0,$backref='') { trace();
     ORDER BY c.sorting DESC,c.uid,p.kapitola,tags
   ");
   while ( $cr && (list($pid,$cid,$fe_group,$tags,$autor,$title,$text,$kapitola,$type)
-          = mysql_fetch_row($cr)) ) {
+          = pdo_fetch_row($cr)) ) {
     $text= web_text($text);
     if ( $chlapi_online ? $pid0_kapitola!=$kapitola : $pid!=$pid0 ) {
       $text= x_shorting($text);

@@ -15,7 +15,7 @@ function ds_platba_hosta ($cenik_roku,$polozky,$platba,$i='',$podrobne=false) {
     $platba->$celki= 0;
     foreach ( $druhy as $druh=>$prefix ) {
         $platba->$druh= 0;
-        $rc= mysql_qry("SELECT typ,cena,dph FROM ds_cena WHERE rok=$cenik_roku AND typ RLIKE '$prefix' ");
+        $rc= pdo_qry("SELECT typ,cena,dph FROM ds_cena WHERE rok=$cenik_roku AND typ RLIKE '$prefix' ");
         while ( $rc && list($typ,$cena,$dph)= pdo_fetch_row($rc) ) {
             $one->$typ+= $cena;
             list($typ_)= explode('_',$typ);
@@ -37,7 +37,7 @@ function ds_platba_hosta ($cenik_roku,$polozky,$platba,$i='',$podrobne=false) {
 function ds_cenik($rok) {  #trace('','win1250');
     global $ds_cena;
     $ds_cena= array();
-    $res2= mysql_qry("SELECT * FROM ds_cena WHERE rok=$rok");
+    $res2= pdo_qry("SELECT * FROM ds_cena WHERE rok=$rok");
     while ( $res2 && $c= pdo_fetch_object($res2) ) {
         $wc= $c;
         $wc->polozka= wu($c->polozka);
@@ -66,8 +66,8 @@ function ds_order_price_for($days, $adults, $kids15_10, $kids9_3, $kids3_0, $boa
 
     $rooms_data = (object)array();
     $rooms_nums = array();
-    $res= mysql_qry("SELECT number, beds, addbeds FROM tx_gnalberice_room WHERE NOT deleted AND NOT hidden AND version=1");
-    while($row = mysql_fetch_assoc($res)) {
+    $res= pdo_qry("SELECT number, beds, addbeds FROM tx_gnalberice_room WHERE NOT deleted AND NOT hidden AND version=1");
+    while($row = pdo_fetch_assoc($res)) {
         $rooms_data->room_{$row["number"]} = array("beds" => $row["beds"], "addbeds" => $row["addbeds"]);
         $rooms_nums[]= $row["number"];
     }
