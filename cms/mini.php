@@ -1199,9 +1199,13 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
   $y->txt = "na mailovou adresu byl odeslán PIN, zapiš jej do pole vedle adresy";
   // odeslání mailu
   if ( $_ch ) {
-    $ret = mail_send('martin@smidek.eu', $x->mail, "Přihlášení na www.$x->web ($pin)",
+    global $api_gmail_user;
+    $ret = send_mail('martin@smidek.eu', $x->mail, "Přihlášení na www.$x->web ($pin)",
         "V přihlašovacím dialogu webové stránky napiš vedle svojí mailové adresy $pin.
-        <br>Přeji Ti příjemné prohlížení, Tvůj web","chlapi.cz");
+        <br>Přeji Ti příjemné prohlížení, Tvůj web", "chlapi.cz", $api_gmail_user);
+//    $ret = mail_send('martin@smidek.eu', $x->mail, "Přihlášení na www.$x->web ($pin)",
+//        "V přihlašovacím dialogu webové stránky napiš vedle svojí mailové adresy $pin.
+//        <br>Přeji Ti příjemné prohlížení, Tvůj web","chlapi.cz");
     if ( $ret->err ) {
       $y->state = 'err';
       $y->txt = "Lituji, mail s PINem se nepovedlo odeslat ($ret->err)";
