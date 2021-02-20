@@ -1472,12 +1472,12 @@ function server($x) {  trace();
     require_once("template.php");
     ezer_connect('setkani4');
     error_reporting(E_ALL ^ E_NOTICE);
-    $fileadmin= array(
-        "http://setkani.bean:8080/fileadmin",
-        "https://www.setkani.org/fileadmin",
-        "http://setkani4.doma/fileadmin",
-        "http://setkani4.bean:8080/fileadmin"
-      )[$ezer_server];
+//    $fileadmin= array(
+//        "http://setkani.bean:8080/fileadmin",
+//        "https://www.setkani.org/fileadmin",
+//        "http://setkani4.doma/fileadmin",
+//        "http://setkani4.bean:8080/fileadmin"
+//      )[$ezer_server];
     $usergroups= $x->groups;
     $page_mref= $x->page;
     list($chlapi,$uid)= explode('!',$x->chlapi);

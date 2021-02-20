@@ -25,33 +25,19 @@ function def_menu($from_table=false) { trace();
     $def_vse= 'rodiny,manzele,chlapi,zeny,mladez';
     $def_block= array( // je používáno také fcí admin_web
       # hlavní menu    typ  i site mref             on    název             next/default       elem ...                          title
+        'ms'  => "hm:8:    :odkaz            :: Manželská setkání:::                             menu=informace_ms,galerie_ms;odkaz=".urlencode("http://xms.setkani.org").": Galerie Manželských setkání",
+        'dum'         => "hm:11:   :odkaz            :: Dům setkání:::                           menu=informace_ds,galerie_ds,chystame,objednavky,ceny,archiv;odkaz=".urlencode("http://xds.setkani.org").": Galerie Domu setkání",
         'akce'        => "hm:10:   :akce             :akce,102: Naše akce::   $def_vse:          proc=plan_rok; akce=prehled:      Akce pro rodiny, muže i ženy pořádané YMCA Setkání",
-        'dum'         => "hm:11:   :alberice/dum     ::     Dům setkání:::                       menu=alberice,informace,chystame,objednavky,ceny,archiv",
-        'foto'        => 'hm:12:   :fotogalerie      ::     Foto&shy;galerie:::                  foto:                             Fotografie z akcí YMCA Setkání',
         'libr'        => 'hm:13:   :manzelak         ::     Knihov&shy;nička:bulletin::          menu=bulletin,tance,modlitby,knihy,audio,obrazy,odkazy',
         'my'          => 'hm:14:0.9:ymca-setkani     :clanek,21:O nás:::                         mclanky;-clanky=21,15,13,284,287,263:      Informace o YMCA Setkání', //o_nas',
-//      'team'        => "hm:33:   :team             ::Tým :::                                   team:                             Informace pro tým",
-//        'a_web'       => "hm:15:   :-                ::web/admin:::                              menu=a_zmeny,a_odkazy,a_reconstr,a_sitemap",
-//        'a_old'       => "hm:37:   :-                ::web/oldies:::                             menu=a_ys,a_ms,a_ds,a_lb,a_ch,a_us,a_wb,a_ja,a_my",
-//        'a_online'    => 'hm:16:   :-             :clanek,324:chlapi.online:::                mclanky;-clanky=324:              Články na server chlapi.online',
-//      # Web
-//        'a_zmeny'     => 'sm:17:   :-                ::   změny obsahu:::                        web_zmeny',
-//        'a_odkazy'    => 'sm:18:   :-                ::   staré odkazy:::                        web_odkazy',
-//        'a_reconstr'  => 'sm:36:   :-                ::   rekontrukce:::                         web_reconstr',
-//        'a_sitemap'   => 'sm:19:   :-                ::   sitemap.xml:::                         web_sitemap',
-//        'a_ys'        => "sm:38:   :-                ::YS:::                                     mclanky;-clanky=12,14,16,17,20,246,323",
-//        'a_ms'        => "sm:41:   :-                ::MS:::                                     mclanky;-clanky=72,198,260,303",
-//        'a_ds'        => "sm:40:   :-                ::DS:::                                     mclanky;-clanky=259,108,131,132,236",
-//        'a_lb'        => "sm:45:   :-                ::LIB:::                                    mclanky;-clanky=313",
-//        'a_ch'        => "sm:44:   :-                ::CH:::                                     mclanky;-clanky=239,249,262,319,321",
-//        'a_us'        => "sm:43:   :-                ::U.S:::                                    mclanky;-clanky=237",
-//        'a_wb'        => "sm:42:   :-                ::WEB:::                                    mclanky;-clanky=251,304,264,245,244,209,210,211,213,215,216,217,219,229",
-//        'a_ja'        => "sm:39:   :-                ::MŠ:::                                     mclanky;-clanky=317,311,308,261,291,293,295,294,300,301,302,309,310",
-//        'a_my'        => "sm:46:   :-                ::ROD:::                                    mclanky;-clanky=316",
+      # Manželská setkání
+        'galerie_ms'  => "sm:51:0.9:odkaz            :: Galerie:::           odkaz=".urlencode("http://xms.setkani.org/galerie/").": Fotogalerie Manželských setkání",
+        'informace_ms'=> "sm:52:0.9:odkaz            :: Informace:::         odkaz=".urlencode("http://xms.setkani.org/informace/").": Fotogalerie Domu setkání",
       # Dům setkání
-        'alberice'    => 'sm:20:0.9:alberice/dum     :clanek,37: Dům Setkání:::                  mclanky;:                         Dům setkání',
-        'informace'   => "sm:47:0.9:alberice/informace :clanek,37: Informace :::                 mclanky;:                        Informace k Domu Setkání",
-        'chystame'    => "sm:21:0.9:alberice/akce    :akce,222: Akce v Domě::  $def_vse:        proc=aplan; akce=bude:            Akce v Domě setkání",
+//      'alberice'    => 'sm:20:0.9:alberice/dum     :clanek,37: Dům Setkání:::                  mclanky;:                         Dům setkání',
+        'informace_ds'=> "sm:47:0.9:odkaz            :: Informace:::                             odkaz=".urlencode("http://xds.setkani.org/informace/").": Informace k Domu Setkání",
+        'galerie_ds'  => "sm:21:0.9:odkaz            :: Galerie:::                               odkaz=".urlencode("http://xds.setkani.org/galerie/").": Fotogalerie Domu setkání",
+        'chystame'    => "sm:21:0.9:alberice/akce    :akce,222: Akce v Domě::  $def_vse:         proc=aplan; akce=bude:            Akce v Domě setkání",
         'objednavky'  => 'sm:23:0.8:alberice/objednavky::        Objed&shy;návky:::              dum:                              Objednávky pobytů v Domě setkání',
         'ceny'        => 'sm:24:0.8:alberice/ceny    ::          Ceny:::                         vlakno=51:                        Ceny služeb Domu setkání',
         'archiv'      => "sm:22:   :alberice/$letos  ::          Prožili jsme:::                 akce=aprehled:                    Archiv akcí v Domě setkání",
@@ -68,15 +54,6 @@ function def_menu($from_table=false) { trace();
         'hledej'    =>   'tm:34:     :hledej         ::<i class="fa fa-search"></i>:::           search:                           Hledej',
         'clanek'      => ':99:   :-                ::-:::                                        single:                           ',
     );
-//    $def_mid= array();  // vznikne transformací i => mref
-//    $def_mref= array(); // vznikne transformací mref => id
-//    foreach ($def_block as $ref=>$def) {
-//      list($typ_bloku,$mid,$site,$mref)= explode(':',$def);
-//      $mref= trim($mref);
-//      if ( $mref=='-' ) continue;
-//      $def_mid[$mid]= $mref;
-//      $def_mref[$mref]= $ref;
-//    }
   }
 }
 # --------------------------------------------------------------------------------------==> page
@@ -185,7 +162,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       )
   );
 # zobrazíme topmenu a hlavní menu, přitom zjistíme případné doplnění cesty a její správnost
-  $topmenu= $mainmenu1= $submenu= $submenu_komu= $mainmenu2= $page= $elems= $mid= $pars= $web_banner= '';
+  $topmenu= $submenu_komu= $mainmenu= $mobile_mainmenu= $page= $elems= $mid= $pars= $web_banner= '';
   $page_ok= false;        // je dobře definovaná aktivní stránka
 //                                                         debug($path,"před corr");
 # ---------------------------------------------------------------- . test pro explicitně udaný part
@@ -255,7 +232,9 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
   if (!isset($_COOKIE['akce']) || strlen($_COOKIE['akce']) < 3) {
     setcookie('akce', 'rodiny,manzele,chlapi,zeny,mladez');
   }
-  $do_menu2 = false; //whether the menu should be placed into _1 or _2 variable
+
+  $mainmenu = "<ul class='menu_hm'>";
+  $mobile_mainmenu = "<ul class='menu_hm'><li></li>";
   foreach ($def_block as $ref=>$def) {
     list($typ_bloku,$mid1,$site,$mref,$context,$nazev,$next,$default1,$elems1,$title1)= explode(':',$def);
     // UPD se uplatní pouze pokud je aspoň o den větší než NEW
@@ -321,34 +300,16 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       else {
         $cont= $mref;
       }
-//     if ( $ref=='akce' && !$CMS ) {
-//       $cookie1= isset($_COOKIE[$ref]) && $_COOKIE[$ref] ? '!'.urldecode($_COOKIE[$ref]) : '';
-//       $cont= $cookie1 ?: $default1;
-//       $cont= $mref= str_replace('!','',$cont);
-//                                                 display("Cookie[$ref]=$cookie1 ... $default1 ... $cont");
-//     }
-//     else {
-//       if ( $CMS || substr($mref,0,1)=='-' ) {
-//         $cont= $ref.($next ? "!$next" : '');
-//         $cookie= isset($_COOKIE[$ref]) ? '!'.urldecode($_COOKIE[$ref]) : '';
-//                                                 display("Cookie? $ref=$cookie");
-//         $cont.= $default1 ? ($cookie ?: '!'.$default1) : '';
-//       }
-//       else {
-//         $cont= $mref;
-//       }
-//     }
+
       $active= $path[0]==$ref ? ' active' : '';
       if ( $active ) {
         if ( $title1 ) $web_title= $title1;
         if ( $a_ref ) $a_ref.= "_active";
         if ( $mref=='akce' ) $web_akce= 'akce';
-        $page= $ref;
         $elems= $elems1;
         $mid= $mid1;
         $href0.= $ref;
         $web_banner= "web_$ref";
-//       $page_mref= $cont;
         $page_mref= $mref;
 //                                                         display("1 page_mref = $page_mref");
       }
@@ -362,7 +323,6 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
           $a_ref2= substr($ref2,0,2)=='a_' ? " admin" : '';
           $mref2= trim($mref2);
           $nazev2= "<span>$nazev2</span>";
-          $next2= str_replace(' ','',$next2);
           $default2= str_replace(' ','',$default2);
           $elems2= str_replace(' ','',$elems2);
           $active2= $path[1]==$ref2 ? ' active' : '';
@@ -371,8 +331,6 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
           if ( $active2 ) {
             if ( $title2 ) $web_title= $title2;
             if ( $a_ref2 ) $a_ref2.= "_active";
-            $page_ok= true;
-            $page= $ref2;
             $page_mref= $mref2;
             $elems= $elems2;
             $mid= $mid2;
@@ -397,14 +355,71 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
               $on_plus
             ],arguments[0]);return false;\"";
           }
-          $submenu.= $CMS || substr($mref2,0,1)=='-'
-              ? " <a onclick='go(arguments[0],\"$href{$path[0]}!$cont2\",\"/$mref2\",$input,1);' "
-              . "class='jump$active2$a_ref2$upd2'$on>$nazev2</a>"
-              : " <a href='/$mref2' class='jump$active2$upd2'>$nazev2</a>";
+
+          // if 'odkaz', create redirect href
+          if ( $mref2 == "odkaz" ) {
+            $urldata = explode('=', trim($elems2) . "=");
+            for ($i = 0; $i < count($urldata); $i += 2) {
+              if ($urldata[$i] == "odkaz") {
+                $redirect = urldecode($urldata[1]);
+                break;
+              }
+            }
+            $submenu.= $CMS || substr($mref2,0,1)=='-'
+                ? "<li><a href='$redirect' class='$a_ref2$upd2' target='_blank' $on>$nazev2</a></li>"
+                : "<li><a href='$redirect' class='$upd2'>$nazev2</a></li>";
+          } else {
+            $submenu.= $CMS || substr($mref2,0,1)=='-'
+                ? "<li><a onclick='go(arguments[0],\"$href{$path[0]}!$cont2\",\"/$mref2\",$input,1);' "
+                . "class='$active2$a_ref2$upd2'$on>$nazev2</a></li>"
+                : "<li><a href='/$mref2' class='$active2$upd2'>$nazev2</a></li>";
+          }
         }
         array_shift($path);
+      } elseif ($typ=='menu') {
+        $submenu = '';
+        if ( !$news_time ) $news_time= time() - 1 * 24*60*60;
+        foreach (explode(',',$ids) as $ref2) {
+          list($typ2,$mid2,$site2,$mref2,$context2,$nazev2,$next2,$default2,$elems2,$title2)= explode(':',$def_block[$ref2]);
+          $upd2= select1("IF(tstamp>$news_time, IF(TO_DAYS(FROM_UNIXTIME(tstamp))>TO_DAYS(FROM_UNIXTIME(crdate)),' upd',' new'),'')",
+              "tx_gnmenu","mid=$mid2");
+          $a_ref2= substr($ref2,0,2)=='a_' ? " admin" : '';
+          $mref2= trim($mref2);
+          $nazev2= "<span>$nazev2</span>";
+          # doplnění defaultní cesty
+          $cont2= $ref2;
+          $on= " oncontextmenu='return false;'";
+          // přidání kontextového menu pro přidávání aj.
+          if ( $context2 ) {
+            list($ctyp,$pgid)= explode(',',$context2);
+            $on_plus= isset($def_menu[$ref2]) ? $def_menu[$ref2] : '';
+            $on= " oncontextmenu=\"Ezer.fce.contextmenu([
+              ['{$def_on[$ctyp]}',function(el){ vytvorit('$ctyp','$pgid','$mid2'); }]
+              $on_plus
+            ],arguments[0]);return false;\"";
+          }
+
+          // if 'odkaz', create redirect href
+          if ( $mref2 == "odkaz" ) {
+            $urldata = explode('=', trim($elems2) . "=");
+            for ($i = 0; $i < count($urldata); $i += 2) {
+              if ($urldata[$i] == "odkaz") {
+                $redirect = urldecode($urldata[1]);
+                break;
+              }
+            }
+            $submenu.= $CMS || substr($mref2,0,1)=='-'
+                ? "<li><a href='$redirect' class='$a_ref2$upd2' target='_blank' $on>$nazev2</a></li>"
+                : "<li><a href='$redirect' class='$upd2'>$nazev2</a></li>";
+          } else {
+            $submenu.= $CMS || substr($mref2,0,1)=='-'
+                ? "<li><a onclick='go(arguments[0],\"$href{$path[0]}!$cont2\",\"/$mref2\",$input,1);' "
+                . "class='$a_ref2$upd2' $on>$nazev2</a></li>"
+                : "<li><a href='/$mref2' class='$upd2'>$nazev2</a></li>";
+          }
+        }
       }
-      elseif ( $active ) $page_ok= true;
+
       // přidání kontextového menu pro přidávání
       $on= " oncontextmenu='return false;'";
       if ( $context ) {
@@ -416,24 +431,44 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         ],arguments[0]);return false;\"";
       }
       if ( $cont ) {
-        $menuitem = $CMS || substr($mref,0,1)=='-'
-            ? " <a onclick='go(arguments[0],\"$href$cont\",\"/$mref\",$input,1);' "
-            . "class='jump$active$a_ref$upd1'$on>$nazev</a>"
-            : " <a href='/$mref' class='jump$active$upd1'>$nazev</a>";
-        if ($do_menu2) {
-          $mainmenu2 .= $menuitem;
+        if ( $mref == "odkaz" ) {
+          $urldata = explode('=', $elem . "=");
+          for ($i = 0; $i < count($urldata); $i += 2) {
+            if ($urldata[$i] == "odkaz") {
+              $redirect = urldecode($urldata[1]);
+              break;
+            }
+          }
+          $menuitem = $CMS || substr($mref,0,1)=='-'
+              ? " <a href='$redirect' class='jump$active$a_ref$upd1' target='_blank' $on>$nazev</ahref>"
+              : " <a href='$redirect' class='jump$active$upd1'>$nazev</a>";
         } else {
-          $mainmenu1 .= $menuitem;
+          $menuitem = $CMS || substr($mref,0,1)=='-'
+              ? " <a onclick='go(arguments[0],\"$href$cont\",\"/$mref\",$input,1);' "
+              . "class='jump$active$a_ref$upd1' $on>$nazev</a>"
+              : " <a href='/$mref' class='jump$active$upd1'>$nazev</a>";
         }
-      }
-      if ($active) {
-        //once active, put the rest of the menu into second variable
-        $do_menu2 = true;
+        if ($submenu) {
+          $mainmenu .= "<li>$menuitem<ul class='menu_sm'>$submenu</ul></li>";
+          $mobile_mainmenu .= "<li>$menuitem<span class=\"navigation-toggle\" onclick='
+            jQuery(this).next().slideToggle(); return true;'><i class=\"navigation-icon\"></i></span>
+            <ul class='menu_sm' style='display: none'>$submenu</ul></li>";
+          $submenu = "";
+        } else {
+          $mainmenu .= "<li>$menuitem</li>";
+          $mobile_mainmenu .= "<li>$menuitem</li>";
+        }
+
       }
     } else if ($path[0]==$ref) {       //unknown type of submenu --> just load the requested elements
       $elems= $elems1;
     }
   }
+  $kontakty = "<li><a onclick='jQuery(\"html, body\").animate({scrollTop: (jQuery(\"#footer_contacts\").offset().top - 100)}, 500);'
+       class='jump'><span>Kontakty</span></a></li>";
+  $mainmenu .= $kontakty . "</ul>";
+  $mobile_mainmenu .= $kontakty . "</ul>";
+
 //                                                         display("page=$page, elems=$elems, mid=$mid, ok=$page_ok");
 # zobrazíme stránku $page podle jeho $elems a $pars
   $body= '';
@@ -458,6 +493,11 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         list($id)= explode('#',$id);
         $body.= admin_web($typ,$id);
         break;
+
+      case 'odkaz':
+        $url= urldecode(array_shift($path));
+        header("Location: $url");
+        die();
 
       case 'knihy': # ------------------------------------------------ . knihy
         # seznam autorů
@@ -537,14 +577,6 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         $id= array_shift($path);
         list($id)= explode('#',$id);
         $body.= "týmové informace";
-        break;
-
-      case 'foto':    # --------------------------------------------==> . foto
-        # seznam akcí s fotkami
-        # může následovat ident jednoho z článků (vznikne kliknutím na abstrakt)
-        $body.= "<div class='content'><h1>Fotogalerie</h1></div>";
-        $id= array_shift($path);
-        $body.= akce('foto',$ids,$id);
         break;
 
       case 'single':
@@ -710,7 +742,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
   end:
 # --------------------------------------------------------------------------------------==> html
   $icon= array("cms/img/web_local.png","cms/img/web_test.png","cms/img/web_dsm.png",
-      "cms/img/web_local.png","cms/img/web_local.png")[$ezer_server];
+      "cms/img/web_local.png","cms/img/web_local.png","cms/img/web_local.png")[$ezer_server];
   global $kernel;
   $setStyle= $kernel=='ezer3.1' ? 'css' : 'setStyle';
   $hash= $kernel=='ezer3.1' ? '#' : '';
@@ -770,7 +802,8 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       "https://www.setkani.org",
       "http://setkani4.doma",
       "http://setkani4.bean:8080",
-      "http://setkani4m.bean:8080"
+      "http://setkani4m.bean:8080",
+      "http://setkani4.ide"
   );
   $base= $base[$ezer_server];
   $web_title= trim($web_title);
@@ -840,16 +873,7 @@ __EOD;
   <span id='bar_menu' data-mode='$mode[1]' >
     <i class='fa fa-bars' id='bar_image' onclick=\"$choice_js\" oncontextmenu=\"$choice_js\"></i>
   
-    <div id='bar_items'>
-       <div id='mobile_menu'>
-       $mainmenu1
-       <div id='mobile_submenu'>
-           $submenu
-       </div>
-       $mainmenu2
-       <a onclick='jQuery(\"html, body\").animate({scrollTop: (jQuery(\"#footer_contacts\").offset().top - 100)}, 500);'
-       class='jump'><span>Kontakty</span></a>
-    </div>
+    <div id='bar_items' class='mobile_nodisplay'>
       <span onclick=\"bar_menu(arguments[0],'new1');\"><img src='cms/img/new.png'> změny za den</span>
       <span onclick=\"bar_menu(arguments[0],'new7');\"><img src='cms/img/new.png'> změny za týden</span>
       <span onclick=\"bar_menu(arguments[0],'new30');\"><img src='cms/img/new.png'> změny za měsíc</span>
@@ -867,6 +891,8 @@ __EOD;
   <div id='page'>
     $notice
     $body
+    
+    
    
     <div id='user_login' style="display:$fe_user_display">
       <span>Přihlášení uživatele</span>
@@ -958,7 +984,6 @@ __EOD;
   $gallery = gallery();
 
 //submenu obsahuje submenu kromě výběru proc_kdo
-  if ($submenu) $submenu = "<div id='page_sm' class='mobile_nodisplay'><div class='content'>$submenu</div></div>";
 
 // dokončení stránky
 //                                                         display("**:web_banner='$web_banner'");
@@ -986,14 +1011,23 @@ $head
           
         </div>
         <div id='page_hm' class='x mobile_nodisplay'>
-          $mainmenu1 $mainmenu2
-           <a onclick='jQuery("html, body").animate({scrollTop: (jQuery("#footer_contacts").offset().top - 100)}, 500);'
-           class='jump'><span>Kontakty</span></a>
+          $mainmenu          
         </div>
+        <div class="clear"></div>
       </div>
-      <div class='clear'></div>
-       $submenu
   </div>
+  
+  <div id='mobile_menu' class="pc_nodisplay">
+      $mobile_mainmenu
+      <div id="mobile_barmenu">
+        <span onclick='bar_menu(arguments[0],"new1");'><img src='cms/img/new.png'> změny za den</span>
+        <span onclick='bar_menu(arguments[0],"new7");'><img src='cms/img/new.png'> změny za týden</span>
+        <span onclick='bar_menu(arguments[0],"new30 ");'><img src='cms/img/new.png'> změny za měsíc</span>
+        $loginout
+      </div>
+  </div>
+  <div id="menu-cross" class="nodisplay" onclick="close_mobile_menu(); return true;"></div>
+
   <div id='web' class='$web_banner container'>
     $submenu_komu
     <div id='info' style='display:none' onclick="change_info();"><br>$ms</div>
@@ -1017,13 +1051,23 @@ __EOD;
           </form>
         </div>
         <div id='page_hm' class='x mobile_nodisplay'>
-          $mainmenu1 $mainmenu2
-           <a href='#footer_contacts' class='jump'><span>Kontakty</span></a>
+          $mainmenu
         </div>
+        <div class="clear"></div>
       </div>
-      <div class='clear'></div>
-      $submenu
     </div>
+    
+    <div id='mobile_menu' class="pc_nodisplay">
+      $mobile_mainmenu
+      <div id="mobile_barmenu">
+        <span onclick='bar_menu(arguments[0],"new1");'><img src='cms/img/new.png'> změny za den</span>
+        <span onclick='bar_menu(arguments[0],"new7");'><img src='cms/img/new.png'> změny za týden</span>
+        <span onclick='bar_menu(arguments[0],"new30");'><img src='cms/img/new.png'> změny za měsíc</span>
+        $loginout
+      </div>
+    </div>
+    <div id="menu-cross" class="nodisplay"  onclick="close_menu(); return true;"></div>
+
     <div id='web' class='$web_banner'>
       $submenu_komu
       <div id='info' onclick='change_info();'><br>$ms</div>
@@ -1253,20 +1297,23 @@ function hide_part($uid,$hide,$on) {
 function gallery() {
   $directory = "fileadmin/index";
   $images = glob("$directory/*.{jpg,png,bmp}", GLOB_BRACE);
+  $result = "<div id='header_gallery' class='mobile_nodisplay'>";
 
   $numOfImages = count($images);
-  if ($numOfImages < 1) {
-    return "";
-  }
-  shuffle($images);
-  $result = "<div id='header_gallery' class='mobile_nodisplay'>";
-  $result .= "<img alt='YMCA setkání' src='$images[0]' class='act'>";
-  for ($i = 1; $i < $numOfImages; $i++) {
-    $result .= "<img alt='YMCA setkání' src='$images[$i]' style='display:none'>";
+  if ($numOfImages > 0) {
+    shuffle($images);
+
+    $result .= "<img alt='YMCA setkání' src='$images[0]' class='act'>";
+    for ($i = 1; $i < $numOfImages; $i++) {
+      $result .= "<img alt='YMCA setkání' src='$images[$i]' style='display:none'>";
+    }
+    $defaultImage = "style='background-image: url(\"{$images[0]}\");";
+  } else {
+    $defaultImage = "";
   }
   return $result .
       "</div><div id='titler' class='mobile_nodisplay'></div><div id='gallery_shadow' class='mobile_nodisplay'></div>
-        <div id='header_mobile_image' class='pc_nodisplay' style='background-image: url(\"{$images[0]}\");'><div id='header_mobile_image_shadow'></div></div>";
+        <div id='header_mobile_image' class='pc_nodisplay' $defaultImage'><div id='header_mobile_image_shadow'></div></div>";
 }
 function facebook_dependency() {
   return "<div id=\"fb-root\"></div>
@@ -2512,24 +2559,9 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $prihlaska= $x->ida && $x->prihlaska ? cms_form_ref("ONLINE PŘIHLÁŠKA") : '';
 //    $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA");
 
-    if ($typ=='foto') {
-      if ($rok_ted != $x->rok) {
-        $rok_ted = $x->rok;
-        $h .= "<h2>$rok_ted</h2>";
-      }
-      $h.= $x->ident==$id
-          ? vlakno($cid,$typ,$back, false, true)
-          : "<a class='abstr-fotogalerie' id='n$n' $jmp>
-               $code 
-               <div class='fbg'></div>
-               <div class='fimg' $img></div>
-               <div class='ftitle'>$x->kdy $flags&nbsp;<b>$x->nadpis:</b></div>
-               <div class='ftext'>$x->abstract</div>
-         </a>";
-    } else {
-      $h.= $x->ident==$id
-          ? vlakno($cid,$typ,$back, false, true)
-          : "<div class='$abstr $x->status' id='n$n'>
+    $h.= $x->ident==$id
+        ? vlakno($cid,$typ,$back, false, true)
+        : "<div class='$abstr $x->status' id='n$n'>
            $code 
            <a class='abstrakt$ex{$x->upd}' $jmp>
              $prihlaska
@@ -2538,7 +2570,6 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
                <p>$x->abstract</p>
            </a>
          </div>";
-    }
   }
   if ($wrap_container) $h.= "</div>";
   if ( $FREE ) {  // překlad na globální odkazy

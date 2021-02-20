@@ -30,19 +30,19 @@
   $skin=      'ck';
   $abs_roots= array(
       "C:/Ezer/beans/setkani.org",
-      "/volume1/web/www/setkani4",
-      "/volume1/web/www/setkani4",
-//      "/var/services/web/www/setkani4",
-//      "/var/services/web/www/setkani",
+      "/volume1/web/www/setkani4", //"/var/services/web/www/setkani4",
+      "/volume1/web/www/setkani4", //"/var/services/web/www/setkani",
       "C:/Ezer/beans/setkani4",
-      "C:/Ezer/beans/setkani4"
+      "C:/Ezer/beans/setkani4",
+      "D:/Ezer/beans/setkani4"
     );
   $rel_roots= array(
       "http://setkani.bean:8080",
       "https://www.setkani.org",
       "http://setkani4.doma",
       "http://setkani4.bean:8080",
-      "http://setkani4m.bean:8080"
+      "http://setkani4m.bean:8080",
+      "http://setkani4.ide"
     );
   
   // on-line přihlášky
@@ -71,7 +71,7 @@
   // (re)definice Ezer.options
   $add_pars= array(
     'log_login' => false,   // nezapisovat standardně login do _touch (v ezer2.php)
-    'favicon' => array('cms_local.png','cms.png','cms_dsm.png','cms_local.png','cms_local.png')[$ezer_server],
+    'favicon' => array('cms_local.png','cms.png','cms_dsm.png','cms_local.png','cms_local.png','cms_local.png')[$ezer_server],
     'template' => "user",
     'template_meta' => $template_meta,
     'template_body' => $template,

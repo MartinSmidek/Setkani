@@ -1,4 +1,4 @@
-let SCROLL_LIMIT_AMOUNT = 300;
+let SCROLL_LIMIT_AMOUNT = 250;
 var FREE_ROOMS = null;
 var FREE_ROOMS_INCL_ORDERS = null;
 // ---------------------------------------------------------------------------- header image gallery

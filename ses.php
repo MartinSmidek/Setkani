@@ -12,14 +12,16 @@ $ezer_server=
     $_SERVER["SERVER_NAME"]=='www.setkani.org' ? 1 : (        // Synology YMCA
     $_SERVER["SERVER_NAME"]=='setkani4.doma'   ? 2 : (        // Synology DOMA
     $_SERVER["SERVER_NAME"]=='setkani4.bean'   ? 3 : (        // 3:lokální VERZE 4 - Jirka
-    $_SERVER["SERVER_NAME"]=='setkani4m.bean'  ? 4 : -1))))); // 4:lokální VERZE 4 - Martin
+    $_SERVER["SERVER_NAME"]=='setkani4m.bean'  ? 4 : (        // 4:lokální VERZE 4 - Martin
+    $_SERVER["SERVER_NAME"]=='setkani4.ide'    ? 5 : -1)))))); // 5:lokální VERZE 4 - Jirka desktop
 $ezer_local= $ezer_server==0;
 $paths_log= array(
   'C:\Apache\logs\php_error.log',       // Win10
   "/var/log/httpd/apache24-error_log",  // YMCA
   "/var/log/httpd/apache24-error_log",  // DOMA
   '',                                   // ?
-  'C:\Apache\logs\php_error.log'        // Win10
+  'C:\Apache\logs\php_error.log',       // Win10
+  ''                                    // ?
 );
 # ----------------------------------------------------------------------------------------------- js
 $js= <<<__EOD
