@@ -74,15 +74,14 @@ table.table3 td {border: 1px solid;}
 #work {  }
 a.mereni { float:right; }
 
-/*#logo_setkani { filter: drop-shadow(3px 3px 3px rgba(0,0,0,0.5)); }*/
-/*#logo_ymca { filter: drop-shadow(3px 3px 3px rgba(0,0,0,0.5)); }*/
+
 h1#ymca_setkani { position: absolute; top:3.8em; margin-left:.5em; font-size: 12pt;
     font-weight:bold; color:#cadfd9; text-shadow: 3px 3px 3px #000; }
 
 /* patička */
 .footer { clear: both; background: #232323; }
 .footer a { color : #9ad6f9;  }
-.footer h3 { font-size: 15px; color: white; }
+.footer h3 { font-size: 15px; color: white; font-weight: 600; }
 .footer .tile { width: 225px; display: inline-block;  margin: 1px; vertical-align:top; font-size: 11pt !important; padding: 10px 15px; font-weight: normal  }
 .footer .tile p {text-align: left; color: #9ad6f9;}
 .footer hr.footer-hr { border: 0; height: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.3); margin: 0px 160px 0px 60px;}
@@ -168,7 +167,7 @@ div.notice_info:before {content: 'Zajímavost:';position: absolute;left: 20px; t
 div.notice_order:before {content: 'Objednávka'}
 
 h1 {margin-top: 45px; font-size:29pt; margin-left: 0.3em; font-weight: 200; color: black}
-h2 {margin-top: 30px; font-size:20pt; margin-left: 0.8em; font-weight: 300; color: black }
+h2 {margin-top: 30px; font-size:20pt; margin-left: 0.8em; font-weight: 300; color: black; margin-bottom: 12px; }
 h3 {margin-top: 25px; font-size:17pt; margin-left: 0.1em; font-weight: 300; color: black}
 h4 {margin-left: 0.1em; color: black}
 
@@ -242,7 +241,7 @@ textarea {resize: vertical;}
 /* ------------------------------------------------------------------- online přihlášky */
 
 
-span.cms_form:hover {
+#vlakno fspan.cms_form:hover {
   background-color: #28688d !important; color: white !important; }
 
 span.cms_form {
@@ -267,7 +266,7 @@ span.cms_form {
 /* -------------------------- ------------------------------------------------- login */
 
 div#user_login, div#user_mail { position:fixed; left: 50vw; top:50vh; line-height: 22pt;
-  color:#cadfd9; padding:2em 5em; opacity:1; background: white;
+  padding:2em 5em; opacity:1; background: white;
   box-shadow: black 4px 6px 20px; transform:translate(-50%, -50%); z-index: 100; }
 div#user_login input, div#user_mail input { width:20.5em;
   padding: 12px 0px 12px 0; margin-bottom: 15px; margin-right: 10px; outline: 0; border: 0; box-shadow: 0 1px 0 0 #e5e5e5; }
@@ -285,6 +284,7 @@ div#user_login button:hover, div#user_mail button:hover { border: 1px solid #fff
 div#user_login.key_in { background-color:#000 !important; color: white !important; }
 div#user_login.key_in input { background-color:#000 !important; color: white !important; }
 div#user_login.key_in span {color: white !important; }
+div#login_err { color: #b13939; margin-top: 12px;}
 
 /* -------------------------- ------------------------------------------------- box */
 div.box {
@@ -706,7 +706,7 @@ span.input { font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,D
 
 /* vlákno */
 div.vlakno { clear:both; }
-div.text { padding: .4em 0; border-radius: 5px; background-color: white; }
+div.text { padding: .4em .7em; border-radius: 5px; background-color: white; }
 
 /* fotky */
 /*span.foto { width: 80px; height: 80px; overflow: hidden; display: inline-block; }*/
@@ -744,7 +744,7 @@ div.galerie { overflow:hidden; padding-bottom: 15px; margin-bottom: 30px; }
 div.galerie span.datum { position: absolute; top: 0; left: 0; }
 
 /* článek */
-div.clanek {  overflow:hidden; margin:0.5em; position:relative; }
+div.clanek {  overflow:hidden; margin:0.5em 0; position:relative; }
 .mediaqueries div.clanek { /*todo*/ }
 span.datum { background-color:#f2f2f2; color:#130D00; padding: 2px 5px; border-radius: 5px; border: 1px solid #e6e6e6}
 div.clanek span.datum { position: absolute; top: 0; left: 0; }
@@ -969,11 +969,11 @@ label.form_button {float: right}
 
 @media all and (max-width:30em) {
   #info::before { content:"mobil portrait"; }
-  #logo_setkani { position:fixed; top: 13px; left: 50px; width: 30px; z-index: 10; filter: drop-shadow(0px 0px 0px rgba(0,0,0,1)); }
-  #logo_ymca { position:fixed; top: 13px; left: 10px; width: 30px; z-index: 10; }
+  #logo_setkani { position:fixed; top: 15px; left: 55px; width: 35px; z-index: 10; filter: brightness(0.4); }
+  #logo_ymca { position:fixed; top: 15px; left: 10px; width: 35px; z-index: 10; }
+  #bar_image {color: rgba(0, 0, 0, 0.82);}
 
   #web {padding-top: 30px;}
-
   /*menu*/
   #bar_menu>i {font-size: 18px;}
   #menu {position: fixed; top: 0; z-index: 9; background: #ffffff3d;}
@@ -991,10 +991,11 @@ label.form_button {float: right}
   div#user_login, div#user_mail {  padding:1em 2em; }
   div#user_login input, div#user_mail input { width:12.5em; }
   div#user_mail div {width: 12em; margin-top: 2em; height: auto}
+  div#login_err { margin-top: 25px;}
 
   /* home page na na výšku */
   #facebook_content {width: 300px; padding-top: 80px; }
-  #facebook_content.content {padding-left: 0 }
+  #facebook_content.content {padding-left: 0;     max-width: 90%;overflow-x: auto; }
 
   #facebook_content:before {transform: translate(00px, -70px);}
   .masonry_container { column-count: 1;}
@@ -1025,7 +1026,7 @@ label.form_button {float: right}
 
   div.notice_style {padding: 50px 10px 15px 10px;margin: 0;}
   div.clanek { margin: 0.5em 0; }
-  div.text {padding: 0.4em 0.6em}
+  div.text {padding: 0.4em 0.7em}
   #web .clanek .text img { margin: 0;}
   .clanek span.cms_form { font-size: 12pt !important; line-height: 12px; }
   .abstrakt span.cms_form { margin-right: 0; }
@@ -1055,27 +1056,29 @@ label.form_button {float: right}
 
 
   .mobile_nodisplay {display: none !important;}
-  h1, .mobile_text_shadow {text-shadow: #ffffff 1px 0 16px;}
+  h1, .mobile_text_shadow {text-shadow: #ffffff 1px 0 16px; filter: drop-shadow(0px 0px 2px white);}
   .commentary_div {background-color: #f2f2f2aa; padding: 10px 20px;}
 }
 
 /* -------------------------------------------------------------------------- MŠ mobil na šířku */
 
-@media all and (min-width: 30em) and (max-width: 640px) {
+@media all and (min-width: 30em) and (max-width: 685px) {
   #info::before { content:"mobil lanscape"; }
   #web h1#ymca_setkani { font-size: 11pt; }
 
-  #logo_setkani { position:fixed; top: 10px; left: 58px; width: 40px; z-index: 10; filter: drop-shadow(0px 0px 2px rgba(0,0,0,1)); }
-  #logo_ymca { position:fixed; top: 10px; left: 10px; width: 40px; z-index: 10; }
+  #logo_setkani { position:fixed; top: 10px; left: 70px; width: 50px; z-index: 10; filter: brightness(0.4); }
+  #logo_ymca { position:fixed; top: 10px; left: 10px; width: 50px; z-index: 10; }
   #web {padding-top: 30px;}
 
-  #menu {position: fixed; top: 0px; z-index: 9; background: #ffffff3d; }
-  #menu div, #menu span, #menu input {font-size: 9pt;}
+  #bar_image {color: rgba(0, 0, 0, 0.82);}
+
+  #menu {position: fixed; top: 0; z-index: 9; background: #ffffff3d; }
+  #menu div, #menu span, #menu input {font-size: 12pt;}
   #vyber {margin-top: 54px; background: none;}
   #page {padding-top: 18px;}
 
   div.text {
-    padding: .4em .6em;
+    padding: .4em .7em;
   }
 
   /* home page na na šířku */
@@ -1131,18 +1134,22 @@ label.form_button {float: right}
 
 
   .mobile_nodisplay {display: none !important;}
-  h1, .mobile_text_shadow {text-shadow: #ffffff 1px 0 16px;}
+  h1, .mobile_text_shadow {text-shadow: #ffffff 1px 0 16px;filter: drop-shadow(0px 0px 2px white);}
   .commentary_div {background-color: #f2f2f2aa; padding: 10px 20px;}
 }
 
 /* -------------------------------------------------------------------------- T tablet */
 
-@media all and (min-width:641px) and (max-width:900px) {
+@media all and (min-width:686px) and (max-width:900px) {
   #info::before { content:"tablet"; }
   #titler {right: 50vw}
-  #logo_setkani { position:absolute; margin: 0 0 0 120px !important; top: 160px; right: 72vw; width: 110px; }
-  #logo_ymca { position:absolute; margin: 0 0 0 230px !important; top: 60px; right: 72vw; width: 100px; }
+  #logo_setkani { position:absolute; margin: 0 0 0 120px !important; top: 130px; right: 72vw; height: 80px }
+  #logo_ymca { position:absolute; margin: 0 0 0 230px !important; top: 26px; right: 72vw; height: 80px; }
   .iframe_outer {padding-top: 40%;}
+
+  #menu #page_hm {
+    line-height: 4.35em;
+  }
   /*homepage changes*/
   #facebook_content {width: 632px; padding-top: 80px; padding-left: 15px;}
   #facebook_content:before {transform: translate(0, -70px);}
@@ -1171,6 +1178,18 @@ label.form_button {float: right}
   /* abstrakty */
   div.abstr { width:50%; }
   .abstr-fotogalerie {width:30%; padding: 0 0.5% }
+  .commentary_div {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  div.text {
+    padding: .4em 1.2em;
+  }
+
+  h1 {
+    margin-left: 1em;
+  }
 
   #order #order_div .order_left_td {width: 390px;}
   .pc_nodisplay {display: none;}

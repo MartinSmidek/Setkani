@@ -349,6 +349,11 @@ function opravit(typ,id,cid) {
   Ezer.run.$.part.p._call(0,'opravit',typ,id,cid);
   return 1;
 }
+// ----------------------------------------------------------------------------------------- sdilet
+function sdilet(blog,cid,update) {
+  Ezer.run.$.part.p._call(0,'sdilet',blog,cid,update);
+  return 1;
+}
 /** ------------------------------------------------------------------------------------------ zrusit
  * 
  * @param {type} typ -- článek | kniha

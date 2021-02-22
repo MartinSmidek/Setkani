@@ -140,6 +140,14 @@ li.foto div { background: #bde37b; text-align: center; width: 80px; }
 li.foto input { float:left; margin:0; }
 li.foto input:focus { outline:none; }
 
+/* overrides pro web.css */
+#menu {
+  margin-top: 25px !important;
+}
+#menu-cross {
+  top: 35px !important;
+}
+
 /* layout */
 
 #status_bar {

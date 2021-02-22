@@ -110,6 +110,9 @@ panel p [0,0,*,*] { type:'main'
     { echo("neznámá operace nad fotkami"); }
     );
   }
+  proc sdilet(blog,cid,update) {
+      confirm(ask('wp_upload',blog,0,cid,update)); alert(ask('wp_upload',blog,1,cid,update)); go(last.get)
+  }
 # ----------------------------------------------------------------------------==> popup dat
   proc cms_cid_pid(cid,pid) {
     echo('cms_cid_pid(',cid,',',pid,')');

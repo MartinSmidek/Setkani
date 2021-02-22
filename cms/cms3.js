@@ -108,7 +108,7 @@ function close_mobile_menu_leave_shadow() {
 
 function bar_menu(e,x) {
   if ( e ) { e.stopPropagation(); e.preventDefault(); }
-  let is_mobile_menu = jQuery(window).width() <= 623;
+  let is_mobile_menu = jQuery(window).width() <= 685;
 
   var items= jQuery(is_mobile_menu ? '#mobile_menu' : '#bar_items'),
       body= jQuery(document.body),
@@ -126,43 +126,51 @@ function bar_menu(e,x) {
       items.removeClass("is-open");
     }
   } else {
-      switch (x) {
-        case 'new1':
-        case 'new7':
-        case 'new30':
-          var dnu= x.substr(3);
-          document.cookie= 'web_show_changes='+dnu+';path=/';
-          refresh();
-          break;
-        case 'grid': change_mode(1,1); break;
-        case 'rows': change_mode(1,0); break;
-        case 'fe_login':
-          jQuery('#user_login').css({display:'block'}).removeClass('key_in').data('login','fe');
-          if (is_mobile_menu) close_mobile_menu_leave_shadow();
-          else jQuery('#web-shadow').css({display:'block'});
-          return true;
-        case 'be_login':
-          jQuery('#user_login').css({display:'block'}).addClass('key_in').data('login','be');
-          if (is_mobile_menu) close_mobile_menu_leave_shadow();
-          else jQuery('#web-shadow').css({display:'block'});
-          return true;
-        case 'me_login':
-          jQuery('#user_mail').css({display:'block'}).addClass('key_in').data('login','me');
-          if (is_mobile_menu) close_mobile_menu_leave_shadow();
-          else jQuery('#web-shadow').css({display:'block'});
-          return true;
-        default:
-          return true;
-      }
+    switch (x) {
+      case 'new1':
+      case 'new7':
+      case 'new30':
+        var dnu= x.substr(3);
+        document.cookie= 'web_show_changes='+dnu+';path=/';
+        refresh();
+        break;
+      case 'grid': change_mode(1,1); break;
+      case 'rows': change_mode(1,0); break;
+      case 'fe_login':
+        jQuery('#user_login').css({display:'block'}).removeClass('key_in').data('login','fe');
+        if (is_mobile_menu) close_mobile_menu_leave_shadow();
+        else {
+          jQuery('#web-shadow').css({display: 'block'});
+          items.removeClass("is-open");
+        }
+        return true;
+      case 'be_login':
+        jQuery('#user_login').css({display:'block'}).addClass('key_in').data('login','be');
+        if (is_mobile_menu) close_mobile_menu_leave_shadow();
+        else {
+          jQuery('#web-shadow').css({display: 'block'});
+          items.removeClass("is-open");
+        }
+        return true;
+      case 'me_login':
+        jQuery('#user_mail').css({display:'block'}).addClass('key_in').data('login','me');
+        if (is_mobile_menu) close_mobile_menu_leave_shadow();
+        else {
+          jQuery('#web-shadow').css({display: 'block'});
+          items.removeClass("is-open");
+        }
+        return true;
+      default:
+        break;
+    }
 
-      if (is_mobile_menu) {
-        close_mobile_menu();
-      } else {
-        items.removeClass("is-open");
-      }
+    if (is_mobile_menu) {
+      close_mobile_menu();
+    } else {
+      items.removeClass("is-open");
+    }
+    return true;
   }
-
-  return false;
 }
 // -----------------------------------------------------------------------------------==> . me login
 function me_login(page) {
@@ -619,11 +627,13 @@ function ask(x,then,arg) {
   var xx= x;
   x.totrace= Ezer&&Ezer.App&&Ezer.App.options ? Ezer.App.options.ae_trace : 'u';
   x.secret= "WEBKEYNHCHEIYSERVANTAFVUOVKEYWEB";
+  console.log(Ezer);
   jQuery.ajax({url:Ezer.web.index, data:x, method: 'POST',
     success: function(y) {
       if ( typeof(y)==='string' )
         error("Došlo k chybě 1 v komunikaci se serverem - '"+xx.cmd+"'");
       else {
+        console.log(y);
         if ( y.error )
           Ezer.error(y.error,'C');
         if ( y.trace && Ezer.trace )

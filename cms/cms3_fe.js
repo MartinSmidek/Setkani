@@ -28,17 +28,19 @@ function refresh() {
 // -----------------------------------------------------------------------------------==> . fe login
 function fe_login(page) {
   var name= jQuery('#name').val(), pass= jQuery('#pass').val(), akey= jQuery('#akey').val(),
-      type= jQuery('#user_login').data('login');
+      type= jQuery('#user_login').data('login'), err= jQuery('#login_err');
+  err.html(""); //clear possible error text
   ask({cmd:'fe_login',name:name,pass:pass,akey:akey,page:page,type:type},_fe_login,'jo?');
 }
 function _fe_login(y) {
-  jQuery('#user_login').css('display','none');
   if ( window['Ezer'] ) {
     Ezer.web= y.web;
   }
   if ( !y.fe_user ) {
-    alert('chybné přihlášení');
+    jQuery('#login_err').html("Nepodařilo se přihlásit. Zadáváte správné údaje?");
+    return;
   }
+  jQuery('#user_login').css('display','none');
   if ( y.be_user ) {
     window.location= 'index.php?page='+y.page;
   }

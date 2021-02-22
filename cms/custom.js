@@ -3,7 +3,7 @@ var FREE_ROOMS = null;
 var FREE_ROOMS_INCL_ORDERS = null;
 // ---------------------------------------------------------------------------- header image gallery
 function swapImages() {
-    if (jQuery(window).width() > 640) { //do not run on mobiles
+    if (jQuery(window).width() > 685) { //do not run on mobiles
         let active = jQuery("#header_gallery .act");
         var next = (active.next().length > 0) ? active.next() : jQuery("#header_gallery img:first");
         next.css('display', '');
@@ -255,7 +255,7 @@ function setPrice(text, warning, isPrice = true) {
 // ========================================================================================> RUNNING
 jQuery(window).resize(function () {
     adjustGallery();
-    if (jQuery(window).width() > 640) {
+    if (jQuery(window).width() > 685) {
         noMobileAdjustMenu(jQuery("#menu"), jQuery(window).scrollTop());
     } else {
         jQuery('#web').css("padding-top", "30px");
@@ -278,7 +278,7 @@ jQuery(window).bind('scroll', function () {
         win = jQuery(window),
         scrollAmount = win.scrollTop();
 
-    if (win.width() > 640) {
+    if (win.width() > 685) {
         noMobileAdjustMenu(menu, scrollAmount);
     } else { //mobile
         mobileAdjustMenu(menu, scrollAmount);
