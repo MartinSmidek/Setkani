@@ -24,8 +24,10 @@ function adjustGallery() {
 function searchByQuery() {
     var item = document.getElementById("search").value;
     var form = document.getElementById("search_form");
-    form.action = "/hledej/" + item + "/";
-    form.submit();
+    item = item.replace(';','');
+    console.log(item);
+    document.cookie= 'web_search='+item+';path=/';
+    location.href= "/hledej/" + item;
 }
 
 // ---------------------------------------------------------------------------- orders functionality

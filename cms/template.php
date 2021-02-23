@@ -51,7 +51,7 @@ function def_menu($from_table=false) { trace();
         'odkazy'      => 'sm:31:0.8:doporuceni       :clanek,320:Doporu&shy;čujeme:::            mclanky;-clanky=223,9:            Doporučujeme s podobnou tématikou',
       # speciální stránky
         'home'        => "tm:32:0.9:home             ::<i class='fa fa-home'></i> Domů:::        home:                             Akce pro rodiny, muže i ženy pořádané YMCA Setkání",
-        'hledej'    =>   'tm:34:     :hledej         ::<i class="fa fa-search"></i>:::           search:                           Hledej',
+        'hledej'      => "tm:34:   :hledej           ::Hledat:::                                 search:                           Hledej",
         'clanek'      => ':99:   :-                ::-:::                                        single:                           ',
     );
   }
@@ -224,8 +224,6 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
   $dnu= isset($_COOKIE['web_show_changes']) ? $_COOKIE['web_show_changes'] : 1;
   $news_time= time() - $dnu*24*60*60;
   $search= isset($_COOKIE['web_search']) ? $_COOKIE['web_search'] : '';
-//                                                         display("search/c=$search");
-  $search_go= "go(arguments[0],'{$href}hledej','/hledej',1,1);";
 
   //use cookies do diferentiate between show operational modes, instead of url
   if (!isset($_COOKIE['akce']) || strlen($_COOKIE['akce']) < 3) {
@@ -261,20 +259,42 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 //                                                         display("tm:web_banner='$web_banner'");
       }
       if ( $ref=='hledej' ) {
-        $input= "1";
-        $jmp= $CMS
-            ? "onclick=\"go(arguments[0],'$href$ref','/$mref',$input,1);\""
-            : "onclick=\"
-              let query = jQuery('input#search').val();
-              if (query && query !== '') window.location.href='/$mref/' + query;
-              else window.location.href='/';\"";
+        $jmp= $CMS ? "onclick=\"go(arguments[0],'$href$ref','/$mref',1,1);\"" : "onclick=\"searchByQuery();\"";
+        $submit = $CMS ? "onsubmit=\"event.preventDefault();\"" : "onsubmit=\"event.preventDefault();\"";
+        $topmenu.= "
+            <div class=\"header-search\">		
+            <span class=\"search-icon\" onclick=\"jQuery(this).parent().toggleClass('active');jQuery(this).children().each(function() {jQuery(this).toggleClass('nodisplay');});\">
+                <span class=\"ic-search\">
+                    <svg focusable=\"false\" role=\"presentation\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"21\" viewBox=\"0 0 20 21\">
+                        <path fill=\"currentColor\" fill-rule=\"evenodd\" d=\"M12.514 14.906a8.264 8.264 0 0 1-4.322 1.21C3.668 16.116 0 12.513 0 8.07 0 3.626 3.668.023 8.192.023c4.525 0 8.193 3.603 8.193 8.047 0 2.033-.769 3.89-2.035 5.307l4.999 5.552-1.775 1.597-5.06-5.62zm-4.322-.843c3.37 0 6.102-2.684 6.102-5.993 0-3.31-2.732-5.994-6.102-5.994S2.09 4.76 2.09 8.07c0 3.31 2.732 5.993 6.102 5.993z\"></path>
+                    </svg>
+                </span>
+                <span class=\"ic-close nodisplay\">
+                    <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"612px\" height=\"612px\" viewBox=\"0 0 612 612\" fill=\"currentColor\" style=\"enable-background:new 0 0 612 612;\" xml:space=\"preserve\"><g><g id=\"cross\"><g><polygon points=\"612,36.004 576.521,0.603 306,270.608 35.478,0.603 0,36.004 270.522,306.011 0,575.997 35.478,611.397 306,341.411 576.521,611.397 612,575.997 341.459,306.011 \"></polygon></g></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+                </span>
+            </span>
+              
+              <div class=\"header-search-container\">
+                <form id='search_form' role=\"search\" class=\"search-form\" $submit>
+                    <label>
+                        <span class=\"hidden-label-text\">Hledat:</span>
+                        <input id='search' size=10 title='hledané slovo' placeholder='Hledat...' /> 
+                    </label>
+                    <button class=\"search-submit\" $jmp>
+                        <svg focusable=\"false\" role=\"presentation\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"21\" viewBox=\"0 0 20 21\">
+                            <path fill=\"currentColor\" fill-rule=\"evenodd\" d=\"M12.514 14.906a8.264 8.264 0 0 1-4.322 1.21C3.668 16.116 0 12.513 0 8.07 0 3.626 3.668.023 8.192.023c4.525 0 8.193 3.603 8.193 8.047 0 2.033-.769 3.89-2.035 5.307l4.999 5.552-1.775 1.597-5.06-5.62zm-4.322-.843c3.37 0 6.102-2.684 6.102-5.993 0-3.31-2.732-5.994-6.102-5.994S2.09 4.76 2.09 8.07c0 3.31 2.732 5.993 6.102 5.993z\"></path>
+                        </svg>
+                    </button>
+                </form>
+              </div>
+            </div>";
       } else {
         $jmp= $CMS || substr($mref,0,1)=='-'
             ? "onclick=\"go(arguments[0],'$href$ref','/$mref',$input,1);\""
             : "href='/$mref'";
-      }
-      if ( $nazev0!='-' ) {
-        $topmenu.= " <a $jmp class='jump$active$upd1'>$nazev</a>";
+        if ( $nazev0!='-' ) { //ignore 'hledej' and perform custom code
+          $topmenu.= " <a $jmp class='jump$active$upd1'>$nazev</a>";
+        }
       }
     }
     elseif ( $typ_bloku=='hm' ) {
@@ -603,9 +623,13 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         # může následovat ident jednoho z článků (vznikne kliknutím na abstrakt)
         if (!$CMS) {
           $body .= facebook_dependency();
+          $id= array_shift($path);
+          $search = array_shift($path);
+
+        } else {
+          $id= array_shift($path);
         }
         $body.= "<div class='content'><h1>Výsledky hledání &nbsp;<b>$search</b></h1></div>";
-        $id= array_shift($path);
         list($id)= explode('#',$id);
 //                                                 display("page_mref/s=$page_mref");
         $body.= akce('hledej',$ids,$id,'',$search);
@@ -842,7 +866,7 @@ __EOD;
   
   $eb_link
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C700%2C700i%2C800%2C800i&amp;ver=0.3.5" type="text/css" media="all">
-<link rel="stylesheet" href="cms/web.css?v=4.53" type="text/css" media="screen" charset="utf-8">
+<link rel="stylesheet" href="cms/web.css?v=4.6" type="text/css" media="screen" charset="utf-8">
   <script type="text/javascript">
     var Ezer={web:{ $Ezer_web},cms:{form:{}}};
     if ( !console ) {
@@ -999,13 +1023,7 @@ $head
       <div class='content'>
         <div id='page_tm' class='x'>
           $menu
-          
-           $topmenu
-          <form id='search_form' class='inline' onsubmit="searchByQuery()">   
-            <input id='search' size=10 value='$search' title='hledané slovo' placeholder='Hledat...'  onchange="$search_go" /> 
-            <!-- input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" /-->
-          </form>
-          
+          $topmenu          
         </div>
         <div id='page_hm' class='x mobile_nodisplay'>
           $mainmenu          
@@ -1015,6 +1033,8 @@ $head
     </div>
   
   <div id='mobile_menu' class="pc_nodisplay">
+      <br>
+ 
       $mobile_mainmenu
       <div id="mobile_barmenu">
         <span onclick='bar_menu(arguments[0],"new1");'><img src='cms/img/new.png'>&nbsp; změny za den</span>
@@ -1042,10 +1062,6 @@ __EOD;
         <div id='page_tm' class='x'>
           $menu
           $topmenu
-          <form id='search_form' class='inline' onsubmit="searchByQuery()">   
-            <input id='search' size=10 value='$search' title='hledané slovo' placeholder='Hledat...'  onchange="$search_go" /> 
-            <!-- input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" /-->
-          </form>
         </div>
         <div id='page_hm' class='x mobile_nodisplay'>
           $mainmenu
@@ -1204,14 +1220,14 @@ __EOJ;
 __EOJ;
   $eb_link= <<<__EOJ
     $framework    
-    <script src="cms/cms{$k3}.js?v=4.4" type="text/javascript" charset="utf-8"></script>
-    <script src="cms/cms{$k3}_fe.js?v=4.0" type="text/javascript" charset="utf-8"></script>
-    <script src="cms/modernizr-custom.js?v=4.0" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/cms{$k3}.js?v=4.5" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/cms{$k3}_fe.js?v=4.1" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/modernizr-custom.js?v=4.1" type="text/javascript" charset="utf-8"></script>
     $fotorama
     <link rel="stylesheet" href="./$kernel/client/licensed/font-awesome/css/font-awesome.min.css" type="text/css" media="screen" charset="utf-8">
     <link rel="stylesheet" href="$cms_root/client/ezer_cms3.css" type="text/css" media="screen" charset="utf-8">
     <script src="$cms_root/client/ezer_cms3.js" type="text/javascript" charset="utf-8"></script>
-    <script src="cms/custom.js?v=4.22" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/custom.js?v=4.3" type="text/javascript" charset="utf-8"></script>
 __EOJ;
 //     <link rel="stylesheet" href="cms/gallery/baguetteBox.min.css">
 //     <script src="cms/gallery/baguetteBox.min.js" async>
@@ -2408,6 +2424,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $typ= 'hledej';
     $vyber= 'hledej';
     $c_komu= " 1";
+    $hledej = mysql_real_escape_string($hledej);
     $c_kdy= in_array($hledej,array(6,9,12,13))  // mrop,ritualy,vps, 13=rodina :-)
         ? " fe_groups='$hledej'"
 //      : " MATCH(author,p.title,text) AGAINST ('$hledej' IN BOOLEAN MODE)";

@@ -60,6 +60,11 @@ iframe a:hover:not(.plain_href), iframe a.styled:hover, #vlakno a:hover:not(.pla
 
 .nodisplay {display: none;}
 
+/*when popup do not add position fixed (default in ezer)*/
+.pop_body table.xdebug-error {position: relative; width: 100%;}
+.pop_body table.xdebug-error:before {
+    content: 'Nastala neočekávaná chyba, prosíme, přepošlete tuto tabulku administrátorovi.';
+    font-size: 11pt;position: absolute;top: -26px;}
 /*roztažení panele stylů*/
 .cke_combopanel {width: 180px !important;}
 /* zúžení lišty */

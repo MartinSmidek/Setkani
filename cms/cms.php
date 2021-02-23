@@ -18,7 +18,7 @@
       "/cms/cms{$k3}.js?v=4.4",
       "/cms/cms{$k3}_be.js",
       "/cms/modernizr-custom.js",
-      "/cms/custom.js?v=4.22",
+      "/cms/custom.js?v=4.3",
       $k3 ? false : "/cms/fotorama/jquery-1.12.4.min.js",
       $k3 ? false : "<script type='text/javascript'>jQuery.noConflict();</script>",
       "/cms/fotorama/fotorama.js");
