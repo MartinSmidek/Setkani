@@ -651,7 +651,7 @@ div.abstr a.abstrakt { height:11.2em; overflow:hidden; box-sizing: border-box;bo
 /*a.abstrakt:hover, div.abstrakt:hover { background-color:#fff4de !important; color:#130D00 !important; }*/
 a.abstrakt_hidden { background-color:silver }
 a.abstrakt_deleted { background-color:silver; border:5px solid black;}
-span.akce_datum {background: white; border-radius: 5px; float: left;}
+span.akce_datum {border-radius: 5px; float: left;}
 .abstr b {float:left; clear:both;}
 .abstr-line span.akce_datum {float: none; display: block;}
 /*abstrakty pro fotogalerii*/

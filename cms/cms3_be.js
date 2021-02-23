@@ -278,6 +278,13 @@ function go(e,href,mref,input,nojump) {
   Ezer.run.$.part.p._call(0,nojump?'cms_menu':'cms_go',page)
   return false;
 }
+
+function go_with_menu(e,href,mref,input,nojump,ezerMenu) {
+  console.log(arguments);
+  Ezer.fce.contextmenu(ezerMenu,arguments[0]);
+  go(e,href,mref,input,nojump);
+  return false;
+}
 // --------------------------------------------------------------------------------------- go anchor
 // předá CMS info na kterou stránku webu přepnout
 // href se použije pro přepnutí v rámcí CMS

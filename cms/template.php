@@ -163,7 +163,6 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
   );
 # zobrazíme topmenu a hlavní menu, přitom zjistíme případné doplnění cesty a její správnost
   $topmenu= $submenu_komu= $mainmenu= $mobile_mainmenu= $page= $elems= $mid= $pars= $web_banner= '';
-  $page_ok= false;        // je dobře definovaná aktivní stránka
 //                                                         debug($path,"před corr");
 # ---------------------------------------------------------------- . test pro explicitně udaný part
 // goto decode_path;
@@ -254,7 +253,6 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       $active= $path[0]==$ref ? ' active' : '';
       if ( $active ) {
         if ( $title1 ) $web_title= $title1;
-        $page_ok= true;
         $page= $ref;
         $elems= $elems1;
         $mid= $mid1;
@@ -365,10 +363,11 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
             if ( $context2 ) {
               list($ctyp,$pgid)= explode(',',$context2);
               $on_plus= isset($def_menu[$ref2]) ? $def_menu[$ref2] : '';
-              $on= " oncontextmenu=\"Ezer.fce.contextmenu([
-              ['{$def_on[$ctyp]}',function(el){ vytvorit('$ctyp','$pgid','$mid2'); }]
-              $on_plus
-            ],arguments[0]);return false;\"";
+              $on= " oncontextmenu=\"
+                go_with_menu(arguments[0],'$href{$path[0]}!$cont2','/$mref2',$input,1,[
+                ['{$def_on[$ctyp]}',function(el){ vytvorit('$ctyp','$pgid','$mid2'); }]
+                $on_plus
+              ]); return false;\"";
             }
 
             $submenu.= $CMS || substr($mref2,0,1)=='-'
@@ -411,10 +410,11 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
             if ( $context2 ) {
               list($ctyp,$pgid)= explode(',',$context2);
               $on_plus= isset($def_menu[$ref2]) ? $def_menu[$ref2] : '';
-              $on= " oncontextmenu=\"Ezer.fce.contextmenu([
-              ['{$def_on[$ctyp]}',function(el){ vytvorit('$ctyp','$pgid','$mid2'); }]
-              $on_plus
-            ],arguments[0]);return false;\"";
+              $on= " oncontextmenu=\"
+                go_with_menu(arguments[0],'$href".explode("!", $cont)[0]."!$cont2','/$mref2',$input,1,[
+                ['{$def_on[$ctyp]}',function(el){ vytvorit('$ctyp','$pgid','$mid2'); }]
+                $on_plus
+              ]); return false;\"";
             }
 
             $submenu.= $CMS || substr($mref2,0,1)=='-'
@@ -427,14 +427,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 
       // přidání kontextového menu pro přidávání
       $on= " oncontextmenu='return false;'";
-      if ( $context ) {
-        list($ctyp,$pgid)= explode(',',$context);
-        $on_plus= isset($def_menu[$ref]) ? $def_menu[$ref] : '';
-        $on= " oncontextmenu=\"Ezer.fce.contextmenu([
-          ['{$def_on[$ctyp]}',function(el){ vytvorit('$ctyp','$pgid','$mid1'); }]
-          $on_plus
-        ],arguments[0]);return false;\"";
-      }
+
       if ( $cont ) {
         if ( $mref == "odkaz" ) {
           foreach (explode(";", $elems1) as $chunk) {
@@ -450,6 +443,16 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
               ? " <a href='$redirect' class='jump$active$a_ref$upd1' target='_blank' $on>$nazev</a>"
               : " <a href='$redirect' class='jump$active$upd1'>$nazev</a>";
         } else {
+          if ( $context ) {
+            list($ctyp,$pgid)= explode(',',$context);
+            $on_plus= isset($def_menu[$ref]) ? $def_menu[$ref] : '';
+            $on= " oncontextmenu=\"
+                go_with_menu(arguments[0],'$href$cont','/$mref',$input,1,[
+                ['{$def_on[$ctyp]}',function(el){ vytvorit('$ctyp','$pgid','$mid1'); }]
+                $on_plus
+              ]); return false;\"";
+          }
+
           $menuitem = $CMS || substr($mref,0,1)=='-'
               ? " <a onclick='go(arguments[0],\"$href$cont\",\"/$mref\",$input,1);' "
               . "class='jump$active$a_ref$upd1' $on>$nazev</a>"
@@ -476,7 +479,6 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
   $mainmenu .= $kontakty . "</ul>";
   $mobile_mainmenu .= $kontakty . "</ul>";
 
-//                                                         display("page=$page, elems=$elems, mid=$mid, ok=$page_ok");
 # zobrazíme stránku $page podle jeho $elems a $pars
   $body= '';
   $par= array_shift($path);

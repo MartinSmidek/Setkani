@@ -201,7 +201,7 @@ function seradit($ids,$typ) {
     $typ=='knihy' ? "
       SELECT c.uid
       FROM setkani4.tx_gncase AS c
-        JOIN setkani4.tx_gncase_part AS p ON p.cid=c.uidbarb
+        JOIN setkani4.tx_gncase_part AS p ON p.cid=c.uid
       WHERE !c.deleted AND !c.hidden AND c.pid IN ($ids) AND tags='C'
       ORDER BY p.author DESC,p.title DESC" : (
     $typ=='tance' ? "

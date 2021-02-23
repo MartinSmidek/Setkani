@@ -152,6 +152,9 @@ __EOD;
   $template= <<<__EOD
 %header
 <body id="body" onload="context({ $Ezer_web});">
+  <div id="wait_mask">
+  <div id="wait" onclick="waiting(0);"></div>
+ </div>
 <!-- bez menu a submenu -->
   <div id='horni' class="MainBar">
     <div id='logo'>
