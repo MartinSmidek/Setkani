@@ -150,6 +150,8 @@
                   "SELECT id_pobyt,pobyt.poznamka
                    FROM pobyt JOIN spolu USING (id_pobyt) 
                    WHERE id_osoba={IDO} AND id_akce={IDA}"),
+              // občerstvení příhlášky v situaci, kdy bylo např. odhlášení
+              'Rrefresh'=>'funkce=0',
               // Rchange platí pro první spolu
               'Ochange' =>'web_zmena',
               'Rchange' =>'web_zmena',
