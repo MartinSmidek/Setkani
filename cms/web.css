@@ -549,7 +549,9 @@ div.LabelDrop * {cursor:pointer; }
 /* ------------------------------------------------------------------------------ obsah */
 
 /* odkazy */
-div.text a span { background-color:#F5CF85; color:#67827a;; text-decoration:underline; cursor:pointer }
+div.text a span {
+  /*background-color:#F5CF85;*/
+  color:#67827a; text-decoration:underline; cursor:pointer }
 div.text a span:hover { background-color:#B48933 !important; color:#EFFBDA !important; }
 
 /* seznamy abstraktů */

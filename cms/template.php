@@ -25,18 +25,18 @@ function def_menu($from_table=false) { trace();
     $def_vse= 'rodiny,manzele,chlapi,zeny,mladez';
     $def_block= array( // je používáno také fcí admin_web
       # hlavní menu    typ  i site mref             on    název             next/default       elem ...                          title
-        'ms'          => "hm:8:    :odkaz            :: Manželská setkání:::                             menu=informace_ms,galerie_ms;odkaz=".urlencode("http://xms.setkani.org").": Galerie Manželských setkání",
-        'dum'         => "hm:11:   :odkaz            :: Dům setkání:::                           menu=informace_ds,galerie_ds,chystame,objednavky,ceny,archiv;odkaz=".urlencode("http://xds.setkani.org").": Galerie Domu setkání",
+        'ms'          => "hm:8:    :odkaz            :: Manželská setkání:::                             menu=informace_ms,galerie_ms;odkaz=".urlencode("http://manzelska.setkani.org").": Galerie Manželských setkání",
+        'dum'         => "hm:11:   :odkaz            :: Dům setkání:::                           menu=informace_ds,galerie_ds,chystame,objednavky,ceny,archiv;odkaz=".urlencode("http://dum.setkani.org").": Galerie Domu setkání",
         'akce'        => "hm:10:   :akce             :akce,102: Naše akce::   $def_vse:          proc=plan_rok; akce=prehled:      Akce pro rodiny, muže i ženy pořádané YMCA Setkání",
         'libr'        => 'hm:13:   :manzelak         ::     Knihov&shy;nička:bulletin::          menu=bulletin,tance,modlitby,knihy,audio,obrazy,odkazy',
         'my'          => 'hm:14:0.9:ymca-setkani     :clanek,21:O nás:::                         mclanky;-clanky=21,15,13,284,287,263:      Informace o YMCA Setkání', //o_nas',
       # Manželská setkání
-        'galerie_ms'  => "sm:51:0.9:odkaz            :: Galerie:::           odkaz=".urlencode("http://xms.setkani.org/galerie/").": Fotogalerie Manželských setkání",
-        'informace_ms'=> "sm:52:0.9:odkaz            :: Informace:::         odkaz=".urlencode("http://xms.setkani.org/informace/").": Fotogalerie Domu setkání",
+        'galerie_ms'  => "sm:51:0.9:odkaz            :: Galerie:::           odkaz=".urlencode("http://manzelska.setkani.org/galerie/").": Fotogalerie Manželských setkání",
+        'informace_ms'=> "sm:52:0.9:odkaz            :: Informace:::         odkaz=".urlencode("http://manzelska.setkani.org/informace/").": Fotogalerie Domu setkání",
       # Dům setkání
 //      'alberice'    => 'sm:20:0.9:alberice/dum     :clanek,37: Dům Setkání:::                  mclanky;:                         Dům setkání',
-        'informace_ds'=> "sm:47:0.9:odkaz            :: Informace:::                             odkaz=".urlencode("http://xds.setkani.org/informace/").": Informace k Domu Setkání",
-        'galerie_ds'  => "sm:21:0.9:odkaz            :: Galerie:::                               odkaz=".urlencode("http://xds.setkani.org/galerie/").": Fotogalerie Domu setkání",
+        'informace_ds'=> "sm:47:0.9:odkaz            :: Informace:::                             odkaz=".urlencode("http://dum.setkani.org/informace/").": Informace k Domu Setkání",
+        'galerie_ds'  => "sm:21:0.9:odkaz            :: Galerie:::                               odkaz=".urlencode("http://dum.setkani.org/galerie/").": Fotogalerie Domu setkání",
         'chystame'    => "sm:21:0.9:alberice/akce    :akce,222: Akce v Domě::  $def_vse:         proc=aplan; akce=bude:            Akce v Domě setkání",
         'objednavky'  => 'sm:23:0.8:alberice/objednavky::        Objed&shy;návky:::              dum:                              Objednávky pobytů v Domě setkání',
         'ceny'        => 'sm:24:0.8:alberice/ceny    ::          Ceny:::                         vlakno=51:                        Ceny služeb Domu setkání',
@@ -1320,7 +1320,7 @@ function wp_upload($site_name, $process, $cid, $update) {
   global $wp_upload_token;
   //todo the url might change in future, if main web becomes used
 
-  $url = "http://xms.setkani.org/extern/upload_article.php";
+  $url = "http://manzelska.setkani.org/extern/upload_article.php";
   switch ($site_name) {
     case "dum":
       $site = 2;
