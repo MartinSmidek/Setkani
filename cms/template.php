@@ -1384,9 +1384,12 @@ function wp_upload($site_name, $process, $cid, $update) {
 # =========================================================================================> GALLERY
 # nageneruje fotky do záhlaví
 # zatím samostantná tabulka, neví kde má brát fotky
-function gallery() {
+function gallery_images() {
   $directory = "fileadmin/index";
-  $images = glob("$directory/*.{jpg,png,bmp}", GLOB_BRACE);
+  return glob("$directory/*.{jpg,png,bmp}", GLOB_BRACE);
+}
+function gallery() {
+  $images = gallery_images();
   $result = "<div id='header_gallery' class='mobile_nodisplay'>";
 
   $numOfImages = count($images);
@@ -2145,17 +2148,20 @@ function kalendare($vyber, $rok, $id, $chlapi_ignore=false) { trace();
     $img= '';
     $text= xi_shorting($text,$img);
 
+    if ($n > 1) {
+      $h .= "<div class='relative abstrakt_separator'></div>";
+    }
+
     //todo temporary solution hardcoded, can be based on program value
     if ( $program == 3 || $cid == 1644) {
       if (!strpos($vyber, "chlapi")) continue;
-      $h.= "<div class='$abstr relative' id='n$n'>
-            <div class='status_chlapi'>
+      $h.= "<div class='$abstr relative status_chlapi' id='n$n'>
            $code 
            <a class='abstrakt$ex' target='_blank' href='http://chlapi.cz/skupiny!brno!343'>
              <div class='abstrakt_calendar_title'>$title:</div><div class='clear'></div>$img 
-               <p>$text</p>
+               <p class='abstrakt_calendar_paragraph'>$text</p>
            </a>
-         </div></div>";
+         </div>";
       continue;
     }
 
@@ -2163,8 +2169,9 @@ function kalendare($vyber, $rok, $id, $chlapi_ignore=false) { trace();
         . "'$href0!{$vyber}$cms_roks!$uid#anchor$uid','$page_mref$roks/$uid#anchor$uid');\""
         : "href='$page_mref$roks/$uid#anchor$uid'";
 
-    $h.= $uid==$id ? vlakno($cid,'clanek',$back, false, true)
-        : "<div class='$abstr' id='n$n'>
+    //if selected a certain calendar, do not show other calendars...  
+    if ($uid==$id) return vlakno($cid,'clanek',$back, false, true) . "<div class='clear'></div>";
+    $h.= "<div class='$abstr' id='n$n'>
            $code 
            <a class='abstrakt$ex{$upd}' $jmp>
              <b>$title:</b><div class='clear'></div>$img 
@@ -2172,7 +2179,7 @@ function kalendare($vyber, $rok, $id, $chlapi_ignore=false) { trace();
            </a>
          </div>";
   }
-  return $h . ($h? "<div class='clear'></div>" : '');
+  return $h ? "$h<div class='clear'></div>" : '';
 }
 # ============================================================================================> akce
 # akce je tvořena vždy záznamem v CASE a záznamy v PART s tags A,F,D,T
@@ -2267,12 +2274,18 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
     while ( $cr && (list($rok,$pocet,$upd)= pdo_fetch_row($cr)) ) {
       $mark= $rok=='nove' ? 'nove' : "rok$rok";
       $novych+= $rok=='nove' ? $pocet : 0;
-      $rok_display = $rok=='nove' ? '+' : $rok;
+      $rok_display = $rok;
+      $rok_nadpis = $rok;
       if ( $kdy==$rok ) {
+
+
         // otevřený archiv
         $akci= kolik_1_2_5($pocet,"akci,akce,akcí");
         $akce= kolik_1_2_5($pocet,"akce,akcí,akcí");
         if ( $rok=='nove' ) {
+
+          $rok_display = $rok;
+          $rok_nadpis = 'Plánujeme';
           $zacatek= "Zveme vás na $akci:";
           $zacatek_lowcase = "zveme vás na $akci:";
           $kalendare_title = "Kalendáře všech plánovaných akcí:";
@@ -2283,24 +2296,34 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
         }
 
         $summary .= "<a class='akce_rok akce_rok_active' id='$mark' $upd>
-                  <span class='akce_rok_title'>$rok_display</span><span class='akce_rok_text'>$zacatek_lowcase</span>
+                  <span class='akce_rok_title'>$rok_nadpis</span><span class='akce_rok_text'>$zacatek_lowcase</span>
                 </a>";
 
 
         $back= "onclick=\"go(arguments[0],'$href0!$vyber#$mark','');\"";
         $back= '';
 
-        $h .= "<h2 class='akce_prehled_title_watermark'>$rok_display</h2>";
 
         $kalendare = kalendare($vyber, $kdy, $id);
 
-        if ($kalendare != '') {
-          $h .= "<div style='text-align: -webkit-right;'><div class=\"akce_calendars\">
-                <div class='akce_calendars_header'>$kalendare_title</div>
-                <div style='padding: 0 10px'>$kalendare</div> </div></div>";
-        } else {
-          $h .= "<br><br><br><br>";
+        if ($kalendare == '') {
+          $kalendare_title = "Nejsou k dispozici žádné kalendáře.";
         }
+
+        $h .= "<div class='akce_calendars_outer'>
+                <div class='akce_calendars_design'>
+                    <div class='akce_calendar_title'>
+                    
+                        $kalendare_title
+                    </div>
+                    <div class='akce_calendar_year'>
+                    <h2 class='akce_calendars_title_watermark'>$rok_display</h2>
+                    </div>
+                    
+                 </div>
+
+                <div class=\"akce_calendars\">
+                <div style='padding: 0 10px; height: 100%; display: flex;overflow: hidden;'>$kalendare</div> </div></div>";
 
         $h.= "<div id='$mark' $back><div class='content'>
               <span class='anchor' id='anchor$rok'></span>";
