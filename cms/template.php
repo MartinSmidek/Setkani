@@ -681,7 +681,12 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
           $body.= akce_prehled('dum',$rok,$id);
         } else {
           $kdy= $ids=='bude' ? $ids : '';
-          $body.= akce($vyber,$ids,$id);
+          $content_akce = akce($vyber,$ids,$id);
+          if (strlen($content_akce) < 30) {
+            $content_akce = "<div class='content'><br><br>Nejsou k dispozici žádné akce k zobrazení.<br><br><br><br></div>";
+          }
+
+          $body.= $content_akce;
         }
         break;
 
@@ -2318,7 +2323,7 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
                         $kalendare_title
                     </div>
                     <div class='akce_calendar_year'>
-                    <h2 class='akce_calendars_title_watermark'>$rok_display</h2>
+                    <h2 class='akce_calendars_year_watermark'>$rok_display</h2>
                     </div>
                     
                  </div>

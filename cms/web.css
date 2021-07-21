@@ -552,7 +552,9 @@ div.LabelDrop * {cursor:pointer; }
 div.text a span {
   /*background-color:#F5CF85;*/
   color:#67827a; text-decoration:underline; cursor:pointer }
-div.text a span:hover { background-color:#B48933 !important; color:#EFFBDA !important; }
+div.text a span:hover {
+  /*background-color:#B48933 !important;*/
+  color:#EFFBDA !important; }
 
 /* seznamy abstraktů */
 div.abstrakt_foto { background-color:#cadfd9;  margin:0.5em; cursor:pointer; padding:.4em;  }
@@ -630,7 +632,7 @@ color: white;
   margin: 5% 0;
 }
 .akce_calendars_outer {display: flex;}
-.akce_calendars_title_watermark {
+.akce_calendars_year_watermark {
   font-weight: bolder;
   font-size: 1000%;
   margin-left: 0.3em;
