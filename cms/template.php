@@ -2284,7 +2284,7 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
         $akce= kolik_1_2_5($pocet,"akce,akcí,akcí");
         if ( $rok=='nove' ) {
 
-          $rok_display = date('y');
+          $rok_display = date('Y');
           $rok_nadpis = 'Bude ';
           $zacatek= "Zveme vás na $akci:";
           $zacatek_lowcase = "zveme vás na $akci:";
@@ -2367,7 +2367,7 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
       }
       $counter++;
     }
-    if ( !$novych && $vyber!='dum' && $vyber!='chlapi.online' && ($kdy == 'nove' || $kdy == date('y')) ) {
+    if ( !$novych && $vyber!='dum' && $vyber!='chlapi.online' && ($kdy == 'nove' || $kdy == date('Y')) ) {
       $h.= "<div class='kniha_bg'>";
       $h.= "<div class='kniha_br'><b>Pro $_vyber zatím nic dalšího nepřipravujeme</b></div>";
       $h.= "</div>";
