@@ -2284,8 +2284,8 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
         $akce= kolik_1_2_5($pocet,"akce,akcí,akcí");
         if ( $rok=='nove' ) {
 
-          $rok_display = $rok;
-          $rok_nadpis = 'Plánujeme';
+          $rok_display = date('y');
+          $rok_nadpis = 'Bude ';
           $zacatek= "Zveme vás na $akci:";
           $zacatek_lowcase = "zveme vás na $akci:";
           $kalendare_title = "Kalendáře všech plánovaných akcí:";
