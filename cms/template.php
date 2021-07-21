@@ -866,7 +866,7 @@ __EOD;
   
   $eb_link
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C700%2C700i%2C800%2C800i&amp;ver=0.3.5" type="text/css" media="all">
-<link rel="stylesheet" href="cms/web.css?v=4.6" type="text/css" media="screen" charset="utf-8">
+<link rel="stylesheet" href="cms/web.css?v=4.7" type="text/css" media="screen" charset="utf-8">
   <script type="text/javascript">
     var Ezer={web:{ $Ezer_web},cms:{form:{}}};
     if ( !console ) {
@@ -2169,7 +2169,7 @@ function kalendare($vyber, $rok, $id, $chlapi_ignore=false) { trace();
         . "'$href0!{$vyber}$cms_roks!$uid#anchor$uid','$page_mref$roks/$uid#anchor$uid');\""
         : "href='$page_mref$roks/$uid#anchor$uid'";
 
-    //if selected a certain calendar, do not show other calendars...  
+    //if selected a certain calendar, do not show other calendars...
     if ($uid==$id) return vlakno($cid,'clanek',$back, false, true) . "<div class='clear'></div>";
     $h.= "<div class='$abstr' id='n$n'>
            $code 
