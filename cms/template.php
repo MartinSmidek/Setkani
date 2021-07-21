@@ -923,7 +923,7 @@ __EOD;
 
 // body
   $footer = footer();
-  $cur_year = time('y');
+  $cur_year = date('Y');
 
   $notice = $CMS ? tutorial(!isset($_COOKIE["article_tutorial"]) && !$_COOKIE["article_tutorial"]) : "";
   $body= <<<__EOD

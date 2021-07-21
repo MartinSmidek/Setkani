@@ -1060,7 +1060,9 @@ label.form_button {float: right}
   .akce_rok_active .akce_rok_title {font-size: 25pt !important; }
   .akce_rok_active .akce_rok_text {font-size: 13pt !important; }
 
-
+  .akce_calendars_year_watermark {
+    font-size: 700%;
+  }
 
 
   /*footer*/
