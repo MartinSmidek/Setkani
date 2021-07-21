@@ -674,7 +674,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
           $body.= "<div class='commentary_div'> Prohlédněte si seznam akcí které proběhly v Domě Setkání. Některé fotografie z akcí 
                 naleznete ve fotogalerii, více je pak dostupné na dalších
                 webech z odkazů ve fotogalerii.
-                </div></div><br><br>";
+                </div></div><br>";
           $rok= $id?:date('Y');
           $id= array_shift($path);
           list($page_mref,$roks)= explode('/',$page_mref);
@@ -2203,8 +2203,8 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
   $typ= '';
   $hledej= trim($hledej);
   $xx_tags= $xx_foto= $xx_img= array();
-  $h= "<div class='akce_content'>";
-  $summary = "<div class='akce_summary'>";
+  $h= "<div class='akce_content relative'>";
+  $summary = "";
   $rkomu= array();
 
   if ( $vyber=='foto' ) {
@@ -2274,7 +2274,7 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
     while ( $cr && (list($rok,$pocet,$upd)= pdo_fetch_row($cr)) ) {
       $mark= $rok=='nove' ? 'nove' : "rok$rok";
       $novych+= $rok=='nove' ? $pocet : 0;
-      $rok_display = $rok;
+      $rok_display = $rok=='nove' ? 'nové ' : $rok;
       $rok_nadpis = $rok;
       if ( $kdy==$rok ) {
 
@@ -2285,7 +2285,7 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
         if ( $rok=='nove' ) {
 
           $rok_display = date('Y');
-          $rok_nadpis = 'Bude ';
+          $rok_nadpis = 'nové ';
           $zacatek= "Zveme vás na $akci:";
           $zacatek_lowcase = "zveme vás na $akci:";
           $kalendare_title = "Kalendáře všech plánovaných akcí:";
@@ -2303,12 +2303,13 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
         $back= "onclick=\"go(arguments[0],'$href0!$vyber#$mark','');\"";
         $back= '';
 
-
         $kalendare = kalendare($vyber, $kdy, $id);
 
         if ($kalendare == '') {
           $kalendare_title = "Nejsou k dispozici žádné kalendáře.";
         }
+        $h.= "<div id='$mark' $back><div class='content'>
+              <span class='anchor' id='anchor$rok'></span>";
 
         $h .= "<div class='akce_calendars_outer'>
                 <div class='akce_calendars_design'>
@@ -2325,8 +2326,7 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
                 <div class=\"akce_calendars\">
                 <div style='padding: 0 10px; height: 100%; display: flex;overflow: hidden;'>$kalendare</div> </div></div>";
 
-        $h.= "<div id='$mark' $back><div class='content'>
-              <span class='anchor' id='anchor$rok'></span>";
+
         $h .= "<h2 class='akce_prehled_title'>$zacatek</h2>";
 
         $h.= akce($vyber,$kdy,$id,$fotogalerie,$hledej,$chlapi,$backref, false);
@@ -2360,17 +2360,31 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
           $nadpis= $rok=='nove'
               ? "připravujeme pro vás $akce"
               : "archiv $akce";
-          $summary .= "<a class='akce_rok' id='$mark' $next $upd>
+          $summary .= "<a class='akce_rok' id='nove' $next $upd>
                   <span class='akce_rok_title'>$rok_display</span><span class='akce_rok_text'>$nadpis</span>
                 </a>";
         }
       }
       $counter++;
     }
-    if ( !$novych && $vyber!='dum' && $vyber!='chlapi.online' && ($kdy == 'nove' || $kdy == date('Y')) ) {
-      $h.= "<div class='kniha_bg'>";
-      $h.= "<div class='kniha_br'><b>Pro $_vyber zatím nic dalšího nepřipravujeme</b></div>";
-      $h.= "</div>";
+    if ( !$novych && $vyber!='dum' && $vyber!='chlapi.online') {
+      $akce_class = '';
+      if ( $CMS || $typ=='hledej' ) {
+        $next= "{$href0}!$vyber,nove#$mark";
+        $next= "onclick=\"go_anchor(arguments[0],'$next','$page_mref/nove#anchornove');\"";
+      }
+      else {
+        $next= "href='$page_mref/nove#anchornove'";
+      }
+
+      if ($kdy == 'nove') {
+        $h.= "<div class='kniha_br'><b>Pro $_vyber zatím nic dalšího nepřipravujeme</b></div>";
+        $akce_class = " akce_rok_active";
+      }
+      $summary = "<a class='akce_rok$akce_class' id='$mark' $next $upd>
+                 <span class='akce_rok_title'>nové</span><span class='akce_rok_text'>žádné akce</span>
+               </a>" . $summary;
+
     }
   }
   else {
@@ -2384,9 +2398,8 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
   // navrácení textu
   //$h.= $chlapi_online ? '' : $c_komu;
   $h.= "</div>";
-  $summary.= "</div>";
 
-  return "<div class='akce_container content'>$summary$h</div>";
+  return "<div class='akce_container content'><div class='akce_summary'>$summary</div>$h</div>";
 }
 # --------------------------------------------------------------------------------------------- akce
 # id=pid nebo název menu
