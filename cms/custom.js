@@ -1,9 +1,9 @@
-let SCROLL_LIMIT_AMOUNT = 300;
+let SCROLL_LIMIT_AMOUNT = 250;
 var FREE_ROOMS = null;
 var FREE_ROOMS_INCL_ORDERS = null;
 // ---------------------------------------------------------------------------- header image gallery
 function swapImages() {
-    if (jQuery(window).width() > 640) { //do not run on mobiles
+    if (jQuery(window).width() > 685) { //do not run on mobiles
         let active = jQuery("#header_gallery .act");
         var next = (active.next().length > 0) ? active.next() : jQuery("#header_gallery img:first");
         next.css('display', '');
@@ -24,8 +24,10 @@ function adjustGallery() {
 function searchByQuery() {
     var item = document.getElementById("search").value;
     var form = document.getElementById("search_form");
-    form.action = "/hledej/" + item + "/";
-    form.submit();
+    item = item.replace(';','');
+    console.log(item);
+    document.cookie= 'web_search='+item+';path=/';
+    location.href= "/hledej/" + item;
 }
 
 // ---------------------------------------------------------------------------- orders functionality
@@ -255,7 +257,7 @@ function setPrice(text, warning, isPrice = true) {
 // ========================================================================================> RUNNING
 jQuery(window).resize(function () {
     adjustGallery();
-    if (jQuery(window).width() > 640) {
+    if (jQuery(window).width() > 685) {
         noMobileAdjustMenu(jQuery("#menu"), jQuery(window).scrollTop());
     } else {
         jQuery('#web').css("padding-top", "30px");
@@ -278,7 +280,7 @@ jQuery(window).bind('scroll', function () {
         win = jQuery(window),
         scrollAmount = win.scrollTop();
 
-    if (win.width() > 640) {
+    if (win.width() > 685) {
         noMobileAdjustMenu(menu, scrollAmount);
     } else { //mobile
         mobileAdjustMenu(menu, scrollAmount);

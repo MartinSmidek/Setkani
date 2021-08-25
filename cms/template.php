@@ -25,33 +25,19 @@ function def_menu($from_table=false) { trace();
     $def_vse= 'rodiny,manzele,chlapi,zeny,mladez';
     $def_block= array( // je používáno také fcí admin_web
       # hlavní menu    typ  i site mref             on    název             next/default       elem ...                          title
+        'ms'          => "hm:8:    :odkaz            :: Manželská setkání:::                             menu=informace_ms,galerie_ms;odkaz=".urlencode("http://manzelska.setkani.org").": Galerie Manželských setkání",
+        'dum'         => "hm:11:   :odkaz            :: Dům setkání:::                           menu=informace_ds,galerie_ds,chystame,objednavky,ceny,archiv;odkaz=".urlencode("http://dum.setkani.org").": Galerie Domu setkání",
         'akce'        => "hm:10:   :akce             :akce,102: Naše akce::   $def_vse:          proc=plan_rok; akce=prehled:      Akce pro rodiny, muže i ženy pořádané YMCA Setkání",
-        'dum'         => "hm:11:   :alberice/dum     ::     Dům setkání:::                       menu=alberice,informace,chystame,objednavky,ceny,archiv",
-        'foto'        => 'hm:12:   :fotogalerie      ::     Foto&shy;galerie:::                  foto:                             Fotografie z akcí YMCA Setkání',
         'libr'        => 'hm:13:   :manzelak         ::     Knihov&shy;nička:bulletin::          menu=bulletin,tance,modlitby,knihy,audio,obrazy,odkazy',
         'my'          => 'hm:14:0.9:ymca-setkani     :clanek,21:O nás:::                         mclanky;-clanky=21,15,13,284,287,263:      Informace o YMCA Setkání', //o_nas',
-//      'team'        => "hm:33:   :team             ::Tým :::                                   team:                             Informace pro tým",
-//        'a_web'       => "hm:15:   :-                ::web/admin:::                              menu=a_zmeny,a_odkazy,a_reconstr,a_sitemap",
-//        'a_old'       => "hm:37:   :-                ::web/oldies:::                             menu=a_ys,a_ms,a_ds,a_lb,a_ch,a_us,a_wb,a_ja,a_my",
-//        'a_online'    => 'hm:16:   :-             :clanek,324:chlapi.online:::                mclanky;-clanky=324:              Články na server chlapi.online',
-//      # Web
-//        'a_zmeny'     => 'sm:17:   :-                ::   změny obsahu:::                        web_zmeny',
-//        'a_odkazy'    => 'sm:18:   :-                ::   staré odkazy:::                        web_odkazy',
-//        'a_reconstr'  => 'sm:36:   :-                ::   rekontrukce:::                         web_reconstr',
-//        'a_sitemap'   => 'sm:19:   :-                ::   sitemap.xml:::                         web_sitemap',
-//        'a_ys'        => "sm:38:   :-                ::YS:::                                     mclanky;-clanky=12,14,16,17,20,246,323",
-//        'a_ms'        => "sm:41:   :-                ::MS:::                                     mclanky;-clanky=72,198,260,303",
-//        'a_ds'        => "sm:40:   :-                ::DS:::                                     mclanky;-clanky=259,108,131,132,236",
-//        'a_lb'        => "sm:45:   :-                ::LIB:::                                    mclanky;-clanky=313",
-//        'a_ch'        => "sm:44:   :-                ::CH:::                                     mclanky;-clanky=239,249,262,319,321",
-//        'a_us'        => "sm:43:   :-                ::U.S:::                                    mclanky;-clanky=237",
-//        'a_wb'        => "sm:42:   :-                ::WEB:::                                    mclanky;-clanky=251,304,264,245,244,209,210,211,213,215,216,217,219,229",
-//        'a_ja'        => "sm:39:   :-                ::MŠ:::                                     mclanky;-clanky=317,311,308,261,291,293,295,294,300,301,302,309,310",
-//        'a_my'        => "sm:46:   :-                ::ROD:::                                    mclanky;-clanky=316",
+      # Manželská setkání
+        'galerie_ms'  => "sm:51:0.9:odkaz            :: Galerie:::           odkaz=".urlencode("http://manzelska.setkani.org/galerie/").": Fotogalerie Manželských setkání",
+        'informace_ms'=> "sm:52:0.9:odkaz            :: Informace:::         odkaz=".urlencode("http://manzelska.setkani.org/informace/").": Fotogalerie Domu setkání",
       # Dům setkání
-        'alberice'    => 'sm:20:0.9:alberice/dum     :clanek,37: Dům Setkání:::                  mclanky;:                         Dům setkání',
-        'informace'   => "sm:47:0.9:alberice/informace :clanek,37: Informace :::                 mclanky;:                        Informace k Domu Setkání",
-        'chystame'    => "sm:21:0.9:alberice/akce    :akce,222: Akce v Domě::  $def_vse:        proc=aplan; akce=bude:            Akce v Domě setkání",
+//      'alberice'    => 'sm:20:0.9:alberice/dum     :clanek,37: Dům Setkání:::                  mclanky;:                         Dům setkání',
+        'informace_ds'=> "sm:47:0.9:odkaz            :: Informace:::                             odkaz=".urlencode("http://dum.setkani.org/informace/").": Informace k Domu Setkání",
+        'galerie_ds'  => "sm:21:0.9:odkaz            :: Galerie:::                               odkaz=".urlencode("http://dum.setkani.org/galerie/").": Fotogalerie Domu setkání",
+        'chystame'    => "sm:21:0.9:alberice/akce    :akce,222: Akce v Domě::  $def_vse:         proc=aplan; akce=bude:            Akce v Domě setkání",
         'objednavky'  => 'sm:23:0.8:alberice/objednavky::        Objed&shy;návky:::              dum:                              Objednávky pobytů v Domě setkání',
         'ceny'        => 'sm:24:0.8:alberice/ceny    ::          Ceny:::                         vlakno=51:                        Ceny služeb Domu setkání',
         'archiv'      => "sm:22:   :alberice/$letos  ::          Prožili jsme:::                 akce=aprehled:                    Archiv akcí v Domě setkání",
@@ -65,18 +51,9 @@ function def_menu($from_table=false) { trace();
         'odkazy'      => 'sm:31:0.8:doporuceni       :clanek,320:Doporu&shy;čujeme:::            mclanky;-clanky=223,9:            Doporučujeme s podobnou tématikou',
       # speciální stránky
         'home'        => "tm:32:0.9:home             ::<i class='fa fa-home'></i> Domů:::        home:                             Akce pro rodiny, muže i ženy pořádané YMCA Setkání",
-        'hledej'    =>   'tm:34:     :hledej         ::<i class="fa fa-search"></i>:::           search:                           Hledej',
+        'hledej'      => "tm:34:   :hledej           ::Hledat:::                                 search:                           Hledej",
         'clanek'      => ':99:   :-                ::-:::                                        single:                           ',
     );
-//    $def_mid= array();  // vznikne transformací i => mref
-//    $def_mref= array(); // vznikne transformací mref => id
-//    foreach ($def_block as $ref=>$def) {
-//      list($typ_bloku,$mid,$site,$mref)= explode(':',$def);
-//      $mref= trim($mref);
-//      if ( $mref=='-' ) continue;
-//      $def_mid[$mid]= $mref;
-//      $def_mref[$mref]= $ref;
-//    }
   }
 }
 # --------------------------------------------------------------------------------------==> page
@@ -185,8 +162,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       )
   );
 # zobrazíme topmenu a hlavní menu, přitom zjistíme případné doplnění cesty a její správnost
-  $topmenu= $mainmenu1= $submenu= $submenu_komu= $mainmenu2= $page= $elems= $mid= $pars= $web_banner= '';
-  $page_ok= false;        // je dobře definovaná aktivní stránka
+  $topmenu= $submenu_komu= $mainmenu= $mobile_mainmenu= $page= $elems= $mid= $pars= $web_banner= '';
 //                                                         debug($path,"před corr");
 # ---------------------------------------------------------------- . test pro explicitně udaný part
 // goto decode_path;
@@ -248,14 +224,14 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
   $dnu= isset($_COOKIE['web_show_changes']) ? $_COOKIE['web_show_changes'] : 1;
   $news_time= time() - $dnu*24*60*60;
   $search= isset($_COOKIE['web_search']) ? $_COOKIE['web_search'] : '';
-//                                                         display("search/c=$search");
-  $search_go= "go(arguments[0],'{$href}hledej','/hledej',1,1);";
 
   //use cookies do diferentiate between show operational modes, instead of url
   if (!isset($_COOKIE['akce']) || strlen($_COOKIE['akce']) < 3) {
     setcookie('akce', 'rodiny,manzele,chlapi,zeny,mladez');
   }
-  $do_menu2 = false; //whether the menu should be placed into _1 or _2 variable
+
+  $mainmenu = "<ul class='menu_hm'>";
+  $mobile_mainmenu = "<ul class='menu_hm'><li></li>";
   foreach ($def_block as $ref=>$def) {
     list($typ_bloku,$mid1,$site,$mref,$context,$nazev,$next,$default1,$elems1,$title1)= explode(':',$def);
     // UPD se uplatní pouze pokud je aspoň o den větší než NEW
@@ -275,7 +251,6 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       $active= $path[0]==$ref ? ' active' : '';
       if ( $active ) {
         if ( $title1 ) $web_title= $title1;
-        $page_ok= true;
         $page= $ref;
         $elems= $elems1;
         $mid= $mid1;
@@ -284,20 +259,42 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 //                                                         display("tm:web_banner='$web_banner'");
       }
       if ( $ref=='hledej' ) {
-        $input= "1";
-        $jmp= $CMS
-            ? "onclick=\"go(arguments[0],'$href$ref','/$mref',$input,1);\""
-            : "onclick=\"
-              let query = jQuery('input#search').val();
-              if (query && query !== '') window.location.href='/$mref/' + query;
-              else window.location.href='/';\"";
+        $jmp= $CMS ? "onclick=\"go(arguments[0],'$href$ref','/$mref',1,1);\"" : "onclick=\"searchByQuery();\"";
+        $submit = $CMS ? "onsubmit=\"event.preventDefault();\"" : "onsubmit=\"event.preventDefault();\"";
+        $topmenu.= "
+            <div class=\"header-search\">		
+            <span class=\"search-icon\" onclick=\"jQuery(this).parent().toggleClass('active');jQuery(this).children().each(function() {jQuery(this).toggleClass('nodisplay');});\">
+                <span class=\"ic-search\">
+                    <svg focusable=\"false\" role=\"presentation\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"21\" viewBox=\"0 0 20 21\">
+                        <path fill=\"currentColor\" fill-rule=\"evenodd\" d=\"M12.514 14.906a8.264 8.264 0 0 1-4.322 1.21C3.668 16.116 0 12.513 0 8.07 0 3.626 3.668.023 8.192.023c4.525 0 8.193 3.603 8.193 8.047 0 2.033-.769 3.89-2.035 5.307l4.999 5.552-1.775 1.597-5.06-5.62zm-4.322-.843c3.37 0 6.102-2.684 6.102-5.993 0-3.31-2.732-5.994-6.102-5.994S2.09 4.76 2.09 8.07c0 3.31 2.732 5.993 6.102 5.993z\"></path>
+                    </svg>
+                </span>
+                <span class=\"ic-close nodisplay\">
+                    <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"612px\" height=\"612px\" viewBox=\"0 0 612 612\" fill=\"currentColor\" style=\"enable-background:new 0 0 612 612;\" xml:space=\"preserve\"><g><g id=\"cross\"><g><polygon points=\"612,36.004 576.521,0.603 306,270.608 35.478,0.603 0,36.004 270.522,306.011 0,575.997 35.478,611.397 306,341.411 576.521,611.397 612,575.997 341.459,306.011 \"></polygon></g></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+                </span>
+            </span>
+              
+              <div class=\"header-search-container\">
+                <form id='search_form' role=\"search\" class=\"search-form\" $submit>
+                    <label>
+                        <span class=\"hidden-label-text\">Hledat:</span>
+                        <input id='search' size=10 title='hledané slovo' placeholder='Hledat...' /> 
+                    </label>
+                    <button class=\"search-submit\" $jmp>
+                        <svg focusable=\"false\" role=\"presentation\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"21\" viewBox=\"0 0 20 21\">
+                            <path fill=\"currentColor\" fill-rule=\"evenodd\" d=\"M12.514 14.906a8.264 8.264 0 0 1-4.322 1.21C3.668 16.116 0 12.513 0 8.07 0 3.626 3.668.023 8.192.023c4.525 0 8.193 3.603 8.193 8.047 0 2.033-.769 3.89-2.035 5.307l4.999 5.552-1.775 1.597-5.06-5.62zm-4.322-.843c3.37 0 6.102-2.684 6.102-5.993 0-3.31-2.732-5.994-6.102-5.994S2.09 4.76 2.09 8.07c0 3.31 2.732 5.993 6.102 5.993z\"></path>
+                        </svg>
+                    </button>
+                </form>
+              </div>
+            </div>";
       } else {
         $jmp= $CMS || substr($mref,0,1)=='-'
             ? "onclick=\"go(arguments[0],'$href$ref','/$mref',$input,1);\""
             : "href='/$mref'";
-      }
-      if ( $nazev0!='-' ) {
-        $topmenu.= " <a $jmp class='jump$active$upd1'>$nazev</a>";
+        if ( $nazev0!='-' ) { //ignore 'hledej' and perform custom code
+          $topmenu.= " <a $jmp class='jump$active$upd1'>$nazev</a>";
+        }
       }
     }
     elseif ( $typ_bloku=='hm' ) {
@@ -321,34 +318,16 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       else {
         $cont= $mref;
       }
-//     if ( $ref=='akce' && !$CMS ) {
-//       $cookie1= isset($_COOKIE[$ref]) && $_COOKIE[$ref] ? '!'.urldecode($_COOKIE[$ref]) : '';
-//       $cont= $cookie1 ?: $default1;
-//       $cont= $mref= str_replace('!','',$cont);
-//                                                 display("Cookie[$ref]=$cookie1 ... $default1 ... $cont");
-//     }
-//     else {
-//       if ( $CMS || substr($mref,0,1)=='-' ) {
-//         $cont= $ref.($next ? "!$next" : '');
-//         $cookie= isset($_COOKIE[$ref]) ? '!'.urldecode($_COOKIE[$ref]) : '';
-//                                                 display("Cookie? $ref=$cookie");
-//         $cont.= $default1 ? ($cookie ?: '!'.$default1) : '';
-//       }
-//       else {
-//         $cont= $mref;
-//       }
-//     }
+
       $active= $path[0]==$ref ? ' active' : '';
       if ( $active ) {
         if ( $title1 ) $web_title= $title1;
         if ( $a_ref ) $a_ref.= "_active";
         if ( $mref=='akce' ) $web_akce= 'akce';
-        $page= $ref;
         $elems= $elems1;
         $mid= $mid1;
         $href0.= $ref;
         $web_banner= "web_$ref";
-//       $page_mref= $cont;
         $page_mref= $mref;
 //                                                         display("1 page_mref = $page_mref");
       }
@@ -362,7 +341,6 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
           $a_ref2= substr($ref2,0,2)=='a_' ? " admin" : '';
           $mref2= trim($mref2);
           $nazev2= "<span>$nazev2</span>";
-          $next2= str_replace(' ','',$next2);
           $default2= str_replace(' ','',$default2);
           $elems2= str_replace(' ','',$elems2);
           $active2= $path[1]==$ref2 ? ' active' : '';
@@ -371,8 +349,6 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
           if ( $active2 ) {
             if ( $title2 ) $web_title= $title2;
             if ( $a_ref2 ) $a_ref2.= "_active";
-            $page_ok= true;
-            $page= $ref2;
             $page_mref= $mref2;
             $elems= $elems2;
             $mid= $mid2;
@@ -387,54 +363,142 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
             }
           }
           $on= " oncontextmenu='return false;'";
-          // přidání kontextového menu pro přidávání aj.
-          if ( $context2 ) {
-            list($ctyp,$pgid)= explode(',',$context2);
-//                                                                 display("> $ref $ref2");
-            $on_plus= isset($def_menu[$ref2]) ? $def_menu[$ref2] : '';
-            $on= " oncontextmenu=\"Ezer.fce.contextmenu([
-              ['{$def_on[$ctyp]}',function(el){ vytvorit('$ctyp','$pgid','$mid2'); }]
-              $on_plus
-            ],arguments[0]);return false;\"";
+
+          // if 'odkaz', create redirect href and do not add context menu opts
+          if ( $mref2 == "odkaz" ) {
+            foreach (explode(";", $elems2) as $chunk) {
+              $urldata = explode('=', trim($chunk) . "=");
+              for ($i = 0; $i < count($urldata); $i += 2) {
+                if ($urldata[$i] == "odkaz") {
+                  $redirect = urldecode($urldata[1]);
+                  break;
+                }
+              }
+            }
+            $submenu.= $CMS || substr($mref2,0,1)=='-'
+                ? "<li><a href='$redirect' class='$a_ref2$upd2' target='_blank' $on>$nazev2</a></li>"
+                : "<li><a href='$redirect' class='$upd2'>$nazev2</a></li>";
+          } else {
+            // přidání kontextového menu pro přidávání aj.
+            if ( $context2 ) {
+              list($ctyp,$pgid)= explode(',',$context2);
+              $on_plus= isset($def_menu[$ref2]) ? $def_menu[$ref2] : '';
+              $on= " oncontextmenu=\"
+                go_with_menu(arguments[0],'$href{$path[0]}!$cont2','/$mref2',$input,1,[
+                ['{$def_on[$ctyp]}',function(el){ vytvorit('$ctyp','$pgid','$mid2'); }]
+                $on_plus
+              ]); return false;\"";
+            }
+
+            $submenu.= $CMS || substr($mref2,0,1)=='-'
+                ? "<li><a onclick=\"go(arguments[0],'$href{$path[0]}!$cont2','/$mref2',$input,1);\" "
+                . "class='$active2$a_ref2$upd2'$on>$nazev2</a></li>"
+                : "<li><a href='/$mref2' class='$active2$upd2'>$nazev2</a></li>";
           }
-          $submenu.= $CMS || substr($mref2,0,1)=='-'
-              ? " <a onclick='go(arguments[0],\"$href{$path[0]}!$cont2\",\"/$mref2\",$input,1);' "
-              . "class='jump$active2$a_ref2$upd2'$on>$nazev2</a>"
-              : " <a href='/$mref2' class='jump$active2$upd2'>$nazev2</a>";
         }
         array_shift($path);
-      }
-      elseif ( $active ) $page_ok= true;
-      // přidání kontextového menu pro přidávání
-      $on= " oncontextmenu='return false;'";
-      if ( $context ) {
-        list($ctyp,$pgid)= explode(',',$context);
-        $on_plus= isset($def_menu[$ref]) ? $def_menu[$ref] : '';
-        $on= " oncontextmenu=\"Ezer.fce.contextmenu([
-          ['{$def_on[$ctyp]}',function(el){ vytvorit('$ctyp','$pgid','$mid1'); }]
-          $on_plus
-        ],arguments[0]);return false;\"";
-      }
-      if ( $cont ) {
-        $menuitem = $CMS || substr($mref,0,1)=='-'
-            ? " <a onclick='go(arguments[0],\"$href$cont\",\"/$mref\",$input,1);' "
-            . "class='jump$active$a_ref$upd1'$on>$nazev</a>"
-            : " <a href='/$mref' class='jump$active$upd1'>$nazev</a>";
-        if ($do_menu2) {
-          $mainmenu2 .= $menuitem;
-        } else {
-          $mainmenu1 .= $menuitem;
+      } elseif ($typ=='menu') {
+        $submenu = '';
+        if ( !$news_time ) $news_time= time() - 1 * 24*60*60;
+        foreach (explode(',',$ids) as $ref2) {
+          list($typ2,$mid2,$site2,$mref2,$context2,$nazev2,$next2,$default2,$elems2,$title2)= explode(':',$def_block[$ref2]);
+          $upd2= select1("IF(tstamp>$news_time, IF(TO_DAYS(FROM_UNIXTIME(tstamp))>TO_DAYS(FROM_UNIXTIME(crdate)),' upd',' new'),'')",
+              "tx_gnmenu","mid=$mid2");
+          $a_ref2= substr($ref2,0,2)=='a_' ? " admin" : '';
+          $mref2= trim($mref2);
+          $nazev2= "<span>$nazev2</span>";
+          # doplnění defaultní cesty
+          $cont2= $ref2;
+          $on= " oncontextmenu='return false;'";
+
+          // if 'odkaz', create redirect href and do not add context menu opts
+          if ( $mref2 == "odkaz" ) {
+            foreach (explode(";", $elems2) as $chunk) {
+              $urldata = explode('=', trim($chunk) . "=");
+              for ($i = 0; $i < count($urldata); $i += 2) {
+                if ($urldata[$i] == "odkaz") {
+                  $redirect = urldecode($urldata[1]);
+                  break;
+                }
+              }
+            }
+            $submenu.= $CMS || substr($mref2,0,1)=='-'
+                ? "<li><a href='$redirect' class='$a_ref2$upd2' target='_blank' $on>$nazev2</a></li>"
+                : "<li><a href='$redirect' class='$upd2'>$nazev2</a></li>";
+          } else {
+            // přidání kontextového menu pro přidávání aj.
+            if ( $context2 ) {
+              list($ctyp,$pgid)= explode(',',$context2);
+              $on_plus= isset($def_menu[$ref2]) ? $def_menu[$ref2] : '';
+              $on= " oncontextmenu=\"
+                go_with_menu(arguments[0],'$href".explode("!", $cont)[0]."!$cont2','/$mref2',$input,1,[
+                ['{$def_on[$ctyp]}',function(el){ vytvorit('$ctyp','$pgid','$mid2'); }]
+                $on_plus
+              ]); return false;\"";
+            }
+
+            $submenu.= $CMS || substr($mref2,0,1)=='-'
+                ? "<li><a onclick='go(arguments[0],\"$href".explode("!", $cont)[0]."!$cont2\",\"/$mref2\",$input,1);' "
+                . "class='$a_ref2$upd2' $on>$nazev2</a></li>"
+                : "<li><a href='/$mref2' class='$upd2'>$nazev2</a></li>";
+          }
         }
       }
-      if ($active) {
-        //once active, put the rest of the menu into second variable
-        $do_menu2 = true;
+
+      // přidání kontextového menu pro přidávání
+      $on= " oncontextmenu='return false;'";
+
+      if ( $cont ) {
+        if ( $mref == "odkaz" ) {
+          foreach (explode(";", $elems1) as $chunk) {
+            $urldata = explode('=', $chunk . "=");
+            for ($i = 0; $i < count($urldata); $i += 2) {
+              if ($urldata[$i] == "odkaz") {
+                $redirect = urldecode($urldata[1]);
+                break;
+              }
+            }
+          }
+          $menuitem = $CMS || substr($mref,0,1)=='-'
+              ? " <a href='$redirect' class='jump$active$a_ref$upd1' target='_blank' $on>$nazev</a>"
+              : " <a href='$redirect' class='jump$active$upd1'>$nazev</a>";
+        } else {
+          if ( $context ) {
+            list($ctyp,$pgid)= explode(',',$context);
+            $on_plus= isset($def_menu[$ref]) ? $def_menu[$ref] : '';
+            $on= " oncontextmenu=\"
+                go_with_menu(arguments[0],'$href$cont','/$mref',$input,1,[
+                ['{$def_on[$ctyp]}',function(el){ vytvorit('$ctyp','$pgid','$mid1'); }]
+                $on_plus
+              ]); return false;\"";
+          }
+
+          $menuitem = $CMS || substr($mref,0,1)=='-'
+              ? " <a onclick='go(arguments[0],\"$href$cont\",\"/$mref\",$input,1);' "
+              . "class='jump$active$a_ref$upd1' $on>$nazev</a>"
+              : " <a href='/$mref' class='jump$active$upd1'>$nazev</a>";
+        }
+        if ($submenu) {
+          $mainmenu .= "<li>$menuitem<ul class='menu_sm'>$submenu</ul></li>";
+          $mobile_mainmenu .= "<li>$menuitem<span class=\"navigation-toggle\" onclick='
+            jQuery(this).next().slideToggle(); return true;'><i class=\"navigation-icon\"></i></span>
+            <ul class='menu_sm' style='display: none'>$submenu</ul></li>";
+          $submenu = "";
+        } else {
+          $mainmenu .= "<li>$menuitem</li>";
+          $mobile_mainmenu .= "<li>$menuitem</li>";
+        }
+
       }
     } else if ($path[0]==$ref) {       //unknown type of submenu --> just load the requested elements
       $elems= $elems1;
     }
   }
-//                                                         display("page=$page, elems=$elems, mid=$mid, ok=$page_ok");
+  $kontakty = "<li><a onclick='jQuery(\"html, body\").animate({scrollTop: (jQuery(\"#footer_contacts\").offset().top - 100)}, 500);'
+       class='jump'><span>Kontakty</span></a></li>";
+  $mainmenu .= $kontakty . "</ul>";
+  $mobile_mainmenu .= $kontakty . "</ul>";
+
 # zobrazíme stránku $page podle jeho $elems a $pars
   $body= '';
   $par= array_shift($path);
@@ -459,6 +523,11 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         $body.= admin_web($typ,$id);
         break;
 
+      case 'odkaz':
+        $url= urldecode(array_shift($path));
+        header("Location: $url");
+        die();
+
       case 'knihy': # ------------------------------------------------ . knihy
         # seznam autorů
         $body.= "<div class='content'><h1>$web_title</h1></div>";
@@ -481,10 +550,11 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         break;
 
       case 'clanek': # ------------------------------------------------ . clanek
+        //todo probably not called anymore
         # článek zadaný názvem nebo uid
-        $x= clanek($ids); //todo does not exist
+        $x= clanek($ids);  //todo does not exist
         if ( $CMS ) {
-          //todo no edit???
+
 //       $menu= "oncontextmenu=\"
 //         Ezer.fce.contextmenu([
 //           ['editovat',function(el){ opravit('clanek','$ids'); }],          staré argumenty
@@ -539,14 +609,6 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         $body.= "týmové informace";
         break;
 
-      case 'foto':    # --------------------------------------------==> . foto
-        # seznam akcí s fotkami
-        # může následovat ident jednoho z článků (vznikne kliknutím na abstrakt)
-        $body.= "<div class='content'><h1>Fotogalerie</h1></div>";
-        $id= array_shift($path);
-        $body.= akce('foto',$ids,$id);
-        break;
-
       case 'single':
         $id= pdo_real_escape_string(array_shift($path));
         if (is_numeric($id)) {
@@ -561,9 +623,13 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
         # může následovat ident jednoho z článků (vznikne kliknutím na abstrakt)
         if (!$CMS) {
           $body .= facebook_dependency();
+          $id= array_shift($path);
+          $search = array_shift($path);
+
+        } else {
+          $id= array_shift($path);
         }
         $body.= "<div class='content'><h1>Výsledky hledání &nbsp;<b>$search</b></h1></div>";
-        $id= array_shift($path);
         list($id)= explode('#',$id);
 //                                                 display("page_mref/s=$page_mref");
         $body.= akce('hledej',$ids,$id,'',$search);
@@ -598,7 +664,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
                 dostupné v menu 'Dům Setkání > Akce v Domě' nebo 'Dům Setkání > Prožili jsme'.
                 Některé fotografie z akcí naleznete ve fotogalerii, více je pak dostupné na dalších
                 webech z odkazů ve fotogalerii.
-                </div></div>";
+                </div></div><br><br>";
           
           $body.= akce_prehled($vyber_rok,$rok,$id);
         } elseif ( $ids=='aprehled' ) { // proběhlé akce v Domě setkání
@@ -608,14 +674,19 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
           $body.= "<div class='commentary_div'> Prohlédněte si seznam akcí které proběhly v Domě Setkání. Některé fotografie z akcí 
                 naleznete ve fotogalerii, více je pak dostupné na dalších
                 webech z odkazů ve fotogalerii.
-                </div></div>";
+                </div></div><br>";
           $rok= $id?:date('Y');
           $id= array_shift($path);
           list($page_mref,$roks)= explode('/',$page_mref);
           $body.= akce_prehled('dum',$rok,$id);
         } else {
           $kdy= $ids=='bude' ? $ids : '';
-          $body.= akce($vyber,$ids,$id);
+          $content_akce = akce($vyber,$ids,$id);
+          if (strlen($content_akce) < 30) {
+            $content_akce = "<div class='content'><br><br>Nejsou k dispozici žádné akce k zobrazení.<br><br><br><br></div>";
+          }
+
+          $body.= $content_akce;
         }
         break;
 
@@ -710,7 +781,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
   end:
 # --------------------------------------------------------------------------------------==> html
   $icon= array("cms/img/web_local.png","cms/img/web_test.png","cms/img/web_dsm.png",
-      "cms/img/web_local.png","cms/img/web_local.png")[$ezer_server];
+      "cms/img/web_local.png","cms/img/web_local.png","cms/img/web_local.png")[$ezer_server];
   global $kernel;
   $setStyle= $kernel=='ezer3.1' ? 'css' : 'setStyle';
   $hash= $kernel=='ezer3.1' ? '#' : '';
@@ -770,10 +841,10 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       "https://www.setkani.org",
       "http://setkani4.doma",
       "http://setkani4.bean:8080",
-      "http://setkani4m.bean:8080"
+      "http://setkani4m.bean:8080",
+      "http://setkani4.ide"
   );
   $base= $base[$ezer_server];
-  $web_title= trim($web_title);
   global $kernel;
   $onLoad= $kernel=='ezer3.1'
       ? "jQuery(document).ready( function() { fe_init(); });"
@@ -800,7 +871,7 @@ __EOD;
   
   $eb_link
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C700%2C700i%2C800%2C800i&amp;ver=0.3.5" type="text/css" media="all">
-<link rel="stylesheet" href="cms/web.css?v=4.53" type="text/css" media="screen" charset="utf-8">
+<link rel="stylesheet" href="cms/web.css?v=4.7" type="text/css" media="screen" charset="utf-8">
   <script type="text/javascript">
     var Ezer={web:{ $Ezer_web},cms:{form:{}}};
     if ( !console ) {
@@ -825,31 +896,22 @@ __EOD;
   $choice_js= "bar_menu(arguments[0],'menu_on'); return true;";
   $loginout= ($fe_user || $be_user)
       ? "<span onclick=\"be_logout('$currpage');\" class='separator'>
-       <i class='fa fa-power-off'></i> odhlásit se</span>"
+       <i class='fa fa-power-off'></i>&nbsp; odhlásit se</span>"
       : "<span onclick=\"bar_menu(arguments[0],'fe_login');\" class='separator'>
-       <i class='fa fa-user'></i> přihlásit se</span>"
+       <i class='fa fa-user'></i>&nbsp; přihlásit se</span>"
       . ( ip_watch($ip,0)
           ? "<span onclick=\"bar_menu(arguments[0],'be_login');\">
-           <i class='fa fa-user-plus'></i> přihlásit se k editaci</span>" : ''
+           <i class='fa fa-user-plus'></i>&nbsp; přihlásit se k editaci</span>" : ''
       )
       . ( 1 // ip_watch($ip,0)
           ? "<span onclick=\"bar_menu(arguments[0],'me_login');\">
-           <i class='fa fa-user-secret'></i> přihlásit se emailem</span>" : ''
+           <i class='fa fa-user-secret'></i>&nbsp; přihlásit se emailem</span>" : ''
       );
   $menu= "
   <span id='bar_menu' data-mode='$mode[1]' >
     <i class='fa fa-bars' id='bar_image' onclick=\"$choice_js\" oncontextmenu=\"$choice_js\"></i>
   
-    <div id='bar_items'>
-       <div id='mobile_menu'>
-       $mainmenu1
-       <div id='mobile_submenu'>
-           $submenu
-       </div>
-       $mainmenu2
-       <a onclick='jQuery(\"html, body\").animate({scrollTop: (jQuery(\"#footer_contacts\").offset().top - 100)}, 500);'
-       class='jump'><span>Kontakty</span></a>
-    </div>
+    <div id='bar_items' class='mobile_nodisplay'>
       <span onclick=\"bar_menu(arguments[0],'new1');\"><img src='cms/img/new.png'> změny za den</span>
       <span onclick=\"bar_menu(arguments[0],'new7');\"><img src='cms/img/new.png'> změny za týden</span>
       <span onclick=\"bar_menu(arguments[0],'new30');\"><img src='cms/img/new.png'> změny za měsíc</span>
@@ -861,16 +923,21 @@ __EOD;
 
 // body
   $footer = footer();
+  $cur_year = time('y');
 
   $notice = $CMS ? tutorial(!isset($_COOKIE["article_tutorial"]) && !$_COOKIE["article_tutorial"]) : "";
   $body= <<<__EOD
   <div id='page'>
+    <div class="pc_nodisplay" style="height: 30px"><!--Space for mobile devices - menu always fixed, shift content--></div>
     $notice
     $body
+    
+    
    
     <div id='user_login' style="display:$fe_user_display">
       <span>Přihlášení uživatele</span>
-      <br><input name='username' placeholder='Uživatelské jméno' id='name' value='' type='text'>
+      <div id="login_err"></div>
+      <input name='username' placeholder='Uživatelské jméno' id='name' value='' type='text'>
       <br><input id='pass' placeholder='Heslo' type='password' value=''>
       <input id='akey' type='hidden' value='-'>
       <br>
@@ -899,10 +966,10 @@ __EOD;
   $footer 
     
   <div id="page_footer_bar" class="container footer" style="background:black">
-    <div class="content white">
+    <div class="content white" style="paddingcode: 0 12px">
       $navrcholu            
       Vaše dary na účet <img src="cms/img/bank.png" class="footerIcon">  <b>2400465447/2010</b> nám pomáhají uskutečňovat naše programy pro vás i vaše blízké
-      <span id='site_signature'> YMCA Setkání, 2020&emsp;</div>
+      <span id='site_signature'> YMCA Setkání, $cur_year&emsp;</div>
       <div>$info_note</div>
     </div>
   </div>
@@ -945,55 +1012,44 @@ __EOD;
   $ms.= "<br>$ipok$ip";
   $ms.= $found ? "<br>$found" : ''; // počet nalezených článků, knih, ...
 
-// upozornění na testovací verzi
-  $demo= '';
-//if ( $ezer_server==2 ) {
-//  $click= "jQuery('#DEMO').fadeOut(1000).delay(2000).fadeIn(1000);";
-//  $dstyle= "left:0; top:0; position:fixed; transform:rotate(320deg) translate(-128px,-20px); "
-//      . "width:500px;height:100px;background:orange; color:white; font-weight: bolder; "
-//      . "text-align: center; font-size: 40px; line-height: 96px; z-index: 16; opacity: .5;";
-//  $demo= "<div id='DEMO' onclick=\"$click\" style='$dstyle'><u>ostrá</u> verze</div>";
-//}
-
   $gallery = gallery();
 
-//submenu obsahuje submenu kromě výběru proc_kdo
-  if ($submenu) $submenu = "<div id='page_sm' class='mobile_nodisplay'><div class='content'>$submenu</div></div>";
-
 // dokončení stránky
-//                                                         display("**:web_banner='$web_banner'");
   if ( $echo ) {
     $info= "$page_kb KB, $page_ms ms";
     echo <<<__EOD
 $head 
 <body>
-  <div id='web-shadow'></div>
-
-  $gallery 
-  $demo
+    <div id='web-shadow'></div>
+    $gallery 
     <a href="/"><img id='logo_ymca' src='cms/img/ymca_zakladni.png' alt='YMCA Setkání - homepage'></a>
     <a href="/"><img id='logo_setkani' src='cms/img/husy_bile.png' onclick="change_info();"  alt='YMCA Setkání - homepage'></a>
     <div id='menu'>
       <div class='content'>
         <div id='page_tm' class='x'>
           $menu
-          
-           $topmenu
-          <form id='search_form' class='inline' onsubmit="searchByQuery()">   
-            <input id='search' size=10 value='$search' title='hledané slovo' placeholder='Hledat...'  onchange="$search_go" /> 
-            <!-- input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" /-->
-          </form>
-          
+          $topmenu          
         </div>
         <div id='page_hm' class='x mobile_nodisplay'>
-          $mainmenu1 $mainmenu2
-           <a onclick='jQuery("html, body").animate({scrollTop: (jQuery("#footer_contacts").offset().top - 100)}, 500);'
-           class='jump'><span>Kontakty</span></a>
+          $mainmenu          
         </div>
+        <div class="clear"></div>
       </div>
-      <div class='clear'></div>
-       $submenu
+    </div>
+  
+  <div id='mobile_menu' class="pc_nodisplay">
+      <br>
+ 
+      $mobile_mainmenu
+      <div id="mobile_barmenu">
+        <span onclick='bar_menu(arguments[0],"new1");'><img src='cms/img/new.png'>&nbsp; změny za den</span>
+        <span onclick='bar_menu(arguments[0],"new7");'><img src='cms/img/new.png'>&nbsp; změny za týden</span>
+        <span onclick='bar_menu(arguments[0],"new30 ");'><img src='cms/img/new.png'>&nbsp; změny za měsíc</span>
+        $loginout
+      </div>
   </div>
+  <div id="menu-cross" class="nodisplay" onclick="close_mobile_menu(); return true;"></div>
+
   <div id='web' class='$web_banner container'>
     $submenu_komu
     <div id='info' style='display:none' onclick="change_info();"><br>$ms</div>
@@ -1011,26 +1067,32 @@ __EOD;
         <div id='page_tm' class='x'>
           $menu
           $topmenu
-          <form id='search_form' class='inline' onsubmit="searchByQuery()">   
-            <input id='search' size=10 value='$search' title='hledané slovo' placeholder='Hledat...'  onchange="$search_go" /> 
-            <!-- input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" /-->
-          </form>
         </div>
         <div id='page_hm' class='x mobile_nodisplay'>
-          $mainmenu1 $mainmenu2
-           <a href='#footer_contacts' class='jump'><span>Kontakty</span></a>
+          $mainmenu
         </div>
+        <div class="clear"></div>
       </div>
-      <div class='clear'></div>
-      $submenu
     </div>
+    
+    <div id='mobile_menu' class="pc_nodisplay">
+      $mobile_mainmenu
+      <div id="mobile_barmenu">
+        <span onclick='bar_menu(arguments[0],"new1");'><img src='cms/img/new.png'> změny za den</span>
+        <span onclick='bar_menu(arguments[0],"new7");'><img src='cms/img/new.png'> změny za týden</span>
+        <span onclick='bar_menu(arguments[0],"new30");'><img src='cms/img/new.png'> změny za měsíc</span>
+        $loginout
+      </div>
+    </div>
+    <div id="menu-cross" class="nodisplay"  onclick="close_mobile_menu(); return true;"></div>
+
     <div id='web' class='$web_banner'>
       $submenu_komu
       <div id='info' onclick='change_info();'><br>$ms</div>
       $body
     </div>
 __EOD;
-}
+} // end template()
 
 function tutorial($doDisplay = true) {
   $positive = $doDisplay ? "" : "nodisplay";
@@ -1046,7 +1108,7 @@ function tutorial($doDisplay = true) {
   <li><b>Nepoužívejte</b> pouze <b>velká písmena</b>. Je to obecně chápano jako KŘIČENÍ/NADÁVÁNÍ, nechtěli byste, aby na vás články křičely.</li>
   <li>Pozor na málo nadpisů. <b>Každá logická část textu by měla mít nadpis</b>. Jinak se v těxtu špatně orientuje. Použijte menší styl, pokud si nejste jistí, vypadá to lépe (například ten největší bude použit na titulek a jen zřídka jej chcete znovu použít v textu).</li>
   <li><b>Pozor na dlouhé nebo velký počet napisů</b>. Pokud je výrazná část příliš dlouhá nebo je nadpisů přiliš mnoho, text vypadá přeplácaný.</li>
-  <li><b>Nepoužívejte</b> ASCII art (<b>vykreslování či pozicování pomocí znaků</b>). Většinou se rozbije kvůli různým velikostem písem atd.
+  <li><b>Nepoužívejte</b> ASCII art (<b>vykreslování či pozicování pomocí znaků</b>). Většinou se rozbije kvůli různým velikostem písem, stylů fontů atd.
     <ul>
       <li><b>Na ceníky použijte tabulky.</b> Zadejte jen počet sloupců/řádků a nezapomeňte si přidat záhlaví.</li>
       <li>Místo -------- a podobných odsazení <b>použijte vodorovnou linku</b> (hned vedle 'obrázek').</li>
@@ -1163,14 +1225,14 @@ __EOJ;
 __EOJ;
   $eb_link= <<<__EOJ
     $framework    
-    <script src="cms/cms{$k3}.js?v=4.4" type="text/javascript" charset="utf-8"></script>
-    <script src="cms/cms{$k3}_fe.js?v=4.0" type="text/javascript" charset="utf-8"></script>
-    <script src="cms/modernizr-custom.js?v=4.0" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/cms{$k3}.js?v=4.5" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/cms{$k3}_fe.js?v=4.1" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/modernizr-custom.js?v=4.1" type="text/javascript" charset="utf-8"></script>
     $fotorama
     <link rel="stylesheet" href="./$kernel/client/licensed/font-awesome/css/font-awesome.min.css" type="text/css" media="screen" charset="utf-8">
     <link rel="stylesheet" href="$cms_root/client/ezer_cms3.css" type="text/css" media="screen" charset="utf-8">
     <script src="$cms_root/client/ezer_cms3.js" type="text/javascript" charset="utf-8"></script>
-    <script src="cms/custom.js?v=4.22" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/custom.js?v=4.3" type="text/javascript" charset="utf-8"></script>
 __EOJ;
 //     <link rel="stylesheet" href="cms/gallery/baguetteBox.min.css">
 //     <script src="cms/gallery/baguetteBox.min.js" async>
@@ -1247,26 +1309,109 @@ function hide_part($uid,$hide,$on) {
   }
   return $ask;
 }
+
+# ------------------------------------------------------------------------------------ wp post_request
+/**
+ * Upload an article by CID onto wordpress subsite
+ * only FIRST record in tx_gncase_part is uploaded
+ * @param $site_name "ms" for MS gallery, "dum" for DS gallery
+ * @param $process 0 if ask only, 1 if fire request
+ * @param $cid the post cid
+ * @param $update 0 if already created - used only for better messages ($process = 0)
+ * @return string result message
+ * @throws Exception
+ */
+function wp_upload($site_name, $process, $cid, $update) {
+  global $wp_upload_token;
+  //todo the url might change in future, if main web becomes used
+
+  $url = "http://manzelska.setkani.org/extern/upload_article.php";
+  switch ($site_name) {
+    case "dum":
+      $site = 2;
+      $web = "Galerie Domu";
+      break;
+    case "ms":
+      $site = 3;
+      $web = "Galerie MS";
+      break;
+    default:
+      return "Neplatný web :$site_name";
+  }
+
+  if (!$process) {
+    if ($update) return "Obsah kopie tohoto článku na webu $web bude nahrazen novou verzí. Pokračovat?";
+    return "Opravdu chcete zkopírovat tento článek na web $web?";
+  }
+
+  global $usergroups; // skupiny, počet nalezených článků
+  global $show_deleted, $show_hidden, $news_time;
+  if ( !$news_time ) $news_time= time() - 1 * 24*60*60;
+  $p_show= ($show_hidden ?  '' : " AND !p.hidden").($show_deleted ? '' : " AND !p.deleted");
+  $groups= $usergroups ? "AND fe_groups IN ($usergroups)" : 'AND fe_groups=0';
+  $cr= pdo_qry("
+      SELECT p.title,p.abstract,p.text,p.author,date
+      FROM setkani4.tx_gncase AS c
+      JOIN setkani4.tx_gncase_part AS p ON c.uid=p.cid
+      WHERE cid='$cid' AND !p.hidden AND !p.deleted $groups
+      ORDER BY tags,date
+    ");
+
+  $msg = "";
+  while ( $cr && (list($title,$abstrakt,$text,$autor,$psano) = pdo_fetch_row($cr)) ) {
+    $text= web_text($text);
+
+    if (strlen($title) < 3 || strlen($text) < 20) return "Prosíme, sdílejte pouze plnohodnotné články. Nadpis nebo obsah nejsou dostatečně vyplněny.";
+
+    //get rid of absolute paths (so next call won't make them '2x absolute'
+    $text = preg_replace("#https://(www.)?setkani.org/fileadmin/img#", "/fileadmin/img", $text);
+    //covert everything to absolute paths
+    $text = preg_replace("#/?fileadmin/img/#", "https://www.setkani.org/fileadmin/img/", $text);
+
+    $msg = cms_post_request(
+        $url,
+        array(
+            "token" => $wp_upload_token,
+            "target_web_id" => $site,
+            "cid" => $cid,
+            "title" => $title,
+            "content" => $text,
+            "excerpt" => $abstrakt,
+            "date" => $psano)
+    );
+    if (!$msg) $msg = "Operace byla dokončena.";
+    break; //todo post only first article? probably Yes, or somehow merge the content
+  }
+  if (!$msg) $msg = "Tento článek není možné sdílet (je pravděpodobně zablokovaný nebo jinak zabezpečený).";
+  return $msg;
+}
+
 # =========================================================================================> GALLERY
 # nageneruje fotky do záhlaví
 # zatím samostantná tabulka, neví kde má brát fotky
-function gallery() {
+function gallery_images() {
   $directory = "fileadmin/index";
-  $images = glob("$directory/*.{jpg,png,bmp}", GLOB_BRACE);
+  return glob("$directory/*.{jpg,png,bmp}", GLOB_BRACE);
+}
+function gallery() {
+  $images = gallery_images();
+  $result = "<div id='header_gallery' class='mobile_nodisplay'>";
 
   $numOfImages = count($images);
-  if ($numOfImages < 1) {
-    return "";
-  }
-  shuffle($images);
-  $result = "<div id='header_gallery' class='mobile_nodisplay'>";
-  $result .= "<img alt='YMCA setkání' src='$images[0]' class='act'>";
-  for ($i = 1; $i < $numOfImages; $i++) {
-    $result .= "<img alt='YMCA setkání' src='$images[$i]' style='display:none'>";
+  if ($numOfImages > 0) {
+    shuffle($images);
+
+    $result .= "<img alt='YMCA setkání' src='$images[0]' class='act'>";
+    for ($i = 1; $i < $numOfImages; $i++) {
+      $result .= "<img alt='YMCA setkání' src='$images[$i]' style='display:none'>";
+    }
+    $defaultImage = "style='background-image: url(\"{$images[0]}\");";
+  } else {
+    $defaultImage = "";
   }
   return $result .
       "</div><div id='titler' class='mobile_nodisplay'></div><div id='gallery_shadow' class='mobile_nodisplay'></div>
-        <div id='header_mobile_image' class='pc_nodisplay' style='background-image: url(\"{$images[0]}\");'><div id='header_mobile_image_shadow'></div></div>";
+        <div id='header_mobile_image' class='pc_nodisplay' $defaultImage'><div id='header_mobile_image_shadow'></div></div>";
 }
 function facebook_dependency() {
   return "<div id=\"fb-root\"></div>
@@ -1325,7 +1470,7 @@ function timeline()
         'text' => $text, 'program' => $program, 'ida' => $ida, 'status' => status_class($status));
   }
 
-  $h = "<br><br><br><h2 class='float-left' style='margin-top: 0px;'>Chystáme</h2><div class='float-right legend'>";
+  $h = "<br><br><br><h2 class='float-left' style='margin-top: 0;'>Chystáme</h2><div class='float-right legend'>";
   foreach ($def_pars['komu'] as $ki) {
       list($k, $i) = explode(':', $ki);
       if ($i==6) $k="ostatní";
@@ -1354,42 +1499,42 @@ function timeline()
 
   $h .= "</div></ul><ul id='timeline'>";
   $n = 0;
-  foreach ($xx as $cid => $x) {
-    $n++;
-    $dateCzech = datum_cesky($x->od, $x->do);
-    $jmp = "href='/akce/nove/$x->ident'/";
-    $in_time = $x->od - time();
-    if ($in_time < 0)  {
-      $in_time = 0;
-    }
-    $ends_in = $x->do - time();
-    $duration = $ends_in - $in_time;
-    $width = ($duration / $day) * $day_size;
-    $gap = ($in_time / $day) * $day_size;
-    //
-    $color = ($x->zruseno) ? "#000000"  : barva_programu($x->program);
-    $date = datum_cesky($x->od, $x->do);
-    $h .= "<li>
-                <input class='timeline_radio' id='akce$n' name='akce' type='radio'>
-                <label  for='akce$n'  class='timeline_circle $x->status' onclick='(function(){
-                    var radio = document.getElementById(\"akce$n\");  
-                    radio.checked = !radio.checked; 
-                })();return false;'
-                 style='margin-left: ${gap}px;'>  
-                  <label class='timeline_title' for='akce$n'>$x->nadpis</label>
-                  <span class='timeline_date'>$date</span>
-                  <div class='timeline_text'>
-                    <div class='timeline_text_style'>
-                      <span class='post_date'>$dateCzech</span>
-                      <b style='float:left;'><a $jmp>$x->nadpis</a></b><br>
-                      <p class='clear'><a $jmp>$x->text</a></p>
-                    </div>
-                  </div>
-                </label> 
-                <div class='timeline_bar' 
-                    style='width:${width}px;margin-left: ${gap}px; background:${color}'></div>
-            </li>";
-  }
+//  foreach ($xx as $cid => $x) {
+//    $n++;
+//    $dateCzech = datum_cesky($x->od, $x->do);
+//    $jmp = "href='/akce/nove/$x->ident'/";
+//    $in_time = $x->od - time();
+//    if ($in_time < 0)  {
+//      $in_time = 0;
+//    }
+//    $ends_in = $x->do - time();
+//    $duration = $ends_in - $in_time;
+//    $width = ($duration / $day) * $day_size;
+//    $gap = ($in_time / $day) * $day_size;
+//    //
+//    $color = ($x->zruseno) ? "#000000"  : barva_programu($x->program);
+//    $date = datum_cesky($x->od, $x->do);
+//    $h .= "<li>
+//                <input class='timeline_radio' id='akce$n' name='akce' type='radio'>
+//                <label  for='akce$n'  class='timeline_circle $x->status' onclick='(function(){
+//                    var radio = document.getElementById(\"akce$n\");
+//                    radio.checked = !radio.checked;
+//                })();return false;'
+//                 style='margin-left: ${gap}px;'>
+//                  <label class='timeline_title' for='akce$n'>$x->nadpis</label>
+//                  <span class='timeline_date'>$date</span>
+//                  <div class='timeline_text'>
+//                    <div class='timeline_text_style'>
+//                      <span class='post_date'>$dateCzech</span>
+//                      <b style='float:left;'><a $jmp>$x->nadpis</a></b><br>
+//                      <p class='clear'><a $jmp>$x->text</a></p>
+//                    </div>
+//                  </div>
+//                </label>
+//                <div class='timeline_bar'
+//                    style='width:${width}px;margin-left: ${gap}px; background:${color}'></div>
+//            </li>";
+//  }
   $h .= "</ul></div></div>";
   return $h;
 }
@@ -2008,17 +2153,20 @@ function kalendare($vyber, $rok, $id, $chlapi_ignore=false) { trace();
     $img= '';
     $text= xi_shorting($text,$img);
 
+    if ($n > 1) {
+      $h .= "<div class='relative abstrakt_separator'></div>";
+    }
+
     //todo temporary solution hardcoded, can be based on program value
     if ( $program == 3 || $cid == 1644) {
       if (!strpos($vyber, "chlapi")) continue;
-      $h.= "<div class='$abstr relative' id='n$n'>
-            <div class='status_chlapi'>
+      $h.= "<div class='$abstr relative status_chlapi' id='n$n'>
            $code 
            <a class='abstrakt$ex' target='_blank' href='http://chlapi.cz/skupiny!brno!343'>
-             <b>$title:</b><div class='clear'></div>$img 
-               <p>$text</p>
+             <div class='abstrakt_calendar_title'>$title:</div><div class='clear'></div>$img 
+               <p class='abstrakt_calendar_paragraph'>$text</p>
            </a>
-         </div></div>";
+         </div>";
       continue;
     }
 
@@ -2026,8 +2174,9 @@ function kalendare($vyber, $rok, $id, $chlapi_ignore=false) { trace();
         . "'$href0!{$vyber}$cms_roks!$uid#anchor$uid','$page_mref$roks/$uid#anchor$uid');\""
         : "href='$page_mref$roks/$uid#anchor$uid'";
 
-    $h.= $uid==$id ? vlakno($cid,'clanek',$back, false, true)
-        : "<div class='$abstr' id='n$n'>
+    //if selected a certain calendar, do not show other calendars...
+    if ($uid==$id) return vlakno($cid,'clanek',$back, false, true) . "<div class='clear'></div>";
+    $h.= "<div class='$abstr' id='n$n'>
            $code 
            <a class='abstrakt$ex{$upd}' $jmp>
              <b>$title:</b><div class='clear'></div>$img 
@@ -2035,7 +2184,7 @@ function kalendare($vyber, $rok, $id, $chlapi_ignore=false) { trace();
            </a>
          </div>";
   }
-  return $h . ($h? "<div class='clear'></div>" : '');
+  return $h ? "$h<div class='clear'></div>" : '';
 }
 # ============================================================================================> akce
 # akce je tvořena vždy záznamem v CASE a záznamy v PART s tags A,F,D,T
@@ -2059,7 +2208,8 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
   $typ= '';
   $hledej= trim($hledej);
   $xx_tags= $xx_foto= $xx_img= array();
-  $h= "";
+  $h= "<div class='akce_content relative'>";
+  $summary = "";
   $rkomu= array();
 
   if ( $vyber=='foto' ) {
@@ -2129,45 +2279,63 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
     while ( $cr && (list($rok,$pocet,$upd)= pdo_fetch_row($cr)) ) {
       $mark= $rok=='nove' ? 'nove' : "rok$rok";
       $novych+= $rok=='nove' ? $pocet : 0;
-      $rok_display = $rok=='nove' ? '+' : $rok;
+      $rok_display = $rok=='nove' ? 'nové ' : $rok;
+      $rok_nadpis = $rok;
       if ( $kdy==$rok ) {
+
+
         // otevřený archiv
         $akci= kolik_1_2_5($pocet,"akci,akce,akcí");
         $akce= kolik_1_2_5($pocet,"akce,akcí,akcí");
         if ( $rok=='nove' ) {
+
+          $rok_display = date('Y');
+          $rok_nadpis = 'nové ';
           $zacatek= "Zveme vás na $akci:";
+          $zacatek_lowcase = "zveme vás na $akci:";
           $kalendare_title = "Kalendáře všech plánovaných akcí:";
-          $konec= "";
+        } else {
+          $zacatek= "Archiv $akce";
+          $zacatek_lowcase = "archiv $akce";
+          $kalendare_title = "Kalendáře akcí z roku $rok";
         }
-        else {
-          $zacatek= "Archiv $akce z roku $rok ...";
-          $kalendare_title = "Kalendáře akcí z roku $rok ...";
-          $konec= "... konec archivu roku $rok";
-        }
+
+        $summary .= "<a class='akce_rok akce_rok_active' id='$mark' $upd>
+                  <span class='akce_rok_title'>$rok_nadpis</span><span class='akce_rok_text'>$zacatek_lowcase</span>
+                </a>";
+
+
         $back= "onclick=\"go(arguments[0],'$href0!$vyber#$mark','');\"";
         $back= '';
 
         $kalendare = kalendare($vyber, $kdy, $id);
-        $openmarkhtml = "<div class='kniha_timeline_text_open_front $upd'>
-                <span class='kniha_timeline_date_open'>$rok_display</span>";
 
-        if ($kalendare != '') {
-          $openmarkhtml .= "$kalendare_title</div>";
-          $othertitle = "<div class=\"kniha_timeline_text_open_front\"><span class='kniha_timeline_date_open'>$rok_display</span>$zacatek</div>";
-        } else {
-          $openmarkhtml .= "$zacatek</div>";
-          $othertitle = '';
+        if ($kalendare == '') {
+          $kalendare_title = "Nejsou k dispozici žádné kalendáře.";
         }
-
-        $h.= "<div id='$mark' class='timeline_bg relative' $back><div class='content'>
+        $h.= "<div id='$mark' $back><div class='content'>
               <span class='anchor' id='anchor$rok'></span>";
-        $h.= "$openmarkhtml $kalendare $othertitle";
+
+        $h .= "<div class='akce_calendars_outer'>
+                <div class='akce_calendars_design'>
+                    <div class='akce_calendar_title'>
+                    
+                        $kalendare_title
+                    </div>
+                    <div class='akce_calendar_year'>
+                    <h2 class='akce_calendars_year_watermark'>$rok_display</h2>
+                    </div>
+                    
+                 </div>
+
+                <div class=\"akce_calendars\">
+                <div style='padding: 0 10px; height: 100%; display: flex;overflow: hidden;'>$kalendare</div> </div></div>";
+
+
+        $h .= "<h2 class='akce_prehled_title'>$zacatek</h2>";
 
         $h.= akce($vyber,$kdy,$id,$fotogalerie,$hledej,$chlapi,$backref, false);
-        $h.= "<div class='kniha_timeline_text_open_back'>
-              <span class='kniha_timeline_date_open'>$rok_display</span>
-                $konec
-              </div></div></div>";
+        $h.= "</div></div>";
       }
       else {
         // uzavřený archiv
@@ -2185,28 +2353,43 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
           $next= "href='$page_mref/$rok#anchor$rok'";
         }
         $akce= kolik_1_2_5($pocet,"akce,akcí,akcí");
-        $nadpis= $rok=='nove'
-            ? "Připravujeme pro vás $akce - klikněte sem pro jejich seznam"
-            : "Archiv $akce roku $rok";
+
         if ( $chlapi_online ) {
+          $nadpis= $rok=='nove'
+              ? "Připravujeme pro vás $akce - klikněte sem pro jejich seznam"
+              : "Archiv $akce roku $rok";
           $h.= "<div class='kniha_bg' >
                   <a class='jump' $next>$nadpis</a>
                 </div>";
-        }
-        else {
-          $h.= "<a class='kniha_bg kniha_timeline content' id='$mark' $next>
-                  <div class='kniha_timeline_text $upd'><span class='kniha_timeline_date'>$rok_display</span>$nadpis</div>
+        } else {
+          $nadpis= $rok=='nove'
+              ? "připravujeme pro vás $akce"
+              : "archiv $akce";
+          $summary .= "<a class='akce_rok' id='nove' $next $upd>
+                  <span class='akce_rok_title'>$rok_display</span><span class='akce_rok_text'>$nadpis</span>
                 </a>";
         }
       }
       $counter++;
     }
-    if ( !$novych && $vyber!='dum' && $vyber!='chlapi.online' ) {
-      // nejsou nové
-      $hn= "<div class='kniha_bg'>";
-      $hn.= "<div class='kniha_br'><b>Pro $_vyber zatím nic dalšího nepřipravujeme</b></div>";
-      $hn.= "</div>";
-      $h= $hn.$h;
+    if ( !$novych && $vyber!='dum' && $vyber!='chlapi.online') {
+      $akce_class = '';
+      if ( $CMS || $typ=='hledej' ) {
+        $next= "{$href0}!$vyber,nove#$mark";
+        $next= "onclick=\"go_anchor(arguments[0],'$next','$page_mref/nove#anchornove');\"";
+      }
+      else {
+        $next= "href='$page_mref/nove#anchornove'";
+      }
+
+      if ($kdy == 'nove') {
+        $h.= "<div class='kniha_br'><b>Pro $_vyber zatím nic dalšího nepřipravujeme</b></div>";
+        $akce_class = " akce_rok_active";
+      }
+      $summary = "<a class='akce_rok$akce_class' id='$mark' $next $upd>
+                 <span class='akce_rok_title'>nové</span><span class='akce_rok_text'>žádné akce</span>
+               </a>" . $summary;
+
     }
   }
   else {
@@ -2219,7 +2402,9 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
   $h.= "</div>";
   // navrácení textu
   //$h.= $chlapi_online ? '' : $c_komu;
-  return $h;
+  $h.= "</div>";
+
+  return "<div class='akce_container content'><div class='akce_summary'>$summary</div>$h</div>";
 }
 # --------------------------------------------------------------------------------------------- akce
 # id=pid nebo název menu
@@ -2287,6 +2472,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $typ= 'hledej';
     $vyber= 'hledej';
     $c_komu= " 1";
+    $hledej = mysql_real_escape_string($hledej);
     $c_kdy= in_array($hledej,array(6,9,12,13))  // mrop,ritualy,vps, 13=rodina :-)
         ? " fe_groups='$hledej'"
 //      : " MATCH(author,p.title,text) AGAINST ('$hledej' IN BOOLEAN MODE)";
@@ -2336,7 +2522,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
 
       //in case alberice future events, display calendar
       $calendar = kalendare('alberice', 'nove', $id, true);
-      $calendar .= "<div class='content'><h2>Plánované akce</h2></div>";
+      if ($calendar) $calendar .= "<div class='content'><h2>Plánované akce</h2></div>";
     }
     else {
       foreach(explode(',',$vyber) as $v) {
@@ -2512,24 +2698,9 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $prihlaska= $x->ida && $x->prihlaska ? cms_form_ref("ONLINE PŘIHLÁŠKA") : '';
 //    $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA");
 
-    if ($typ=='foto') {
-      if ($rok_ted != $x->rok) {
-        $rok_ted = $x->rok;
-        $h .= "<h2>$rok_ted</h2>";
-      }
-      $h.= $x->ident==$id
-          ? vlakno($cid,$typ,$back, false, true)
-          : "<a class='abstr-fotogalerie' id='n$n' $jmp>
-               $code 
-               <div class='fbg'></div>
-               <div class='fimg' $img></div>
-               <div class='ftitle'>$x->kdy $flags&nbsp;<b>$x->nadpis:</b></div>
-               <div class='ftext'>$x->abstract</div>
-         </a>";
-    } else {
-      $h.= $x->ident==$id
-          ? vlakno($cid,$typ,$back, false, true)
-          : "<div class='$abstr $x->status' id='n$n'>
+    $h.= $x->ident==$id
+        ? vlakno($cid,$typ,$back, false, true)
+        : "<div class='$abstr $x->status' id='n$n'>
            $code 
            <a class='abstrakt$ex{$x->upd}' $jmp>
              $prihlaska
@@ -2538,7 +2709,6 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
                <p>$x->abstract</p>
            </a>
          </div>";
-    }
   }
   if ($wrap_container) $h.= "</div>";
   if ( $FREE ) {  // překlad na globální odkazy
@@ -2652,7 +2822,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false, $h2titler = false) { tr
   $found= count($xx)." článků" . ($spec ? " ($spec)" : '');
 //   $back_href= "$href0$go_back";
 //  $back= $back_href ? "onclick=\"go(arguments[0],'$back_href','');\"" : '';
-  $h= "<div id='vlakno' class='x'>";
+  $h= "<div id='vlakno' class='x bg_white'>";
   foreach($xx as $x) {
 //                                                         debug($x,"$i");
     $style= '';
@@ -2693,6 +2863,21 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false, $h2titler = false) { tr
     elseif ( ($x->tags=='A' || $x->tags=='D' || $x->tags=='K') && $typ=='akce') {
       $menu= '';
       if ( $CMS ) {
+        //check if article already copied to WP
+
+        $menu_wp_ms= $menu_wp_ds= "kopírovat na";
+        $ds_exists= $ms_exists = 0;
+        $cr= pdo_qry("SELECT copy_web_id FROM wordpress.wp_shared_posts  WHERE post_id='$cid'");
+        while ( $cr && (list($web_id) = pdo_fetch_row($cr)) ) {
+          switch ($web_id) {
+            case 2: $menu_wp_ds = "aktualizovat pro";
+              $ds_exists = 1;
+              break;
+            case 3: $menu_wp_ms = "aktualizovat pro";
+              $ms_exists = 1;
+              break;
+          }
+        }
         $tabulku= $x->od>=$dnes ? "['přidat tabulku',function(el){ pridat('table','$cid'); }]," : '';
         $menu= " oncontextmenu=\"
             Ezer.fce.contextmenu([
@@ -2706,7 +2891,9 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false, $h2titler = false) { tr
               ['zobrazit akci',function(el){ skryt('$typ','$uid',0); }],
               ['-zahodit akci',function(el){ zrusit('$typ','$uid',1); }],
               ['obnovit akci',function(el){ zrusit('$typ','$uid',0); }],
-              ['-odstranit embeded img',function(el){ opravit('img','$uid','$cid'); }]
+              ['-odstranit embeded img',function(el){ opravit('img','$uid','$cid'); }],
+              ['-$menu_wp_ms web MS',function(el){ sdilet('ms','$cid',$ms_exists); }],
+              ['$menu_wp_ds web DS',function(el){ sdilet('dum','$cid',$ds_exists); }]
             ],arguments[0],'clanek$uid');return false;\"
             ";
       }
@@ -2719,12 +2906,18 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false, $h2titler = false) { tr
         $nazev_akce= trim(select('nazev','akce',"id_duakce=$x->ida",'ezer_db2'));
         $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA",'akce',$x->ida,$nazev_akce);
       }
+      $wp_presence = ($ds_exists) ? "<span style='position: absolute; right: 0; color: #47a369'>Kopie na webu DS&nbsp;</span>" : "";
+      if ($ms_exists) {
+        if ($wp_presence) $wp_presence .= "| ";
+        $wp_presence .= "<span style='position: absolute; right: 0; color: #c47b19'>Kopie na webu MS&nbsp;</span>";
+      }
+
       $titleh1 = $h1 ? "<h1>$x->nadpis</h1>" : "";
       $titleh2 = $h1 ? "" : "<h2$h2titler>$x->nadpis</h2>";
       $h.= "<div class='x relative' $event><span class='anchor' id='anchor$uid'></span>
-            $titleh1 $code
+            $titleh1 $code 
             <div id='clanek$uid' class='akce_prehled clanek x$x->upd'$menu$style>
-              $prihlaska
+              $wp_presence $prihlaska 
               <div class='text $x->status'>
                 $titleh2 $podpis
                 $obsah

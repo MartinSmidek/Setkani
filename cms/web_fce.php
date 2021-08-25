@@ -201,7 +201,7 @@ function seradit($ids,$typ) {
     $typ=='knihy' ? "
       SELECT c.uid
       FROM setkani4.tx_gncase AS c
-        JOIN setkani4.tx_gncase_part AS p ON p.cid=c.uidbarb
+        JOIN setkani4.tx_gncase_part AS p ON p.cid=c.uid
       WHERE !c.deleted AND !c.hidden AND c.pid IN ($ids) AND tags='C'
       ORDER BY p.author DESC,p.title DESC" : (
     $typ=='tance' ? "
@@ -339,38 +339,38 @@ function web_text($txt) { //trace();
 //   $txt= strtr($txt,array("i"=>"x"));
 //   $txt= "!!! $txt";
   goto end;
-  list($href1)= explode('page=',$href0);
-//                                                         display("href0=$href1");
-  $txt= preg_replace_callback('/<a(.*?)href=(["\'])(.*?)\\2(.*?)>(.*?)<\/a>/i',
-    function($m) {
-      global $href1;
-//                                                         display($m[0]);
-//                                                         debug($m);
-      $url= $m[3];
-      $u= parse_url($url);
-      $p= explode('/',$u['path']);
-      //TODO: rewrite domain names
-      if ( $u['host']=='www.setkani.org' && $p[1]=='index.php'
-        || $u['host']=='setkani.bean'    && $p[1]=='index.php'
-        || !isset($u['host'])            && $p[0]=='index.php' ) {
-        // odkaz článek na starém webu
-        parse_str(str_replace('&amp;','&',$u['query']),$q);
-//                                                         debug($u,$url);
-//                                                         debug($p,$u['path']);
-//                                                         debug($q,$u['query']);
-        $id= $q['id'];
-        $case= $q['case'];
-        $path= "page=clanek!$case";
-        $go= "go(arguments[0],'{$href1}$path')";
-        $url= "<a title=\"$go\"
-          onclick=\"$go;\"><span>{$m[5]}</span></a>";
-      }
-      else {
-        $url= "<a{$m[1]}href='$url'{$m[4]} target='cizi'>{$m[5]}</a>";
-      }
-      return $url;
-    },
-    $txt);
+//  list($href1)= explode('page=',$href0);
+////                                                         display("href0=$href1");
+//  $txt= preg_replace_callback('/<a(.*?)href=(["\'])(.*?)\\2(.*?)>(.*?)<\/a>/i',
+//    function($m) {
+//      global $href1;
+////                                                         display($m[0]);
+////                                                         debug($m);
+//      $url= $m[3];
+//      $u= parse_url($url);
+//      $p= explode('/',$u['path']);
+//
+//      if ( $u['host']=='www.setkani.org' && $p[1]=='index.php'
+//        || $u['host']=='setkani.bean'    && $p[1]=='index.php'
+//        || !isset($u['host'])            && $p[0]=='index.php' ) {
+//        // odkaz článek na starém webu
+//        parse_str(str_replace('&amp;','&',$u['query']),$q);
+////                                                         debug($u,$url);
+////                                                         debug($p,$u['path']);
+////                                                         debug($q,$u['query']);
+//        $id= $q['id'];
+//        $case= $q['case'];
+//        $path= "page=clanek!$case";
+//        $go= "go(arguments[0],'{$href1}$path')";
+//        $url= "<a title=\"$go\"
+//          onclick=\"$go;\"><span>{$m[5]}</span></a>";
+//      }
+//      else {
+//        $url= "<a{$m[1]}href='$url'{$m[4]} target='cizi'>{$m[5]}</a>";
+//      }
+//      return $url;
+//    },
+//    $txt);
 end:
   return $txt;
 }
@@ -1472,12 +1472,12 @@ function server($x) {  trace();
     require_once("template.php");
     ezer_connect('setkani4');
     error_reporting(E_ALL ^ E_NOTICE);
-    $fileadmin= array(
-        "http://setkani.bean:8080/fileadmin",
-        "https://www.setkani.org/fileadmin",
-        "http://setkani4.doma/fileadmin",
-        "http://setkani4.bean:8080/fileadmin"
-      )[$ezer_server];
+//    $fileadmin= array(
+//        "http://setkani.bean:8080/fileadmin",
+//        "https://www.setkani.org/fileadmin",
+//        "http://setkani4.doma/fileadmin",
+//        "http://setkani4.bean:8080/fileadmin"
+//      )[$ezer_server];
     $usergroups= $x->groups;
     $page_mref= $x->page;
     list($chlapi,$uid)= explode('!',$x->chlapi);
@@ -1856,6 +1856,7 @@ function server($x) {  trace();
     query("UPDATE gnucast SET skupina='{$y->skupina}'
            WHERE datum='{$y->datum}' AND TRIM(jmeno)='$jmeno'");
     break;
+
   }
   return 1;
 }
@@ -1923,4 +1924,42 @@ function url_get_contents($url, $useragent='cURL', $headers=false, $follow_redir
   // send back the data
   return $result;
 }
+
+
+
+# ------------------------------------------------------------------------------------ cms post_request
+/**
+ * Sends POST request to URL
+ * @param $url
+ * @param array $params
+ * @return string response message
+ */
+function cms_post_request($url, array $params) {
+  $query_content = http_build_query($params);
+
+  try {
+    //if (!file_exists($url)) return "Server neodpovídá. Zkuste to prosím později.";
+    $fp = fopen($url, 'r', FALSE, // do not use_include_path
+        stream_context_create([
+            'http' => [
+                'header'  => [ // header array does not need '\r\n'
+                    'Content-type: application/x-www-form-urlencoded',
+                    'Content-Length: ' . strlen($query_content)
+                ],
+                'method'  => 'POST',
+                'content' => $query_content
+            ]
+        ]));
+    if ($fp === FALSE) {
+      return "Něco se nepodařilo - zkuste to za chvíli.";
+    }
+    //possibly read response...
+    $result = stream_get_contents($fp);
+    fclose($fp);
+    return $result;
+  } catch (Exception $e) {
+    return "Chyba: prosíme, napište administrátorovi. Přiložte následující popis chyby: <code>$e</code>";
+  }
+}
+
 ?>

@@ -65,6 +65,9 @@ panel p [0,0,*,*] { type:'main'
     f.verze.set(sys('ezer','version')); 
     w.page_set(ask('page',CMS.from_table.get,function("return Ezer.app_root;"),ref));
   }
+  proc spinner(on) {
+    [ function('on', "waiting(on);", on) ];
+  }
 # ------------------------------------------------------------------------==> opravit, vytvořit, ...
 # procedury volané z cms_be.js
   proc seradit(ids,typ) { ask('seradit',ids,typ); refresh }
@@ -109,6 +112,9 @@ panel p [0,0,*,*] { type:'main'
     'main',   { FOTKY.main(name); },
     { echo("neznámá operace nad fotkami"); }
     );
+  }
+  proc sdilet(blog,cid,update) {
+      confirm(ask('wp_upload',blog,0,cid,update)); spinner(1); alert(ask('wp_upload',blog,1,cid,update)); spinner(0); go(last.get)
   }
 # ----------------------------------------------------------------------------==> popup dat
   proc cms_cid_pid(cid,pid) {

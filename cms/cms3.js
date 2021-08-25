@@ -95,51 +95,82 @@ function block_enable(id,on,but) {
 }
 // ===========================================================================================> MODE
 // -----------------------------------------------------------------------------------==> . bar menu
+function close_mobile_menu() {
+  jQuery('#web-shadow').css('display', 'none');
+  return close_mobile_menu_leave_shadow();
+}
+function close_mobile_menu_leave_shadow() {
+  var items= jQuery('#mobile_menu'), cross=jQuery("#menu-cross");
+  items.removeClass("is-open");
+  cross.addClass("nodisplay");
+  return true;
+}
+
 function bar_menu(e,x) {
   if ( e ) { e.stopPropagation(); e.preventDefault(); }
-  var items= jQuery('#bar_items'), body= jQuery(document.body);
+  let is_mobile_menu = jQuery(window).width() <= 685;
 
-  if (jQuery(window).width() > 623) {
-      items.slideToggle();
-      items.css('left', '');
-  } else {
-      items.animate({ left: parseInt(items.css('left'),10) === 0 ? -items.outerWidth() : 0 });
-  }
-  var off= function(e) {
-    items.css({display:'none'});
-    body.unbind('click,contextmenu');
-  };
-  if ( x==='menu_on' ) {
-    items.css({display:'block'});
-    body.bind('click',0,off);
-  }
-  else {
-    switch (x) {
-    case 'new1': case 'new7': case 'new30':
-      var dnu= x.substr(3);
-      document.cookie= 'web_show_changes='+dnu+';path=/';
-      refresh();
-      break;
-    case 'grid': change_mode(1,1); break;
-    case 'rows': change_mode(1,0); break;
-    case 'fe_login':
-      jQuery('#user_login').css({display:'block'}).removeClass('key_in').data('login','fe');
-      jQuery('#web-shadow').css({display:'block'});
-      break;
-    case 'be_login':
-      jQuery('#user_login').css({display:'block'}).addClass('key_in').data('login','be');
-      jQuery('#web-shadow').css({display:'block'});
-      break;
-    case 'me_login':
-      jQuery('#user_mail').css({display:'block'}).addClass('key_in').data('login','me');
-      jQuery('#web-shadow').css({display:'block'});
-      break;
-    default:
-      return true;
+  var items= jQuery(is_mobile_menu ? '#mobile_menu' : '#bar_items'),
+      body= jQuery(document.body),
+      bar=jQuery(e.toElement),
+      cross=jQuery("#menu-cross");
+
+  if ( x==='menu_on' ) {   //opened
+    if (!items.hasClass("is-open")) {
+      items.addClass("is-open");
+      if (is_mobile_menu) {
+        jQuery('#web-shadow').css('display', 'block');
+        cross.removeClass("nodisplay");
+      }
+    } else if (!is_mobile_menu) {
+      items.removeClass("is-open");
     }
-    items.css({display:'none'});
+  } else {
+    switch (x) {
+      case 'new1':
+      case 'new7':
+      case 'new30':
+        var dnu= x.substr(3);
+        document.cookie= 'web_show_changes='+dnu+';path=/';
+        refresh();
+        break;
+      case 'grid': change_mode(1,1); break;
+      case 'rows': change_mode(1,0); break;
+      case 'fe_login':
+        jQuery('#user_login').css({display:'block'}).removeClass('key_in').data('login','fe');
+        if (is_mobile_menu) close_mobile_menu_leave_shadow();
+        else {
+          jQuery('#web-shadow').css({display: 'block'});
+          items.removeClass("is-open");
+        }
+        return true;
+      case 'be_login':
+        jQuery('#user_login').css({display:'block'}).addClass('key_in').data('login','be');
+        if (is_mobile_menu) close_mobile_menu_leave_shadow();
+        else {
+          jQuery('#web-shadow').css({display: 'block'});
+          items.removeClass("is-open");
+        }
+        return true;
+      case 'me_login':
+        jQuery('#user_mail').css({display:'block'}).addClass('key_in').data('login','me');
+        if (is_mobile_menu) close_mobile_menu_leave_shadow();
+        else {
+          jQuery('#web-shadow').css({display: 'block'});
+          items.removeClass("is-open");
+        }
+        return true;
+      default:
+        break;
+    }
+
+    if (is_mobile_menu) {
+      close_mobile_menu();
+    } else {
+      items.removeClass("is-open");
+    }
+    return true;
   }
-  return false;
 }
 // -----------------------------------------------------------------------------------==> . me login
 function me_login(page) {
@@ -596,11 +627,13 @@ function ask(x,then,arg) {
   var xx= x;
   x.totrace= Ezer&&Ezer.App&&Ezer.App.options ? Ezer.App.options.ae_trace : 'u';
   x.secret= "WEBKEYNHCHEIYSERVANTAFVUOVKEYWEB";
+  console.log(Ezer);
   jQuery.ajax({url:Ezer.web.index, data:x, method: 'POST',
     success: function(y) {
       if ( typeof(y)==='string' )
         error("Došlo k chybě 1 v komunikaci se serverem - '"+xx.cmd+"'");
       else {
+        console.log(y);
         if ( y.error )
           Ezer.error(y.error,'C');
         if ( y.trace && Ezer.trace )

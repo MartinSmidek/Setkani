@@ -16,7 +16,8 @@ $ezer_server=
     $_SERVER["SERVER_NAME"]=='www.setkani.org' ? 1 : (        // Synology YMCA
     $_SERVER["SERVER_NAME"]=='setkani4.doma'   ? 2 : (        // Synology DOMA
     $_SERVER["SERVER_NAME"]=='setkani4.bean'   ? 3 : (        // 3:lokální VERZE 4 - Jirka
-    $_SERVER["SERVER_NAME"]=='setkani4m.bean'  ? 4 : -1))))); // 4:lokální VERZE 4 - Martin
+    $_SERVER["SERVER_NAME"]=='setkani4m.bean'  ? 4 : (        // 4:lokální VERZE 4 - Martin
+    $_SERVER["SERVER_NAME"]=='setkani4.ide'    ? 5 : -1)))))); // 5:lokální VERZE 4 - Jirka desktop
   
   // rozlišení verze jádra
   $kernel= 'ezer'.$_SESSION['cms']['ezer'];
@@ -56,6 +57,7 @@ $ezer_server=
       "/volume1/@appstore/MariaDB/usr/bin",   // Synology DOMA
       "C:/Apache/bin/mysql/mysql5.7.21/bin",  // *4m.bean
       "C:/Apache/bin/mysql/mysql5.7.21/bin",  // *4j.bean
+      "D:\wamp64\bin\mysql\mysql5.7.31\bin"   //jirka desktop
     )[$ezer_server];
 
   // ostatní parametry

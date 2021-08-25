@@ -18,7 +18,7 @@
       "/cms/cms{$k3}.js?v=4.4",
       "/cms/cms{$k3}_be.js",
       "/cms/modernizr-custom.js",
-      "/cms/custom.js?v=4.22",
+      "/cms/custom.js?v=4.3",
       $k3 ? false : "/cms/fotorama/jquery-1.12.4.min.js",
       $k3 ? false : "<script type='text/javascript'>jQuery.noConflict();</script>",
       "/cms/fotorama/fotorama.js");
@@ -30,19 +30,19 @@
   $skin=      'ck';
   $abs_roots= array(
       "C:/Ezer/beans/setkani.org",
-      "/volume1/web/www/setkani4",
-      "/volume1/web/www/setkani4",
-//      "/var/services/web/www/setkani4",
-//      "/var/services/web/www/setkani",
+      "/volume1/web/www/setkani4", //"/var/services/web/www/setkani4",
+      "/volume1/web/www/setkani4", //"/var/services/web/www/setkani",
       "C:/Ezer/beans/setkani4",
-      "C:/Ezer/beans/setkani4"
+      "C:/Ezer/beans/setkani4",
+      "D:/Ezer/beans/setkani4"
     );
   $rel_roots= array(
       "http://setkani.bean:8080",
       "https://www.setkani.org",
       "http://setkani4.doma",
       "http://setkani4.bean:8080",
-      "http://setkani4m.bean:8080"
+      "http://setkani4m.bean:8080",
+      "http://setkani4.ide"
     );
   
   // on-line přihlášky
@@ -71,7 +71,7 @@
   // (re)definice Ezer.options
   $add_pars= array(
     'log_login' => false,   // nezapisovat standardně login do _touch (v ezer2.php)
-    'favicon' => array('cms_local.png','cms.png','cms_dsm.png','cms_local.png','cms_local.png')[$ezer_server],
+    'favicon' => array('cms_local.png','cms.png','cms_dsm.png','cms_local.png','cms_local.png','cms_local.png')[$ezer_server],
     'template' => "user",
     'template_meta' => $template_meta,
     'template_body' => $template,
@@ -152,6 +152,9 @@ __EOD;
   $template= <<<__EOD
 %header
 <body id="body" onload="context({ $Ezer_web});">
+  <div id="wait_mask">
+  <div id="wait" onclick="waiting(0);"></div>
+ </div>
 <!-- bez menu a submenu -->
   <div id='horni' class="MainBar">
     <div id='logo'>

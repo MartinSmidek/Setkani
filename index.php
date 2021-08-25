@@ -16,7 +16,8 @@ $ezer_server=
     $_SERVER["SERVER_NAME"]=='www.setkani.org' ? 1 : (        // Synology YMCA
     $_SERVER["SERVER_NAME"]=='setkani4.doma'   ? 2 : (        // Synology DOMA
     $_SERVER["SERVER_NAME"]=='setkani4.bean'   ? 3 : (        // 3:lokální VERZE 4 - Jirka
-    $_SERVER["SERVER_NAME"]=='setkani4m.bean'  ? 4 : -1))))); // 4:lokální VERZE 4 - Martin
+    $_SERVER["SERVER_NAME"]=='setkani4m.bean'  ? 4 : (        // 4:lokální VERZE 4 - Martin
+    $_SERVER["SERVER_NAME"]=='setkani4.ide'    ? 5 : -1)))))); // 5:lokální VERZE 4 - Jirka desktop
 
 if ( $ezer_server==4 ) $_GET['dbg']= 1;
 
@@ -105,5 +106,6 @@ $ezer_path_root= $_SESSION['web']['path']= $_SERVER['DOCUMENT_ROOT'];
 
 def_menu(0);
 template($href,$path,$fe_host,$fe_user,$be_user);
+
 die();
 ?>
