@@ -108,7 +108,7 @@
               'cms_submit_bad_date'  => 
                   "<span class='problem'>Zadejte prosím datum ve tvaru den.měsíc.rok (d.m.rrrr)</span>",
               'cms_error'=>
-                  "Při zpracování formuláře došlo bohužel k chybě, selhalo spojení se serverem." 
+                  "Omlouváme se, při zpracování formuláře došlo bohužel k chybě, přihlaste se prosím na akci pomocí kontaktních informací uvedených na webové stránce." 
             ),
             'ELEM'=>array(
               'Ojmeno'    => array('t','+','jméno',115),      // + znamená při novém vynucená
