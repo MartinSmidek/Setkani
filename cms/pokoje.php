@@ -730,7 +730,7 @@ function order_tutorial($pokoje) {
         <table class='dum'><tbody>
             <tr class='header1'><td class='bold' colspan='3'>umístění</td>
                 <td class='bold' style='border-right: 1px solid' colspan='2'>příz.</td>
-                <td class='bold' style='border-right: 1px solid' colspan='3'>1.patro</td>
+                <td class='bold' style='border-right: 1px solid' colspan='5'>1.patro</td>
                 <td class='bold' style='border-right: 1px solid' colspan='2'>1-</td>
                 <td class='bold' style='border-right: 1px solid' colspan='2'>1+</td>
                 <td class='bold' style='border-right: 1px solid' colspan='8'>2.patro</td>
@@ -738,36 +738,26 @@ function order_tutorial($pokoje) {
             </tr>
             <tr>
               <td class='bold' colspan='3'>pokoj číslo</td>";
+  $cisla = $postele = $pristylky = "";
   foreach ($pokoje as $pokoj) {
       $pokoj_num= $pokoj['number'];
       $pokoj_str= $pokoj_num<10 ? "&nbsp;$pokoj_num&nbsp;" : $pokoj_num;
-      $result.= "<td class='room' onclick=\"popupRoomView('Pokoje', '$pokoj_num');\" title='{$pokoj['note']}'>$pokoj_str</td>";
+      $cisla.= "<td class='room' onclick=\"popupRoomView('Pokoje', '$pokoj_num');\" title='{$pokoj['note']}'>$pokoj_str</td>";
+      $postele.="<td class='bold' style='border-right: 1px solid'>{$pokoj['beds']}</td>";
+      $pristylka = $pokoj['addbeds'] == "0" ? "-" : $pokoj['addbeds'];
+      $pristylky.="<td class='bold' style='border-right: 1px solid'>$pristylka</td>";
   }
-  $result .=  "<td>sděluje číslo pokoje, kliknutím zobrazí mapku</td>
+  $result .=  "$cisla<td>sděluje číslo pokoje, kliknutím zobrazí mapku</td>
             </tr>
             <tr>
-              <td class='bold' colspan='3'>počet postelí</td><td class='bold' style='border-right: 1px solid'>2</td>
-              <td class='bold' style='border-right: 1px solid'>3</td><td class='bold' style='border-right: 1px solid'>2</td>
-              <td class='bold' style='border-right: 1px solid'>6</td><td class='bold' style='border-right: 1px solid'>4</td>
-              <td class='bold' style='border-right: 1px solid'>2</td><td class='bold' style='border-right: 1px solid'>2</td>
-              <td class='bold' style='border-right: 1px solid'>2</td><td class='bold' style='border-right: 1px solid'>2</td>
-              <td class='bold' style='border-right: 1px solid'>3</td><td class='bold' style='border-right: 1px solid'>3</td>
-              <td class='bold' style='border-right: 1px solid'>4</td><td class='bold' style='border-right: 1px solid'>2</td>
-              <td class='bold' style='border-right: 1px solid'>2</td><td class='bold' style='border-right: 1px solid'>2</td>
-              <td class='bold' style='border-right: 1px solid'>6</td><td class='bold' style='border-right: 1px solid'>5</td>
+              <td class='bold' colspan='3'>počet postelí</td>
+              $postele
               <td>počet postelí v pokoji</td></tr>
             <tr class='header2'>
-              <td class='bold' colspan='3'>přistýlek</td><td class='bold' style='border-right: 1px solid'>1</td>
-              <td class='bold' style='border-right: 1px solid'>-</td><td class='bold' style='border-right: 1px solid'>1</td>
-              <td class='bold' style='border-right: 1px solid'>-</td><td class='bold' style='border-right: 1px solid'>2</td>
-              <td class='bold' style='border-right: 1px solid'>1</td><td class='bold' style='border-right: 1px solid'>1</td>
-              <td class='bold' style='border-right: 1px solid'>1</td><td class='bold' style='border-right: 1px solid'>-</td>
-              <td class='bold' style='border-right: 1px solid'>1</td><td class='bold' style='border-right: 1px solid'>-</td>
-              <td class='bold' style='border-right: 1px solid'>-</td><td class='bold' style='border-right: 1px solid'>-</td>
-              <td class='bold' style='border-right: 1px solid'>1</td><td class='bold' style='border-right: 1px solid'>-</td>
-              <td class='bold' style='border-right: 1px solid'>2</td><td class='bold' style='border-right: 1px solid'>1</td>
+              <td class='bold' colspan='3'>přistýlek</td>
+               $pristylky
               <td>kolik lze zařídit přistýlek</td></tr>
-            <tr><td class='datum'>12.12.</td><td class='datum_poloplno odd'><i class='fa fa-pencil-square-o'></i></td><td class='datum_poloplno odd'><i class='fa fa-envelope-o'></i></td><td class='nic' style='border-right: 1px solid'><i class='fa fa-user'></i></td><td class='nic' style='border-right: 1px solid'><i class='fa fa-user'></i></td><td class='nic ' style='border-right: 1px solid'><i class='fa fa-user'></i></td><td class='nic ' style='border-right: 1px solid'><i class='fa fa-user'></i></td><td class='nic ' style='border-right: 1px solid'><i class='fa fa-times-circle'></i></td><td class='nic ' style='border-right: 1px solid'><i class='fa fa-times-circle'></i></td><td class='nic ' style='border-right: 1px solid'><i class='fa fa-times-circle'></i></td><td class='nic ' style='border-right: 1px solid'><i class='fa fa-times-circle'></i></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'></td><td>klikatelné odkazy, viz popis níže</td>
+            <tr><td class='datum'>12.12.</td><td class='datum_poloplno odd'><i class='fa fa-pencil-square-o'></i></td><td class='datum_poloplno odd'><i class='fa fa-envelope-o'></i></td><td class='nic' style='border-right: 1px solid'><i class='fa fa-user'></i></td><td class='nic' style='border-right: 1px solid'><i class='fa fa-user'></i></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'><i class='fa fa-user'></i></td><td class='nic ' style='border-right: 1px solid'><i class='fa fa-user'></i></td><td class='nic ' style='border-right: 1px solid'><i class='fa fa-times-circle'></i></td><td class='nic ' style='border-right: 1px solid'><i class='fa fa-times-circle'></i></td><td class='nic ' style='border-right: 1px solid'><i class='fa fa-times-circle'></i></td><td class='nic ' style='border-right: 1px solid'><i class='fa fa-times-circle'></i></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'></td><td class='nic ' style='border-right: 1px solid'></td><td>klikatelné odkazy, viz popis níže</td>
             </tr>
         </tbody></table>
     </div>
@@ -794,7 +784,7 @@ function order_message() {
 function bookingsTableHtml($pokoje) {
   $h_patra= "<tr class='header1'><td class='bold' colspan=3>umístění</td>
     <td class='bold' style='border-right: 1px solid' colspan=2>příz.</td>
-    <td class='bold' style='border-right: 1px solid' colspan=3>1.patro</td>
+    <td class='bold' style='border-right: 1px solid' colspan=5>1.patro</td>
     <td class='bold' style='border-right: 1px solid' colspan=2>1-</td>
     <td class='bold' style='border-right: 1px solid' colspan=2>1+</td>
     <td class='bold' style='border-right: 1px solid' colspan=8>2.patro</td>

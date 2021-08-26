@@ -1023,6 +1023,10 @@ label.form_button {float: right}
     font-size: 13pt;
   }
 
+  .akce_calendars_year_watermark {
+    font-size: 600%;
+  }
+
   div.notice_style {padding: 50px 10px 15px 10px;margin: 0;}
   div.clanek { margin: 0.5em 0; }
   div.text {padding: 0.4em 0.7em}
@@ -1128,6 +1132,10 @@ label.form_button {float: right}
   }
   #vlakno h3 {
     font-size: 14pt;
+  }
+
+  .akce_calendars_year_watermark {
+    font-size: 800%;
   }
 
   /*popup*/
