@@ -2734,7 +2734,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $code= cid_pid($cid,$x->ident);
 //     $back= $foto ? "#foto$cid" : '';
 
-    $prihlaska= $x->ida && $x->prihlaska ? cms_form_ref("ONLINE PŘIHLÁŠKA") : '';
+    $prihlaska= $x->ida && $x->prihlaska && !$x->status ? cms_form_ref("ONLINE PŘIHLÁŠKA") : '';
 //    $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA");
 
     $port = $_SERVER['SERVER_PORT'] == "80" ? "" : ":".$_SERVER['SERVER_PORT'];
