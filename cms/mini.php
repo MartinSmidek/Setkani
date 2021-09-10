@@ -369,6 +369,14 @@ function sql_query($qry,$db='.main.') {
   }
   return $obj;
 }
+# ---------------------------------------------------------------------------------------- mysql row
+# provedení dotazu v $y->qry="..." a vrácení pdo_fetch_assoc (případně doplnění $y->err)
+function mysql_row($qry,$err=null) {
+  $res= mysql_qry($qry,1);
+  $row= $res ? pdo_fetch_assoc($res) : array();
+  if ( !$res ) mysql_err($qry);
+  return $row;
+}
 # ---------------------------------------------------------------------------------------- sql_date1
 // datum bez dne v týdnu
 function sql_date1 ($datum,$user2sql=0,$del='.') {
@@ -938,7 +946,8 @@ function cms_confirm($id_osoba,$id_akce) {
 # upraví položku pobyt.web_changes hodnotou
 # 1/2 pro INSERT/UPDATE pobyt a spolu | 4/8 pro INSERT/UPDATE osoba
 function cms_changes($id_pobyt,$changes) {
-  query("UPDATE pobyt SET web_changes=web_changes|$changes WHERE id_pobyt=$id_pobyt",'ezer_db2');
+  query("UPDATE pobyt SET web_changes=web_changes|$changes, funkce=0 
+    WHERE id_pobyt=$id_pobyt",'ezer_db2');
 }
 # ------------------------------------------------------------------------------------------ cms qry
 # záznam změn do tabulek osoba,rodina,pobyt,spolu,_track

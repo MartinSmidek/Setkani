@@ -280,7 +280,7 @@ function go(e,href,mref,input,nojump) {
 }
 
 function go_with_menu(e,href,mref,input,nojump,ezerMenu) {
-  console.log(arguments);u
+  console.log(arguments);
   Ezer.fce.contextmenu(ezerMenu,arguments[0]);
   go(e,href,mref,input,nojump);
   return false;
