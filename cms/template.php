@@ -2737,8 +2737,8 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $prihlaska= $x->ida && $x->prihlaska && !$x->status ? cms_form_ref("ONLINE PŘIHLÁŠKA") : '';
 //    $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA");
 
-    $port = $_SERVER['SERVER_PORT'] == "80" ? "" : ":".$_SERVER['SERVER_PORT'];
-    $permalink = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].$port."/clanek/".$x->uid;
+    $port = ""; //$_SERVER['SERVER_PORT'] == "80" ? "" : ":".$_SERVER['SERVER_PORT'];
+    $permalink = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].$port."/clanek/".$x->ident;
     $h.= $x->ident==$id
         ? vlakno($cid,$typ,$back, false, true)
         : "<div class='$abstr $x->status' id='n$n'>
@@ -2872,7 +2872,7 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false, $h2titler = false) { tr
     $style= '';
     $uid= $x->uid;
     $obsah= $x->obsah;
-    $port = $_SERVER['SERVER_PORT'] == "80" ? "" : ":".$_SERVER['SERVER_PORT'];
+    $port = ""; //$_SERVER['SERVER_PORT'] == "80" ? "" : ":".$_SERVER['SERVER_PORT'];
     $permalink = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].$port."/clanek/".$x->uid;
 
     $podpis= "<div class='podpis'><i class=\"fa fa-link tooltip clickable\" style='color: darkgray' onclick=\"copyTextToClipboard('$permalink');return false;\"><span class='tooltip-text'>kopírovat odkaz</span></i>&emsp;";
