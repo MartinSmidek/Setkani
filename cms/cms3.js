@@ -61,6 +61,38 @@ function jump_fokus(id) {
   }
   return 1;
 }
+// --------------------------------------------------------------------------------------------clipboard
+function copyTextToClipboard(text) {
+  var textArea = document.createElement("textarea");
+
+  textArea.style.position = 'fixed';
+  textArea.style.top = 0;
+  textArea.style.left = 0;
+
+  // Setting to 1px / 1em
+  // doesn't work as this gives a negative w/h on some browsers.
+  textArea.style.width = '2em';
+  textArea.style.height = '2em';
+  textArea.style.padding = 0;
+  textArea.style.border = 'none';
+  textArea.style.outline = 'none';
+  textArea.style.boxShadow = 'none';
+  textArea.style.background = 'transparent';
+  textArea.value = text;
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+
+  try {
+    if (!document.execCommand('copy')) {
+      console.log('Failed to copy the text to clipboard.');
+    }
+  } catch (err) {
+    console.log('Failed to copy the text to clipboard.');
+  }
+
+  document.body.removeChild(textArea);
+}
 // ----------------------------------------------------------------------------------- block display
 // nastaví display podle parametru
 function block_display(id,on) {
@@ -291,7 +323,7 @@ function proc_kdo(href, kdy) {
   document.cookie = 'akce=' + ref + ';expires=' + date.toGMTString(); + '; path=/';
 
   if ( Ezer.version===undefined ) {
-    window.location= '/akce';
+    window.location= "/akce" + (kdy?"/"+kdy+"#anchor"+kdy:'');
   } else {
     go(0,href+'!akce'+(kdy?','+kdy:''),'/'+ref);
   }
@@ -654,3 +686,5 @@ function ask(x,then,arg) {
 function error(msg) {
   alert(msg + " pokud napises na martin@smidek.eu pokusim se pomoci, Martin");
 }
+
+

@@ -159,6 +159,14 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
           '5let'   => 'před 2-5 lety:YEAR(NOW())-YEAR(FROM_UNIXTIME(fromday)) BETWEEN 2 AND 5',
           '10let'  => 'před 6-10:YEAR(NOW())-YEAR(FROM_UNIXTIME(fromday)) BETWEEN 6 AND 10',
           'starsi' => 'dříve:YEAR(NOW())-YEAR(FROM_UNIXTIME(fromday))>10',
+      ),
+      'komu_reversed' => array(
+         "1" => 'rodiny',
+         "2" => 'manzele',
+         "3" => 'chlapi',
+         "4" => 'zeny' ,
+         "5"  => 'mladez',
+         "6" => 'alberice'
       )
   );
 # zobrazíme topmenu a hlavní menu, přitom zjistíme případné doplnění cesty a její správnost
@@ -227,7 +235,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 
   //use cookies do diferentiate between show operational modes, instead of url
   if (!isset($_COOKIE['akce']) || strlen($_COOKIE['akce']) < 3) {
-    setcookie('akce', 'rodiny,manzele,chlapi,zeny,mladez');
+    setcookie('akce', 'rodiny,manzele,chlapi,zeny,mladez', time()+86400, "/");
   }
 
   $mainmenu = "<ul class='menu_hm'>";
@@ -665,7 +673,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
                 Některé fotografie z akcí naleznete ve fotogalerii, více je pak dostupné na dalších
                 webech z odkazů ve fotogalerii.
                 </div></div><br><br>";
-          
+
           $body.= akce_prehled($vyber_rok,$rok,$id);
         } elseif ( $ids=='aprehled' ) { // proběhlé akce v Domě setkání
                                                  debug($path,"path= $id,...");
@@ -2416,6 +2424,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
   global $ezer_path_root, $FREE;
 //                                                         display("a page_mref = $page_mref");
   $vyber0= $vyber;
+
   list($id,$tag)= explode('#',$id.'#');
   $rok= $tag= $chlapi_url= '';
   $typ= 'akce';
@@ -2483,6 +2492,20 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $ORDER= "DESC";
   }
   else {
+    //make sure if article is requested to show that article although $komu does not intersect with article 'komu'
+    $data = array();
+    $dataSize = 0;
+    if ($id) {
+      $cr = pdo_qry("SELECT c.program FROM (setkani4.tx_gncase AS c JOIN setkani4.tx_gncase_part AS p ON p.cid=c.uid) WHERE p.uid=$id LIMIT 1");
+      $data = pdo_fetch_row($cr);
+      if ($data && count($data)) {
+        $data = explode(",", $data[0]);
+        $dataSize = count($data);
+      } else {
+        $id = 0;
+      }
+    }
+
     // překlad $komu na regexpr
     foreach(explode(',',$vyber) as $kdo) {
       $ki= $def_pars['komu'][$kdo];
@@ -2490,8 +2513,23 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
         list($k,$i)= explode(':',$ki);
         if ( !in_array($i,$rkomu) )
           $rkomu[]= $i;
+
+        $pos = array_search($i, $data);
+        if ($pos !== false) unset($data[$pos]);
       }
     }
+
+    //if no intersection, add
+    if (count($data) == $dataSize && $dataSize > 0) {
+      $rkomu = array_merge($rkomu, $data);
+      foreach ($data as $_ => $komuId) {
+        array_push($rkomu, $komuId);
+        $vyber .= "," . $def_pars['komu_reversed'][$komuId];
+      }
+      setcookie('akce', $vyber, time()+86400, "/");
+
+    }
+
     $c_komu= "0";
     if ( $rkomu ) {
       $komu= implode('|',$rkomu);
@@ -2538,6 +2576,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $vyber= "!$vyber".($rok?",$rok":'');
     display("úprava vyber=$vyber");
   }
+
 //                                                        display("kdy=$c_kdy");
   $spec= 0;     // vlákna s chráněným přístupem
   $p_show= ($show_hidden ?  '' : " AND !p.hidden").($show_deleted ? '' : " AND !p.deleted");
@@ -2698,13 +2737,18 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $prihlaska= $x->ida && $x->prihlaska ? cms_form_ref("ONLINE PŘIHLÁŠKA") : '';
 //    $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA");
 
+    $port = $_SERVER['SERVER_PORT'] == "80" ? "" : ":".$_SERVER['SERVER_PORT'];
+    $permalink = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].$port."/clanek/".$x->uid;
     $h.= $x->ident==$id
         ? vlakno($cid,$typ,$back, false, true)
         : "<div class='$abstr $x->status' id='n$n'>
            $code 
            <a class='abstrakt$ex{$x->upd}' $jmp>
              $prihlaska
-             <span class='akce_datum'><i class=\"fa fa-calendar tooltip\" style='color: darkgray'><span class='tooltip-text'>datum akce</span></i>&nbsp;$x->kdy $flags</span>
+            
+             <span class='akce_datum'>
+             <i class=\"fa fa-link tooltip clickable\" style='color: darkgray' onclick=\"copyTextToClipboard('$permalink');return false;\"><span class='tooltip-text'>kopírovat odkaz</span></i>&nbsp;
+             <i class=\"fa fa-calendar tooltip\" style='color: darkgray'><span class='tooltip-text'>datum akce</span></i>&nbsp;$x->kdy $flags</span>
              <b>$x->nadpis:</b><div class='clear'></div>$img 
                <p>$x->abstract</p>
            </a>
@@ -2828,7 +2872,10 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false, $h2titler = false) { tr
     $style= '';
     $uid= $x->uid;
     $obsah= $x->obsah;
-    $podpis= "<div class='podpis'>";
+    $port = $_SERVER['SERVER_PORT'] == "80" ? "" : ":".$_SERVER['SERVER_PORT'];
+    $permalink = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].$port."/clanek/".$x->uid;
+
+    $podpis= "<div class='podpis'><i class=\"fa fa-link tooltip clickable\" style='color: darkgray' onclick=\"copyTextToClipboard('$permalink');return false;\"><span class='tooltip-text'>kopírovat odkaz</span></i>&emsp;";
     $podpis.= ($x->kdy) ? "<i class='fa fa-calendar-alt tooltip'><span class='tooltip-text'>datum akce</span></i>&nbsp;$x->kdy&emsp;" : '';
     $podpis.= "<i class='fa fa-user tooltip'><span class='tooltip-text'>autor</span></i>&nbsp;$x->autor,&nbsp;$x->psano</div>";
     $menu= '';
