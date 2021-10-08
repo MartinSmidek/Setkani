@@ -1144,7 +1144,7 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
     query("INSERT INTO _touch (day,time,module,menu,msg)
         VALUES (CURDATE(),CURTIME(),'$x->web','me_login','neznámý email:$x->mail')",'setkani');
     $y->state = 'err';
-    $y->txt = "adresa '$x->mail' nebyla nepoužita v poslední přihlášce na akci";
+    $y->txt = "adresa '$x->mail' nebyla použita v poslední přihlášce na akci";
     goto end;
   }
   // kontrola oprávněnosti přístupu
@@ -1153,7 +1153,7 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
     case 'mrop':
       if ( !$iniciace ) {
         $y->state = 'err';
-        $y->txt = "adresa '$x->mail' nebyla nepoužita v přihlášce na iniciaci";
+        $y->txt = "adresa '$x->mail' nebyla použita v přihlášce na iniciaci";
         goto end;
       }
       break;
@@ -1215,9 +1215,9 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
 //    $ret = mail_send('martin@smidek.eu', $x->mail, "Přihlášení na www.$x->web ($pin)",
 //        "V přihlašovacím dialogu webové stránky napiš vedle svojí mailové adresy $pin.
 //        <br>Přeji Ti příjemné prohlížení, Tvůj web","chlapi.cz");
-    if ( $ret->err ) {
+    if ( $ret != null ) {
       $y->state = 'err';
-      $y->txt = "Lituji, mail s PINem se nepovedlo odeslat ($ret->err)";
+      $y->txt = "Lituji, mail s PINem se nepovedlo odeslat ($ret)";
       goto end;
     }
   } else { // setkani.org

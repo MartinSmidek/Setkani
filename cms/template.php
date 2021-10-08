@@ -2748,7 +2748,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
             
              <span class='akce_datum'>
              <i class=\"fa fa-link tooltip clickable\" style='color: darkgray' onclick=\"copyTextToClipboard('$permalink');return false;\"><span class='tooltip-text'>kopírovat odkaz</span></i>&nbsp;
-             <i class=\"fa fa-calendar tooltip\" style='color: darkgray'><span class='tooltip-text'>datum akce</span></i>&nbsp;$x->kdy $flags</span>
+             &nbsp;&nbsp;$x->kdy $flags</span>
              <b>$x->nadpis:</b><div class='clear'></div>$img 
                <p>$x->abstract</p>
            </a>
