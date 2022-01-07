@@ -1,5 +1,8 @@
 <?php # (c) 2018 Martin Smidek <martin@smidek.eu>
 
+  // klíče
+  $deep_root= "../files/setkani4";
+  require_once("$deep_root/cms.dbs.php");
   global $api_gmail_user, $api_gmail_pass;
   
   /// viz \ref struktura-EZER.CMS
