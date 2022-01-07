@@ -1,5 +1,7 @@
 <?php # (c) 2018 Martin Smidek <martin@smidek.eu>
 
+  global $api_gmail_user, $api_gmail_pass;
+  
   /// viz \ref struktura-EZER.CMS
   
   $EZER= (object)array(
@@ -21,8 +23,8 @@
         /// informace o přístupu na gmailový účet  
         'GMAIL'=>(object)array(
           /// přístup na použitý gmail
-          'mail'=>'answer@setkani.org',
-          'pswd'=>'answer2017',
+          'mail'=>$api_gmail_user,
+          'pswd'=>$api_gmail_pass,
           'name'=>'YMCA Setkání'
         ),
         'FORM'=>array(
