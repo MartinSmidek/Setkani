@@ -171,6 +171,14 @@ elseif ( isset($_GET['upd_menu']) ) {
   query($qry,'setkani');
   $y->msg= "post=".strlen($_POST).", get=".strlen($sub).", trace=$trace";
 }
+elseif ( isset($_GET['redaktor']) ) {
+  global $trace;
+  $y->id= $_GET['redaktor'];
+  ezer_connect("ezer_db2");
+  list($y->jmeno,$y->prijmeni,$y->web_level)= 
+      select("jmeno,prijmeni,web_level","ezer_db2.osoba","id_osoba=$y->id");
+  $y->msg= "trace=$trace";
+}
 elseif ( isset($_GET['test']) ) {
   $x= (object)array('cmd'=>'test');
   server($x);
