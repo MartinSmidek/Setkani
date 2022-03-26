@@ -9,15 +9,18 @@ ini_set('display_errors', 'On');
 
 if ( isset($_GET['try'])) $_SESSION['web']['try']= $_GET['try'];
 
-// platí $ezer_local==!$ezer_server   
-$ezer_server= 
-    $_SERVER["SERVER_NAME"]=='setkani.bean'    ? 0 : (        // 0:lokální 
+// platí $ezer_local==!$ezer_server
+$ezer_server=
+    $_SERVER["SERVER_NAME"]=='setkani.bean'    ? 0 : (        // 0:lokální
     $_SERVER["SERVER_NAME"]=='setkani.org'     ? 1 : (        // Synology YMCA
     $_SERVER["SERVER_NAME"]=='www.setkani.org' ? 1 : (        // Synology YMCA
     $_SERVER["SERVER_NAME"]=='setkani4.doma'   ? 2 : (        // Synology DOMA
     $_SERVER["SERVER_NAME"]=='setkani4.bean'   ? 3 : (        // 3:lokální VERZE 4 - Jirka
     $_SERVER["SERVER_NAME"]=='setkani4m.bean'  ? 4 : (        // 4:lokální VERZE 4 - Martin
     $_SERVER["SERVER_NAME"]=='setkani4.ide'    ? 5 : -1)))))); // 5:lokální VERZE 4 - Jirka desktop
+
+define('COOKIE_DOMAIN', $ezer_server == 1 ? "setkani.org" : false);
+define('COOKIE_JS_PROPERTIES', $ezer_server == 1 ? "SameSite=None;Secure;" : "");
 
 if ( $ezer_server==4 ) $_GET['dbg']= 1;
 
@@ -30,7 +33,7 @@ if ( !count($_POST) && isset($_SESSION['cms']['user_id']) && $_SESSION['cms']['u
 // -------------------- nový web
 
 $FREE= 0; // ponechává lokální odkazy na obrázky
-$kernel= "ezer3.1"; 
+$kernel= "ezer3.1";
 
 if ( $kernel=='ezer3.1' ) {
   require_once("$kernel/mysql.inc.php"); // nastavení const EZER_PDO_PORT=1;

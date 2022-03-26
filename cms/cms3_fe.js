@@ -12,7 +12,7 @@ function go(e,ref,mref,input) {
   if ( input ) {
     // go je voláno přes <enter> v hledej
     var search= jQuery('#search').val();
-    document.cookie= 'web_search='+search+';path=/; SameSite=None; Secure';
+    document.cookie= 'web_search='+search+';path=/;' + (window.COOKIE_PROPERTIES || "");
     location.href= mref+'/'+search;
   }
   else {

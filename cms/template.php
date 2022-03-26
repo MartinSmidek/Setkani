@@ -1,6 +1,10 @@
-﻿<?php
+﻿<script type="text/javascript">
+    window.COOKIE_PROPERTIES = '<?php echo COOKIE_JS_PROPERTIES ?>';
+</script>
 
+<?php
 include "cms_onclick.php";
+
 
 # --------------------------------------------------------------------------------------==> def menu
 function def_menu($from_table=false) { trace();
@@ -235,7 +239,8 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
 
   //use cookies do diferentiate between show operational modes, instead of url
   if (!isset($_COOKIE['akce']) || strlen($_COOKIE['akce']) < 3) {
-    setcookie('akce', 'rodiny,manzele,chlapi,zeny,mladez', time()+86400, "/");
+    $_COOKIE['akce'] = urlencode('rodiny,manzele,chlapi,zeny,mladez');
+    setcookie('akce', $_COOKIE['akce'], time()+86400, "/", COOKIE_DOMAIN);
   }
 
   $mainmenu = "<ul class='menu_hm'>";
@@ -744,14 +749,14 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
             //todo this is not probably called anymore
             //$vyber= array_shift($path);
             array_shift($path); //get rid of "komu_kdo" from path
-            $vyber= $_COOKIE['akce'];
+            $vyber= urldecode($_COOKIE['akce']);
             $submenu_komu.= $proc_kdo($vyber,1);
             break;
 
           case 'plan_rok':  # ------------------------------------------- . proc plan = komu
             //$vyber= array_shift($path);
             $old_url_data = array_shift($path); //get rid of "komu_kdo" from path
-            $vyber= $vyber_rok =$_COOKIE['akce'];
+            $vyber= $vyber_rok = urldecode($_COOKIE['akce']);
             $vyb = explode(',',$old_url_data);
             $rok= '';
             foreach ($vyb  as $i=>$x) {
@@ -769,7 +774,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
           case 'aplan':  # ---------------------------------------------- . proc aplan = alberice,bude
             $body .= "<div class='content'><h1>Plánované akce v domě</h1></div>";
             //$vyber= "alberice,".array_shift($path);
-            //$vyber= "alberice,".$_COOKIE['akce'];
+            //$vyber= "alberice,".urldecode($_COOKIE['akce']);
             //ignore selection from cookies
             array_shift($path);
             $vyber = "rodiny,manzele,chlapi,zeny,mladez,alberice";
@@ -1182,7 +1187,7 @@ function tutorial($doDisplay = true) {
  </div>
       <br>
       <div style='float: left'>S problémy se obracejte na <i>horakj7@gmail.com</i>.</div>
-      <div style='cursor: pointer; float: right' onclick='document.cookie=\"article_tutorial=true; expires=Fri, 31 Dec 9999 23:59:59 GMTproc_kdo\"; jQuery(\"#article_tutorial\").toggleClass(\"nodisplay\"); jQuery(\"#article_button\").toggleClass(\"nodisplay\");'>
+      <div style='cursor: pointer; float: right' onclick='document.cookie=\"article_tutorial=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=\"; jQuery(\"#article_tutorial\").toggleClass(\"nodisplay\"); jQuery(\"#article_button\").toggleClass(\"nodisplay\");'>
       Všechno to už vím. Dám ruku do ohně za svoje články [skrýt].</div>
  </div>";
 }
@@ -2526,8 +2531,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
         array_push($rkomu, $komuId);
         $vyber .= "," . $def_pars['komu_reversed'][$komuId];
       }
-      setcookie('akce', $vyber, time()+86400, "/");
-
+      setcookie('akce', urlencode($vyber), time()+86400, "/", COOKIE_DOMAIN);
     }
 
     $c_komu= "0";

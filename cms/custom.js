@@ -26,7 +26,7 @@ function searchByQuery() {
     var form = document.getElementById("search_form");
     item = item.replace(';','');
     console.log(item);
-    document.cookie= 'web_search='+item+';path=/; SameSite=None; Secure';
+    document.cookie= 'web_search='+item+';path=/;' + (window.COOKIE_PROPERTIES || "");
     location.href= "/hledej/" + item;
 }
 
