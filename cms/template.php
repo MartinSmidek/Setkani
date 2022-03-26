@@ -1,8 +1,4 @@
-﻿<script type="text/javascript">
-    window.COOKIE_PROPERTIES = '<?php echo COOKIE_JS_PROPERTIES ?>';
-</script>
-
-<?php
+﻿<?php
 include "cms_onclick.php";
 
 
@@ -871,6 +867,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
     ga('create', 'UA-99235788-1', 'auto');
     ga('send', 'pageview');
 __EOD;
+  $cookieSettings = COOKIE_JS_PROPERTIES;
   $head=  <<<__EOD
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "https://www.w3.org/TR/html4/strict.dtd">
 <html lang="cs-CZ">
@@ -881,6 +878,9 @@ __EOD;
   <base href="$base" >
   <title>YMCA Setkání</title>
   <link rel="shortcut icon" href="$icon" >
+  <script type="text/javascript">
+      window.COOKIE_PROPERTIES = '$cookieSettings';
+  </script>
   
   $eb_link
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C700%2C700i%2C800%2C800i&amp;ver=0.3.5" type="text/css" media="all">
