@@ -1,12 +1,12 @@
 <?php
   global $ezer_server;
-  
+
   // startem je složka cms
   chdir('cms');
 
   // volba verze jádra Ezer
-//  $kernel= "ezer".(isset($_GET['ezer'])?$_GET['ezer']:'2.2'); 
-//  $kernel= "ezer".(isset($_GET['ezer'])?$_GET['ezer']:'3.1'); 
+//  $kernel= "ezer".(isset($_GET['ezer'])?$_GET['ezer']:'2.2');
+//  $kernel= "ezer".(isset($_GET['ezer'])?$_GET['ezer']:'3.1');
   $kernel= "ezer3.1";
 //  $kernel= "ezer2.2";
   $k3= substr($kernel,0,5)=='ezer3' ? '3' : '';
@@ -15,7 +15,7 @@
   $app_name=  "setkani.org";
   $app_root=  'cms';
   $app_js=    array(
-      "/cms/cms{$k3}.js?v=4.5",
+      "/cms/cms{$k3}.js?v=4.6",
       "/cms/cms{$k3}_be.js",
       "/cms/modernizr-custom.js",
       "/cms/custom.js?v=4.3",
@@ -24,7 +24,7 @@
       "/cms/fotorama/fotorama.js");
   $app_css=   array(
       "/cms/mini{$k3}.css",
-      "/cms/web.css", 
+      "/cms/web.css",
       "/cms/web_edit.css",
       "/cms/fotorama/fotorama.css");
   $skin=      'ck';
@@ -44,7 +44,7 @@
       "http://setkani4m.bean:8080",
       "http://setkani4.ide"
     );
-  
+
   // on-line přihlášky
   $cms_root= $kernel=='ezer3.1' ? 'ezer3.1' : 'ezer3';
   $app_css[]= "$cms_root/client/ezer_cms3.css";
@@ -52,7 +52,7 @@
 
   // specifická část aplikace předávaná do options
   specific($template_meta,$template);
-  
+
 
   $abs_root= $abs_roots[$ezer_server];
 
@@ -113,10 +113,10 @@
       }
     }"
   );
-  
-  // je to aplikace se startem v podsložce 
+
+  // je to aplikace se startem v podsložce
   require_once("$abs_root/$kernel/ezer_main.php");
-  
+
 function specific(&$template_meta,&$template) {
   $debugger= '';
   if ( isset($_GET['dbg']) && $_GET['dbg'] ) {
