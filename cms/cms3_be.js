@@ -271,7 +271,7 @@ function go(e,href,mref,input,nojump) {
   if ( input ) {
     // go je voláno přes <enter> v hledej
     var search= jQuery('#search').val();
-    document.cookie= 'web_search='+search+';path=/';
+    document.cookie= 'web_search='+search+';path=/; SameSite=None; Secure';
     page= page + '!!'+ search;
   }
   history.pushState({},'',mref ? mref : http+'page='+page);
@@ -307,7 +307,7 @@ function go_anchor(e,href,mref,input,nojump) {
   if ( input ) {
     // go je voláno přes <enter> v hledej
     var search= jQuery('#search').val();
-    document.cookie= 'web_search='+search+';path=/';
+    document.cookie= 'web_search='+search+';path=/; SameSite=None; Secure';
     page= page + '!!'+ search;
   }
   if ( mref ) history.pushState({},'',mref);
@@ -362,7 +362,7 @@ function sdilet(blog,cid,update) {
   return 1;
 }
 /** ------------------------------------------------------------------------------------------ zrusit
- * 
+ *
  * @param {type} typ -- článek | kniha
  * @param {type} pid
  * @param {type} on

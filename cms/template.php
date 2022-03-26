@@ -2,7 +2,7 @@
 
 include "cms_onclick.php";
 
-# --------------------------------------------------------------------------------------==> def menu 
+# --------------------------------------------------------------------------------------==> def menu
 function def_menu($from_table=false) { trace();
   global $def_block;
   $letos= date('Y');
@@ -1182,7 +1182,7 @@ function tutorial($doDisplay = true) {
  </div>
       <br>
       <div style='float: left'>S problémy se obracejte na <i>horakj7@gmail.com</i>.</div>
-      <div style='cursor: pointer; float: right' onclick='document.cookie=\"article_tutorial=true; expires=Fri, 31 Dec 9999 23:59:59 GMT\"; jQuery(\"#article_tutorial\").toggleClass(\"nodisplay\"); jQuery(\"#article_button\").toggleClass(\"nodisplay\");'>
+      <div style='cursor: pointer; float: right' onclick='document.cookie=\"article_tutorial=true; expires=Fri, 31 Dec 9999 23:59:59 GMTproc_kdo\"; jQuery(\"#article_tutorial\").toggleClass(\"nodisplay\"); jQuery(\"#article_button\").toggleClass(\"nodisplay\");'>
       Všechno to už vím. Dám ruku do ohně za svoje články [skrýt].</div>
  </div>";
 }
@@ -1560,13 +1560,13 @@ function footer() {
     ORDER BY part, sorting DESC
   ");
 
-  $menu= $CMS 
+  $menu= $CMS
       ? " oncontextmenu=\"
           Ezer.fce.contextmenu([
             ['editovat patičku',function(el){ opravit('footer',0,0); }]
           ],arguments[0],'page_footer_info');return false;\""
       : '';
-  
+
   while ( $query && (list($title, $text, $part) = pdo_fetch_row($query)) ) {
     $text= preg_replace("/{(.*)}/","<i class='fa fa-$1'></i>",$text);
     if ($part == 'C') {
@@ -1881,7 +1881,7 @@ function load_clanek($uid) { trace();
   // zamkni článek
   $x= record_lock($uid);
   if ( $x->uid ) {
-    // článek je zamknutý 
+    // článek je zamknutý
     goto end;
   }
   list($x->uid,$x->mid,$x->tags,$x->autor,$x->nadpis,$x->obsah,$x->abstract,$psano,$od,$do,
@@ -1898,7 +1898,7 @@ function load_clanek($uid) { trace();
   $x->kalendar= $x->tags=='K' ? 1 : 0;
   $x->psano= sql_date1($psano);
   debug($x,"akce=$x->nadpis");
-end:  
+end:
   return $x;
 }
 # ---------------------------------------------------------------------------------==> . save clanek
@@ -1930,7 +1930,7 @@ function save_clanek($x,$uid,$ref='') { trace(); //debug($x,"save_clanek");
       case 'psano':       $sql_psano= "UNIX_TIMESTAMP('".sql_date1($val,1)."')";
         $part[]= "date=$sql_psano"; break;
       // přepínání mezi 0=akcí a 1=kalendářem
-      case 'kalendar':    $val= $val?'K':'A'; $part[]= "tags='$val'"; 
+      case 'kalendar':    $val= $val?'K':'A'; $part[]= "tags='$val'";
                           $msg= ($val=='K'?'založení':'zrušení').' kalendáře'; break;
       // nepodstatné pro klienty
       case 'ctype':       $upd= 0; $case[]= "type='$val'"; $type=$val; break;
@@ -2643,7 +2643,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
     $parm= is_numeric($kdy) ? "typ=2&rok=$kdy" : "typ=1";
     $chlapi_url= "$chlapi_cz/servant_ch.php?$parm&err=3";
    //                                                       trace($chlapi_url);
-    $a_json= url_get_contents($chlapi_url,false,false); 
+    $a_json= url_get_contents($chlapi_url,false,false);
     if ( $a_json ) {
       $json= json_decode($a_json);
       foreach( $json->clanky as $c) {
@@ -2678,7 +2678,7 @@ function akce($vyber,$kdy,$id=0,$fotogalerie='',$hledej='',$chlapi='',$backref='
       $flags= '';
       if ( $x->flags ) {
         foreach (str_split($x->flags) as $f) {
-          $flags.= 
+          $flags.=
               $f=='T' ? " <i class='fa fa-table tooltip'><span class='tooltip-text'>přihlašovací tabulka</span></i> " : (
               $f=='F' ? " <i class='fa fa-camera-retro tooltip'><span class='tooltip-text'>fotogalerie</span></i> " : '');
         }

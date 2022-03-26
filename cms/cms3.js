@@ -163,7 +163,7 @@ function bar_menu(e,x) {
       case 'new7':
       case 'new30':
         var dnu= x.substr(3);
-        document.cookie= 'web_show_changes='+dnu+';path=/';
+        document.cookie= 'web_show_changes='+dnu+';path=/; SameSite=None; Secure';
         refresh();
         break;
       case 'grid': change_mode(1,1); break;
@@ -251,7 +251,7 @@ function change_mode(mode,on) {
 //   var on= jQuery('#bar_menu').getProperty('data-mode');
   switch (mode) {
   case 1:
-    document.cookie= 'web_mode_1='+on+';path=/';
+    document.cookie= 'web_mode_1='+on+';path=/; SameSite=None; Secure';
     refresh();
     break;
   }
@@ -293,7 +293,7 @@ function history_push(href,checks,level,kdy) {
   let duration= 100, // days
       date= new Date();
   date.setTime(date.getTime() + duration * 24 * 60 * 60 * 1000);
-  document.cookie= m[1] + '=' + encodeURIComponent(ref) + ';expires=' + date.toGMTString();
+  document.cookie= m[1] + '=' + encodeURIComponent(ref) + ';expires=' + date.toGMTString() + "; SameSite=None; Secure";
   if ( Ezer.version===undefined ) {
     window.location= '/'+ref;
   }
@@ -320,10 +320,10 @@ function proc_kdo(href, kdy) {
 
   let date = new Date();
   date.setTime(date.getTime() + 365 * 24 * 60 * 60 * 1000);
-  document.cookie = 'akce=' + ref + ';expires=' + date.toGMTString(); + '; path=/';
+  document.cookie = 'akce=' + ref + ';expires=' + date.toGMTString(); + '; path=/; SameSite=None; Secure';
 
   if ( Ezer.version===undefined ) {
-    window.location= "/akce" + (kdy?"/"+kdy+"#anchor"+kdy:'');
+    window.location= "/akce" + (kdy?"/"+kdy:'');
   } else {
     go(0,href+'!akce'+(kdy?','+kdy:''),'/'+ref);
   }
