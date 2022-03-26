@@ -1063,7 +1063,7 @@ $head
   </div>
   <div id="menu-cross" class="nodisplay" onclick="close_mobile_menu(); return true;"></div>
 
-  <div id='web' class='$web_banner container'>
+  <div id='web' style="position: initial !important;" class='$web_banner container'>
     $submenu_komu
     <div id='info' style='display:none' onclick="change_info();"><br>$ms</div>
     $body

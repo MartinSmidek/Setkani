@@ -379,10 +379,10 @@ div.LabelDrop * {cursor:pointer; }
 #page_tm #bar_menu { font-size:1.5em !important; width:1.2em; cursor:pointer; position: relative  }
 
 /*search bar*/
-.header-search {display: inline-block;position: relative;padding-right: 30px;padding-left: 5px;transform: translateY(-4px);}
-.header-search button.search-submit {overflow: hidden;box-shadow: none;margin-left: -25px;background: 0 0;color: #6d6d6d;line-height: 0;
+.header-search {display: inline-block;position: relative;padding-right: 30px;padding-left: 5px;transform: translateY(-4px); z-index: 10;}
+.header-search button.search-submit {overflow: hidden;box-shadow: none;margin-left: -40px;background: 0 0;color: #6d6d6d;line-height: 0;
   padding: 0 .7em;min-height: auto;cursor: pointer;max-width: 100%;border: none;font-weight: bolder;
-  text-transform: uppercase;display: inline-block;position: absolute;top: 25px;outline: none;}
+  text-transform: uppercase;display: inline-block;position: absolute;top: 28px;outline: none;}
 .header-search .search-icon {transform: translate(10px, 5px);-ms-transform: translate(10px, 5px);-moz-transform: translate(10px, 5px);
   line-height: 0;display: inline-block;position: relative;
   box-shadow: none;color: rgba(0,0,0,.55);cursor: pointer;}
@@ -396,10 +396,11 @@ div.LabelDrop * {cursor:pointer; }
 .header-search .search-form {border: 1px solid #eaecee;padding: 1.25em;background: #fff;width: 235px;position: relative;
   box-shadow: 0 3px 30px rgb(25 30 35 / 10%);}
 .header-search .header-search-container {position: absolute;right: 0;height: 0;
-  display: block;overflow: hidden;margin-top: -7px;transition: all 0.2s linear;top:100%;
+  display: none;overflow: hidden;margin-top: -7px;transition: all 0.2s linear;top:100%;
   transform: translateY(25px);-ms-transform: translateY(25px);-moz-transform: translateY(25px);}
 .header-search.active .header-search-container {height: auto;overflow: initial;z-index: 26;top: auto;
-  transform: translate(-5px, 32px);-ms-transform: translate(-5px, 32px);-moz-transform: translate(-5px, 32px);
+  display: block;
+  transform: translateY(0px);-ms-transform: translateY(0px);-moz-transform: translateY(0px);
 }
 .header-search .header-search-container::before {border-top: 1px solid #eaecee;border-left: 1px solid #eaecee;
   background: #fff;content: "";position: absolute;top: -8px;right: 15px;width: 15px;height: 15px;
@@ -408,6 +409,7 @@ div.LabelDrop * {cursor:pointer; }
 
 
 /* main menu */
+#menu {user-select: none;}
 #menu ul.menu_hm {list-style: none;padding: 0;margin: 0;}
 #menu ul.menu_hm li {margin-top: 0;margin-right: 5px;margin-bottom: 0;margin-left: 5px;display: inline-block;position: relative;}
 #menu ul.menu_hm>li>a, #page_tm a {height: 100%; color: black; text-transform: uppercase;font-weight: 600; letter-spacing: 0.2px;}
@@ -521,7 +523,7 @@ div.LabelDrop * {cursor:pointer; }
 
 /* výběrové podmínky */
 #vyber {width:100%; font-weight:bold; color: black; font-size: 9pt;display:inline-flex; background-color: #cadfd9;
-  height: 33px; line-height: 31px; position: relative; z-index: -1; }
+  height: 33px; line-height: 31px; position: absolute; }
 #vyber label{  display: inline-block;background-color: rgba(255, 255, 255, .7);  color: #adadad;  border-radius: 25px;
   margin: 0 5px;  white-space: nowrap;  -webkit-touch-callout: none;  -webkit-user-select: none;  -moz-user-select: none;
   -ms-user-select: none;  user-select: none;  -webkit-tap-highlight-color: transparent;  transition: all .2s;  padding: 0 9px;
