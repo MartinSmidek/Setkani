@@ -60,8 +60,9 @@ CKEDITOR.plugins.add('ezer', {
     // ---------------------------------------------- vložení obrázku
     editor.on('paste', function (evt) {
       // nalezení instance Ezer.EditHtml
-      var EditHtml= jQuery(editor.element.$.parentNode).data('ezer'), LabelDrop= 0, ok= 1;
-      ok= EditHtml.label_drop!=undefined;
+      var EditHtml= jQuery(editor.element.$.parentNode), LabelDrop= 0, ok= 1;
+      EditHtml = (EditHtml.data('ezer') || EditHtml.data('Ezer'));
+      ok= EditHtml && EditHtml.label_drop !== undefined;
       if ( ok ) {
         LabelDrop= EditHtml.label_drop;
         editor.widgets.add( 'ezer', {
@@ -73,7 +74,7 @@ CKEDITOR.plugins.add('ezer', {
         editor.addFeature(editor.widgets.registered.ezer);
         ok= evt.data.dataTransfer.getFilesCount();
       }
-      else Ezer.fce.error("CKEditor - chybí provázání EditHtml s LabelDrop!");
+      else Ezer.fce.error("CKEditor - EditHtml instance chybí nebo není provázáná s LabelDrop!");
       if ( ok ) {
         var data= evt.data.dataTransfer.getData('img');
         var file= evt.data.dataTransfer.getFile(0);
