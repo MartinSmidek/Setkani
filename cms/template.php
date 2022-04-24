@@ -2323,18 +2323,14 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
 
         $kalendare = kalendare($vyber, $kdy, $id);
 
-        if ($kalendare == '') {
-          $kalendare_title = "Nejsou k dispozici žádné kalendáře.";
-        }
+
         $h.= "<div id='$mark' $back><div class='content'>
               <span class='anchor' id='anchor$rok'></span>";
 
-        $h .= "<div class='akce_calendars_outer'>
+        if ($kalendare != '') {
+          $h .= "<div class='akce_calendars_outer'>
                 <div class='akce_calendars_design'>
-                    <div class='akce_calendar_title'>
-                    
-                        $kalendare_title
-                    </div>
+                    <div class='akce_calendar_title'>Kalendáře akcí</div>
                     <div class='akce_calendar_year'>
                     <h2 class='akce_calendars_year_watermark'>$rok_display</h2>
                     </div>
@@ -2343,6 +2339,8 @@ function akce_prehled($vyber,$kdy,$id,$fotogalerie='',$hledej='',$chlapi='',$bac
 
                 <div class=\"akce_calendars\">
                 <div style='padding: 0 10px; height: 100%; display: flex;overflow: hidden;'>$kalendare</div> </div></div>";
+        }
+
 
 
         $h .= "<h2 class='akce_prehled_title'>$zacatek</h2>";
