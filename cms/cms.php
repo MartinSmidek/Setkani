@@ -33,7 +33,7 @@
       "/volume1/web/www/setkani4", //"/var/services/web/www/setkani4",
       "/volume1/web/www/setkani4", //"/var/services/web/www/setkani",
       "C:/Ezer/beans/setkani4",
-      "C:/Ezer/beans/setkani4",
+      "C:/Ezer/beans/setkani4-github",
       "D:/Ezer/beans/setkani4"
     );
   $rel_roots= array(
