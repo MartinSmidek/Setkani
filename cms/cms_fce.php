@@ -700,6 +700,7 @@ function edit_test_online($id_akce,$last) {
   $url= select('web_url','akce',"id_duakce='$id_akce'",'ezer_db2');
   $xlast= explode('/',$url);
   $ida_ans= $xlast[count($xlast)-1];
+  list($ida_ans)= explode('#',$ida_ans);
   if ( $ida_web!=$ida_ans ) {
     $msg= "ID akce nesouhlasí s údaji zapsanými v Answeru ($ida_web - $ida_ans)";
   }
