@@ -1120,7 +1120,8 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
   list($ido, $jmeno, $prijmeni, $iniciace, $firming, $pin, $web_level, $diff) = 
       select("id_osoba,jmeno,prijmeni,iniciace,firming,pin$_ch,web_level,TIMESTAMPDIFF(HOUR,pin_vydan$_ch,NOW())", 
           "osoba", 
-          "deleted='' AND kontakt=1 AND FIND_IN_SET('{$x->mail}',REPLACE(email,'*',''))", 'ezer_db2');
+          "deleted='' AND kontakt=1 AND email RLIKE '(^|[\\s,]+){$x->mail}([\\s,]+|$)'", 'ezer_db2');
+//          "deleted='' AND kontakt=1 AND FIND_IN_SET('{$x->mail}',REPLACE(email,'*',''))", 'ezer_db2');
   $user = $ido ? "$jmeno $prijmeni" : '';
   // web_level je zapisováno z ezerscriptu blokem select.map+
   // pro weby je třeba vrátit součet klíčů
