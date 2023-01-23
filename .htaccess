@@ -1,4 +1,4 @@
-RewriteEngine on 
+RewriteEngine on
 
 # pro ostrý server vnutíme https
 RewriteCond %{SERVER_NAME} ^(.*)\.org
