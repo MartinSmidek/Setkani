@@ -1512,42 +1512,42 @@ function timeline()
 
   $h .= "</div></ul><ul id='timeline'>";
   $n = 0;
-//  foreach ($xx as $cid => $x) {
-//    $n++;
-//    $dateCzech = datum_cesky($x->od, $x->do);
-//    $jmp = "href='/akce/nove/$x->ident'/";
-//    $in_time = $x->od - time();
-//    if ($in_time < 0)  {
-//      $in_time = 0;
-//    }
-//    $ends_in = $x->do - time();
-//    $duration = $ends_in - $in_time;
-//    $width = ($duration / $day) * $day_size;
-//    $gap = ($in_time / $day) * $day_size;
-//    //
-//    $color = ($x->zruseno) ? "#000000"  : barva_programu($x->program);
-//    $date = datum_cesky($x->od, $x->do);
-//    $h .= "<li>
-//                <input class='timeline_radio' id='akce$n' name='akce' type='radio'>
-//                <label  for='akce$n'  class='timeline_circle $x->status' onclick='(function(){
-//                    var radio = document.getElementById(\"akce$n\");
-//                    radio.checked = !radio.checked;
-//                })();return false;'
-//                 style='margin-left: ${gap}px;'>
-//                  <label class='timeline_title' for='akce$n'>$x->nadpis</label>
-//                  <span class='timeline_date'>$date</span>
-//                  <div class='timeline_text'>
-//                    <div class='timeline_text_style'>
-//                      <span class='post_date'>$dateCzech</span>
-//                      <b style='float:left;'><a $jmp>$x->nadpis</a></b><br>
-//                      <p class='clear'><a $jmp>$x->text</a></p>
-//                    </div>
-//                  </div>
-//                </label>
-//                <div class='timeline_bar'
-//                    style='width:${width}px;margin-left: ${gap}px; background:${color}'></div>
-//            </li>";
-//  }
+  foreach ($xx as $cid => $x) {
+    $n++;
+    $dateCzech = datum_cesky($x->od, $x->do);
+    $jmp = "href='/akce/nove/$x->ident'/";
+    $in_time = $x->od - time();
+    if ($in_time < 0)  {
+      $in_time = 0;
+    }
+    $ends_in = $x->do - time();
+    $duration = $ends_in - $in_time;
+    $width = ($duration / $day) * $day_size;
+    $gap = ($in_time / $day) * $day_size;
+    //
+    $color = ($x->zruseno) ? "#000000"  : barva_programu($x->program);
+    $date = datum_cesky($x->od, $x->do);
+    $h .= "<li>
+                <input class='timeline_radio' id='akce$n' name='akce' type='radio'>
+                <label  for='akce$n'  class='timeline_circle $x->status' onclick='(function(){
+                    var radio = document.getElementById(\"akce$n\");
+                    radio.checked = !radio.checked;
+                })();return false;'
+                 style='margin-left: ${gap}px;'>
+                  <label class='timeline_title' for='akce$n'>$x->nadpis</label>
+                  <span class='timeline_date'>$date</span>
+                  <div class='timeline_text'>
+                    <div class='timeline_text_style'>
+                      <span class='post_date'>$dateCzech</span>
+                      <b style='float:left;'><a $jmp>$x->nadpis</a></b><br>
+                      <p class='clear'><a $jmp>$x->text</a></p>
+                    </div>
+                  </div>
+                </label>
+                <div class='timeline_bar'
+                    style='width:${width}px;margin-left: ${gap}px; background:${color}'></div>
+            </li>";
+  }
   $h .= "</ul></div></div>";
   return $h;
 }
@@ -1636,15 +1636,17 @@ function home() { trace();
           $abstract,$uod,$udo,$program,$ida,$prihlaska,$status,$tags,$upd,$rok)= pdo_fetch_row($cr))) {
     //if ($status==1) continue; //zruseno
 
-    $kdy= '';
-    $text= web_text($text);
-
+    $kdy = "";
+    $text = "";
     if ( $page!=100 ) {
       $text= $abstract && mb_strlen($abstract)>10
           ? web_text($abstract)
           : x_shorting($text);
       if ($home != 2 && $home != 6) $num_of_present_articles++;
+    } else {
+      $text = web_text($text);
     }
+
     if ( $type==2 ) {
       $kdy= "<span class='post_date'>". datum_cesky($uod,$udo) . "</span> ";
     }
