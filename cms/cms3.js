@@ -354,7 +354,7 @@ function sync_proc_kdo(dum, selection) {
 }
 
 function kolik_1_2_5(kolik, ...tvary) {
-  return kolik + " " + (kolik>4 ? tvary[2] : (kolik>1 ? tvar[1] : (kolik>0 ? tvary[0] : tvary[2])));
+  return kolik + " " + (kolik>4 ? tvary[2] : (kolik>1 ? tvary[1] : (kolik>0 ? tvary[0] : tvary[2])));
 }
 
 // ============================================================================================> MSG
