@@ -1609,15 +1609,15 @@ function server($x) {  trace();
                                                   display("servant:kalendar");
     ezer_connect('ezer_db2');
     $tr= pdo_qry("
-      SELECT access,nazev,misto,datum_od,datum_do,web_anotace,web_url,web_obsazeno
+      SELECT access,nazev,misto,datum_od,datum_do,web_anotace,web_url,web_obsazeno,web_kalendar
       FROM ezer_db2.akce
-      WHERE web_kalendar=1 AND datum_od>NOW()
+      WHERE web_kalendar!=0 AND datum_od>NOW()
       ORDER BY datum_od
     ");
-    while ($tr && list($org,$nazev,$misto,$od,$do,$anotace,$url,$obsazeno)= pdo_fetch_row($tr)) {
+    while ($tr && list($org,$nazev,$misto,$od,$do,$anotace,$url,$obsazeno,$termin)= pdo_fetch_row($tr)) {
       $oddo= datum_oddo($od,$do);
       $akce= array('od'=>$od, 'org'=>$org, 'nazev'=>$nazev, 'misto'=>$misto, 'url'=>$url, 
-          'oddo'=>$oddo, 'anotace'=>$anotace, 'obsazeno'=>$obsazeno);
+          'oddo'=>$oddo, 'anotace'=>$anotace, 'obsazeno'=>$obsazeno, 'termin'=>$termin);
       $y->akce[]= $akce;
     }
     $y->trace= $trace;
