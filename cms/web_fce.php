@@ -338,7 +338,7 @@ function web_text($txt) { //trace();
 //   $txt= strtr($txt,array("<img"=>"<hr"));
 //   $txt= strtr($txt,array("i"=>"x"));
 //   $txt= "!!! $txt";
-  goto end;
+//  goto end;
 //  list($href1)= explode('page=',$href0);
 ////                                                         display("href0=$href1");
 //  $txt= preg_replace_callback('/<a(.*?)href=(["\'])(.*?)\\2(.*?)>(.*?)<\/a>/i',
@@ -371,7 +371,7 @@ function web_text($txt) { //trace();
 //      return $url;
 //    },
 //    $txt);
-end:
+//end:
   return $txt;
 }
 # -------------------------------------------------------------------------------------- x first_img

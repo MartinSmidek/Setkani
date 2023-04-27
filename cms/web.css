@@ -92,6 +92,7 @@ h1#ymca_setkani { position: absolute; top:3.8em; margin-left:.5em; font-size: 12
 .footer #footer-left-part {width: 70%; display: inline-block; vertical-align: top; min-width: 640px;}
 .footer #footer-right-part {width: 20%; display: inline-block; vertical-align: top; min-width: 150px;}
 .footer #footer-right-part p  {text-align: center;width: 100%;}
+.footer #footer-right-part img {max-width: 100%;}
 .footerIcon {margin: 0 !important;}
 #page_footer_info {     background: #060a2d;
   background-position: top;

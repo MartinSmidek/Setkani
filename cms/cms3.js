@@ -306,7 +306,7 @@ function history_back() {
   history.back();
 }
 
-function proc_kdo(href, kdy) {
+function proc_kdo(dum) {
   jQuery(this).parent().toggleClass("checked");
   let named= jQuery('input[name^="komu"]');
   var ref='';
@@ -314,19 +314,47 @@ function proc_kdo(href, kdy) {
     if ( this.checked )
       ref+= (ref?',':'')+this.value;
   });
-  if (ref === '') {
-    ref = 'rodiny,manzele,chlapi,zeny,mladez';
-  }
+  ref = trim_proc_kdo(dum, ref);
+  localStorage.setItem("akce" + (dum ? "-dum" : ""), ref);
+  sync_proc_kdo(dum, ref);
+}
 
-  let date = new Date();
-  date.setTime(date.getTime() + 365 * 24 * 60 * 60 * 1000);
-  document.cookie = 'akce=' + ref + ';expires=' + date.toGMTString() + ';path=/;' + (window.COOKIE_PROPERTIES || "");
+function trim_proc_kdo(dum, value) {
+  if (value === '' || !value) value = 'rodiny,manzele,chlapi,zeny,mladez';
+  if (dum) value += ",alberice";
+  return value;
+}
 
-  if ( Ezer.version===undefined ) {
-    window.location= "akce" + (kdy?"/"+kdy:'');
-  } else {
-    go(0,href+'!akce'+(kdy?','+kdy:''),'/'+ref);
+function sync_proc_kdo(dum, selection) {
+  if (!selection) {
+    selection = trim_proc_kdo(dum,
+        localStorage.getItem("akce" + (dum ? "-dum" : "")));
   }
+  selection = selection.split(",");
+  selection = selection || [];
+  jQuery('input[name^="komu"]').each(function () {
+    this.checked = selection.includes(this.value);
+  });
+  let count = 0;
+  jQuery('.js-update-vyber-category').each(function () {
+    const el = this;
+    if (selection.some(function (x) {
+      return el.classList.contains("js-update-vyber-category-" + x);
+    })) {
+      this.style.display = 'inline-block';
+      count++;
+    } else {
+      this.style.display = 'none';
+    }
+  });
+
+  jQuery('.js-update-vyber-count').each(function () {
+    this.innerText = kolik_1_2_5(count,"akci", "akce", "akcí");
+  });
+}
+
+function kolik_1_2_5(kolik, ...tvary) {
+  return kolik + " " + (kolik>4 ? tvary[2] : (kolik>1 ? tvary[1] : (kolik>0 ? tvary[0] : tvary[2])));
 }
 
 // ============================================================================================> MSG
