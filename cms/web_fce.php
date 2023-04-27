@@ -1617,7 +1617,8 @@ function server($x) {  trace();
     while ($tr && list($org,$nazev,$misto,$od,$do,$anotace,$url,$obsazeno,$termin)= pdo_fetch_row($tr)) {
       $oddo= datum_oddo($od,$do);
       $akce= array('od'=>$od, 'org'=>$org, 'nazev'=>$nazev, 'misto'=>$misto, 'url'=>$url, 
-          'oddo'=>$oddo, 'anotace'=>$anotace, 'obsazeno'=>$obsazeno, 'termin'=>$termin);
+          'oddo'=>$oddo, 'anotace'=>$termin==2 ? '' : $anotace, 
+          'obsazeno'=>$obsazeno, 'termin'=>$termin);
       $y->akce[]= $akce;
     }
     $y->trace= $trace;
