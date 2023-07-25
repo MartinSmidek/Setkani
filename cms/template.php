@@ -1652,19 +1652,6 @@ function home() { trace();
   $num_of_articles = 10;
   $selector = (date("d", $news_time) + date("m", $news_time)) % $num_of_articles;
   $increase = ceil($num_of_present_articles / $num_of_articles);
-
-  $cist=<<<EOF
-<div class='abstrakt short_post x' style='padding: 9px;' onclick="window.open('https://pointa.cz/project/0e0515d6-a91b-11ed-8a17-0242ac150004', '_blank')">
-             <span class='post_title'>Kočičárna</span>
-             <div class='clear'></div><i>Obrázková knížka pro děti a jejich dospělé, pro kočky a jejich lidi, pro všechny malé i velké kočičí obdivovatele. Kde najít kočičí zlato? 
-Co se děje v kočičí kavárně? Co dělá kočku kočkou? A jak si žije kočka aténská? Jedenáctkrát o kočkách, vážně i nevážně, v krátkých básničkách s ilustracemi.</i>
-<br><br>
-<img src="https://manzelska.setkani.org/wp-content/kocicarna.jpg">
-<br><p style="float: right; text-align: right; font-size: small; color: dimgray;">Pozn. správce Jirky: knížku se snaží vydat moje sestra. Děkujeme za podporu.</p>
-</div>
-
-EOF;
-
   foreach($xx as $cid=>$x) {
     $code= cid_pid($cid,$x->uid);
     //todo ugly, consider "main page" category
