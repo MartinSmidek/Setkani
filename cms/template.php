@@ -1713,13 +1713,13 @@ function masonry_text($text) {
     $img= $images[1][$i];
     if ( !file_exists($img)) continue;
     if (masonry_suitable_image($img)) {
-      $ret = '<img src='.$images[1][$i].' alt="Obrázek k abstraktu"/>';
+      $ret = '<img src="'.$images[1][$i].'" alt="Obrázek k abstraktu"/>';
       $foundImage = true;
       break;
     }
   }
-  if (!$foundImage) {
-    $ret = '<img src='.$images[1][0].' alt="Obrázek k abstraktu" class="masonry-image-fit"/>';
+  if (!$foundImage && isset($images[1][0])) {
+    $ret = '<img src="'.$images[1][0].'" alt="Obrázek k abstraktu" class="masonry-image-fit"/>';
   }
   $ret .= preg_replace("/<img[^>]+\>/i", "", $text);
   return $ret;
