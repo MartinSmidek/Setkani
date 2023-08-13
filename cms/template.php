@@ -874,7 +874,7 @@ __EOD;
   
   $eb_link
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C700%2C700i%2C800%2C800i&amp;ver=0.3.5" type="text/css" media="all">
-<link rel="stylesheet" href="cms/web.css?v=4.8" type="text/css" media="screen" charset="utf-8">
+<link rel="stylesheet" href="cms/web.css?v=5.0" type="text/css" media="screen" charset="utf-8">
   <script type="text/javascript">
     var Ezer={web:{ $Ezer_web},cms:{form:{}}};
     if ( !console ) {
@@ -1228,14 +1228,14 @@ __EOJ;
 __EOJ;
   $eb_link= <<<__EOJ
     $framework    
-    <script src="cms/cms{$k3}.js?v=4.7" type="text/javascript" charset="utf-8"></script>
-    <script src="cms/cms{$k3}_fe.js?v=4.2" type="text/javascript" charset="utf-8"></script>
-    <script src="cms/modernizr-custom.js?v=4.1" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/cms{$k3}.js?v=5.0" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/cms{$k3}_fe.js?v=5.0" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/modernizr-custom.js?v=5.0" type="text/javascript" charset="utf-8"></script>
     $fotorama
     <link rel="stylesheet" href="./$kernel/client/licensed/font-awesome/css/font-awesome.min.css" type="text/css" media="screen" charset="utf-8">
-    <link rel="stylesheet" href="$cms_root/client/ezer_cms3.css" type="text/css" media="screen" charset="utf-8">
-    <script src="$cms_root/client/ezer_cms3.js" type="text/javascript" charset="utf-8"></script>
-    <script src="cms/custom.js?v=4.3" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="$cms_root/client/ezer_cms3.css?v=5.0" type="text/css" media="screen" charset="utf-8">
+    <script src="$cms_root/client/ezer_cms3.js?v=5.0" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/custom.js?v=5.0" type="text/javascript" charset="utf-8"></script>
 __EOJ;
 //     <link rel="stylesheet" href="cms/gallery/baguetteBox.min.css">
 //     <script src="cms/gallery/baguetteBox.min.js" async>
