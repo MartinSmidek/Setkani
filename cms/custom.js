@@ -31,6 +31,28 @@ function searchByQuery() {
 }
 
 // ---------------------------------------------------------------------------- orders functionality
+function focusElement(element) {
+    const rect = element?.getBoundingClientRect()
+    if (!rect) return false;
+
+    const wHeight = (window.innerHeight || document.documentElement.clientHeight);
+    let scroll = 0;
+    if (rect.top < 0) {
+        scroll = rect.top - 70;
+    } else if (rect.bottom > wHeight && (rect.top - (rect.bottom-wHeight) > 70)) {
+        scroll = rect.bottom-wHeight+50;
+    }
+    window.scrollBy({
+        top: scroll,
+        behavior: "smooth"
+    });
+
+    //refresh if already exists
+    element.classList.remove("animate-pulse-once");
+    element.classList.add("animate-pulse-once");
+    return true;
+}
+
 function getDaysData(self, ym, y) {
     jQuery(self).toggleClass('ordersSelectedDay' + y); //selection class
     jQuery(self).toggleClass('ordersSelectedDay');     //css class

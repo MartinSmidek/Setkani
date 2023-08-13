@@ -92,10 +92,30 @@ $mode= array(1=>isset($_COOKIE['web_mode_1']) ? $_COOKIE['web_mode_1'] : 1); // 
 $fe_user_display= isset($_GET['login']) ? 'block' : 'none';
 
 if (strpos($_SERVER["REQUEST_URI"], "index.php?id=") !== false) {
-  $paths= implode(" ", $path);
-  $ip= $_SERVER['REMOTE_ADDR'];
-  query("INSERT INTO url_log (url,path,errormsg,ip,date)
-         VALUES ('{$_SERVER["REQUEST_URI"]}', '$paths','$php_errormsg','$ip',NOW())");
+    $paths= implode(" ", $path);
+// redirect to a static URL does not work well, ID's are not UIDs
+//    if (preg_match('/index\.php\?id=([^&\s]+)/', $_SERVER["REQUEST_URI"], $matches)) {
+//        $id = trim($matches[1]);
+//        if (is_numeric($id)) {
+//            //* Permanently redirect page
+//            header("Location: /clanek/$id",TRUE,301);
+//        } else if ($id == "alberice") {
+//            header("Location: /alberice/akce",TRUE,301);
+//        } else {
+//            header("Location: /akce",TRUE,301);
+//        }
+//
+//    } else {
+        $ip = $_SERVER['REMOTE_ADDR'];
+
+        if (array_key_exists('HTTP_REFERER', $_SERVER)) {
+            $error = $_SERVER['HTTP_REFERER'];
+        } else {
+            $error =$php_errormsg;
+        }
+        query("INSERT INTO url_log (url,path,errormsg,ip,date)
+         VALUES ('{$_SERVER["REQUEST_URI"]}', '$paths','$error','$ip',NOW())");
+//    }
 }
 
 // pokud je přihlášený be_user jde o reload

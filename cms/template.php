@@ -1473,7 +1473,8 @@ function timeline()
         'text' => $text, 'program' => $program, 'ida' => $ida, 'status' => status_class($status));
   }
 
-  $h = "<br><br><br><h2 class='float-left' style='margin-top: 0;'>Chystáme</h2><div class='float-right legend'>";
+  $h = "<br><br><br><h2 class='float-left mobile_text_shadow' style='margin-top: 0;'>Chystáme <span class='mobile_nodisplay' style='transform: translate(0px, -2px);
+    display: inline-block;'>&emsp;| přihlašte se na nadcházející akce:</span></h2><div class='float-right legend'>";
   foreach ($def_pars['komu'] as $ki) {
       list($k, $i) = explode(':', $ki);
       if ($i==6) $k="ostatní";
@@ -1517,26 +1518,28 @@ function timeline()
     //
     $color = ($x->zruseno) ? "#000000"  : barva_programu($x->program);
     $date = datum_cesky($x->od, $x->do);
-    $h .= "<li>
-                <input class='timeline_radio' id='akce$n' name='akce' type='radio'>
-                <label  for='akce$n'  class='timeline_circle $x->status' onclick='(function(){
-                    var radio = document.getElementById(\"akce$n\");
-                    radio.checked = !radio.checked;
-                })();return false;'
-                 style='margin-left: ${gap}px;'>
-                  <label class='timeline_title' for='akce$n'>$x->nadpis</label>
-                  <span class='timeline_date'>$date</span>
-                  <div class='timeline_text'>
-                    <div class='timeline_text_style'>
-                      <span class='post_date'>$dateCzech</span>
-                      <b style='float:left;'><a $jmp>$x->nadpis</a></b><br>
-                      <p class='clear'><a $jmp>$x->text</a></p>
-                    </div>
-                  </div>
-                </label>
-                <div class='timeline_bar'
-                    style='width:${width}px;margin-left: ${gap}px; background:${color}'></div>
-            </li>";
+    $h .= <<<EOF
+<li>
+  <input class="timeline_radio" id="akce$n" name="akce" type="radio">
+  <label  for="akce$n"  class="timeline_circle $x->status" onclick="(function(){
+    if (!focusElement(document.getElementById('pozvanka-masonry-{$x->ident}'))) {
+      var radio = document.getElementById('akce$n');
+      radio.checked = !radio.checked;
+    }
+  })();return false;"style="margin-left: ${gap}px;">
+  <label class="timeline_title" for="akce$n">$x->nadpis</label>
+  <span class="timeline_date">$date</span>
+  <div class="timeline_text">
+     <div class="timeline_text_style">
+        <span class="post_date">$dateCzech</span>
+        <b style="float:left;"><a $jmp>$x->nadpis</a></b><br>
+        <p class="clear"><a $jmp>$x->text</a></p>
+     </div>
+  </div>
+  </label>
+  <div class="timeline_bar" style="width:${width}px;margin-left: ${gap}px; background:${color}"></div>
+</li>
+EOF;
   }
   $h .= "</ul></div></div>";
   return $h;
@@ -1645,25 +1648,12 @@ function home() { trace();
   }
   $telo= $CMS ? "" : facebook_dependency();
 
-  $akce= $aktual= $cist= '';
+  $akce=$aktual= $cist= '';
 
   // články obsahují odkazy, takže nemůže být použito zanoření do <a>..</a>
-  $counter = 0;
   $num_of_articles = 10;
-  $selector = (date("d", $news_time) + date("m", $news_time)) % $num_of_articles;
-  $increase = ceil($num_of_present_articles / $num_of_articles);
 
-  $cist=<<<EOF
-<div class='abstrakt short_post x' style='padding: 9px;' onclick="window.open('https://pointa.cz/project/0e0515d6-a91b-11ed-8a17-0242ac150004', '_blank')">
-             <span class='post_title'>Kočičárna</span>
-             <div class='clear'></div><i>Obrázková knížka pro děti a jejich dospělé, pro kočky a jejich lidi, pro všechny malé i velké kočičí obdivovatele. Kde najít kočičí zlato? 
-Co se děje v kočičí kavárně? Co dělá kočku kočkou? A jak si žije kočka aténská? Jedenáctkrát o kočkách, vážně i nevážně, v krátkých básničkách s ilustracemi.</i>
-<br><br>
-<img src="https://manzelska.setkani.org/wp-content/kocicarna.jpg">
-<br><p style="float: right; text-align: right; font-size: small; color: dimgray;">Pozn. správce Jirky: knížku se snaží vydat moje sestra. Děkujeme za podporu.</p>
-</div>
-
-EOF;
+  $cist="";
 
   foreach($xx as $cid=>$x) {
     $code= cid_pid($cid,$x->uid);
@@ -1673,31 +1663,31 @@ EOF;
     }
     elseif ( ($x->home==2 || $x->home==6) && $x->tags == 'A' ) { // ----------------------- abstrakt na home | nahoru
       $prihlaska= $x->prihlaska ? cms_form_ref("ONLINE PŘIHLÁŠKA") : '';
+      if ($prihlaska) $prihlaska="<span style='position: absolute; top: 12px; left: 7px'>$prihlaska</span>";
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
-      $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
-      $akce.= "$code
-           <div class='abstrakt notif_event x$x->upd $x->status' $jmp>
-             $prihlaska 
-             $x->text
-             <div class='clear'></div>
-           </div>";
+      $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\" id=\"pozvanka-masonry-{$x->uid}\"";
+      $akce.= masonry_item($code, $x->upd, $jmp, $x->kdy, $x->nadpis, $prihlaska . $x->text, "position: relative;");
     }
     elseif ($x->home==1) {
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
       $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
-      $cist.= masonry_item($code, $x->upd, $jmp, $x->kdy, $x->nadpis, strlen($x->abstract) > 30 ? $x->abstract : $x->text);
+      $cist.= masonry_item($code, $x->upd, $jmp, $x->kdy, $x->nadpis, strlen($x->abstract) > 30 ? $x->abstract : $x->text, "max-height: 350px;");
     } //all other sections in masonry, always include first article='Literatura nejen pro muže'
-    elseif ($selector == $counter || ($x->uid == 2502 && $x->page == 223))/*if ( $x->home==7 )*/{ // --------------------------------------- přečtěte si
+    elseif ( $x->home==7 ){ // --------------------------------------- přečtěte si
       $data = query2menu($x->uid, $cid, $x->mid, $x->ref, $x->mref,$x->type,$x->program, $x->rok);
       $jmp= "onclick=\"go(arguments[0],'$data->page','$data->direct_url');\"";
-      $cist.= masonry_item($code, $x->upd, $jmp, $x->kdy, $x->nadpis, strlen($x->abstract) > 30 ? $x->abstract : $x->text);
-      $selector += $increase;
+      $cist.= masonry_item($code, $x->upd, $jmp, $x->kdy, $x->nadpis, strlen($x->abstract) > 30 ? $x->abstract : $x->text, "max-height: 350px;");
     }
-    $counter++;
   }
   //add new events first
-  $telo = ($akce) ? "<div class='notif_event_container'><h2 class='mobile_text_shadow'>POZVÁNKY NA AKCE</h2>" . $akce . "</div>" . $telo : $telo;
-  $telo .= timeline();
+  if ($akce) {
+    $timeline = timeline();
+    $telo = <<<EOF
+$timeline
+<div class='notif_event_container'><div class='masonry_container x'>  $akce  </div></div>
+$telo
+EOF;
+  }
   if (!$CMS) {$telo.= "</div>" .  facebook() . "<div class='content'>";}
 
   $aktual = ($aktual) ? "<h2>Novinky na webu</h2><div class='masonry_container x'>" . $aktual . "</div>" : $aktual;
@@ -1717,20 +1707,26 @@ __EOD;
 function masonry_text($text) {
   $ret = '';
   $found = preg_match_all('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $text, $images);
+
+  $foundImage = false;
   for ($i = 0; $i < $found; $i++) {
     $img= $images[1][$i];
     if ( !file_exists($img)) continue;
     if (masonry_suitable_image($img)) {
       $ret = '<img src='.$images[1][$i].' alt="Obrázek k abstraktu"/>';
+      $foundImage = true;
       break;
     }
+  }
+  if (!$foundImage) {
+    $ret = '<img src='.$images[1][0].' alt="Obrázek k abstraktu" class="masonry-image-fit"/>';
   }
   $ret .= preg_replace("/<img[^>]+\>/i", "", $text);
   return $ret;
 }
-function masonry_item($cms_code, $updated, $jmp, $date, $title, $text) {
-  return "$cms_code <div class='abstrakt short_post x $updated$x->upd' style='padding: 9px;max-height: 350px;' $jmp>
-             $date<span class='post_title'>$title</span>
+function masonry_item($cms_code, $updated, $custom, $date, $title, $text, $style="") {
+  return "$cms_code <div class='abstrakt short_post x $updated$x->upd' style='padding: 9px;$style' $custom>
+             $date<div class='post_title' style='display: block; width: 100%'>$title</div>
              <div class='clear'></div>". masonry_text($text)."</div>";
 }
 /*function masonry_text($abstract, $text) { //todo verze pro abstrakt..

@@ -670,18 +670,40 @@ color: white;
   padding: 0 .4em;
 }
 
+img.masonry-image-fit {
+  margin: 0;
+  object-fit: cover;
+  width: 100%;
+  max-height: 200px;
+  object-position: top;
+}
 
+.animate-pulse-once {
+  animation: pulse-animation 2s;
+  animation-iteration-count: 2;
+}
+@keyframes pulse-animation {
+  0% {
+    box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2);
+  }
+  90% {
+    box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+  }
+  100% {
+    box-shadow: inherit;
+  }
+}
 
 /*notices*/
 .notif_event_container h2 { margin: 5px 0 3px 13px;font-size: 14pt;font-weight: 400;}
-.notif_event_container {  margin: 5px 25px;  background: #fafafa60; border: 1px solid #dcdcdc;}
+.notif_event_container {  margin: 5px 25px;  }
 .abstrakt.notif_event {width: fit-content; vertical-align:top; background: transparent; display: inline-block;
   padding: 0.6em 2.5em; box-shadow: none; font-size: 11pt;}
 
 /*masonry layout*/
 .masonry_container {column-count: 3;column-gap: 1em;}
 a.short_post, div.short_post { font-size: 11pt !important; width: 95%; display: inline-block; margin: 0 0 1em;
-  text-overflow: ellipsis; overflow: hidden; text-align: justify;}
+  text-overflow: ellipsis; overflow: hidden; text-align: left;}
 .short_post img {max-width: initial !important; width: 100% !important;
   width: calc(100% + 1.2em) !important; margin: -0.6em !important; margin-bottom: 5px !important;
   /*! values of em are depentent on padding of classes a.abstrakt, div.abstrakt !*/ }
@@ -1033,7 +1055,7 @@ label.form_button {float: right}
   div.notice_style {padding: 50px 10px 15px 10px;margin: 0;}
   div.clanek { margin: 0.5em 0; }
   div.text {padding: 0.4em 0.7em}
-  #web .clanek .text img { margin: 0;}
+  #web .clanek .text img { margin-bottom: 0;margin-top: 0;}
   .clanek span.cms_form { font-size: 12pt !important; line-height: 12px; }
   .abstrakt span.cms_form { margin-right: 0; }
   #page {padding-top: 18px;}
