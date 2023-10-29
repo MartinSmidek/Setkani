@@ -64,7 +64,7 @@ require_once("$deep_root/cms.dbs.php");
 $ezer_db= $dbs[$ezer_server];
 
 global $y, $trace;
-$y= (object)array();
+$y= (object)array('servant'=>'yes');
 if ( $ip_ok && $_GET['cmd']=='re_login' ) {
   $x= (object)array('cmd'=>'re_login','ido'=>$_GET['fe_user']);
   server($x);  // web_fce.php + mini.php
@@ -72,8 +72,9 @@ if ( $ip_ok && $_GET['cmd']=='re_login' ) {
 elseif ( isset($_GET['mail']) ) {
   $pin= isset($_GET['pin']) ? $_GET['pin'] : '';
   $web= isset($_GET['web']) ? $_GET['web'] : ''; 
+  $lang= isset($_GET['lang']) ? $_GET['lang'] : ''; 
   $mail= str_replace('*','',$_GET['mail']);
-  $x= (object)array('cmd'=>'me_login','mail'=>$mail,'pin'=>$pin,'cond'=>'mrop','web'=>$web);
+  $x= (object)array('cmd'=>'me_login','mail'=>$mail,'pin'=>$pin,'cond'=>'mrop','web'=>$web,'lang'=>$lang);
   server($x);  // web_fce.php + mini.php
   $y->my_ip= "$ip=".($ip_ok?'ok':'ko');
   $y->trace.= $trace;

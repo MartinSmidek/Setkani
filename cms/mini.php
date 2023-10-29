@@ -1106,12 +1106,16 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
   // ověření syntaxe adresy a existence domény
   if ( !$x->mail ) {
     $y->state = 'err';
-    $y->txt = "bez vyplněné mailové adresy tě nemohu přihlásit";
+    $y->txt = isset($x->lang) && $x->lang=='en'
+      ? "I can't sign you in without a completed email address"
+      : "bez vyplněné mailové adresy tě nemohu přihlásit";
     goto end;
   }
   if ( !emailIsValid($x->mail, $err) ) {
     $y->state = 'err';
-    $y->txt = "'$x->mail' nevypadá jako mailová adresa ($err).";
+    $y->txt = isset($x->lang) && $x->lang=='en'
+      ? "'$x->mail' does not look like a valid email address"
+      : "'$x->mail' nevypadá jako mailová adresa ($err).";
     goto end;
   }
   // ověření adresy a stavu PIN z Answeru
@@ -1218,10 +1222,13 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
 //        <br>Přeji Ti příjemné prohlížení, Tvůj web","chlapi.cz");
     if ( $ret != null ) {
       $y->state = 'err';
-      $y->txt = "Lituji, mail s PINem se nepovedlo odeslat ($ret)";
+      $y->txt = $x->lang=='en' 
+          ? "Sorry, I couldn't send the mail with PIN ... martin@smidek.eu will be happy to help you ..." 
+          : "Lituji, mail s PINem se mi nepovedlo odeslat ($ret)";
       goto end;
     }
-  } else { // setkani.org
+  } 
+  else { // setkani.org
     global $api_gmail_user;
     $ret = send_mail('martin@smidek.eu', $x->mail, "Rozšíření přístupu na $x->web",
         "V přihlašovacím dialogu webové stránky napiš vedle svojí mailové adresy $pin.
