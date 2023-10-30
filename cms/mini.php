@@ -1230,12 +1230,13 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
   // odeslání mailu
   if ( $_ch ) {
     global $api_gmail_user;
-    $ret = send_mail('martin@smidek.eu', $x->mail, "Přihlášení na www.$x->web ($pin)",
+    $ret = isset($x->lang) && $x->lang=='en' 
+      ? send_mail('martin@smidek.eu', $x->mail, "Login to www.$x->web ($pin)",
+        "In the website login dialog, type $pin next to your email address.
+        <br>Have a nice browsing experience, your website", "chlapi.cz", $api_gmail_user)
+      : send_mail('martin@smidek.eu', $x->mail, "Přihlášení na www.$x->web ($pin)",
         "V přihlašovacím dialogu webové stránky napiš vedle svojí mailové adresy $pin.
         <br>Přeji Ti příjemné prohlížení, Tvůj web", "chlapi.cz", $api_gmail_user);
-//    $ret = mail_send('martin@smidek.eu', $x->mail, "Přihlášení na www.$x->web ($pin)",
-//        "V přihlašovacím dialogu webové stránky napiš vedle svojí mailové adresy $pin.
-//        <br>Přeji Ti příjemné prohlížení, Tvůj web","chlapi.cz");
     if ( $ret != null ) {
       $y->state = 'err';
       $y->txt = isset($x->lang) && $x->lang=='en' 
