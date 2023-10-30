@@ -1149,7 +1149,9 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
     query("INSERT INTO _touch (day,time,module,menu,msg)
         VALUES (CURDATE(),CURTIME(),'$x->web','me_login','neznámý email:$x->mail')",'setkani');
     $y->state = 'err';
-    $y->txt = "adresa '$x->mail' nebyla použita v poslední přihlášce na akci";
+    $y->txt = isset($x->lang) && $x->lang=='en' 
+        ? "didn't you write an address other than '$x->mail' in the application for the last event?"
+        : "nenapsal jsi v poslední přihlášce na akci jinou adresu než '$x->mail'?";
     goto end;
   }
   // kontrola oprávněnosti přístupu
@@ -1158,13 +1160,17 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
     case 'mrop':
       if ( !$iniciace ) {
         $y->state = 'err';
-        $y->txt = "adresa '$x->mail' nebyla použita v přihlášce na iniciaci";
+        $y->txt = isset($x->lang) && $x->lang=='en' 
+          ? "didn't you write an address other than '$x->mail' in the application for the MROP/EROP?"
+          : "adresa '$x->mail' nebyla použita v přihlášce na iniciaci nebo EROP";
         goto end;
       }
       break;
     default:
       $y->state = 'err';
-      $y->txt = "omlouvám se, došlo k chybě - napiš mi prosím na martin@smidek.eu";
+      $y->txt = isset($x->lang) && $x->lang=='en' 
+        ? "sorry, there's been an error - please email me at martin@smidek.eu"
+        : "omlouvám se, došlo k chybě - napiš mi prosím na martin@smidek.eu";
       goto end;
   }
   // uživatel ok - kontrola PIN
@@ -1183,7 +1189,9 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
   }
   elseif ( !$x->pin ) {
     // PIN ještě nevydán - pošleme 
-    $y->txt = "k přihlášení napiš PIN, který ti pošlu na tvoji mailovou adresu";
+    $y->txt = isset($x->lang) && $x->lang=='en' 
+        ? "to log in, enter the PIN that I will send to your email address"
+        : "k přihlášení napiš PIN, který ti pošlu na tvoji mailovou adresu";
   }
   elseif ( $pin==$x->pin && $diff<=$PIN_alive ) {
     // PIN správný a čerstvý - lze přihlásit bez čekání
@@ -1194,23 +1202,31 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
   }
   elseif ( $pin==$x->pin && $diff>$PIN_alive ) {
     // PIN správný ale starý
-    $y->txt = "platnost PINu ($PIN_alive hodin) vypršela, pošlu na tvoji mailovou adresu nový";
+    $y->txt = isset($x->lang) && $x->lang=='en' 
+        ? "PIN ($PIN_alive hours) has expired, I will send a new one to your email address"
+        : "platnost PINu ($PIN_alive hodin) vypršela, pošlu na tvoji mailovou adresu nový";
   } 
   elseif ( $pin!=$x->pin && $diff<=$PIN_alive ) {
     // PIN nesprávný ale byl vydán čerstvý
     $y->state = 'err';
-    $y->txt = "to je jiný PIN, než který ti byl poslán v posledním mailu - zkus to ještě jednou";
+    $y->txt = isset($x->lang) && $x->lang=='en' 
+        ? "this is a different PIN than the one sent to you in the last email - try again"
+        : "to je jiný PIN, než který ti byl poslán v posledním mailu - zkus to ještě jednou";
     goto end;
   }
   else {
     // PIN nesprávný - pošleme nový
-    $y->txt = "k přihlášení je nutné zapsat PIN, který ti nyní pošlu na tvoji mailovou adresu";
+    $y->txt = isset($x->lang) && $x->lang=='en' 
+        ? "to log in you need to enter your PIN, which I will now send to your email address"
+        : "k přihlášení je nutné zapsat PIN, který ti nyní pošlu na tvoji mailovou adresu";
   }
   // vytvoření nového PIN, zaslání mailem a zápis do osoba
   $pin = rand(1000, 9999);
   // zápis do db s datem
   query("UPDATE osoba SET pin$_ch=$pin,pin_vydan$_ch=NOW() WHERE id_osoba=$ido", 'ezer_db2');
-  $y->txt = "na mailovou adresu byl odeslán PIN, zapiš jej do pole vedle adresy";
+  $y->txt = isset($x->lang) && $x->lang=='en' 
+        ? "a PIN has been sent to the email address, enter it in the box next to the address"
+        : "na mailovou adresu byl odeslán PIN, zapiš jej do pole vedle adresy";
   // odeslání mailu
   if ( $_ch ) {
     global $api_gmail_user;
@@ -1222,7 +1238,7 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
 //        <br>Přeji Ti příjemné prohlížení, Tvůj web","chlapi.cz");
     if ( $ret != null ) {
       $y->state = 'err';
-      $y->txt = $x->lang=='en' 
+      $y->txt = isset($x->lang) && $x->lang=='en' 
           ? "Sorry, I couldn't send the mail with PIN ... martin@smidek.eu will be happy to help you ..." 
           : "Lituji, mail s PINem se mi nepovedlo odeslat ($ret)";
       goto end;
@@ -1235,7 +1251,9 @@ function login_by_mail($x, $y) { // přesunuto do mini.php aby bylo společné s
         <br>Přeji Ti příjemné prohlížení, Tvůj web", "YMCA Setkání", $api_gmail_user);
     if ( $ret != null ) {
       $y->state = 'err';
-      $y->txt = "Lituji, mail s PINem se nepovedlo odeslat ($ret)";
+      $y->txt = isset($x->lang) && $x->lang=='en' 
+        ? "Sorry, the mail with PIN could not be sent ($ret). Ask for help martin@smidek.eu"
+        : "Lituji, mail s PINem se nepovedlo odeslat ($ret)";
       goto end;
     }
   }
