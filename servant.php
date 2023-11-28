@@ -9,8 +9,8 @@ $ip_ok= 1; //in_array($ip,$ips);
 $microtime_start= microtime();
 if ( !isset($_SESSION) ) session_start();
 error_reporting(0);
-require_once("ezer3.1/mysql.inc.php");
-require_once("ezer3.1/server/ezer_pdo.php");
+require_once("ezer3.2/pdo.inc.php");
+require_once("ezer3.2/server/ezer_pdo.php");
 require_once("cms/web_fce.php");
 require_once("cms/mini.php");
 //$ezer_local= preg_match('/^\w+\.ezer|\w+\.(ezer|bean)|^localhost|^192\.168\./',$_SERVER["SERVER_NAME"]);
@@ -65,7 +65,7 @@ $ezer_db= $dbs[$ezer_server];
 
 global $y, $trace;
 $y= (object)array('servant'=>'yes');
-if ( $ip_ok && $_GET['cmd']=='re_login' ) {
+if ( $ip_ok && isset($_GET['cmd']) && $_GET['cmd']=='re_login' ) {
   $x= (object)array('cmd'=>'re_login','ido'=>$_GET['fe_user']);
   server($x);  // web_fce.php + mini.php
 }

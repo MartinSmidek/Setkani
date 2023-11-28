@@ -1351,7 +1351,7 @@ function mapa2_skupiny2() {  trace();
       $email= trim($row[4]->v);
       $email= strtr($email,array(' '=>',',';'=>','));
       $email= strtr($email,array(',,'=>','));
-      $note= $row[5]->v;
+      $note= isset($row[5]) ? $row[5]->v : '';
         // podrobnosti do pole $clmns
       $clmn= "<h3>$group</h3><p>Kontakt:$kontakt, <b>$email</b></p>"
            . "<p>$note</p><p style='text-align:right'><i>aktualizováno: $aktual</i></p>";
