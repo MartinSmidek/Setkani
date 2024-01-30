@@ -2969,9 +2969,10 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false, $h2titler = false) { tr
             'akce',"id_duakce=$x->ida",'ezer_db2');
         // test online přihlášek verze 2
         if ($a==1553) {
+          global $answer_org, $ezer_server;
           $prihlaska=  $_COOKIE['martin']==1 && $web_online==1
               ? "<a class='cms_form_verze2' "
-                . "href='http://answer.bean:8080/prihlaska_2.php?akce=$a' target='prihlaska'>ONLINE PŘIHLÁŠKA</a>"
+                . "href='{$answer_org[$ezer_server]}/prihlaska_2.php?akce=$a' target='prihlaska'>ONLINE PŘIHLÁŠKA</a>"
               : '';
         }
         else 
