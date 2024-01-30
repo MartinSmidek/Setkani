@@ -874,7 +874,7 @@ __EOD;
   
   $eb_link
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans%3A300%2C300i%2C400%2C400i%2C600%2C600i%2C700%2C700i%2C800%2C800i&amp;ver=0.3.5" type="text/css" media="all">
-<link rel="stylesheet" href="cms/web.css?v=5.0" type="text/css" media="screen" charset="utf-8">
+<link rel="stylesheet" href="cms/web.css?v=5.1" type="text/css" media="screen" charset="utf-8">
   <script type="text/javascript">
     var Ezer={web:{ $Ezer_web},cms:{form:{}}};
     if ( !console ) {
@@ -1209,8 +1209,8 @@ function javascript_init() {
 //    <script src="cms/MooTools-Core-1.6.0-compressed.js" type="text/javascript" charset="utf-8"></script>
 //__EOJ;
   // on-line přihlášky
-  $cms_root= $kernel=='ezer3.1' ? 'ezer3.1' : 'ezer3';
-  $k3= $kernel=='ezer3.1' ? '3' : '';
+  $cms_root= $kernel=='ezer3.1' ? 'ezer3.1' : 'ezer3.2';
+  $k3= $kernel=='ezer3.1' ? '3' : '3';
   $framework= '';
   if ( $kernel<'ezer3.1' )
     $framework= <<<__EOJ
@@ -2964,8 +2964,18 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false, $h2titler = false) { tr
       $a = $x->ida;
       $b = $x->prihlaska;
       if ( $a && $b) {
-        $nazev_akce= trim(select('nazev','akce',"id_duakce=$x->ida",'ezer_db2'));
-        $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA",'akce',$x->ida,$nazev_akce);
+        list($nazev_akce,$web_online)= select(
+            "TRIM(nazev),IF(web_online!='' AND web_online RLIKE '\"p_enable\":1',1,0)",
+            'akce',"id_duakce=$x->ida",'ezer_db2');
+        // test online přihlášek verze 2
+        if ($a==1553) {
+          $prihlaska=  $_COOKIE['martin']==1 && $web_online==1
+              ? "<a class='cms_form_verze2' "
+                . "href='http://answer.bean:8080/prihlaska_2.php?akce=$a' target='prihlaska'>ONLINE PŘIHLÁŠKA</a>"
+              : '';
+        }
+        else 
+          $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA",'akce',$x->ida,$nazev_akce);
       }
       $wp_presence = ($ds_exists) ? "<span style='position: absolute; right: 0; color: #47a369'>Kopie na webu DS&nbsp;</span>" : "";
       if ($ms_exists) {

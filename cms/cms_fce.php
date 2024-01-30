@@ -689,20 +689,23 @@ function edit_next_footer($curr_id,$smer=1) {
 # --------------------------------------------------------------------------------- edit test_online
 # otestuje id_akce v online přihlášce proti aktuálnímu url (proměnné last v $.ezer)
 function edit_test_online($id_akce,$last) {
-  $msg= '';
+  $msg= 1;
   // je to vůbec číslo akce?
   $ok= select('COUNT(*)','akce',"id_duakce='$id_akce'",'ezer_db2');
   if ( !$ok ) {
-    $msg= "POZOR $id_akce není ID akce"; goto end;
+    $msg= "POZOR $id_akce není ID akce v Answeru"; goto end;
   }
   $xlast= explode('!',$last);
   $ida_web= $xlast[count($xlast)-1];
-  $url= select('web_url','akce',"id_duakce='$id_akce'",'ezer_db2');
+  list($url,$verze)= select("web_url,IF(web_online='',1,2)",'akce',"id_duakce='$id_akce'",'ezer_db2');
   $xlast= explode('/',$url);
   $ida_ans= $xlast[count($xlast)-1];
   list($ida_ans)= explode('#',$ida_ans);
   if ( $ida_web!=$ida_ans ) {
     $msg= "ID akce nesouhlasí s údaji zapsanými v Answeru ($ida_web - $ida_ans)";
+  }
+  elseif ($verze==2) {
+    $msg= 2;
   }
 end:  
   return $msg;

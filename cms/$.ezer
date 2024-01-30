@@ -602,40 +602,84 @@ panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialo
     button full [0,9,,] { title:"[fa-expand]", proc onclick() { change_size; } }
     button half [0,5,,] { title:"[fa-compress]", format:'n', proc onclick() { change_size; } }
     button sav [-70,9,,] { title:'[fa-save] Vytvořit', help:'ukončit editor a uložit článek'
-      proc onclick() { var values:object, ref:text, msg: text
-        values.set(object());
-        [ f.same; warning("nebyla provedena žádná změna"); return ];
-        [ id_akce.get; id_akce.change; msg.set(ask('edit_test_online',id_akce.get,p.last.get)); 
-          msg; alert(msg); return;
-        ];
-        [ lt(date2sql(do.get),date2sql(od.get)); 
+//      proc onclick() { var values:object, ref:text, msg: text, online:object
+//        values.set(object());
+//        [ f.same; warning("nebyla provedena žádná změna"); return ];
+//        [ id_akce.get; id_akce.change; online.set(ask('edit_test_online',id_akce.get,p.last.get)); 
+//          [ ret.ok 
+//          ];
+//          msg; alert(msg); return;
+//        ];
+//        [ lt(date2sql(do.get),date2sql(od.get)); 
+//          warning("POZOR: konec akce předchází začátek"); 
+//          return 
+//        ]; 
+//        [ eq(co.get,'home'); a_changed.set(or(a_changed.get,obsah.changed));
+//          abstract.set(obsah.get); obsah.set(xobsah.get)
+//        | eq(co.get,'text'); o_changed.set(or(o_changed.get,obsah.changed));
+//        ];
+//        echo('o=',o_changed.get,', a=',a_changed.get);
+//        [ o_changed.get; obsah.change ];
+//        [ a_changed.get; abstract.change ];
+//        ref.set(cconc(1,p.last.get,p.last_anch.get,conc('#',p.last_anch.get)));
+//        { uid.get;
+//          copy_by_name(f,values,0,1);
+//          { eq(ctype.get,1,2,3); 
+//            ask('save_clanek',values,uid.get,ref);
+//          | eq(ctype.get,7); ask('save_prezentace',values,uid.get);
+//          | alert("ještě nelze uschovat data pro článek typu=",ctype.get); panel.hide(0)
+//          }
+//        | not(uid.get);
+//          copy_by_name(f,values);
+//          { eq(ctype.get,1,2); ask('create_clanek',values,ref);
+//          | eq(ctype.get,3); ask('create_kniha',values);
+//          | eq(ctype.get,7); ask('create_prezentace',values);
+//          | alert("ještě nelze uschovat data pro článek typu=",ctype.get); panel.hide(0)
+//          }
+//        };
+//        panel.hide(uid.get);
+//      }
+      func onclick() { var values:object, ref:text, msg: text
+        values= {};
+        if (f.same()) { warning("nebyla provedena žádná změna"); return };
+        if (id_akce && id_akce.change()) {
+          msg= php.edit_test_online(id_akce,p.last); 
+          if (msg==2) alert("UPOZORNĚNÍ: bude použita nová verze online přihlášek")
+          else if (msg!=1) { alert(msg); return; }
+        }
+        if (date2sql(do)<date2sql(od)) { 
           warning("POZOR: konec akce předchází začátek"); 
           return 
-        ]; 
-        [ eq(co.get,'home'); a_changed.set(or(a_changed.get,obsah.changed));
-          abstract.set(obsah.get); obsah.set(xobsah.get)
-        | eq(co.get,'text'); o_changed.set(or(o_changed.get,obsah.changed));
-        ];
-        echo('o=',o_changed.get,', a=',a_changed.get);
-        [ o_changed.get; obsah.change ];
-        [ a_changed.get; abstract.change ];
-        ref.set(cconc(1,p.last.get,p.last_anch.get,conc('#',p.last_anch.get)));
-        { uid.get;
+        }; 
+        if (co=='home') { 
+          a_changed= or(a_changed,obsah.changed());
+          abstract= obsah; obsah= xobsah;
+        }
+        else if (co=='text') {
+          o_changed= or(o_changed,obsah.changed());
+        };
+        echo('o=',o_changed,', a=',a_changed);
+        if (o_changed) obsah.change();
+        if (a_changed) abstract.change();
+        ref= cconc(1,p.last,p.last_anch,conc('#',p.last_anch));
+        if (uid) {
           copy_by_name(f,values,0,1);
-          { eq(ctype.get,1,2,3); 
-            ask('save_clanek',values,uid.get,ref);
-          | eq(ctype.get,7); ask('save_prezentace',values,uid.get);
-          | alert("ještě nelze uschovat data pro článek typu=",ctype.get); panel.hide(0)
-          }
-        | not(uid.get);
+          if (eq(ctype,1,2,3))
+            php.save_clanek(values,uid,ref);
+          else if (ctype==7) php.save_prezentace(values,uid);
+          else { alert("ještě nelze uschovat data pro článek typu=",ctype); panel.hide(0); }
+        }
+        else {
           copy_by_name(f,values);
-          { eq(ctype.get,1,2); ask('create_clanek',values,ref);
-          | eq(ctype.get,3); ask('create_kniha',values);
-          | eq(ctype.get,7); ask('create_prezentace',values);
-          | alert("ještě nelze uschovat data pro článek typu=",ctype.get); panel.hide(0)
+          switch (ctype) {
+            case 1: 
+            case 2: php.create_clanek(values,ref); break;
+            case 3: php.create_kniha(values); break;
+            case 7: php.create_prezentace(values); break;
+            default: alert("ještě nelze uschovat data pro článek typu=",ctype); panel.hide(0)
           }
         };
-        panel.hide(uid.get);
+        panel.hide(uid);
       }
     }
     button [-1,9,,] { title:'[fa-undo] Zpět', help:'ukončit editor bez vytvoření článku'

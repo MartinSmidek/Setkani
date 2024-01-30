@@ -244,6 +244,14 @@ textarea {resize: vertical;}
 
 /* ------------------------------------------------------------------- online přihlášky */
 
+a.cms_form_verze2 {
+  float:right; display: inline-block; cursor: pointer; 
+  border: 3px solid #a2433a !important;  margin-top: 15px; margin-right: 15px; 
+  padding: 6px 0.4em 0.2em 0.4em !important; font-size:15pt !important; font-weight: bold; 
+  text-align: center; text-decoration: none; color: #a2433a !important; line-height: 18px; }
+
+a.cms_form_verze2:hover {
+  background-color: #a2433a !important; color: white !important; }
 
 #vlakno fspan.cms_form:hover {
   background-color: #28688d !important; color: white !important; }
