@@ -7,9 +7,11 @@
   // volba verze jádra Ezer
 //  $kernel= "ezer".(isset($_GET['ezer'])?$_GET['ezer']:'2.2');
 //  $kernel= "ezer".(isset($_GET['ezer'])?$_GET['ezer']:'3.1');
+//  $kernel= "ezer3.2";
   $kernel= "ezer3.1";
 //  $kernel= "ezer2.2";
   $k3= substr($kernel,0,5)=='ezer3' ? '3' : '';
+  $_GET['pdo']= 2;
 
   // parametry aplikace MAN
   $app_name=  "setkani.org";
@@ -46,7 +48,7 @@
     );
 
   // on-line přihlášky
-  $cms_root= $kernel=='ezer3.1' ? 'ezer3.1' : 'ezer3';
+  $cms_root= $kernel=='ezer3.1' ? 'ezer3.1' : 'ezer3.2';
   $app_css[]= "$cms_root/client/ezer_cms3.css";
   $app_js[]= "/$cms_root/client/ezer_cms3.js";
 

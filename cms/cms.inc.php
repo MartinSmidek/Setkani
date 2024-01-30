@@ -37,7 +37,7 @@ $ezer_server=
       'activity'=>(object)array());
 
   // on-line přihlášky
-  $cms_root= $kernel=='ezer2.2' ? 'ezer3' : 'ezer3.1';
+  $cms_root= $kernel=='ezer3.1' ? 'ezer3.1' : 'ezer3.2';
   require_once("cms/cms.par.php");
   require_once("$cms_root/server/ezer_cms3.php");
 
