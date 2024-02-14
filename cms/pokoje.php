@@ -52,8 +52,8 @@ function dum_server($x) {
     }
     $email = trim($x->form->email);
     $forward_to = "dum@setkani.org";
-    $snd_copy = "ivana.zivnustkova@seznam.cz";
-    $snd_copy_name = "Živnůstkovi";
+    $snd_copy = "sarka.bouskova@setkani.org";
+    $snd_copy_name = "Šárka Boušková";
     if (!$email || $email === '' || !strpos($email, "@")) {
       $err = send_mail($forward_to, $forward_to, "Objednávka pobytu v Domě Setkání", new_order_mail_from_form($x->form),
           "Objednávky Domu Setkání", "objednavky-domu@setkani.org", $snd_copy, $snd_copy_name);
@@ -111,7 +111,7 @@ function dum_server($x) {
       $state = is_numeric($state) ? (int)$state : 0;
 
       if ($new_state > 1 && $state != $new_state) {
-        $recipient = "ivana.zivnustkova@seznam.cz";
+        $recipient = "sarka.bouskova@setkani.org";
         send_mail("dum@setkani.org", $recipient, "Změna stavu objednávky",
             "Změna stavu: objednávka byla ze stavu '" . pokoj_state($state) . "' změněna na stav '" .
             pokoj_state($new_state) . "'.<br><br>" . new_order_mail_from_form($x->form),
