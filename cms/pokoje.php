@@ -335,7 +335,8 @@ function f_error_msg($id) {
 function new_order_mail_from_form($form) {
   return "<p>Dobrý den $form->name, <br>
             děkujeme za objednávku pobytu v Domě Setkání. Zasíláme shrnutí Vaší objednávky.</p>
-            <p>Pokud si přejete zaplatit předem (bankovní převod), napište nám a podrobnosti vyřešíme přes email. V opačném případě se platby řeší přímo na místě se správcem.</p>"
+            <p>Platit je možné pouze bankovním převodem, včas vám do emailu pošleme instrukce k platbě. 
+            Platby v hotovosti na Domě setkání již nepřijímáme.</p>"
             . form_to_mail_string($form) .
           "<br><p>Těšíme se na Vás!</p>Dům Setkání YMCA";
 }
