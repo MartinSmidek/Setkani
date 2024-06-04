@@ -221,7 +221,10 @@ function seradit($ids,$typ) {
 # vrátí přístupová práva ve _SESSION[web][fe_usergroups]
 function access_get($key=0) {
   $ret= '';
-  if ( $key ) {
+  if ( $key && $key==1 ) { // zrušený přístup správce Domu setkání
+    $ret= 0;
+  }
+  elseif ( $key ) {
     $x= explode(',',$_SESSION['web']['fe_usergroups']);
     $i= array_search($key,$x);
     $ret= $i===false ? 0 : 1;
@@ -1963,4 +1966,3 @@ function cms_post_request($url, array $params) {
   }
 }
 
-?>

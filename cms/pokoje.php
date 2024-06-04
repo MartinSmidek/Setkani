@@ -253,7 +253,8 @@ function dum_form($x) {
     . f_input("ulice",            "address",      25)."<br>"
     . f_input("psč",              "zip",          10)
     . f_input("obec",             "city",         16)."<br><br>"
-  ) : '<br><br>(Osobní údaje jsou přístupné pouze pro správce Domu setkání)')
+  ) : '<br><br>')
+//  ) : '<br><br>(Osobní údaje jsou přístupné pouze pro správce Domu setkání)')
   . ( !$is_new && $spravce ? (
         f_button("Opravit","block_enable('order',1,'uid'); jQuery('#order_save').attr('hidden', false); jQuery(this).attr('hidden', true);") . f_button_sep()
       . f_button("Uložit","objednavka(0,'update',{order:'$ord',rooms:'$pokoje'});",0,'order_save') . f_button_sep()
