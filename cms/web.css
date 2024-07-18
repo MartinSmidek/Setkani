@@ -242,6 +242,9 @@ textarea {resize: vertical;}
   font-size: 60px; vertical-align: middle; position: absolute; transform: translate(-100px, 10px);
   -ms-transform: translate(-100px, 10px);-moz-transform: translate(-100px, 10px);}
 
+.fb_bar {display: inline-flex !important; flex-wrap: wrap; justify-content: center !important; padding: 1rem;}
+.fb_bar_icon {padding: 1rem;}
+.fb_bar_links {padding: 1rem; padding-left: 0; text-align:left;}
 /* ------------------------------------------------------------------- online přihlášky */
 
 a.cms_form_verze2 {

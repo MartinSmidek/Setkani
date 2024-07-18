@@ -606,7 +606,7 @@ function template($href,$path,$fe_host0,$fe_user0=0,$be_user0=0,$echo=1) { trace
       case 'home':    # ----------------------------------------------- . home
 //    $id= array_shift($path);
 //    list($id)= explode('#',$id);
-        $body.= "<div class='content'><h1>YMCA Setkání</h1></div>";
+        $body.= "<div class='content'><h1>Nejbližší akce</h1></div>";
         $body.= home();
         break;
 
@@ -1420,21 +1420,36 @@ function facebook_dependency() {
   return "<div id=\"fb-root\"></div>
         <script async defer crossorigin=\"anonymous\" src=\"https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v5.0\"></script>";
 }
+
+# =========================================================================================> FACEBOOK BAR
 function facebook() {
   return <<<__EOD
-    <div class='full_width facebook'>
-      <div class='content centered_infull' id='facebook_content'>
-        <div class="fb-page" data-href="https://www.facebook.com/dum.setkani.org" data-tabs="timeline" data-width="" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
-            <blockquote cite="https://www.facebook.com/dum.setkani.org" class="fb-xfbml-parse-ignore">
-                <a href="https://www.facebook.com/dum.setkani.org">Dům setkání Albeřice, YMCA</a>
-            </blockquote>
-        </div>
-        <div class="fb-page" data-href="https://www.facebook.com/manzelska.setkani.org/" data-tabs="timeline" data-width="300px" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="false">
-          <blockquote cite="https://www.facebook.com/manzelska.setkani.org/" class="fb-xfbml-parse-ignore">
-            <a href="https://www.facebook.com/manzelska.setkani.org/">Manželská Setkání YMCA</a>
-          </blockquote>
-        </div>
-      </div> 
+    <div class='full_width facebook' id="vlakno">
+      <div class='content centered_infull'>
+          <div class="fb_bar">
+            <div class="fb_bar">
+                <div class="fb_bar_icon">
+                    <i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i>
+                </div>
+                <div class="fb_bar_links">
+                    <div>
+                        <a href="https://www.facebook.com/manzelska.setkani.org">fb.com/manzelska.setkani.org</a>
+                    </div>
+                    <div>
+                        <a href="https://www.facebook.com/dum.setkani.org">fb.com/dum.setkani.org</a>
+                    </div>
+                </div>
+            </div>
+            <div class="fb_bar">
+                <div class="fb_bar_icon ">
+                    <i class="fa fa-instagram fa-2x" aria-hidden="true"></i>
+                </div>
+                <div class="fb_bar_links">
+                    <a href="https://www.instagram.com/manzelska.setkani.ymca">instagram.com/manzelska.setkani.ymca</a>
+                </div>
+            </div>
+          </div>
+      </div>
   </div>
 __EOD;
 }
@@ -1681,7 +1696,7 @@ function home() { trace();
   }
   //add new events first
   if ($akce) {
-    $timeline = timeline();
+    //$timeline = timeline();
     $telo = <<<EOF
 $timeline
 <div class='notif_event_container'><div class='masonry_container x'>  $akce  </div></div>
@@ -1691,13 +1706,11 @@ EOF;
   if (!$CMS) {$telo.= "</div>" .  facebook() . "<div class='content'>";}
 
   $aktual = ($aktual) ? "<h2>Novinky na webu</h2><div class='masonry_container x'>" . $aktual . "</div>" : $aktual;
-  $cist= $cist ? "<h2>Přečtěte si</h2><div class='masonry_container x'>" . $cist . "</div>" : $cist;
 
   $h= <<<__EOD
   <div class='content'>
   <div id='home_telo' class='x'>$telo</div>
   $aktual
-  $cist
   </div>
 __EOD;
   return $h;
