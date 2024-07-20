@@ -1445,7 +1445,12 @@ function facebook() {
                     <i class="fa fa-instagram fa-2x" aria-hidden="true"></i>
                 </div>
                 <div class="fb_bar_links">
-                    <a href="https://www.instagram.com/manzelska.setkani.ymca">instagram.com/manzelska.setkani.ymca</a>
+                    <div>
+                        <a href="https://www.instagram.com/manzelska.setkani.ymca">instagram.com/manzelska.setkani.ymca</a>
+                    </div>
+                    <div>
+                        <a href="https://www.instagram.com/dum.setkani.ymca">instagram.com/dum.setkani.ymca</a>
+                    </div>
                 </div>
             </div>
           </div>
