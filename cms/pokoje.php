@@ -79,6 +79,7 @@ function dum_server($x) {
     }
     else {
       $res= query("UPDATE tx_gnalberice_order SET deleted=1 WHERE uid=$order");
+//      $res= query_track("UPDATE tx_gnalberice_order SET deleted=1 WHERE uid=$order");
       $n= pdo_affected_rows($res);
       $y->msg= $n==1 
           ? "objednávka $order byla smazána - je třeba restartovat Answer" 
@@ -107,6 +108,7 @@ function dum_server($x) {
         $del= ', ';
       }
       $y->ok= query("UPDATE tx_gnalberice_order SET $flds WHERE uid=$order");
+//      $y->ok= query_track("UPDATE tx_gnalberice_order SET $flds WHERE uid=$order");
       $new_state = is_numeric($new_state) ? (int)$new_state : 0;
       $state = is_numeric($state) ? (int)$state : 0;
 
@@ -162,7 +164,7 @@ end:
 function pokoj_state($state) {
   switch ($state) {
     case 2: return "Soukromá objednávka.";
-    case 3: return "Akce YMCA.";
+    case 3: case 5: return "Akce YMCA.";
     case 4: return "Zablokování domu /nelze objednat/";
     default: return "";
   }
@@ -239,7 +241,7 @@ function dum_form($x) {
   . f_select("typ stravy","board","1:penze,2:polopenze,3:bez stravy", 1, 'max-width: 170px') . "<br>"
   . f_input($pokoje_title,"rooms1",40,1, 'text', '', "objednejte pokoje jejich čísly oddělenými čárkou", "rooms_label", ($checkbox_checked ? " readonly " : ""))."<br>" . f_error_msg("ord_rooms_error")
   . f_input("dospělých",          "adults",        3, 1, 'number', 'max-width: 80px', '', '', " min='0'")
-  . f_input("děti 10-15",         "kids_10_15",    3, 1, 'number', 'max-width: 80px', '', '', " min='0'")
+  . f_input("děti 10-18",         "kids_10_15",    3, 1, 'number', 'max-width: 80px', '', '', " min='0'")
   . f_input("děti 3-9",           "kids_3_9",      3, 1, 'number', 'max-width: 80px', '', '', " min='0'")
   . f_input("děti do 3 let",      "kids_3",        3, 1, 'number', 'max-width: 80px', '', '', " min='0'")."<br>" . f_error_msg("ord_adults_error")
   . f_input("poznámka k objednávce","note",35)."<br>"
@@ -430,7 +432,7 @@ function escape_nostring($value, $esc="-") {
   return $value;
 }
 # ----------------------------------------------------------------------------------------==> mesice
-# 1=zájem o pobyt, 2=závazná objednávka, 3=akce YMCA, 4=nelze pronajmout );
+# 1=zájem o pobyt, 2=závazná objednávka, 3=akce YMCA, 5=akce YMCA bez programu, 4=nelze pronajmout
 function mesice($path) {  trace();
   global $CMS;
   popup("Objednávka","","",'order');
@@ -683,7 +685,7 @@ function pokoj_ikona($state) {
     case  '2': return "<i class='fa fa-user'></i>";
     case  '3': return "<i class='fa fa-futbol-o'></i>";
     case  '4': return "<i class='fa fa-times-circle'></i>";
-    //case  '5': return "<i class='fa fa-home'></i>";
+    case  '5': return "<i class='fa fa-futbol-o'></i>";
     default: return "";
   }
 }
@@ -698,7 +700,7 @@ function ikona_objednano_legenda($custom_class = '') {
   $h = "<div class='legend $custom_class' style='width: fit-content; padding: 13px; margin: 10px'>";
   //$h .= "<div class='icons_legend'>" . pokoj_ikona(5) . "&nbsp;Zájem o celý dům</div>";
   $h .= "<div class='icons_legend'>" . pokoj_ikona(2) . "&nbsp;Závazná objednávka</div>";
-  $h .= "<div class='icons_legend'>" . pokoj_ikona(3) . "&nbsp;Probíhá akce YMCA</div>";
+  $h .= "<div class='icons_legend'>" . pokoj_ikona(3) . "&nbsp;Probíhá akce YMCA</div>"; // dtto pro 5
   $h .= "<div class='icons_legend'>" . pokoj_ikona(4) . "&nbsp;Nelze pronajmout</div>";
   return $h . "</div>";
 }
@@ -805,7 +807,7 @@ function bookingsTableHtml($pokoje) {
     <td class='bold' style='border-right: 1px solid' colspan=5>1.patro</td>
     <td class='bold' style='border-right: 1px solid' colspan=2>1-</td>
     <td class='bold' style='border-right: 1px solid' colspan=2>1+</td>
-    <td class='bold' style='border-right: 1px solid' colspan=8>2.patro</td>
+    <td class='bold' style='border-right: 1px solid' colspan=9>2.patro</td>
     <td class='bold' rowspan='4' style='border-left:2px solid'>poznámky</td></tr>";
   $h_pokoje= "<tr><td class='bold' colspan=3>pokoj číslo</td>";
   // pokoje
