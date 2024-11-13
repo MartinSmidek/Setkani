@@ -226,7 +226,7 @@ function pokoj_ikona(state) {
         case 2: return "<i class='fa fa-user'></i>";
         case 3: return "<i class='fa fa-futbol-o'></i>";
         case 4: return "<i class='fa fa-times-circle'></i>";
- //       case 5: return "<i class='fa fa-home'></i>";
+        case 5: return "<i class='fa fa-futbol-o'></i>";
     }
     return '';
 }
