@@ -2982,21 +2982,20 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false, $h2titler = false) { tr
       //TODO FOR SOME REASON USING DIRECT ACCESS IN THE CONDITION DID NOT WORK!!!
       $a = $x->ida;
       $b = $x->prihlaska;
-      $AKCE= array(); // NENABÍZET: 3094=LK MS YS 2025
-      if ( $a && $b && !in_array($x->ida,$AKCE)) {
+      $NENABIZET_AKCE= array(); // NENABÍZET: 3094=LK MS YS 2025
+      if ( $a && $b && !in_array($x->ida,$NENABIZET_AKCE)) {
         list($nazev_akce,$web_online,$web_prihlasky)= select(
             "TRIM(nazev),IF(web_online!='' AND web_online RLIKE '\"p_enable\":1',1,0),web_prihlasky",
             'akce',"id_duakce=$x->ida",'ezer_db2');
         // test online přihlášek verze 2
-        $AKCE= array(3120,3056); // TESTOVAT: 3120=Krtci, 3056=Ostrava, 3094=LK MS
-        if (in_array($x->ida,$AKCE) && $_COOKIE['martin']==1) { 
-//          error_reporting(-1);
+//        $AKCE= array(3120,3056); // TESTOVAT: 3120=Krtci, 3056=Ostrava, 3094=LK MS
+//        if (in_array($x->ida,$AKCE) /*&& $_COOKIE['martin']==1*/) { 
           $prihlaska= app_form_ref("<i style='vertical-align:2px' class='fa fa-star-o'></i> ONLINE PŘIHLÁŠKA",$a);
-        }
-        else {
-          if (!in_array($x->ida,$AKCE))
-          $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA",'akce',$x->ida,$nazev_akce);
-        }
+//        }
+//        else {
+//          if (!in_array($x->ida,$AKCE))
+//          $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA",'akce',$x->ida,$nazev_akce);
+//        }
       }
       $wp_presence = ($ds_exists) ? "<span style='position: absolute; right: 0; color: #47a369'>Kopie na webu DS&nbsp;</span>" : "";
       if ($ms_exists) {
