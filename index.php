@@ -66,7 +66,9 @@ $chlapi_cz= $chlapi_cz[$ezer_server];
 
 ezer_connect('setkani4');
 $mysql_db_track= $tracking= '_track';
-$mysql_tracked= $tracked= ',osoba,rodina,pobyt,_user,';
+$mysql_tracked= $tracked= ',osoba,rodina,pobyt,_user,tx_gnalberice_order,ds_order,';
+$mysql_tracked_id= ['akce'=>'id_duakce',"ds_order"=>'id_order'];
+
 if ( count($_POST) ) {
 //   $y= (object)array('cmd'=>$x->cmd);
   $x= array2object($_POST);

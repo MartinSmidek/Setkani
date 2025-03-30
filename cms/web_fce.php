@@ -1965,4 +1965,30 @@ function cms_post_request($url, array $params) {
     return "Chyba: prosíme, napište administrátorovi. Přiložte následující popis chyby: <code>$e</code>";
   }
 }
+/** ===========================================================================================> APP */
+# funkce pro online přihlášku
+# ------------------------------------------------------------------------------------- app form_ref
+/**
+ * @brief Vygeneruje odkaz, po kliknutí bude zobrazena přihláška - viz prihlaska_body()
+ * @param string $title - text odkazu
+ * @param string $ida - id akce
+ * @return html
+ */
+function app_form_ref($title,$ida=0) { 
+//          echo('martin');
+  $html= '';
+  if ( !$ida ) {
+    $html.= "<span class='cms_form'>$title</span>";
+  }
+  else {
+    // generování odkazu na přihlášku
+    $sid= session_id(); 
+    $html.= "
+      <span class='cms_form' 
+        onclick=\"app_form('cms_create',{ida:'$ida',sid:'$sid'});\">
+        $title</span>";
+  }
+  return $html;
+}
+
 

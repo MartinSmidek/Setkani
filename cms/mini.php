@@ -352,6 +352,143 @@ function select_object($expr,$table,$cond=1,$db='.main.') {
   $result= pdo_fetch_object($res);
   return $result;
 }
+# -------------------------------------------------------------------------------------- query track
+# provede některá SQL včetně zápisu do _track
+#   INSERT INTO tab (f1,f2,...) VALUES (v1,v2,...) 
+#   UPDATE tab SET f1=v1, f2=v2, ... WHERE id_tab=v0
+# kde vi jsou jednoduché hodnoty: číslo nebo string uzavřený v apostorfech 
+# trasovaná tabulka musí být uvedena v $mysql_tracked, jeji klíč musí být buďto ve tvaru id_tab
+# nebo být uveden v $mysql_tracked_id jako tab=>id
+function query_track($qry,$db='.main.') {
+  global $mysql_db_track, $mysql_tracked, $mysql_tracked_id;
+  // rozklad výrazu: 1:table, 2:field list, 3:values list
+  $res= 0;
+  $m= null;
+  $ok= preg_match('/(INSERT)\s+INTO\s+([\w\.]+)\s+\(([,\s\w]+)\)\s+VALUE(?:S|)\s+\(((?:.|\s)+)\)$/',$qry,$m)
+    || preg_match('/(UPDATE)\s+([\w\.]+)\s+SET\s+(.*)\s+WHERE\s+([\w]+)\s*=\s*(.*)\s*/m',$qry,$m)
+    || preg_match('/(DELETE)\s+FROM\s+([\w\.]+)\s+WHERE\s+([\w]+)\s*=\s*(.*)\s*/m',$qry,$m)
+  ;
+//  debug($m);
+  $fce= $m[1] ?: '';
+  $tab= $m[2] ?: '';
+  if ( $mysql_db_track && strpos($mysql_tracked,",$tab,")!==false ) {
+    global $USER;
+    $abbr= isset($USER->abbr) ? $USER->abbr : 'WEB';
+    if ($ok && $fce=='INSERT') {
+      $fld= explode_csv($m[3]); 
+      $val= explode_csv($m[4]); 
+      $res= query($qry,$db);
+      $key_val= pdo_insert_id();
+      for ($i= 0; $i<count($fld); $i++) {
+        $f= $fld[$i];
+        $v= $val[$i];
+//        if ($v[0]=="'") $v= substr($v,1,-1);
+//        $v= pdo_real_escape_string($v);
+        pdo_query("INSERT INTO _track (kdy,kdo,kde,klic,op,fld,val) "
+            . "VALUE (NOW(),'$abbr','$tab',$key_val,'i','$f',$v)",null,null,false,$db);
+      }
+    }
+    elseif ($ok && $fce=='UPDATE') {
+  //    debug($m);
+      $sets= explode_csv($m[3]); 
+      $key_id= $m[4];
+      $key_val= $m[5];
+      // kontrola podmínky
+      $ok= $key_id=="id_$tab" || $key_id==$mysql_tracked_id[$tab];
+      if ($ok) {
+        foreach ($sets as $set) {
+          list($fld,$val)= explode('=',$set,2);
+          $old= select($fld,$tab,"$key_id=$key_val");
+          $old= pdo_real_escape_string($old);
+          if ($val[0]=="'") $val= substr($val,1,-1);
+          $val= pdo_real_escape_string($val);
+          pdo_query("INSERT INTO _track (kdy,kdo,kde,klic,op,fld,old,val) "
+            . "VALUE (NOW(),'$abbr','$tab',$key_val,'u','$fld','$old','$val')",null,null,false,$db);
+        }
+        $res= query($qry,$db);
+      }
+    }
+    elseif ($ok && $fce=='DELETE') {
+      $key_id= $m[3];
+      $key_val= $m[4];
+      // kontrola podmínky
+      $ok= $key_id=="id_$tab" || $key_id==$mysql_tracked_id[$tab];
+      if ($ok) {
+        pdo_query("INSERT INTO _track (kdy,kdo,kde,klic,op) "
+            . "VALUE (NOW(),'$abbr','$tab',$key_val,'x')",null,null,false,$db);
+        $res= query("DELETE FROM $tab WHERE $key_id=$key_val",$db);
+      }
+    }
+    else {
+      $ok= 0;
+    }
+    if (!$ok) {
+      fce_error("funkce query-track nemá předepsaný tvar argumentu ale $qry");
+    }
+  }
+  else {
+    $res= query($qry,$db);
+  }
+end:
+  return $res;
+}
+# -------------------------------------------------------------------------------------- explode csv
+# split CSV s ohledem na závorky a apostrofy
+function explode_csv($str, $separator=",", $leftbracket="(", $rightbracket=")", $quote="'", $ignore_escaped_quotes=true ) {
+  $buffer = '';
+  $stack = array();
+  $depth = 0;
+  $char= '';
+  $betweenquotes = false;
+  $len = strlen($str);
+  for ($i=0; $i<$len; $i++) {
+    $previouschar = $char;
+    $char = $str[$i];
+    switch ($char) {
+      case $separator:
+        if (!$betweenquotes) {
+          if (!$depth) {
+            if ($buffer !== '') {
+              $stack[] = $buffer;
+              $buffer = '';
+            }
+            continue 2;
+          }
+        }
+        break;
+      case $quote:
+        if ($ignore_escaped_quotes) {
+          if ($previouschar!="\\") {
+            $betweenquotes = !$betweenquotes;
+          }
+        } else {
+          $betweenquotes = !$betweenquotes;
+        }
+        break;
+      case $leftbracket:
+        if (!$betweenquotes) {
+          $depth++;
+        }
+        break;
+      case $rightbracket:
+        if (!$betweenquotes) {
+          if ($depth) {
+            $depth--;
+          } else {
+            $stack[] = $buffer.$char;
+            $buffer = '';
+            continue 2;
+          }
+        }
+        break;
+      }
+      $buffer .= $char;
+  }
+  if ($buffer !== '') {
+    $stack[] = $buffer;
+  }
+  return $stack;
+}
 # -------------------------------------------------------------------------------------------- query
 # provedení MySQL dotazu
 function query($qry,$db='.main.') {

@@ -714,5 +714,131 @@ function ask(x,then,arg) {
 function error(msg) {
   alert(msg + " pokud napises na martin@smidek.eu pokusim se pomoci, Martin");
 }
+// ============================================================================================> APP
+// ---------------------------------------------------------------------------------------- app form
+// zobrazí online přihlášku na akci s daným id
+// made by chatGPT :-)
+function app_form(op, par) {
+    // Proměnné pro počáteční rozměry iframe
+    const initialWidth = "800px";  // Počáteční šířka iframe
+    const initialSpace = 100;      // Počáteční mezera od vrchu okna (v px)
+
+    // Dynamicky nastavíme initialHeight podle výšky okna minus initialSpace
+    const initialHeight = `${window.innerHeight - initialSpace}px`;  // Počáteční výška iframe, vypočítaná z výšky okna
+
+    const maxWidth = "100vw";      // Maximální šířka iframe (celá šířka obrazovky)
+    const maxHeight = "100vh";     // Maximální výška iframe (celá výška obrazovky)
+
+    let iframe = document.querySelector("iframe.app_form");
+    let buttonContainer = document.querySelector(".button-container");  // Kontejner pro tlačítka
+    
+    if (iframe) {
+        // Pokud iframe existuje, zviditelníme jej a tlačítka
+        iframe.style.display = "block"; // Zviditelní iframe
+        buttonContainer.style.display = "flex"; // Zviditelní tlačítka
+    } 
+    else {
+        // Vložíme CSS styl pro centrování iframe
+        let style = document.createElement("style");
+        style.innerHTML = `
+            .app_form {
+                display: block;
+                width: ${initialWidth};  /* Počáteční šířka */
+                height: ${initialHeight}; /* Počáteční výška */
+                border: 1px solid #ccc;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+                box-shadow: #000000 4px 6px 20px;
+                border-radius: 7px; 
+                z-index: 999;
+            }
+        `;
+        document.head.appendChild(style);      
+
+        // Vytvoření prvku iframe
+        iframe = document.createElement("iframe");
+        iframe.className = "app_form"; // Nastavení třídy
+        document.body.appendChild(iframe);
+
+        // Vytvoření kontejneru pro tlačítka
+        buttonContainer = document.createElement("div");
+        buttonContainer.className = "button-container"; // Přidání třídy pro snadnou manipulaci
+        buttonContainer.style.position = "fixed";
+        buttonContainer.style.left = "50%";
+        buttonContainer.style.transform = "translateX(-50%)";
+        buttonContainer.style.display = "flex";
+        buttonContainer.style.gap = "10px"; // Mezera mezi tlačítky
+        buttonContainer.style.zIndex = "1000"; // Aby bylo nad iframe
+        document.body.appendChild(buttonContainer);
+
+        // Vytvoření tlačítka Maximalizovat
+        let maxButton = document.createElement("button");
+        maxButton.innerText = "Maximalizovat";
+        maxButton.className = "expand-button";
+        styleButton(maxButton);
+
+        // Vytvoření tlačítka Zavřít
+        let closeButton = document.createElement("button");
+        closeButton.innerText = "Zavřít";
+        closeButton.className = "close-button";
+        styleButton(closeButton);
+        closeButton.style.backgroundColor = "#DC3545"; // Červená barva pro Zavřít
+        
+        // Přidání tlačítek do kontejneru
+        buttonContainer.appendChild(maxButton);
+        buttonContainer.appendChild(closeButton);
+
+        // Výpočet vertikální pozice tlačítek s ohledem na initialHeight
+        let buttonTopPosition = `calc(50% - ${parseInt(initialHeight) / 2}px - 20px)`; // 20px je mezera nad tlačítky
+
+        buttonContainer.style.top = buttonTopPosition;
+
+        // Akce po kliknutí na Maximalizovat
+        maxButton.addEventListener("click", function () {
+            if (iframe.style.width !== maxWidth) {
+                iframe.style.zIndex = maxWidth; // Změna šířky na celou obrazovku
+                iframe.style.width = maxWidth; // Změna šířky na celou obrazovku
+                iframe.style.height = maxHeight; // Změna výšky na celou obrazovku
+                iframe.style.top = "0";
+                iframe.style.left = "0";
+                iframe.style.transform = "none";
+                maxButton.innerText = "Zmenšit"; // Změna textu tlačítka
+                buttonContainer.style.top = "10px"; // Přesunutí tlačítek nahoru
+            } else {
+                iframe.style.width = initialWidth; // Návrat zpět na původní šířku
+                iframe.style.height = initialHeight; // Návrat zpět na původní výšku
+                iframe.style.top = "50%";
+                iframe.style.left = "50%";
+                iframe.style.transform = "translate(-50%, -50%)";
+                maxButton.innerText = "Maximalizovat"; // Změna textu tlačítka
+                buttonContainer.style.top = buttonTopPosition; // Nastavení tlačítek zpět na původní pozici
+            }
+        });
+
+        // Akce po kliknutí na Zavřít
+        closeButton.addEventListener("click", function () {
+            iframe.style.display = "none"; // Skrytí iframe
+            buttonContainer.style.display = "none"; // Skrytí tlačítek
+        });
+    }
+    // vytvoření cesty - pro window.location.host==www.setkani.org  bude answer.setkani.org
+    //                 - jinak předpokládáme ladící běh 
+    let server= window.location.host=='www.setkani.org' ? 'https://answer.setkani.org' : 'http://answer.bean:8080/';
+    iframe.src = `${server}/prihlaska_2025.php?akce=${par.ida}&sid=${par.sid}`;
+//    `${window.location.protocol}//${window.location.host}/prihlaska_2025.php?akce=${par.ida}&sid=${par.sid}`
+}
+
+// Pomocná funkce pro stylování tlačítek
+function styleButton(button) {
+    button.style.padding = "10px 20px";
+    button.style.backgroundColor = "#007BFF";
+    button.style.color = "white";
+    button.style.border = "none";
+    button.style.borderRadius = "5px";
+    button.style.cursor = "pointer";
+}
 
 

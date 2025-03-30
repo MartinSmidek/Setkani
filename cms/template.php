@@ -1,5 +1,6 @@
 ﻿<?php
 include "cms_onclick.php";
+define('COOKIE_JS_PROPERTIES', $ezer_server == 1 ? "SameSite=None;Secure;" : "");
 
 
 # --------------------------------------------------------------------------------------==> def menu
@@ -2981,20 +2982,21 @@ function vlakno($cid,$typ='',$back_href='', $h1 = false, $h2titler = false) { tr
       //TODO FOR SOME REASON USING DIRECT ACCESS IN THE CONDITION DID NOT WORK!!!
       $a = $x->ida;
       $b = $x->prihlaska;
-      if ( $a && $b) {
-        list($nazev_akce,$web_online)= select(
-            "TRIM(nazev),IF(web_online!='' AND web_online RLIKE '\"p_enable\":1',1,0)",
+      $AKCE= array(); // NENABÍZET: 3094=LK MS YS 2025
+      if ( $a && $b && !in_array($x->ida,$AKCE)) {
+        list($nazev_akce,$web_online,$web_prihlasky)= select(
+            "TRIM(nazev),IF(web_online!='' AND web_online RLIKE '\"p_enable\":1',1,0),web_prihlasky",
             'akce',"id_duakce=$x->ida",'ezer_db2');
         // test online přihlášek verze 2
-        if ($a==1553) {
-          global $answer_org, $ezer_server;
-          $prihlaska= $web_online==1 /* && $_COOKIE['martin']==1 */
-              ? "<a class='cms_form_verze2' "
-                . "href='{$answer_org[$ezer_server]}/prihlaska_2.php?akce=$a' target='prihlaska'>ONLINE PŘIHLÁŠKA</a>"
-              : '';
+        $AKCE= array(3120,3056); // TESTOVAT: 3120=Krtci, 3056=Ostrava, 3094=LK MS
+        if (in_array($x->ida,$AKCE) && $_COOKIE['martin']==1) { 
+//          error_reporting(-1);
+          $prihlaska= app_form_ref("<i style='vertical-align:2px' class='fa fa-star-o'></i> ONLINE PŘIHLÁŠKA",$a);
         }
-        else 
+        else {
+          if (!in_array($x->ida,$AKCE))
           $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA",'akce',$x->ida,$nazev_akce);
+        }
       }
       $wp_presence = ($ds_exists) ? "<span style='position: absolute; right: 0; color: #47a369'>Kopie na webu DS&nbsp;</span>" : "";
       if ($ms_exists) {

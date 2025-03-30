@@ -695,14 +695,16 @@ function edit_test_online($id_akce,$last) {
   if ( !$ok ) {
     $msg= "POZOR $id_akce není ID akce v Answeru"; goto end;
   }
-  $xlast= explode('!',$last);
-  $ida_web= $xlast[count($xlast)-1];
   list($url,$verze)= select("web_url,IF(web_online='',1,2)",'akce',"id_duakce='$id_akce'",'ezer_db2');
-  $xlast= explode('/',$url);
-  $ida_ans= $xlast[count($xlast)-1];
-  list($ida_ans)= explode('#',$ida_ans);
-  if ( $ida_web!=$ida_ans ) {
-    $msg= "ID akce nesouhlasí s údaji zapsanými v Answeru ($ida_web - $ida_ans)";
+  if ($verze==1) {
+    $xlast= explode('!',$last);
+    $ida_web= $xlast[count($xlast)-1];
+    $xlast= explode('/',$url);
+    $ida_ans= $xlast[count($xlast)-1];
+    list($ida_ans)= explode('#',$ida_ans);
+    if ( $ida_web!=$ida_ans ) {
+      $msg= "ID akce nesouhlasí s údaji zapsanými v Answeru ($ida_web - $ida_ans)";
+    }
   }
   elseif ($verze==2) {
     $msg= 2;
