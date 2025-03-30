@@ -17,7 +17,7 @@
   $app_name=  "setkani.org";
   $app_root=  'cms';
   $app_js=    array(
-      "/cms/cms{$k3}.js?v=4.6",
+      "/cms/cms{$k3}.js?v=5.1",
       "/cms/cms{$k3}_be.js",
       "/cms/modernizr-custom.js",
       "/cms/custom.js?v=4.3",
