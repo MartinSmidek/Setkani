@@ -1229,7 +1229,7 @@ __EOJ;
 __EOJ;
   $eb_link= <<<__EOJ
     $framework    
-    <script src="cms/cms{$k3}.js?v=5.0" type="text/javascript" charset="utf-8"></script>
+    <script src="cms/cms{$k3}.js?v=5.1" type="text/javascript" charset="utf-8"></script>
     <script src="cms/cms{$k3}_fe.js?v=5.0" type="text/javascript" charset="utf-8"></script>
     <script src="cms/modernizr-custom.js?v=5.0" type="text/javascript" charset="utf-8"></script>
     $fotorama
