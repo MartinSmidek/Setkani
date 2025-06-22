@@ -733,7 +733,7 @@ panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialo
     field sorting [300,39,60,]   { tag:'c', title:'priorita:', format:'r' }
     select status [350,39,50,]   { tag:'a', title:'status:' format:'t' }
     select homepage [440,39,60,] { tag:'a,c', title:'home:' format:'t' }
-    field id_akce [542,39,40,]   { tag:'a', title:'ID akce', format:'r', skill:'r|m' }
+    field id_akce [542,39,40,]   { tag:'a', title:'ID akce', format:'r', skill:'r|s|a' }
     edit obsah   [0,62,730,320] { type:'html', par:°{toolbar:'CMS'}
       proc ondrop(f) {                   // odmítnutí přenosu při novém článku
         echo('CKEDIT dropped=',f.name);  //  kterého neznáme cid
