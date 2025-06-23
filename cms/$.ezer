@@ -644,7 +644,7 @@ panel EDITOR [0,0,730,385] { title:' Editor článků', type:'popup', css:'dialo
         if (f.same()) { warning("nebyla provedena žádná změna"); return };
         if (id_akce && id_akce.change()) {
           msg= php.edit_test_online(id_akce,p.last); 
-          if (msg==2) alert("UPOZORNĚNÍ: bude použita nová verze online přihlášek")
+          if (msg==2) // alert("UPOZORNĚNÍ: bude použita nová verze online přihlášek")
           else if (msg!=1) { alert(msg); return; }
         }
         if (date2sql(do)<date2sql(od)) { 
