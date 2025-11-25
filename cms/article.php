@@ -121,7 +121,7 @@ class Article {
                 }
                 $prihlaska= '';
 //      if ( $x->ida && isset($_SESSION['web']['try']) && $_SESSION['web']['try']=='prihlasky') {
-                if ( $x->ida && $x->prihaska) {
+                if ( $x->ida && $x->prihlaska) {
                     $nazev_akce= trim(select('nazev','akce',"id_duakce=$x->ida",'ezer_db2'));
                     $prihlaska= cms_form_ref("ONLINE PŘIHLÁŠKA",'akce',$x->ida,$nazev_akce);
                 }

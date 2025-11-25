@@ -827,7 +827,7 @@ function app_form(op, par) {
     // vytvoření cesty - pro window.location.host==www.setkani.org  bude answer.setkani.org
     //                 - jinak předpokládáme ladící běh 
     let server= window.location.host=='www.setkani.org' ? 'https://answer.setkani.org' : 'http://answer.bean:8080/';
-    iframe.src = `${server}/prihlaska_2025.php?akce=${par.ida}&sid=${par.sid}`;
+    iframe.src = `${server}/prihlaska_2026.php?org=1&akce=${par.ida}&sid=${par.sid}`;
 //    `${window.location.protocol}//${window.location.host}/prihlaska_2025.php?akce=${par.ida}&sid=${par.sid}`
 }
 
