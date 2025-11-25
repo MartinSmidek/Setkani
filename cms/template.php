@@ -889,12 +889,12 @@ __EOD;
 __EOD;
 
 // SSL viditelný
-  $navrcholu= $ezer_server!=1 ? '' : <<<__EOD
-  <a href="https://navrcholu.cz/Statistika/75293/" class="mereni" target='statistika'>
-    <img src="https://s1.navrcholu.cz/hit?site=75293;t=o14;ref=;jss=0"
-      width="14" height="14" alt="NAVRCHOLU.cz" style="border:none" />
-  </a>
-__EOD;
+//  $navrcholu= $ezer_server!=1 ? '' : <<<__EOD
+//  <a href="https://navrcholu.cz/Statistika/75293/" class="mereni" target='statistika'>
+//    <img src="https://s1.navrcholu.cz/hit?site=75293;t=o14;ref=;jss=0"
+//      width="14" height="14" alt="NAVRCHOLU.cz" style="border:none" />
+//  </a>
+//__EOD;
 
 // menu pro změnu vzhledu, přihlášení ...
   $choice_js= "bar_menu(arguments[0],'menu_on'); return true;";
@@ -971,7 +971,6 @@ __EOD;
     
   <div id="page_footer_bar" class="container footer" style="background:black">
     <div class="content white" style="paddingcode: 0 12px">
-      $navrcholu            
       Vaše dary na účet <img src="cms/img/bank.png" class="footerIcon">  <b>2400465447/2010</b> nám pomáhají uskutečňovat naše programy pro vás i vaše blízké
       <span id='site_signature'> YMCA Setkání, $cur_year&emsp;</div>
       <div>$info_note</div>
