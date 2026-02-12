@@ -8,10 +8,14 @@
 
 /** =========================================================================================> LOCKS */
 # -------------------------------------------------------------------------------------- record lock
+# zámky starší 24 hodin jsou odstraněny
 # pokud je rekord volný tj. lock_kdo=0 vrátí {kdo:''} a zapíše kdy kdo uzamkl
 # pokud je rekord zamknutý tj. lock_kdo=id_user vrátí {kdo:_user.username,kdy:datetime}
 function record_lock ($pid) {
   $ret= (object)array();
+  // nejprve odstraníme staré zámky 
+  query("UPDATE tx_gncase_part SET lock_kdo=0 WHERE lock_kdy < NOW() - INTERVAL 24 HOUR");
+  // pak pokračujeme
   list($kdo,$kdy)= select("lock_kdo,lock_kdy",'tx_gncase_part',"uid=$pid");
   if ( $kdo ) {
     // zamknutý záznam
